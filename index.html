@@ -1,172 +1,223 @@
 <!DOCTYPE html>
 <html>
+    <script>
+        navigator.sendBeacon("/mumu/page-in");
+        setInterval(function(){
+            navigator.sendBeacon("/mumu/page-on");
+        },60000)
+    </script>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>subtitles</title>
-        <script crossorigin="anonymous" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
-    </head>
-    <body>
-        <div class="index">
-            <video controls width="100%" id="video" onplay="videoFn()" >
-                <source src="https://inininininin.com/file/zmy/The-Wolf-of-Wall-Street.mp4"/>
-            </video>
-            <!-- <div style="margin-top:5px">
-                <div>中文字幕<input type="file" ref="files" onchange="uploadFileFn(this,'zh')" /></div>
-                <div>英文字幕<input type="file" ref="files" onchange="uploadFileFn(this,'en')" /></div>
-            </div> -->
-            <button style="margin-top:5px" onclick="readWord()">开始播放字幕</button>
-            <div style="height: 30px;line-height: 30px;background: #efeded;margin-top:5px" id="zh_subtitles">
-                <!-- <span v-for="(item,inx) in en.subtitles" :key="inx" onclick="translationFn(item)" style="cursor: pointer;font-size: 17px;">
-                {{item}}
-                </span> -->
-            </div>
-            <!-- <div style="height: 20px;line-height: 20px;background: #efeded;">
-                <span v-for="(item,inx) in zh.subtitles" :key="inx" onclick="translationFn(item)" style="cursor: pointer;font-size: 17px;">
-                {{item}}
-                </span>
-            </div> -->
-        </div>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>幕幕 - mumu</title>
+        <meta name="x5-fullscreen" content="true">
+        <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+        <link rel="stylesheet" type="text/css" href="./archive.css" />
+        <link rel="apple-touch-startup-image" href="./favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" href="./favicon.ico" />
+        <link rel="apple-touch-icon" href="./favicon.ico" />
+        <link rel="shortcut icon" href="./favicon.ico" >
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
+        <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script>
-            var zh = {
-                subtitles : '',
-                subtitlesInterval : '',
-                subtitlesList : [],
-            },
-            en = {
-                subtitles : '',
-                subtitlesInterval : '',
-                subtitlesList : [],
-            }
-
-
-            init();
-
-
-            function init(){
-                getSubtitles()
-            }
-
-            function getSubtitles(){
-                $.ajax({
-                    url: '/file/zmy/The-Wolf-of-Wall-Street.srt',
-
-                        type: 'get',
-                        async: true,
-                        success: function(res) {
-                            // console.log(res)
-                            getEnSubtitles(res)
-                        }
-                    })
-            }
-            function getZhSubtitles(_result){
-                let _this = this;
-                let _fileString = [];
-                _fileString = _result.currentTarget.result.split(/[(\r\n)\r\n]+/);
-                // console.dir(_fileString)
-                _fileString.forEach((item,inx) => {
-                    if(!item){
-                    _fileString.splice(inx,1);
-                    }
-                    let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
-                    let regExp = new RegExp(reg);
-                    if(regExp.test(item)){
-                    // console.log(item)
-                    // item
-                    _this.zh.subtitlesList.push({
-                        startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
-                        endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
-                        value : _fileString[inx+1]
-                    })
-                    }
-                });
-            }
-            function getEnSubtitles(_result){
-                let _this = this;
-                let _fileString = [];
-                _fileString = _result.split(/[(\r\n)\r\n]+/);
-                // console.dir(_fileString)
-                _fileString.forEach((item,inx) => {
-                    let startValue = false
-                    if(!item){
-                    _fileString.splice(inx,1);
-                    }
-                    let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
-                    let regExp = new RegExp(reg);
-                    if(regExp.test(item)){
-                        _this.en.subtitlesList.push({
-                            startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
-                            endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
-                            value : _fileString[inx+2]
-                        })
-                    }
-                });
-                console.log(_this.en.subtitlesList)
-            }
-            function readWord(){
-                this.en.subtitles = ''
-                $('#video')[0].play();
-            }
-            function videoFn(){               
-                let _this = this;
-                if(_this.en.subtitlesInterval){
-                    clearInterval(_this.en.subtitlesInterval)
+            var vConsole = new VConsole({
+                onReady:function(){
+                    $('#__vconsole .vc-switch').text('vc')
                 }
-                _this.en.subtitlesInterval = setInterval(() => {
-                    if($('#video')[0].currentTime == $('#video')[0].duration){
-                        clearInterval(_this.en.subtitlesInterval)
-                    }
-                    let _time = $('#video')[0].currentTime*1000
-                    //console.log(_time)
-                    // console.log("subtitlesList.length "+_this.en.subtitlesList.length)
-                    
-                    $(_this.en.subtitlesList).each(function(inx,item){
-                        // console.log('1')
-                    //     console.dir(item)
-                    //     console.log(item.startTime)
-                    //     console.log(item.endTime)
-                    
-                    if(item.startTime<_time && _time<item.endTime){
-                        debugger
-                        console.log(item.value.split(' '))
-                        let _value = item.value.split(' ');
-                        // _this.zh.subtitles = item.value.split(' ')
-                        $("#zh_subtitles").html('')
-                        for(let i in _value){
-                            $("#zh_subtitles").append(
-                                '<span onclick="translationFn()" style="cursor: pointer;font-size: 17px;">'+_value[i]+'</span>'
-                            )
-                        }
-    
-    
-                    }
-                    })
-                }, 1);
-            }
-            function timeCycle(_value){
-                let _time = _value.split(':')
-                let ms = 0;
-                _time.forEach((item,inx) =>{
-                    switch(inx){
-                    case 0:
-                        ms += parseFloat(item) * 60*60*1000
-                        break;
-                    case 1:
-                        ms += parseFloat(item) * 60*1000
-                        break;
-                    case 2:
-                        ms += parseFloat(item) * 1000
-                        break;
-                    }
-                })
-                // console.dir(ms)
-                return ms
-            }
-            function translationFn(_value){
-                $('#video')[0].pause();
-                console.log(_value)
+            });
+        </script>
+        <script src="./page-pre.js" type="application/javascript"></script>
+        <script>
+            if(!isPc()){
+                document.title="幕幕 - "+location.host
             }
         </script>
+        <style>
+            /* @media screen and (min-width: 850px) {
+                body {
+                    border: 1px solid #d8d8d8;
+                    border-style: none solid none solid;
+                }
+            } */
+            html,body,.index{
+                margin: 0px;width: 100%;height: 100%;
+            }
+            .videoList{
+                width: 100%;height: 100%;overflow-y: auto;overflow-x: hidden;
+            }
+            .videoList>ul{
+                margin: 0px;padding: 0px;
+            }
+            .videoList>ul>li,.videoList>ul>li>a{
+                width: 100%;height: 50px;line-height: 50px;display: flex;
+                justify-content: flex-start;padding: 0px 2% 0 5px;
+                box-sizing: border-box;border-bottom: 1px solid #d8d8d8;
+            }
+            .videoList>ul>li>a>svg{
+                width: 20px;height: 20px;object-fit: cover;margin-top: 15px;
+            }
+            .videoList>ul>li>a>span{
+                width: calc(100% - 30px);
+            }
+            .videoList>ul>li:active,.videoList>ul>li:hover{
+                animation: pulse .3s ease;
+                background-color: #dddddd;
+            }
+            @keyframes pulse {
+                0% {
+                    background-color: #FFFFFF;
+                }
+                100% {
+                    background-color: #dddddd;
+                }
+            }
+            .videoList::-webkit-scrollbar {
+                width: 3px;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-track {
+                background-color: #e0e0e0;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb {
+                background-color: #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:hover {
+                background-color:  #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:active {
+                background-color: #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:active {
+                background-color: #e0e0e0;
+                /* border-radius: 50px; */
+            }
+            .line1{
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body style="max-width: 850px; margin: auto;background-color: #000000;">
+        <div class="index" style="background-color: #ffffff;">
+            <div class="videoList">
+                <ul>
+                    <!-- <li>
+                        <span>名词一</span>
+                        <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+        <div  class="unselectable" style="position:absolute;bottom:0;right:0;font-size: 14px;display: none">
+            <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279792021&web_id=1279792021"></script>
+        </div>
+
     </body>
     
+    <script src="./page-post.js" type="application/javascript"></script>
+    <script>
+        // if(navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(function(position){
+        //         var o = {
+        //             "coords":{}
+        //         }
+        //         o.timestamp=position.timestamp
+        //         o.coords.accuracy=position.coords.accuracy
+        //         o.coords.altitude=position.coords.altitude
+        //         o.coords.altitudeAccuracy=position.coords.altitudeAccuracy
+        //         o.coords.heading=position.coords.heading
+        //         o.coords.latitude=position.coords.latitude
+        //         o.coords.longitude=position.coords.longitude
+        //         o.coords.speed=position.coords.speed
+        //         $.cookie('position', JSON.stringify(o)); 
+        //     });
+        // }
+
+        var videoList = [];
+        (function(win){
+            win.start()
+        })(window)
+
+        function start(){
+            getVideoList()
+        }
+        function getVideoList(){
+            let _this = this;
+            $.ajax({
+                url: '/mumu/videos?',
+                type: 'get',
+                data: 'kw='+''+'&start='+1+'&pageSize='+10,
+                async: true,
+                success: function(res) {
+                    $(res.data.videos).each((inx,item)=>{
+                        _this.videoList.push(item)
+                        var durationsec = localStorage.getItem('durationsec-'+item.no)
+                        var currentTime = localStorage.getItem('currentTime-'+item.no)
+                        $('.videoList ul').append(
+                            '<li style="cursor:pointer;" onclick="routerFn('+item.no+')">'+
+                            `<a href="./video.html?videoNo=${item.no}">`+
+                            `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
+                                ${
+                                    item.type==1?'./img/movie.svg':
+                                    item.type==2?'./img/mv.svg':
+                                    item.type==3?'./img/ted.svg':''
+                                }
+                            "/></span>`+
+                            '<span class="line1" style="margin-left: 5px;">'+(item.language == 4?'es - ':'')+item.name+'</span>'+
+                            (
+                                (durationsec&&currentTime)?
+                                ('<progress style="width:50px;margin: 16px 0;" value="'+currentTime+'" max="'+durationsec+'"></progress> ')
+                                :''
+                            )+
+                            '</a>'
+                        )
+                    })
+                    console.log(_this.videoList)
+                }
+            })
+        }
+        function routerFn(_value){
+            window.location.href = './video.html?videoNo='+_value
+        }
+
+        function niceduration(mills){
+            if(!mills || mills=='0')
+                return ''
+            var ms = mills%1000;
+            var rest = parseInt(mills/1000)
+
+            var s = rest%60;
+            rest = parseInt(rest/60)
+
+            var m = rest%60;
+            rest = parseInt(rest/60)
+
+            var h = rest%60;
+
+            return h+':'+m+':'+s
+        }
+
+        window.onbeforeunload=function(){
+            console.log('onbeforeunload')
+            navigator.sendBeacon("/mumu/page-out");
+        }
+
+        var lastTouchEnd;
+        document.addEventListener('touchend', function(event) {
+            var now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>subtitles</title>
+        <script crossorigin="anonymous" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
+    </head>
+    <body>
+        <div class="index">
+            <video controls width="100%" id="video" onplay="videoPlayFn()" onpause="videoPauseFn()">
+                <source src="/file/zmy/The-Wolf-of-Wall-Street.mp4"/>
+            </video>
+            <!-- <div style="margin-top:5px">
+                <div>中文字幕<input type="file" ref="files" onchange="uploadFileFn(this,'zh')" /></div>
+                <div>英文字幕<input type="file" ref="files" onchange="uploadFileFn(this,'en')" /></div>
+            </div> -->
+            <button style="margin-top:5px" onclick="readWord()">开始播放字幕</button>
+            <div style="line-height: 30px;margin-top:5px" id="zh_subtitles" ontouchstart="touchstartFn(event)" ontouchmove="touchmoveFn(event)"
+            ontouchend="touchendFn(event)" ontouchcancel="touchcancelFn(event)" ontouches="touchesFn(event)">
+                <!-- <span v-for="(item,inx) in en.subtitles" :key="inx" onclick="translationFn(item)" style="cursor: pointer;font-size: 17px;">
+                {{item}}
+                </span> -->
+            </div>
+            <!-- <div style="height: 20px;line-height: 20px;background: #efeded;">
+                <span v-for="(item,inx) in zh.subtitles" :key="inx" onclick="translationFn(item)" style="cursor: pointer;font-size: 17px;">
+                {{item}}
+                </span>
+            </div> -->
+            <div>
+                <button onclick="upsideFn()">上一句</button>
+                <button onclick="current()">本句</button>
+                <button onclick="downside()">下一句</button>
+            </div>
+        </div>
+        <script>
+            var zh = {
+                subtitles : '',
+                subtitlesInterval : '',
+                subtitlesList : [],
+            },
+            en = {
+                subtitles : '',
+                subtitlesInterval : '',
+                subtitlesList : [],
+                current:''
+            },
+            chooseDomList = [];
+
+            init();
+
+
+            function init(){
+                getSubtitles()
+            }
+
+            function getSubtitles(){
+                $.ajax({
+                    url: '/file/zmy/The-Wolf-of-Wall-Street.srt',
+
+                        type: 'get',
+                        async: true,
+                        success: function(res) {
+                            // console.log(res)
+                            getEnSubtitles(res)
+                        }
+                    })
+            }
+            function translationVlaue(){
+                $.ajax({
+						url: '/crm/my-customer-worker/update-customer-worker',
+						type: 'post',
+						data: 'customerWorkerId=' + id + params,
+						async: true,
+						success: function(res) {
+							
+						},
+					})
+            }
+            function getZhSubtitles(_result){
+                let _this = this;
+                let _fileString = [];
+                _fileString = _result.currentTarget.result.split(/[(\r\n)\r\n]+/);
+                // console.dir(_fileString)
+                _fileString.forEach((item,inx) => {
+                    if(!item){
+                    _fileString.splice(inx,1);
+                    }
+                    let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
+                    let regExp = new RegExp(reg);
+                    if(regExp.test(item)){
+                    // console.log(item)
+                    // item
+                    _this.zh.subtitlesList.push({
+                        startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
+                        endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
+                        value : _fileString[inx+1]
+                    })
+                    }
+                });
+            }
+            function getEnSubtitles(_result){
+                let _this = this;
+                let _fileString = [];
+                _fileString = _result.split(/[(\r\n)\r\n]+/);
+                // console.dir(_fileString)
+                _fileString.forEach((item,inx) => {
+                    let startValue = false
+                    if(!item){
+                    _fileString.splice(inx,1);
+                    }
+                    let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
+                    let regExp = new RegExp(reg);
+                    if(regExp.test(item)){
+                        _this.en.subtitlesList.push({
+                            startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
+                            endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
+                            value : _fileString[inx+2]
+                        })
+                    }
+                });
+                console.log(_this.en.subtitlesList)
+            }
+            function readWord(){
+                this.en.subtitles = ''
+                $('#video')[0].play();
+            }
+            function videoPauseFn(){
+                let _this = this;
+                clearInterval(_this.en.subtitlesInterval)
+            }
+            function upsideFn(){
+                let _this = this;
+                let findInx;
+                _this.en.subtitlesList.findIndex(function(_value, inx){
+                    if(_value.startTime == _this.en.current.startTime){
+                        findInx = inx;
+                    }
+                })
+                $('#video')[0].currentTime = _this.en.subtitlesList[findInx-1].startTime/1000
+            }
+            function downside(){
+                let _this = this;
+                let findInx;
+                _this.en.subtitlesList.findIndex(function(_value, inx){
+                    if(_value.startTime == _this.en.current.startTime){
+                        findInx = inx;
+                    }
+                })
+
+                console.log(findInx)
+                debugger
+                $('#video')[0].currentTime = _this.en.subtitlesList[findInx+1].startTime/1000
+                // console.log(_this.en.subtitlesList[findInx+1])
+                // console.log(_this.en.current)
+            }
+            function current(){
+                let _this = this;
+                $('#video')[0].currentTime = _this.en.current.startTime/1000
+            }
+            function videoPlayFn(){               
+                let _this = this;
+                if(_this.en.subtitlesInterval){
+                    clearInterval(_this.en.subtitlesInterval)
+                }
+                _this.en.subtitlesInterval = setInterval(() => {
+                    if($('#video')[0].currentTime == $('#video')[0].duration){
+                        clearInterval(_this.en.subtitlesInterval)
+                    }
+                    let _time = $('#video')[0].currentTime*1000
+                    //console.log(_time)
+                    // console.log("subtitlesList.length "+_this.en.subtitlesList.length)
+                    
+                    $(_this.en.subtitlesList).each(function(inx,item){
+                        // console.log('1')
+                    //     console.dir(item)
+                    //     console.log(item.startTime)
+                    //     console.log(item.endTime)
+                    
+                    if(item.startTime<_time && _time<item.endTime){
+                        // console.log(item.value.split(' '))
+                        let _value = item.value.split(' ');
+                        _this.en.current = item
+                        // _this.zh.subtitles = item.value.split(' ')
+                        $("#zh_subtitles").html('')
+                        for(let i=0; i < _value.length; i++){
+                            for(let n=0; n < _value[i].split('').length; n++){
+                                if((i == _value.length-1 && n == _value[i].split('').length-1) || (n == _value[i].split('').length-1)){
+                                    $("#zh_subtitles").append(
+                                        '<span onclick="translationFn()" style="cursor: pointer;font-size: 17px;" class="font span'+i+n+'">'+_value[i][n]+'</span> '
+                                    )
+                                }else{
+                                    $("#zh_subtitles").append(
+                                        '<span onclick="translationFn()" style="cursor: pointer;font-size: 17px;" class="font span'+i+n+'">'+_value[i][n]+'</span>'
+                                    )
+                                }
+                                
+                            }
+                            
+                        }
+    
+    
+                    }
+                    })
+                }, 1);
+            }
+            function timeCycle(_value){
+                let _time = _value.split(':')
+                let ms = 0;
+                _time.forEach((item,inx) =>{
+                    switch(inx){
+                    case 0:
+                        ms += parseFloat(item) * 60*60*1000
+                        break;
+                    case 1:
+                        ms += parseFloat(item) * 60*1000
+                        break;
+                    case 2:
+                        ms += parseFloat(item) * 1000
+                        break;
+                    }
+                })
+                // console.dir(ms)
+                return ms
+            }
+            function translationFn(_value){
+                let _this = this;
+                $('#video')[0].pause();
+                // console.log(_value);
+                clearInterval(_this.en.subtitlesInterval)
+            }
+            
+            function touchstartFn(_value){
+                let _this = this;
+                chooseDomList = [];
+                $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+                $('#video')[0].pause();
+                // console.dir(_value)
+            }
+            function touchmoveFn(_value){
+                let _this = this,
+                touch = _value.changedTouches[0],
+                ele = document.elementFromPoint(touch.pageX, touch.pageY);
+                debugger
+                
+                if(ele.className){
+                    console.log(ele.className)   
+                    if(_this.chooseDomList.length){
+                        let _status = _this.chooseDomList.find(n => n.class == ele.classwame) 
+                        if(!_status){
+                            _this.chooseDomList.push({
+                                class:ele.className,
+                                value:ele.innerHTML,
+                            })  
+                        }
+                    }else{
+                        _this.chooseDomList.push({
+                            class:ele.className,
+                            value:ele.innerHTML,
+                        })
+                    }   
+                    ele.style.background="#efeded";
+                    ele.style.color="white"               
+                }
+            }
+            function touchendFn(_value){
+                // console.dir(_value)
+                let _this = this;
+                console.log(_this.chooseDomList)
+                // console.log(ele);
+            }
+            function touchcancelFn(_value){
+                // console.dir(_value)
+            }
+            function touchesFn(_value){
+                // console.dir(_value)
+            }
+        </script>
+    </body>
+    
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>字幕译</title>
+        <script crossorigin="anonymous" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
+    
+    </head>
+    <body style="max-width: 850px;margin: auto;">
+        <div class="index">
+            <!-- 视频块 -->
+            <video controls width="100%" id="video" onplay="startFn()" onpause="stopFn()" onclick="videoclickFn()" preload="auto">
+                
+            </video>
+            <!-- onmousedown="touchstartFn(event)" onmousemove="touchmoveFn(event)" onmouseup="touchendFn(event)" -->
+            <!-- onmousedown="onmouseStartFn(event)" onmousemove="touchmoveFn(event)" onmouseup="touchendFn(event)" -->
+            <!-- 字幕块 -->
+            <div style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;" id="zh_subtitles"  ontouchstart="touchstartFn(event)" ontouchmove="touchmoveFn(event)" ontouchend="touchendFn(event)">
+            </div>
+            <!-- 字幕控制进度块 -->
+            <div style="padding: 0 5px;box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;margin-top: 10px;">    
+                <button onclick="upsideFn()" style="height: 35px;box-sizing: border-box;width: 25%;background: white;border: 1px solid #827e7e;border-radius: 6px;font-size: 12px;padding: 3px 5px;">上一句</button>
+                <button onclick="current()" style="height: 35px;box-sizing: border-box;width: 25%;background: white;border: 1px solid #827e7e;border-radius: 6px;font-size: 12px;padding: 3px 5px;">本句</button>
+                <button onclick="downside()" style="height: 35px;box-sizing: border-box;width: 25%;background: white;border: 1px solid #827e7e;border-radius: 6px;font-size: 12px;padding: 3px 5px;">下一句</button>
+            </div>
+            <!-- 电影开始暂停功能块 -->
+            <div style="padding: 0 5px;box-sizing: border-box;text-align: center;margin-top: 20px;min-height: 30px;">
+                <button  class="startFn" onclick="startFn()" style="text-align: center;line-height: 40px;padding: 0px;background: white;border: 1px solid #827e7e;border-radius: 5px;font-size: 14px;padding: 0px;width: 100%;height: 40px;">
+                    <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
+                </button>
+                <button class="stopFn" onclick="stopFn()"  style="text-align: center;line-height: 40px;padding: 0px;display: none;background: white;border: 1px solid #827e7e;border-radius: 5px;font-size: 15px;padding: 0px;width: 100%;height: 40px;">
+                    ||
+                </button>
+            </div>
+            <!-- 字幕控制显示组件块 -->
+            <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 0px 0px;">
+                <button id="hideBtn" onclick="enSubtitlesShow()" style="margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 5px;">HIDE</button>
+                <button onclick="chShowDialog()" style="padding: 0px;width: 43px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 5px;">
+                    CH
+                </button>
+            </div>
+            <!-- 循环字幕功能块 -->
+            <!-- <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 10px 0px;">
+                <button style="height: 30px;line-height: 35px;background: transparent;border: none;padding: 0px;box-sizing: border-box;font-size: 18px;">◁</button>
+                <div style="width: 30px;cursor: pointer;position: relative;margin: 0px 17px;height: 30px;line-height: 30px;text-align: center;">
+                    <span style="position: absolute;left: 11px;font-size: 12px;top: 2px;">1</span>
+                    <svg style="width: 20px;height: 20px;vertical-align: middle;"  t="1614827035996" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2125" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M73.216 631.296c13.312 0 24.064-10.752 24.064-24.064V308.736c0-62.464 51.2-107.52 121.856-107.52h672.256l-104.448 102.4c-4.608 4.608-7.168 10.752-7.168 16.896 0 13.312 10.752 24.064 24.576 23.552 6.656 0 12.8-2.56 17.408-7.168l120.32-117.76c11.264-11.264 17.92-26.624 17.92-42.496 0-15.872-6.144-31.232-17.92-42.496l-120.32-117.76c-9.728-9.216-25.088-9.216-34.304 0-9.728 9.216-9.728 24.576 0 33.792l104.96 102.4H219.648c-97.28 0-170.496 66.56-170.496 155.136v298.496c0 14.848 10.752 25.088 24.064 25.088z m877.568-238.592c-13.312 0-24.576 10.752-24.576 24.064V691.2c0 68.608-57.856 131.584-121.856 131.584H132.096l104.448-102.4c8.192-9.216 8.192-23.04 0-32.256-9.216-9.728-24.576-10.752-34.304-2.048L81.92 803.84c-23.552 23.552-23.552 61.44 0 84.48l120.32 117.76c4.608 4.608 10.752 7.168 17.408 7.168 6.656 0 12.8-2.56 17.408-7.168 9.216-9.216 9.216-24.576 0-33.792l-104.448-102.4h672.256c91.136 0 170.496-83.456 170.496-179.2V416.256c0-12.8-11.264-23.552-24.576-23.552z" fill="#000000" p-id="2126"></path></svg>
+                </div>
+                <button style="height: 30px;line-height: 35px;background: transparent;border: none;padding: 0px;box-sizing: border-box;font-size: 18px;">▷</button>
+            </div> -->
+            <!-- 中文字幕弹窗块 -->
+            <div class="chDialog" onclick="chHideDialog()" style="display:none;background:#f5f5f5;position: absolute;background: #0000004d;top: 0;left: 0;right:0;bottom:0;z-index: 200;">
+                <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;background: #FFFF;letter-spacing: 0.5px;">
+                    你一直都在忙这个吗
+                </div>
+            </div>
+            <div class="dialog" style="display:none;overflow: scroll;background: white;max-width: 100%;border:none;box-shadow: 0px 0px 0px #888383;border-radius: 5px;padding: 5px;box-sizing: border-box;">
+                <div class="dialogTitle" onclick="showSearchFn()" style="display: flex;justify-content: left;line-height: 30px;width: 100%;">
+                    <svg style="width: 15px;height: 15px;object-fit: cover;margin: 7.5px 5px 0px 0px;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#707070" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#707070" p-id="3109"></path></svg>
+                    <h4 style="margin-block-end: 0px;margin-block-start: 0px;font-size: 20px;font-weight: bolder;"></h4>
+                </div>
+                <div class="dialogSearch" style="display: none;width: 100%;height: 35px;border: 1px solid #000000;justify-content: space-between;box-sizing: border-box;">
+                    <!--  -->
+                    <div style="height: 100%;width: 100%;box-sizing: border-box;position: relative;">
+                        <input onBlur="hideSearchFn()" onInput="
+                            let kw = $('.searchClass').val();
+                            translationVlaue(kw.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,''));
+                        " style="font-size: 14px;border: none;text-align: left;width: 100%;height: 33px;padding: 0px 10px 0px 10px;box-sizing: border-box;" class="searchClass" onkeydown ="searchFn(event)" type="search" style="font-size: 14px;width: calc(100% - 36px);border: none;border-right: 1px solid #000000;text-align: center;">
+                        <!-- <svg onclick="searchClearFn()" style="width: 15px;height: 15px;object-fit: cover;cursor: pointer;position: absolute;right: 6px;top: 9px;" t="1614847724921" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2158" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M803.84 863.744c-8.704 0-16.896-3.584-23.552-10.24L512 585.728l-267.264 267.264c-6.656 6.656-14.336 10.24-23.04 10.24-12.288 0-25.088-7.168-39.424-21.504-14.848-14.848-21.504-27.648-21.504-39.936 0-8.704 3.584-16.384 10.752-23.04L438.272 512 170.496 244.224c-25.6-26.112 0-52.736 9.728-62.464 11.776-11.776 25.088-23.04 39.424-23.04 8.192 0 16.384 3.584 24.576 11.264L512 438.272l267.776-267.264c7.168-7.168 15.36-10.752 23.552-10.752 12.288 0 24.064 7.168 40.96 23.552 11.264 11.264 35.328 35.328 9.216 60.928L585.728 512l267.264 267.264c23.04 23.04 9.216 44.032-9.216 62.976-13.824 14.336-27.648 21.504-39.936 21.504z" fill="#2C2C2C" p-id="2159"></path></svg> -->
+                    </div>
+                    <!-- <div onclick="searchFn()" style="cursor: pointer;width: 35px;height: 35px;box-sizing: border-box;text-align: center;line-height: 30px;border: none;">
+                        <svg  style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#707070" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#707070" p-id="3109"></path></svg>
+                    </div> -->
+                </div>
+                <div style="font-size: 14px;margin-bottom: 9px;margin-top: 3px;" class="yibiao">
+                    
+                </div>  
+                <div style="font-size: 14px">
+                    <div class="fanyi">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var zh = {
+                subtitles : '',
+                subtitlesInterval : '',
+                subtitlesList : [],
+            },
+            en = {
+                subtitles : '',
+                subtitlesInterval : '',
+                subtitlesList : [],
+                current:''
+            },
+            chooseDomList = [],translationValue = '';
+            var video;
+
+            init();
+            function init(){
+                getVideo();
+            }
+            function getVideo(){
+                $.ajax({
+                    url: '/mumu/video?',
+                    type: 'get',
+                    data: 'videoNo='+window.location.search.substring(1).split("&")[0].split("=")[1],
+                    async: true,
+                    success: function(res) {
+                        video=res.data.video
+                        $('#video').append(
+                            // https://inininininin.com/file/zmy/The-Wolf-of-Wall-Street.mp4
+                            '<source src="'+res.data.video.url +'"/>'
+                        )
+                        getSubtitles();
+                    }
+                })
+            }
+            function getSubtitles(){
+                $.ajax({
+                    url: video.captionUrl,
+                        type: 'get',
+                    async: true,
+                    success: function(res) {
+                        getEnSubtitles(res)
+                    }
+                })
+            }
+            function showSearchFn(){
+                $('.dialogSearch input').val($('.dialogTitle h4').html());
+                $('.dialogSearch').css({'display':'flex'})
+                $('.dialogSearch input').focus()
+                $('.dialogTitle').css({'display':'none'})
+            }
+            function searchClearFn(){
+                $('.dialogSearch input').val("")
+            }
+            function hideSearchFn(){
+                $('.dialogTitle h4').html($('.dialogSearch input').val());
+                $('.dialogSearch').css({'display':'none'})
+                $('.dialogTitle').css({'display':'flex'})
+                if(!$('.dialogSearch input').val()){
+                    $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+                    $('.dialog').css({'display' : 'none'})
+                    $('#video')[0].pause();
+                    $('.yibiao').html('')
+                    $('.fanyi').html('')
+                }
+            }
+            function searchFn(_value){
+                console.log(_value)
+                if(_value.keyCode == 13){
+                    let kw = $('.searchClass').val();
+                    translationVlaue(kw.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,''));
+                    hideSearchFn()
+                }
+            }
+            function translationVlaue(_data){
+                $.ajax({
+                    url: '/zmy/translate?q='+_data,
+                    type: 'get',
+                    async: true,
+                    success: function(res) {
+                        $('.dialog').css({'display' : 'block'})
+                        $('.dialogTitle h4').html(_data);
+                        $('.yibiao').html('')
+                        $('.fanyi').html('')
+                        if(res.data.phoneticUs && res.data.phoneticUs!="undefined" && res.data.phoneticUs!="null"){
+                            $('.yibiao').append(
+                                '<span style="margin-right:15px;display: inline-block;">'+
+                                    '<span class="us">'+'美 '+'/'+(res.data.phoneticUs||'')+'/'+'</span>'+
+                                    '<svg playSrc="'+res.data.pronounceUs+'" class="beauty" style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
+                                // '<audio src="'+res.data.pronounceUs+'" class="beauty"></audio>'+
+                                '</span>'
+                            )
+                        }
+                         if(res.data.phoneticUk && res.data.phoneticUk!="undefined" && res.data.phoneticUk!="null"){
+                            $('.yibiao').append(
+                                '<span style="margin-right:15px;display: inline-block;">'+
+                                    '<span class="uk">'+'英 '+'/'+(res.data.phoneticUk||'')+'/'+'</span>'+
+                                    '<svg playSrc="'+res.data.pronounceUk+'" style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
+                                // '<audio src="'+res.data.pronounceUk+'" class="ritish"></audio>'+
+                                '</span>'
+                            )
+                        }
+                        if(res.data.translations){
+                            for(let i=0;res.data &&  i <= res.data.translations.length; i++){
+                                if(res.data.translations[i]){
+                                    $('.fanyi').append( 
+                                        '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.translations[i]+'</p>'
+                                    )
+                                }
+                            }
+                        }
+                        
+                        if(res.data.webTranslations){
+                            $('.fanyi').append( 
+                                '<p style="margin-block-start: 8px;margin-block-end: 3px;">'+"网络释义："+'</p>'
+                            )
+                            for(let i=0;res.data &&  i <= res.data.webTranslations.length; i++){
+                                if(res.data.webTranslations[i]){
+                                    $('.fanyi').append(
+                                        '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.webTranslations[i]+'</p>'
+                                    )
+                                }
+                            }
+                        }
+                        
+                    },
+                })
+            }   
+            $('.yibiao').on('click','span svg',function(){
+                debugger
+                let _mp3 = new Audio($(this).attr('playsrc'));
+                _mp3.play();
+            })
+            function getEnSubtitles(_result){
+                let _this = this;
+                let _fileString = [];
+                _fileString = _result.split(/[(\r\n)\r\n]+/);
+                _fileString.forEach((item,inx) => {
+                    let startValue = false
+                    if(!item){
+                    _fileString.splice(inx,1);
+                    }
+                    let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
+                    let regExp = new RegExp(reg);
+                    if(regExp.test(item)){
+                        _this.en.subtitlesList.push({
+                            startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
+                            endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
+                            enValue : _fileString[inx+2],
+                            chValue: _fileString[inx+1]
+                        })
+                    }
+                });
+            }
+            function cueing(_value){
+                let _this = this;
+                let _v= _value.split(' ');
+                $("#zh_subtitles,#zh_subtitles-shadow").html('')
+                for(let i=0; i < _v.length; i++){
+                    if(i == _v.length-1){
+                        $("#zh_subtitles,#zh_subtitles-shadow").append(
+                            '<span style="display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;" class="font span'+i+'">'+_v[i]+'</span>'
+                        )
+                    }else{
+                        $("#zh_subtitles,#zh_subtitles-shadow").append(
+                            '<span style="display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
+                        )
+                    }
+                }
+            }
+            function upsideFn(){
+                let _this = this;
+                let _time = $('#video')[0].currentTime*1000
+                if(_time<=_this.en.subtitlesList[0].startTime){
+                    $('#video')[0].currentTime = _this.en.subtitlesList[0].startTime/1000
+                    _this.cueing(_this.en.subtitlesList[0].enValue)
+                }else if(_time>=_this.en.subtitlesList[_this.en.subtitlesList.length-1].endTime){
+                    $('#video')[0].currentTime = _this.en.subtitlesList[_this.en.subtitlesList.length-1].startTime/1000
+                    _this.cueing(_this.en.subtitlesList[_this.en.subtitlesList.length-1].enValue)
+                }else{
+                    $(_this.en.subtitlesList).each(function(inx,item){
+                        if(item.startTime<=_time && _time<item.endTime){
+                            $('#video')[0].currentTime = _this.en.subtitlesList[inx-1].startTime/1000
+                            _this.cueing(_this.en.subtitlesList[inx-1].enValue)
+                        }else if(item.endTime<=_time && _time<_this.en.subtitlesList[inx+1].startTime && inx!=0){
+                            $('#video')[0].currentTime = _this.en.subtitlesList[inx-1].startTime/1000
+                            _this.cueing(_this.en.subtitlesList[inx-1].enValue)
+                        }
+                    })
+                }  
+            }
+            function downside(){
+                let _this = this;
+                let _time = $('#video')[0].currentTime*1000
+                if(_time<_this.en.subtitlesList[0].startTime){
+                    $('#video')[0].currentTime = _this.en.subtitlesList[0].startTime/1000
+                    _this.cueing(_this.en.subtitlesList[0].enValue)
+                }else if(_time>_this.en.subtitlesList[_this.en.subtitlesList.length-1].endTime){
+                    $('#video')[0].currentTime = _this.en.subtitlesList[_this.en.subtitlesList.length-1].startTime/1000
+                    _this.cueing(_this.en.subtitlesList[_this.en.subtitlesList.length-1].enValue)
+                }else{
+                    $(_this.en.subtitlesList).each(function(inx,item){
+                        if(item.startTime<=_time && _time<item.endTime){
+                            $('#video')[0].currentTime = _this.en.subtitlesList[inx+1].startTime/1000
+                            _this.cueing(_this.en.subtitlesList[inx+1].enValue)
+                        }else if(item.endTime<=_time && _time<_this.en.subtitlesList[inx+1].startTime && inx!=0){
+                            $('#video')[0].currentTime = _this.en.subtitlesList[inx+1].startTime/1000
+                            _this.cueing(_this.en.subtitlesList[inx+1].enValue)
+                        }
+                    })
+                }
+
+                
+            }
+            function current(){
+                let _this = this;
+                $('#video')[0].play();
+                let _time = $('#video')[0].currentTime*1000
+                $(_this.en.subtitlesList).each(function(inx,item){
+                    if(item.startTime<=_time && _time<item.endTime){
+                        $('#video')[0].currentTime = _this.en.subtitlesList[inx].startTime/1000
+                        _this.cueing(_this.en.subtitlesList[inx].enValue)
+                    }else if(_time>_this.en.subtitlesList[_this.en.subtitlesList.length-1].endTime){
+                        $('#video')[0].currentTime = _this.en.subtitlesList[_this.en.subtitlesList.length-1].startTime/1000
+                        _this.cueing(_this.en.subtitlesList[_this.en.subtitlesList.length-1].enValue)
+                    }else if(_this.en.subtitlesList[0].startTime>_time){
+                        $('#video')[0].currentTime = _this.en.subtitlesList[0].startTime/1000
+                        _this.cueing(_this.en.subtitlesList[0].enValue)
+                    }
+                })
+            }
+            function stopFn(){
+                let _this = this;
+                $('#video')[0].pause();
+                clearInterval(_this.en.subtitlesInterval)
+                $('.stopFn').css({'display':'none'})
+                $('.startFn').css({'display':'inline'})
+                //$('#video').attr('controls', false);
+            }
+            function enSubtitlesShow(){
+                var thisEle = this;
+                console.log($("#zh_subtitles").css("opacity"))
+                if($("#zh_subtitles").css("opacity") == 1){
+                    $("#zh_subtitles").css("opacity",0)
+                    $('#hideBtn').text("SHOW")
+                }else{
+                    $("#zh_subtitles").css("opacity",1)
+                    $('#hideBtn').text("HIDE")
+                }
+            }
+            function chShowDialog(){
+                debugger
+                let _this = this
+                let _time = $('#video')[0].currentTime*1000
+                $(_this.en.subtitlesList).each(function(inx,item){
+                    if((item.startTime<_time && _time<item.endTime) || item.startTime==_time|| item.endTime==_time){
+                        // console.log(item.value.split(' '))
+                        // console.log(item.chValue)
+                        $('.chDialog').css("display","block")
+                        $('.chDialog div').html(item.chValue)
+                        $('#video')[0].pause();
+                    }
+                })
+            }
+            function chHideDialog(){
+                // $('#video')[0].play();
+                $('.chDialog').css("display","none")
+            }
+            function videoclickFn(){
+                $('#video').attr('controls', true);
+            }
+            function startFn(){    
+                $('.dialog').hide()
+                let _this = this;
+                if(_this.en.subtitlesInterval){
+                    clearInterval(_this.en.subtitlesInterval)
+                }
+                _this.translationValue = '';
+                _this.cueing('')
+                //$('#video').attr('controls', false);
+                _this.en.current = ''
+                $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+                $('#video')[0].play();
+                $('.startFn').css({'display':'none'})
+                $('.stopFn').css({'display':'inline'})
+                _this.en.subtitlesInterval = setInterval(() => {
+                    if($('#video')[0].currentTime == $('#video')[0].duration){
+                        clearInterval(_this.en.subtitlesInterval)
+                    }
+                    let _time = $('#video')[0].currentTime*1000
+                    $(_this.en.subtitlesList).each(function(inx,item){
+                        if(item.startTime<_time && _time<item.endTime){
+                            _this.en.current = item
+                            _this.cueing(item.enValue)
+                        }
+                    })
+                }, 1);
+            }
+            function timeCycle(_value){
+                let _time = _value.split(':')
+                let ms = 0;
+                _time.forEach((item,inx) =>{
+                    switch(inx){
+                    case 0:
+                        ms += parseFloat(item) * 60*60*1000
+                        break;
+                    case 1:
+                        ms += parseFloat(item) * 60*1000
+                        break;
+                    case 2:
+                        ms += parseFloat(item) * 1000
+                        break;
+                    }
+                })
+                return ms
+            }
+            // function touchstartFn(_value){
+
+            // }
+            // function touchmoveFn(_value){
+                
+            // }
+            // function touchendFn(_value){
+                
+            // }  
+            // function touchstartFn(){
+                
+            // }
+            // function touchmoveFn(){
+                
+            // }
+            // function touchendFn(){
+                
+            // }
+            function touchstartFn(_value){
+                console.log(_value)
+                console.dir($("#zh_subtitles").height())
+                let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
+                height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
+
+                let _this = this;
+                chooseDomList = [];
+                $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+                $('#video')[0].pause();
+                touch = _value.changedTouches[0],
+                ele = document.elementFromPoint(touch.pageX, touch.pageY);
+                if(!$(ele).hasClass('font'))
+                    return;
+                let mx = _value.changedTouches[0].clientX || _value.changedTouches[0].pageX
+                let my = _value.changedTouches[0].clientY || _value.changedTouches[0].pageY
+                if((width - 5)>mx && mx>($("#zh_subtitles").offset().left+ 5) && ($("#zh_subtitles").offset().top +5)<my && my<(height - 5)){
+                    if(ele.className.lastIndexOf('font span ')<0){
+                        if(ele.innerHTML!=" " && ele.innerHTML!= translationValue && !_this.chooseDomList.length && translationValue.indexOf(ele.innerHTML)<0){
+                            _this.chooseDomList.push({
+                                class:ele.className,
+                                value:ele.innerHTML,
+                            })
+                            $('.'+ele.className.split(' ')[1]).css({
+                                'background' : '#d2cbcb',
+                                'color' : 'black'
+                            })
+                            
+                            
+                        }
+                    }
+                }
+            }
+            function touchmoveFn(_value){
+                let _this = this,
+                touch = _value.changedTouches[0],
+                ele = document.elementFromPoint(touch.pageX, touch.pageY);
+                if(!$(ele).hasClass('font'))
+                    return;
+                let mx = _value.changedTouches[0].clientX || _value.changedTouches[0].pageX
+                let my = _value.changedTouches[0].clientY || _value.changedTouches[0].pageY
+                let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left,
+                height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top;
+                if((width - 5)>mx && mx>($("#zh_subtitles").offset().left + 5) && ($("#zh_subtitles").offset().top + 5)<my && my<(height - 5)){
+                    if(ele.className.lastIndexOf('font span ')<0){
+                        let status = true;
+                        _this.chooseDomList.findIndex(function(_value, inx){
+                            if(_value.class == ele.className){
+                                status=false
+                            }
+                        })
+                        if(status && ele.innerHTML!=" "){
+                            if(_this.chooseDomList.length){
+                                let _last = parseInt(_this.chooseDomList[_this.chooseDomList.length-1].class.replace('font span',''));
+                                let _now = parseInt(ele.className.replace('font span',''));
+                                console.log(_now-_last)
+                                if( _now == (_last+1)){
+                                    _this.chooseDomList.push({
+                                        class:ele.className,
+                                        value:ele.innerHTML,
+                                    })
+                                    $('.'+ele.className.split(' ')[1]).css({
+                                        'background' : '#d2cbcb',
+                                        'color' : 'black'
+                                    })
+                                }else if(_now > (_last+1)){
+                                    debugger
+                                    for(let i = _last; i < _now; i++){
+                                        $('.span'+i)
+                                        _this.chooseDomList.push({
+                                            class:$('.span'+i).attr('class'),
+                                            value:$('.span'+i).html(),
+                                        })
+                                        $('.span'+i).css({  
+                                            'background' : '#d2cbcb',
+                                            'color' : 'black'
+                                        })
+                                    }
+                                }else{
+                                    debugger
+                                    for(let i = _now; i < _last; i++){
+                                        $('.span'+i)
+                                        _this.chooseDomList.push({
+                                            class:$('.span'+i).attr('class'),
+                                            value:$('.span'+i).html(),
+                                        })
+                                        $('.span'+i).css({
+                                            'background' : '#d2cbcb',
+                                            'color' : 'black'
+                                        })
+                                    }
+                                }
+                            }else{
+                                _this.chooseDomList.push({
+                                    class:ele.className,
+                                    value:ele.innerHTML,
+                                })
+                                $('.'+ele.className.split(' ')[1]).css({
+                                    'background' : '#d2cbcb',
+                                    'color' : 'black'
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+            function touchendFn(_value){
+                let _this = this;
+                touch = _value.changedTouches[0],
+                ele = document.elementFromPoint(touch.pageX, touch.pageY);
+                for(let i=0;i<_this.chooseDomList.length-1;i++){
+                    for(let j=0;j<_this.chooseDomList.length-i-1;j++){
+                        if(parseInt(_this.chooseDomList[j].class.replace('font span',''))>parseInt(_this.chooseDomList[j+1].class.replace('font span',''))){
+                            let _swap = _this.chooseDomList[j];
+                            _this.chooseDomList[j] = _this.chooseDomList[j+1];
+                            _this.chooseDomList[j+1] = _swap;
+                        }
+                    }
+                }
+                let _data = ''
+                $(_this.chooseDomList).each(function(inx,item){
+                    if(inx>0){
+                        _data+=' '+item.value.replace(/^\W+/,'').replace(/\W+$/,'')
+                    }else{
+                        _data=item.value.replace(/^\W+/,'').replace(/\W+$/,'')
+                    }
+                })
+                if(_data && _this.translationValue != _data && translationValue.indexOf(_data)<0){
+                    _this.translationValue = _data;
+                    translationVlaue(_data,_value)
+                }else{
+                    _this.translationValue = ""
+                }
+            }
+        </script>
+    </body>
+</html>
