@@ -1,3 +1,11 @@
+var vConsole = new VConsole({
+  onReady:function(){
+      $('#__vconsole .vc-switch').text('vc')
+      vConsole.hideSwitch();
+  }
+});
+
+
 var anontoken = $.cookie('anontoken')
 if(!anontoken){
     anontoken = new Date().getTime()+randomnum(5);
