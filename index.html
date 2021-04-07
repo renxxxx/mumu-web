@@ -27,7 +27,7 @@
                 }
             });
         </script>
-        <script src="./page-pre.js" type="application/javascript"></script>
+        <script src="./page-pre-min.js" type="application/javascript"></script>
         <script>
             if(!isPc()){
                 document.title="幕幕 - "+location.host
@@ -164,7 +164,7 @@
                         var currentTime = localStorage.getItem('currentTime-'+item.no)
                         $('.videoList ul').append(
                             '<li style="cursor:pointer;" onclick="routerFn('+item.no+')">'+
-                            `<a href="./video.html?videoNo=${item.no}">`+
+                            `<a style="text-decoration:none;" href="./video.html?videoNo=${item.no}">`+
                             `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
                                 ${
                                     item.type==1?'./img/movie.svg':
@@ -185,9 +185,7 @@
                 }
             })
         }
-        function routerFn(_value){
-            window.location.href = './video.html?videoNo='+_value
-        }
+   
 
         function niceduration(mills){
             if(!mills || mills=='0')
