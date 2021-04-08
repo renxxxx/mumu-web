@@ -283,7 +283,7 @@ function setline(item){
     _this.en.currentwords=_v
     for(let i=0; i < _v.length; i++){
         $("#zh_subtitles").append(
-            '<span onclick="pauseVideo()" onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100) " onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
+            '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100)" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
         )
     }
     $('.dialog').css({'display' : 'none'})
@@ -880,6 +880,7 @@ function locateWord(no){
     pauseVideo()
     $('#summtrans-word').show()
     if(currwordno>0){
+        $('#wordsframe').hide()
         translatee(_this.en.currentwords[currwordno-1])
     }
 }

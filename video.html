@@ -80,6 +80,7 @@
                     style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
                         background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;"
                     oninput="
+                        var tag = this
                         var value  =this.value
                         if(value){
                             $.ajax({
@@ -93,7 +94,7 @@
                                     to:2
                                 },
                                 success:function(res){
-                                    if(this.value==value){
+                                    if(tag.value==value){
                                         $('#words .word').remove()
                                         var words = res.data.words
                                         $(words).each((inx,item)=>{
@@ -133,7 +134,7 @@
                     onmousedown="prevword()">
                     <
                 </span> -->
-                <div  id="zh_subtitles" class="unselectable" style="display: inline-block;line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;margin-top:5px;"  
+                <div id="zh_subtitles" class="unselectable" style="display: inline-block;line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;margin-top:5px;"  
                     ontouchstart="touchstartFn(event);event.preventDefault()" ontouchmove="touchmoveFn(event);event.preventDefault()" ontouchend="touchendFn(event);event.preventDefault()">
                 </div>
                 <!-- <span class="unselectable"
