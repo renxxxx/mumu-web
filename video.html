@@ -12,7 +12,7 @@
         <title>mumu</title>
         <meta name="x5-fullscreen" content="true">
         <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
-        <link rel="stylesheet" type="text/css" href="./archive.css" />
+        <link rel="stylesheet" type="text/css" href="./page.css" />
         <link rel="apple-touch-startup-image" href="./favicon.ico" />
         <link rel="apple-touch-icon-precomposed" href="./favicon.ico" />
         <link rel="apple-touch-icon" href="./favicon.ico" />
@@ -24,7 +24,7 @@
         <script src="./page-pre-min.js" type="application/javascript"></script>
         <script>
             if(!isPc()){
-                document.title="幕幕 - "+location.host
+                document.title=location.host + " - mumu"
             }
         </script>
     </head>
@@ -41,11 +41,26 @@
                 style="background: #000000;display: block;position: relative;"
                 >
             </video>
-            <div id="summtrans" style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0 / 86%);height:82px;width:100%;position:absolute;margin-top: -83px;color: #ffffff;padding:5px 10px;display:none;overflow: hidden;">
-                <div id="summtrans-word" style="font-weight: 900;font-size:16px;letter-spacing: 0.5px;"></div>
-                <div>
-                    <span id="summtrans-phonetic" style="font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
-                    <svg id="summtrans-speak" play-url="" style="vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"
+            <div id="summtrans" 
+                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0);width:100%;position:absolute;
+                    top: 0;color: #ffffff;padding:5px 10px;display:none;">
+                <div id="summtrans-word" style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;"
+                    onclick="
+                        $('#summtrans-word-in').show().focus()
+                        $('#summtrans-word').hide()
+                    ">
+                </div>
+                <input id="summtrans-word-in" autocomplete="off" style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;display:none;"
+                    oninput="
+                        translatee(this.value);
+                    "
+                    onblur="
+                        $('#summtrans-word-in').hide()
+                        $('#summtrans-word').show()
+                    "/>
+                <div style="height: 20px;line-height: 20px;">
+                    <span id="summtrans-phonetic" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
+                    <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"
                         onclick="
                             if(!this.audio){
                                 this.audio=new Audio();
@@ -58,7 +73,9 @@
                         <path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/>
                     </svg>
                 </div>
-                <div id="summtrans-value" style="font-size:13px;"></div>
+                <div id="summtrans-value"  style="font-size:13px;position:absolute;top:49px;bottom:0;left:0;right:0;padding:0 10px 5px 10px;">
+                    <div id="summtrans-vv" class="scrollbar1" style="width:100%;height:100%;overflow: auto;"></div>
+                </div>
             </div> 
             <!-- onmousedown="mouseStartFn(event)" onmousemove="mouseMoveFn(event)" onmouseup="mouseEndFn(event)" -->
             <div style="width: 100%;position:relative;min-height: 67px;text-align: center;">
@@ -124,10 +141,12 @@
                         console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
                         if(this.lastDist==null||this.lastDist==undefined)
-                            this.lastDist=distanceX
+                            this.lastDist=distanceX;
                         var dd = distanceX-this.lastDist;
-                        this.lastDist=distanceX
-                        this.style.left=(parseInt(this.style.left.replace('px'))+dd)+'px';
+                        this.lastDist=distanceX;
+                        var left = parseInt(this.style.left.replace('px'))+dd;
+                        if(left <=0 && left>=-4900)
+                            this.style.left=left+'px';
                         if(!this.xx)
                             this.xx=0
                         this.xx=this.xx+dd;
@@ -176,48 +195,53 @@
                 <button style="height: 30px;line-height: 35px;background: transparent;border: none;padding: 0px;box-sizing: border-box;font-size: 18px;">▷</button>
             </div> -->
             <!-- 中文字幕弹窗块 -->
-            <div class="chDialog" onclick="chHideDialog()" style="display:none;position: absolute;background: rgba(0, 0, 0, 0.3);;top: 0;left: 0;right:0;bottom:0;z-index: 200;">
+            
+            <div class="chDialog" onclick="chHideDialog()" style="display:none;position: absolute;background: rgba(0, 0, 0, 0.3);;top: 0;left: 0;right:0;bottom:0;z-index: 999999999;">
                 <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;background: #ffffff;letter-spacing: 0.5px;">
                 </div>
             </div>
-            <div class="dialogTitle" onclick="showSearchFn()" style="font-size:0;height: 40px;background-color: #f3f3f3;cursor: pointer;justify-content: left;min-height:40px;line-height: 40px;width: 100%;">
-                <svg style="width: 15px;height: 15px;object-fit: cover;padding: 12px 5px 12px 10px;vertical-align: top;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#cecece" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#cecece" p-id="3109"></path></svg>
-                <span id="kw" style="font-size: 20px;font-weight: bolder;"></span>
-            </div>
-            <div class="dialogSearch" style="display: none;width: 100%;height: 40px;border: 1px solid #000000;justify-content: space-between;box-sizing: border-box;background-color: #ffffff;">
-                <!--  -->
-                <div style="height: 100%;width: 100%;box-sizing: border-box;position: relative;">
-                    <input onBlur="hideSearchFn()" onInput="
-                        clearTimeout(tt)
-                        tt = setTimeout(function(){
-                            let kw = $('.searchClass').val();
-                            translate(kw);
-                        },500)
-                    " style="font-size: 18px;border: none;text-align: left;width: 100%;height: 38px;padding: 0px 10px 0px 10px;box-sizing: border-box;background-color: #f3f3f3;" 
-                    class="searchClass" onkeydown ="searchFn(event)" type="input" >
-                    <!-- <svg onclick="searchClearFn()" style="width: 15px;height: 15px;object-fit: cover;cursor: pointer;position: absolute;right: 6px;top: 9px;" t="1614847724921" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2158" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M803.84 863.744c-8.704 0-16.896-3.584-23.552-10.24L512 585.728l-267.264 267.264c-6.656 6.656-14.336 10.24-23.04 10.24-12.288 0-25.088-7.168-39.424-21.504-14.848-14.848-21.504-27.648-21.504-39.936 0-8.704 3.584-16.384 10.752-23.04L438.272 512 170.496 244.224c-25.6-26.112 0-52.736 9.728-62.464 11.776-11.776 25.088-23.04 39.424-23.04 8.192 0 16.384 3.584 24.576 11.264L512 438.272l267.776-267.264c7.168-7.168 15.36-10.752 23.552-10.752 12.288 0 24.064 7.168 40.96 23.552 11.264 11.264 35.328 35.328 9.216 60.928L585.728 512l267.264 267.264c23.04 23.04 9.216 44.032-9.216 62.976-13.824 14.336-27.648 21.504-39.936 21.504z" fill="#2C2C2C" p-id="2159"></path></svg> -->
+            <div style="display:none;">
+                <div class="dialogTitle" onclick="showSearchFn()" style="font-size:0;height: 40px;background-color: #f3f3f3;cursor: pointer;justify-content: left;min-height:40px;line-height: 40px;width: 100%;">
+                    <svg style="width: 15px;height: 15px;object-fit: cover;padding: 12px 5px 12px 10px;vertical-align: top;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#cecece" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#cecece" p-id="3109"></path></svg>
+                    <span id="kw" style="font-size: 20px;font-weight: bolder;"></span>
                 </div>
-                <!-- <div onclick="searchFn()" style="cursor: pointer;width: 35px;height: 35px;box-sizing: border-box;text-align: center;line-height: 30px;border: none;">
-                    <svg  style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#707070" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#707070" p-id="3109"></path></svg>
-                </div> -->
-            </div>
-            <div class="dialog" style="display:none;background: white;max-width: 100%;border:none;box-shadow: 0px 0px 0px #888383;padding: 0 10px;box-sizing: border-box;">
-                
-                <div style="font-size: 14px;margin-top: 3px;" class="yibiao">
+                <div class="dialogSearch" style="display: none;width: 100%;height: 40px;border: 1px solid #000000;justify-content: space-between;box-sizing: border-box;background-color: #ffffff;">
+                    <!--  -->
+                    <div style="height: 100%;width: 100%;box-sizing: border-box;position: relative;">
+                        <input onBlur="hideSearchFn()" onInput="
+                            clearTimeout(tt)
+                            tt = setTimeout(function(){
+                                let kw = $('.searchClass').val();
+                                translatee(kw);
+                            },500)
+                        " style="font-size: 18px;border: none;text-align: left;width: 100%;height: 38px;padding: 0px 10px 0px 10px;box-sizing: border-box;background-color: #f3f3f3;" 
+                        class="searchClass" onkeydown ="searchFn(event)" type="input" >
+                        <!-- <svg onclick="searchClearFn()" style="width: 15px;height: 15px;object-fit: cover;cursor: pointer;position: absolute;right: 6px;top: 9px;" t="1614847724921" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2158" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M803.84 863.744c-8.704 0-16.896-3.584-23.552-10.24L512 585.728l-267.264 267.264c-6.656 6.656-14.336 10.24-23.04 10.24-12.288 0-25.088-7.168-39.424-21.504-14.848-14.848-21.504-27.648-21.504-39.936 0-8.704 3.584-16.384 10.752-23.04L438.272 512 170.496 244.224c-25.6-26.112 0-52.736 9.728-62.464 11.776-11.776 25.088-23.04 39.424-23.04 8.192 0 16.384 3.584 24.576 11.264L512 438.272l267.776-267.264c7.168-7.168 15.36-10.752 23.552-10.752 12.288 0 24.064 7.168 40.96 23.552 11.264 11.264 35.328 35.328 9.216 60.928L585.728 512l267.264 267.264c23.04 23.04 9.216 44.032-9.216 62.976-13.824 14.336-27.648 21.504-39.936 21.504z" fill="#2C2C2C" p-id="2159"></path></svg> -->
+                    </div>
+                    <!-- <div onclick="searchFn()" style="cursor: pointer;width: 35px;height: 35px;box-sizing: border-box;text-align: center;line-height: 30px;border: none;">
+                        <svg  style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#707070" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#707070" p-id="3109"></path></svg>
+                    </div> -->
+                </div>
+                <div class="dialog" style="display:none;background: white;max-width: 100%;border:none;box-shadow: 0px 0px 0px #888383;padding: 0 10px;box-sizing: border-box;">
                     
-                </div>  
-                <div style="font-size: 14px;margin:5px 0 0 0;">
-                    <div class="fanyi">
-
+                    <div style="font-size: 14px;margin-top: 3px;" class="yibiao">
+                        
+                    </div>  
+                    <div style="font-size: 14px;margin:5px 0 0 0;">
+                        <div class="fanyi">
+    
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
+                快捷键: q w e a s d space enter
             </div>
         </div>
         <div  class="unselectable" style="position:absolute;bottom:0;right:0;font-size: 14px;display: none;">
             <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279792021&web_id=1279792021"></script>
         </div>
     </body>
-    <script src="./page-post.js" type="application/javascript"></script>
-    <script src="./video-post-min.js" type="application/javascript"></script>
-
+    <script src="./video-post-enc.js" type="application/javascript"></script>
+    <script src="./page-post-min.js" type="application/javascript"></script>
 </html>

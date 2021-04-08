@@ -1,14 +1,40 @@
 feedback()
 function feedback(){ 
     $(document.body).append(`
-        <div class="unselectable" style="position:absolute;right:0;bottom:0;cursor:pointer;border:1px solid #827e7e;border-bottom:0;border-right:0;border-radius: 2px 0 0 0;padding:3px 15px;
-                z-index:999999;background-color:#ffffff;color: #827e7e;" 
+        <div class="unselectable" style="position:absolute;right:0;bottom:0;cursor:pointer;border:1px solid #827e7e;border-bottom:0;border-right:0;border-radius: 2px 0 0 0;padding:0 15px;
+                z-index:999999999999999;background-color:#ffffff;color: #827e7e;" 
             onclick="
-                var r= prompt('感谢您的反馈\\n希望您能留下联系方式')
+                var r= prompt('感谢您的反馈\\n建议留下联系方式')
                 if(r){
                     $.post('/mumu/feedback',{content:r})
-                    alert('已反馈')
+                    alert('已发送')
                 }
             "
         >反 馈</div>`)
 }
+
+(function noDebuger() {
+    function testDebuger() {
+        var d = new Date();
+        debugger;
+        if (new Date() - d > 10) {
+            document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;">年轻人，不要太好奇</div>';
+            return true;
+        }
+       return false;
+   }
+   function start() {
+       while (testDebuger()) {
+           testDebuger();
+       }
+   }
+   if (!testDebuger()) {
+       window.onblur = function () {
+           setTimeout(function () {
+               start();
+           }, 500)
+       }
+   }else {
+       start();
+   }
+})();

@@ -35,6 +35,10 @@ function getVideo(){
         async: true,
         success: function(res) {
             video=res.data.video;
+            if(video.height && video.width){
+                $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
+                $('#summtrans').css('height',$('#video').css('height'))
+            }
             $.ajax({
                 url: video.captionUrl,
                 type: 'get',
@@ -200,7 +204,7 @@ function searchFn(_value){
     console.log(_value)
     if(_value.keyCode == 13){
         let kw = $('.searchClass').val();
-        translate(kw);
+        translatee(kw);
         hideSearchFn()
     }
 }
@@ -278,7 +282,7 @@ function setline(item){
     _this.en.currentwords=_v
     for(let i=0; i < _v.length; i++){
         $("#zh_subtitles").append(
-            '<span onclick="pauseVideo()" onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onmouseover="pauseVideo();translate(this.innerText);" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
+            '<span onclick="pauseVideo()" onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100) " onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
         )
     }
     $('.dialog').css({'display' : 'none'})
@@ -287,6 +291,7 @@ function setline(item){
     $('.dialog').css({'display' : 'none'})
     $('.dialogTitle #kw').html('');
     $('#summtrans').hide()
+    $('#video').css('top','0px')
 }
 function prevline(){
     ////let _this = this;
@@ -352,86 +357,117 @@ function nextline(){
         }
     }
 }
-function translate(_data){
-    if(_data==null || _data==undefined || !_data.toString().trim())
-        return;
+
+
+function translatee(_data){
     _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
-    $.ajax({
-        url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
-        type: 'get',
-        async: true,
-        success: function(res) {
-            $('.dialog').css({'display' : 'block'})
-            $('.dialogTitle #kw').html(_data);
-            $('.searchClass').val(_data);
-            $('.yibiao').html('')
-            $('.fanyi').html('')
-            if(res.data.phoneticUs && res.data.phoneticUs!="undefined" && res.data.phoneticUs!="null"){
-                $('.yibiao').append(
-                    '<span style="margin-right:15px;display: inline-block;">'+
-                        '<span class="us" style="margin:0 5px 0 0;">'+'美 '+'/'+(res.data.phoneticUs||'')+'/'+'</span>'+
-                        '<svg playSrc="'+res.data.pronounceUs+'" class="beauty" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
-                    // '<audio src="'+res.data.pronounceUs+'" class="beauty"></audio>'+
-                    '</span>'
-                )
-            }
-            if(res.data.phoneticUk && res.data.phoneticUk!="undefined" && res.data.phoneticUk!="null"){
-                $('.yibiao').append(
-                    '<span style="margin-right:15px;display: inline-block;">'+
-                        '<span class="uk" style="margin:0 5px 0 0;">'+'英 '+'/'+(res.data.phoneticUk||'')+'/'+'</span>'+
-                        '<svg playSrc="'+res.data.pronounceUk+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
-                    // '<audio src="'+res.data.pronounceUk+'" class="ritish"></audio>'+
-                    '</span>'
-                )
-            }
-            if(res.data.from!=1){
-                if(res.data.phonetic || res.data.speakUrl){
+    $('#summtrans-word-in').val(_data)
+    $('#summtrans-word').text(_data)
+
+    clearTimeout(window.timeoutdo1)
+    window.timeoutdo1=setTimeout(function(){
+        window.aaa=setTimeout(function(){
+            $('#summtrans-phonetic').hide();
+            $('#summtrans-speak').hide();
+            $('#summtrans-value').hide();
+        },500)
+        if(_data==null || _data==undefined || !_data.toString().trim()){
+            $('#summtrans-phonetic').hide();
+            $('#summtrans-speak').hide();
+            $('#summtrans-value').hide();
+            return;
+        }
+        $.ajax({
+            url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
+            type: 'get',
+            async: true,
+            success: function(res) {
+                clearTimeout(window.aaa)
+                $('.dialog').css({'display' : 'block'})
+                $('.dialogTitle #kw').html(_data);
+                $('.searchClass').val(_data);
+                $('.yibiao').html('')
+                $('.fanyi').html('')
+                if(res.data.phoneticUs && res.data.phoneticUs!="undefined" && res.data.phoneticUs!="null"){
                     $('.yibiao').append(
                         '<span style="margin-right:15px;display: inline-block;">'+
-                            (res.data.phonetic?('<span style="margin:0 5px 0 0;">'+'/'+res.data.phonetic+'/'+'</span>'):'') +
-                            (res.data.speakUrl?('<svg playSrc="'+res.data.speakUrl+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'):'') +
+                            '<span class="us" style="margin:0 5px 0 0;">'+'美 '+'/'+(res.data.phoneticUs||'')+'/'+'</span>'+
+                            '<svg playSrc="'+res.data.pronounceUs+'" class="beauty" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
+                        // '<audio src="'+res.data.pronounceUs+'" class="beauty"></audio>'+
                         '</span>'
                     )
                 }
-            }
-            if(res.data.translations){
-                for(let i=0;res.data &&  i <= res.data.translations.length; i++){
-                    if(res.data.translations[i]){
-                        $('.fanyi').append( 
-                            '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.translations[i]+'</p>'
+                if(res.data.phoneticUk && res.data.phoneticUk!="undefined" && res.data.phoneticUk!="null"){
+                    $('.yibiao').append(
+                        '<span style="margin-right:15px;display: inline-block;">'+
+                            '<span class="uk" style="margin:0 5px 0 0;">'+'英 '+'/'+(res.data.phoneticUk||'')+'/'+'</span>'+
+                            '<svg playSrc="'+res.data.pronounceUk+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
+                        // '<audio src="'+res.data.pronounceUk+'" class="ritish"></audio>'+
+                        '</span>'
+                    )
+                }
+                if(res.data.from!=1){
+                    if(res.data.phonetic || res.data.speakUrl){
+                        $('.yibiao').append(
+                            '<span style="margin-right:15px;display: inline-block;">'+
+                                (res.data.phonetic?('<span style="margin:0 5px 0 0;">'+'/'+res.data.phonetic+'/'+'</span>'):'') +
+                                (res.data.speakUrl?('<svg playSrc="'+res.data.speakUrl+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'):'') +
+                            '</span>'
                         )
                     }
                 }
-            }
-            
-            if(res.data.webTranslations){
-                $('.fanyi').append( 
-                    '<p style="margin-block-start: 10px;margin-block-end: 3px;">'+"网络释义："+'</p>'
-                )
-                for(let i=0;res.data &&  i <= res.data.webTranslations.length; i++){
-                    if(res.data.webTranslations[i]){
-                        $('.fanyi').append(
-                            '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.webTranslations[i]+'</p>'
-                        )
+                if(res.data.translations){
+                    for(let i=0;res.data &&  i <= res.data.translations.length; i++){
+                        if(res.data.translations[i]){
+                            $('.fanyi').append( 
+                                '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.translations[i]+'</p>'
+                            )
+                        }
                     }
                 }
-            }
-            
-            $('#summtrans-word').text(_data)
-            if(res.data.phonetic){
-                $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
-            }else{
-                $('#summtrans-phonetic').hide()
-            }
-            if(res.data.speakUrl){
-                $('#summtrans-speak').attr('play-url',res.data.speakUrl).show()
-            }else{
-                $('#summtrans-speak').hide()
-            }
-            $('#summtrans-value').text(res.data.translations?res.data.translations.join(" || ").replace(/\s\|\|\s$/,'').replace(new RegExp('^\s||\s'),''):'')
-            $('#summtrans').show()
-        },
-    })
+                
+                if(res.data.webTranslations){
+                    $('.fanyi').append( 
+                        '<p style="margin-block-start: 10px;margin-block-end: 3px;">'+"网络释义："+'</p>'
+                    )
+                    for(let i=0;res.data &&  i <= res.data.webTranslations.length; i++){
+                        if(res.data.webTranslations[i]){
+                            $('.fanyi').append(
+                                '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.webTranslations[i]+'</p>'
+                            )
+                        }
+                    }
+                }
+                if(res.data.phonetic){
+                    $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
+                }else{
+                    $('#summtrans-phonetic').hide()
+                }
+                if(res.data.speakUrl){
+                    $('#summtrans-speak').attr('play-url',res.data.speakUrl).show()
+                }else{
+                    $('#summtrans-speak').hide()
+                }
+                $('#summtrans-vv').html('').scrollTop(0)
+                if(res.data.translations){
+                    $(res.data.translations).each(function(index,item){
+                        $('#summtrans-vv').append(`<div>${item}</div>`)
+                    })
+                }
+                if(res.data.webTranslations){
+                    $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
+                    $(res.data.webTranslations).each(function(index,item){
+                        $('#summtrans-vv').append(`<div>${item}</div>`)
+                    })
+                }
+                $('#summtrans-vv').show()
+                $('#summtrans-value').show()
+                $('#summtrans').show()
+                $('#video').css('top','-1000px')
+            },
+        })
+    },200)
+    
 }   
 function pauseVideo(){
     $('#video')[0].pause();
@@ -444,6 +480,15 @@ function videoPlay(){
     console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
     $('.dialog').hide()
     $('#summtrans').hide()
+    $('#summtrans-word').text('').hide('')
+    $('#summtrans-word-in').val('').hide('')
+    $('#summtrans-value').hide('')
+    $('#summtrans-vv').html('').hide('')
+    $('#summtrans-phonetic').text('').hide('')
+    $('#summtrans-phonetic').text('').hide('')
+    $('#summtrans-speak').hide('')
+      
+    $('#video').css('top','0px')
     clearInterval(_this.en.monitor)
     _this.en.monitor = setInterval(function(){
         if(jumpedcaption){
@@ -709,7 +754,7 @@ function choooseEnd(_value){
     // && _this.translationtext != _data && translationtext.indexOf(_data)<0
     if(_data){
         _this.translationtext = _data;
-        translate(_data)
+        translatee(_data)
     }else{
         _this.translationtext = ""
     }
@@ -719,7 +764,7 @@ function choooseEnd(_value){
 
 var currwordno=0;
 var keyCodes=[]
-document.onkeydown = function(event){        //在全局中绑定按下事件
+document.onkeypress = function(event){        //在全局中绑定按下事件
 　　　　 var e  = event  ||  window.e;
 　　　　 var keyCode = e.keyCode || e.which;
 
@@ -730,14 +775,10 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
     if(keyCode!=last)
         keyCodes.push(keyCode)
     console.log(keyCodes+" down")
-    
-    
-
     var keyy = keyCodes.join()
-
     switch(keyy){
     　　　　 case '32'://space
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             if($('#video')[0].paused){
                 chHideDialog()
@@ -747,34 +788,51 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
                 pauseVideo();
     　　　　 break;
         case '13'://enter
-            if(document.activeElement != $('.dialogSearch input')[0])
-                $('.dialogTitle').click()
+                if(document.activeElement == $('#summtrans-word-in')[0]){
+                    $('#summtrans-word-in').hide().blur()
+                    $('#summtrans-word').show().text($('#summtrans-word-in').val())
+                    translatee($('#summtrans-word-in').val())
+                    if(!$('#summtrans-word-in').val()){
+                        $('#summtrans').hide()
+                        $('#video').css('top',0)
+                    }
+                } else {
+                    $('#summtrans').show()
+                    $('#summtrans-word-in').show().focus()
+                    $('#summtrans-word').hide()
+                    pauseVideo();
+                }
     　　　　 break;
+        case '97'://A
         case '65'://a
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             prevline()
     　　　　 break;
+        case '115'://S
         case '83'://s
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             currline()
     　　　　 break; 
+        case '119'://W
         case '87'://w
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             if($('.chDialog').is(":hidden"))
                 chShowDialog()
             else
                 chHideDialog()
     　　　　 break;
+        case '100'://D
         case '68'://d
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             nextline()
     　　　　 break;
+        case '113'://Q
         case '81'://q
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             if(currwordno<=1)
                 currwordno=_this.en.currentwords.length
@@ -782,8 +840,9 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
                 currwordno--;
             locateWord(currwordno)
     　　　　 break;
+        case '101'://E
         case '69'://e
-            if(document.activeElement == $('.dialogSearch input')[0])
+            if(document.activeElement == $('#summtrans-word-in')[0])
                 return;
             currwordno++;
             if(currwordno>_this.en.currentwords.length)
@@ -804,12 +863,9 @@ function locateWord(no){
         'background' : '#d2cbcb'
     })
     pauseVideo()
-
-    clearTimeout(window.timeoutdo1)
+    $('#summtrans-word').show()
     if(currwordno>0){
-        timeoutdo1=setTimeout(function(){
-            translate(_this.en.currentwords[currwordno-1])
-        },200)
+        translatee(_this.en.currentwords[currwordno-1])
     }
 }
 
@@ -844,4 +900,6 @@ function onresize(){
     }else{
         $('#gearframe').show()
     }
+    if(video.height && video.width)
+        $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
 }
