@@ -13,7 +13,7 @@ function feedback(){
         >反 馈</div>`)
 }
 
-(function noDebuger() {
+function noDebuger() {
     function testDebuger() {
         var d = new Date();
         debugger;
@@ -37,4 +37,4 @@ function feedback(){
    }else {
        start();
    }
-})();
+}

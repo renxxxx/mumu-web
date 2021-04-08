@@ -41,23 +41,18 @@
                 style="background: #000000;display: block;position: relative;"
                 >
             </video>
+
             <div id="summtrans" 
                 style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0);width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
                 <div id="summtrans-word" style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;"
                     onclick="
-                        $('#summtrans-word-in').show().focus()
-                        $('#summtrans-word').hide()
+                         $('#summtrans').hide()
+                        $('#wordsframe').show()
+                        $('#word-in').val(this.innerText).focus()
+                        $('#word-in').trigger('input')
                     ">
                 </div>
-                <input id="summtrans-word-in" autocomplete="off" style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;display:none;"
-                    oninput="
-                        translatee(this.value);
-                    "
-                    onblur="
-                        $('#summtrans-word-in').hide()
-                        $('#summtrans-word').show()
-                    "/>
                 <div style="height: 20px;line-height: 20px;">
                     <span id="summtrans-phonetic" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
                     <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"
@@ -77,6 +72,59 @@
                     <div id="summtrans-vv" class="scrollbar1" style="width:100%;height:100%;overflow: auto;"></div>
                 </div>
             </div> 
+
+            <div id="wordsframe" 
+                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0);width:100%;position:absolute;
+                    top: 0;color: #ffffff;padding:5px 10px;display:none;">
+                <input id="word-in" autocomplete="off" 
+                    style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
+                        background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;"
+                    oninput="
+                        var value  =this.value
+                        if(value){
+                            $.ajax({
+                                url:'/mumu/words',
+                                method:'get',
+                                data:{
+                                    kw:value,
+                                    start:1,
+                                    pageSize:10,
+                                    from:video.language,
+                                    to:2
+                                },
+                                success:function(res){
+                                    if(this.value==value){
+                                        $('#words .word').remove()
+                                        var words = res.data.words
+                                        $(words).each((inx,item)=>{
+                                            var wordele = $('#wordtempl').clone(true)
+                                            wordele.addClass('word')
+                                            wordele.text(item.q+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain1||'')+(item.explain2?' | ':'')+(item.explain2||'')+(item.explain3?' | ':'')
+                                                +(item.explain3||'')+(item.explain4?' | ':'')+(item.explain4||'')+(item.explain5?' | ':'')+(item.explain5||''))
+                                            $('#words').append(wordele)
+                                            wordele.show();
+                                        })
+                                    }
+                                }
+                            })
+                        }else{
+                            $('#words .word').remove()
+                        }
+                        
+                    "/>
+                <div id="wordss" style="font-size:14px;position:absolute;top:27px;bottom:0;left:0;right:0;padding:3px 10px 5px 10px;">
+                    <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
+                        <div id="wordtempl" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" 
+                            onclick="
+                                $('#wordsframe').hide()
+                                $('#word-in').val('')
+                                $('#words .word').remove()
+                                translatee(this.innerText)
+                            ">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- onmousedown="mouseStartFn(event)" onmousemove="mouseMoveFn(event)" onmouseup="mouseEndFn(event)" -->
             <div style="width: 100%;position:relative;min-height: 67px;text-align: center;">
                 <!-- <span class="unselectable"
@@ -242,6 +290,6 @@
             <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279792021&web_id=1279792021"></script>
         </div>
     </body>
-    <script src="./video-post-enc.js" type="application/javascript"></script>
+    <script src="./video-post-min.js" type="application/javascript"></script>
     <script src="./page-post-min.js" type="application/javascript"></script>
 </html>
