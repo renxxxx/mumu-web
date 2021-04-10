@@ -227,26 +227,36 @@ function getEnSubtitles(_result){
         let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
         let regExp = new RegExp(reg);
         if(regExp.test(item)){
+            var ss = _fileString[inx+2]
+            var st = _fileString[inx+1]
+            if(ss.indexOf('{\\pos')>=0 || st.indexOf('{\\pos')>=0){
+                return;
+            }
             _this.en.subtitlesList.push({
                 startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
                 endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
-                chValue: _fileString[inx+1],
-                enValue : _fileString[inx+2]
+                chValue: st,
+                enValue: ss,
             })
         }
     });
-    _this.en.subtitlesList.forEach((item,inx)=>{
+    var iii = null
+    for (let inx = 0; inx < _this.en.subtitlesList.length; inx++) {
+        iii=inx
+        const curr = _this.en.subtitlesList[inx];
+        const next = _this.en.subtitlesList[inx+1];
         if(inx<_this.en.subtitlesList.length-2){
-            if((_this.en.subtitlesList[inx+1].startTime - item.endTime)>1000){
+            if((next.startTime - curr.endTime)>1000){
                 _this.en.subtitlesList.splice(inx+1,0,{
-                    startTime:parseInt(item.endTime)+1000,
-                    endTime:_this.en.subtitlesList[inx+1].startTime,
+                    startTime:parseInt(curr.endTime)+1000,
+                    endTime:next.startTime,
                     chValue:'',
                     enValue:''
                 })
             }
         }
-    })
+    }
+   
     var first = _this.en.subtitlesList[0]
     if(first && first.startTime>0){
         _this.en.subtitlesList.splice(0,0,{
@@ -260,7 +270,7 @@ function getEnSubtitles(_result){
     if(last){
         _this.en.subtitlesList.push({
                         startTime:parseInt(last.endTime)+1000,
-                        endTime:parseInt(last.endTime)+2000,
+                        endTime:video.duration*1000,
                         chValue:'',
                         enValue:''
                     })
@@ -282,9 +292,15 @@ function setline(item){
     $("#zh_subtitles").html('')
     _this.en.currentwords=_v
     for(let i=0; i < _v.length; i++){
-        $("#zh_subtitles").append(
-            '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100)" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+_v[i]+'</span>'
-        )
+        var vv = _v[i].split('\\n');
+        if(vv[0])
+            $("#zh_subtitles").append(
+                '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100)" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>'
+            )
+        if(vv[1]){
+            _v.splice(i+1,0,vv[1])
+            $("#zh_subtitles").append('<br/>')
+        }
     }
     $('.dialog').css({'display' : 'none'})
     $('.dialogTitle #kw').html('');
@@ -307,6 +323,7 @@ function prevline(){
             _this.en.currentIndex =inx   
             _this.en.current= prev
             jumpedcaption = prev
+            lastCurrentTime = prev.startTime/1000
             $('#video')[0].currentTime = prev.startTime/1000
             console.log("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
             _this.setline(prev)
@@ -328,6 +345,7 @@ function currline(){
             _this.en.current= curr
             $('#video')[0].currentTime = curr.startTime/1000
             jumpedcaption = curr
+            lastCurrentTime = curr.startTime/1000
             console.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
             _this.setline(curr)
             currwordno=0
@@ -348,6 +366,7 @@ function nextline(){
             _this.en.currentIndex =inx   
             _this.en.current= next
             jumpedcaption = next
+            lastCurrentTime = next.startTime/1000
             $('#video')[0].currentTime = next.startTime/1000
             console.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
             _this.setline(next)
@@ -537,7 +556,7 @@ function chShowDialog(){
     //let _this = this
     let _time = $('#video')[0].currentTime*1000
     $('.chDialog').css("display","block")
-    $('.chDialog div').html(_this.en.current.chValue)
+    $('.chDialog div').html(_this.en.current.chValue.replace('\\n','</br>'))
     pauseVideo()
 }
 function chHideDialog(){

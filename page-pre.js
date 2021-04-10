@@ -1,15 +1,15 @@
 var vConsole = new VConsole({
   onReady:function(){
       $('#__vconsole .vc-switch').text('vc')
-      //vConsole.hideSwitch();
+      vConsole.hideSwitch();
   }
 });
 
 
-var anontoken = $.cookie('anontoken')
-if(!anontoken){
-    anontoken = new Date().getTime()+randomnum(5);
-    $.cookie('anontoken',anontoken,{path:"/"})
+var token = $.cookie('token')
+if(!token){
+  token = new Date().getTime()+randomnum(5);
+    $.cookie('token',token,{path:"/"})
 }
 
 function randomnum(n){ 

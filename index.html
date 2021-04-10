@@ -36,24 +36,18 @@
             html,body,.index{
                 margin: 0px;width: 100%;height: 100%;
             }
-            .videoList{
-                width: 100%;height: 100%;overflow-y: auto;overflow-x: hidden;
-            }
-            .videoList>ul{
-                margin: 0px;padding: 0px;
-            }
-            .videoList>ul>li,.videoList>ul>li>a{
+            .videoList>li,.videoList>li>a{
                 width: 100%;height: 50px;line-height: 50px;display: flex;
                 justify-content: flex-start;padding: 0px 2% 0 5px;
                 box-sizing: border-box;border-bottom: 1px solid #d8d8d8;
             }
-            .videoList>ul>li>a>svg{
+            .videoList>li>a>svg{
                 width: 20px;height: 20px;object-fit: cover;margin-top: 15px;
             }
-            .videoList>ul>li>a>span{
+            .videoList>li>a>span{
                 width: calc(100% - 30px);
             }
-            .videoList>ul>li:active,.videoList>ul>li:hover{
+            .videoList>li:active,.videoList>li:hover{
                 animation: pulse .3s ease;
                 background-color: #dddddd;
             }
@@ -100,20 +94,36 @@
         </style>
     </head>
     <body style="max-width: 850px; margin: auto;background-color: #000000;">
-        <div class="index" style="background-color: #ffffff;">
-            <div class="videoList">
-                <ul>
-                    <!-- <li>
-                        <span>名词一</span>
-                        <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
-                    </li> -->
-                </ul>
+        <div class="index" style="background-color: #ffffff;position: relative;">
+            <ul class="videoList" style="position: absolute;top:0;bottom:20px;overflow: auto;margin: 0px;padding: 0px;width:100%;">
+                <!-- <li>
+                    <span>名词一</span>
+                    <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
+                </li> -->
+            </ul>
+            <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:20px;font-size:0;background-color: #ececec;display:none;">
+                <span id="msg" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:90%;height:100%;display:inline-block;font-size:14px;color:#4a4a4a;
+                                box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;"
+                    onclick="
+                        alert(this.innerText)
+                    ">
+                </span>
+                <span  style="width:10%;height:100%;display:inline-block;background-color: #b3b3b3;font-size:14px;cursor: pointer;text-align: center;color:#4a4a4a;font-weight: 900;
+                        vertical-align: middle;"
+                    onclick="
+                        var r= prompt('留言')
+                        if(r){
+                            $.post('/mumu/sendboardmsg',{text:r})
+                            alert('已发送')
+                        }
+                    ">
+                    ,,,
+                </span>
             </div>
         </div>
-        <div  class="unselectable" style="position:absolute;bottom:0;right:0;font-size: 14px;display: none">
-            <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279792021&web_id=1279792021"></script>
+        <div  class="unselectable" style="display: none;">
+            <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
-
     </body>
     
     <script src="./page-post-min.js" type="application/javascript"></script>
@@ -142,6 +152,21 @@
 
         function start(){
             getVideoList()
+            $.ajax({
+                url: '/mumu/showedboardmsg?',
+                type: 'get',
+                async: true,
+                success: function(res) {
+                    msg=res.data.msg;
+                    if(msg){
+                        if(msg.sys)
+                            $('#msg').text("系统: "+msg.text)
+                        else
+                            $('#msg').text("网友: "+msg.text)
+                        $('#msgframe').show()
+                    }
+                }
+            })
         }
         function getVideoList(){
             let _this = this;
@@ -155,13 +180,14 @@
                         _this.videoList.push(item)
                         var durationsec = localStorage.getItem('durationsec-'+item.no)
                         var currentTime = localStorage.getItem('currentTime-'+item.no)
-                        $('.videoList ul').append(
+                        $('.videoList').append(
                             '<li style="cursor:pointer;" onclick="routerFn('+item.no+')">'+
                             `<a style="text-decoration:none;" href="./video.html?videoNo=${item.no}">`+
                             `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
                                 ${
                                     item.type==1?'./img/movie.svg':
                                     item.type==2?'./img/mv.svg':
+                                    item.type==4?'./img/speech.svg':
                                     item.type==3?'./img/ted.svg':''
                                 }
                             "/></span>`+

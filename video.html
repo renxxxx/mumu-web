@@ -43,7 +43,7 @@
             </video>
 
             <div id="summtrans" 
-                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0);width:100%;position:absolute;
+                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: #000000;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
                 <div id="summtrans-word" style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;"
                     onclick="
@@ -74,7 +74,7 @@
             </div> 
 
             <div id="wordsframe" 
-                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: rgb(0 0 0);width:100%;position:absolute;
+                style="z-index:999999;box-sizing: border-box;font-size:0;background-color: #000000;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
                 <input id="word-in" autocomplete="off" 
                     style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
@@ -99,6 +99,8 @@
                                         var words = res.data.words
                                         $(words).each((inx,item)=>{
                                             var wordele = $('#wordtempl').clone(true)
+                                            wordele[0].item=item
+                                            wordele.attr('id','word'+(inx+1))
                                             wordele.addClass('word')
                                             wordele.text(item.q+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain1||'')+(item.explain2?' | ':'')+(item.explain2||'')+(item.explain3?' | ':'')
                                                 +(item.explain3||'')+(item.explain4?' | ':'')+(item.explain4||'')+(item.explain5?' | ':'')+(item.explain5||''))
@@ -120,7 +122,7 @@
                                 $('#wordsframe').hide()
                                 $('#word-in').val('')
                                 $('#words .word').remove()
-                                translatee(this.innerText)
+                                translatee(this.item.q)
                             ">
                         </div>
                     </div>
@@ -230,8 +232,8 @@
                 <button id="hideBtn" class="unselectable" onclick="enSubtitlesShow()" style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     HIDE
                 </button>
-                <button onclick="chShowDialog()" class="unselectable" style="cursor:pointer;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
-                    WHOLE
+                <button onclick="chShowDialog()" class="unselectable" style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
+                    整句
                 </button>
             </div>
             <!-- 循环字幕功能块 -->
@@ -284,11 +286,11 @@
                 </div>
             </div>
             <div class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
-                快捷键: q w e a s d space enter
+                电脑快捷键: q,w,e,a,s,d,space,enter
             </div>
         </div>
-        <div  class="unselectable" style="position:absolute;bottom:0;right:0;font-size: 14px;display: none;">
-            <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279792021&web_id=1279792021"></script>
+        <div  class="unselectable" style="display: none;">
+            <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
     </body>
     <script src="./video-post-min.js" type="application/javascript"></script>
