@@ -930,7 +930,7 @@ function onresize(){
         $('#pcrecommand').text('翻译快捷键(a,s,d,enter) 控制快捷键(q,w,e,space)')
     }else{
         $('#gearframe1').show()
-        $('#pcrecommand').text('PC端访问操作更方便')
+        $('#pcrecommand').text('PC端操作更方便')
     }
     if(video.height && video.width)
         $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))

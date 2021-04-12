@@ -191,7 +191,7 @@
                                     item.type==3?'./img/ted.svg':''
                                 }
                             "/></span>`+
-                            '<span class="line1" style="margin-left: 5px;">'+(item.language == 4?'es - ':'')+item.name+'</span>'+
+                            '<span class="line1" style="margin-left: 5px;">'+item.name+(item.language == 4?' - es':'')+'</span>'+
                             (
                                 (durationsec&&currentTime)?
                                 ('<progress style="width:50px;margin: 16px 0;" value="'+currentTime+'" max="'+durationsec+'"></progress> ')
