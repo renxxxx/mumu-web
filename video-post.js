@@ -1,3 +1,10 @@
+$("#finger,gear").animate({left:'+=150px'},2000,function(){
+    $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
+});
+$("#gear").animate({left:'+=150px'},2000,function(){
+    $("#gear").animate({left:'-=300px'},2000);
+});
+
 var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
 var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
 var currentIndex =parseInt(localStorage.getItem("currentIndex-"+videoNo));
@@ -132,6 +139,14 @@ function monitor(_time){
     $('#loading').hide()
     localStorage.setItem("durationsec-"+videoNo,$('#video')[0].duration)
     localStorage.setItem("currentTime-"+videoNo,$('#video')[0].currentTime)
+
+    if(jumpedcaption){
+        if(jumpedcaption.startTime < _time){
+            jumpedcaption=null;
+        }else{
+            return;
+        }
+    }
 
     if(_this.en.current && _this.en.current.startTime<=_time && _time<_this.en.current.endTime){
         return;
@@ -308,6 +323,8 @@ function setline(item){
     $('.dialog').css({'display' : 'none'})
     $('.dialogTitle #kw').html('');
     $('#summtrans').hide()
+    $('#wordsframe').hide()
+    $('#word-in').val('')
     $('#video').css('top','0px')
 }
 function prevline(){
@@ -511,13 +528,6 @@ function videoPlay(){
     $('#video').css('top','0px')
     clearInterval(_this.en.monitor)
     _this.en.monitor = setInterval(function(){
-        if(jumpedcaption){
-            if(jumpedcaption.startTime/1000 < videoele.currentTime){
-                jumpedcaption=null;
-            }else{
-                return;
-            }
-        }
         monitor(videoele.currentTime*1000)
     },10)
     currwordno=0
@@ -821,36 +831,22 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
                 pauseVideo();
     　　　　 break;
         case '13'://enter
-                if(document.activeElement == $('#word-in')[0]){
-                    $('#wordsframe').hide()
-                    translatee($('#word-in').val())
-                    if(!$('#word-in').val()){
-                        $('#summtrans').hide()
-                        $('#wordsframe').hide()
-                        $('#video').css('top',0)
-                    }
-                } else {
-                    $('#summtrans').hide()
-                    $('#wordsframe').show()
-                    $('#word-in').focus()
-                    $('#word-in').trigger("input")
-                    pauseVideo();
-                }
+            search();
     　　　　 break;
-        case '97'://A
-        case '65'://a
+        case '113'://Q
+        case '81'://q
             if(document.activeElement == $('#word-in')[0])
                 return;
             prevline()
     　　　　 break;
-        case '115'://S
-        case '83'://s
+        case '119'://W
+        case '87'://w
             if(document.activeElement == $('#word-in')[0])
                 return;
             currline()
     　　　　 break; 
-        case '119'://W
-        case '87'://w
+        case '115'://S
+        case '83'://s
             if(document.activeElement == $('#word-in')[0])
                 return;
             if($('.chDialog').is(":hidden"))
@@ -858,14 +854,14 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
             else
                 chHideDialog()
     　　　　 break;
-        case '100'://D
-        case '68'://d
+        case '101'://E
+        case '69'://e
             if(document.activeElement == $('#word-in')[0])
                 return;
             nextline()
     　　　　 break;
-        case '113'://Q
-        case '81'://q
+        case '97'://A
+        case '65'://a
             if(document.activeElement == $('#word-in')[0])
                 return;
             if(currwordno<=1)
@@ -874,8 +870,8 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
                 currwordno--;
             locateWord(currwordno)
     　　　　 break;
-        case '101'://E
-        case '69'://e
+        case '100'://D
+        case '68'://d
             if(document.activeElement == $('#word-in')[0])
                 return;
             currwordno++;
@@ -926,15 +922,36 @@ document.addEventListener('touchend', function(event) {
     lastTouchEnd = now;
 }, false);
 
-if(isPc()){
-    $('#gearframe').hide()
-}
+
+onresize()
 function onresize(){
     if(isPc()){
-        $('#gearframe').hide()
+        $('#gearframe1').hide()
+        $('#pcrecommand').text('翻译快捷键(a,s,d,enter) 控制快捷键(q,w,e,space)')
     }else{
-        $('#gearframe').show()
+        $('#gearframe1').show()
+        $('#pcrecommand').text('PC端访问操作更方便')
     }
     if(video.height && video.width)
         $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
+}
+
+
+function search(){
+    if(document.activeElement == $('#word-in')[0]){
+        $('#wordsframe').hide()
+        translatee($('#word-in').val())
+        if(!$('#word-in').val()){
+            $('#summtrans').hide()
+            $('#wordsframe').hide()
+            $('#video').css('top',0)
+        }
+    } else {
+        $('#summtrans').hide()
+        $('#wordsframe').show()
+        $('#word-in').focus()
+        $('#word-in').trigger("input")
+        $('#video').css('top','-1000px')
+        pauseVideo();
+    }
 }

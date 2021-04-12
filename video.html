@@ -111,10 +111,11 @@
                                 }
                             })
                         }else{
-                            $('#words .word').remove()
+                            $('#words .word').remove();
                         }
                         
-                    "/>
+                    "
+                    />
                 <div id="wordss" style="font-size:14px;position:absolute;top:27px;bottom:0;left:0;right:0;padding:3px 10px 5px 10px;">
                     <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
                         <div id="wordtempl" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" 
@@ -128,23 +129,8 @@
                     </div>
                 </div>
             </div>
-            <!-- onmousedown="mouseStartFn(event)" onmousemove="mouseMoveFn(event)" onmouseup="mouseEndFn(event)" -->
-            <div style="width: 100%;position:relative;min-height: 67px;text-align: center;">
-                <!-- <span class="unselectable"
-                    style="width:10%;display: inline-block;border: 1px solid #e2e2e2;border-width: 0 1px 1px 0;border-radius: 0 0 3px 0;color:#e2e2e2;font-size: 18px;
-                        line-height: 67px;min-height: 100%;text-align: center;cursor: pointer;position: absolute;left:0;max-width:40px;"
-                    onmousedown="prevword()">
-                    <
-                </span> -->
-                <div id="zh_subtitles" class="unselectable" style="display: inline-block;line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;margin-top:5px;"  
-                    ontouchstart="touchstartFn(event);event.preventDefault()" ontouchmove="touchmoveFn(event);event.preventDefault()" ontouchend="touchendFn(event);event.preventDefault()">
-                </div>
-                <!-- <span class="unselectable"
-                    style="width:10%;display: inline-block;border: 1px solid #e2e2e2;border-width: 0 0 1px 1px;border-radius: 0 0 0 3px;color:#e2e2e2;font-size: 18px;
-                        line-height: 67px;min-height: 100%;text-align: center;cursor: pointer;position: absolute;right:0;max-width:40px;"
-                    onmousedown="nextword()">
-                    >
-                </span> -->
+            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;margin-top:5px;"  
+                ontouchstart="touchstartFn(event);event.preventDefault()" ontouchmove="touchmoveFn(event);event.preventDefault()" ontouchend="touchendFn(event);event.preventDefault()">
             </div>
             
             <!-- 电影开始暂停功能块 -->
@@ -175,62 +161,68 @@
                     下一句
                 </button>
             </div>
-            <div id="gearframe" class="unselectable" style="position: relative;height:46px;overflow: hidden;border-width: 0 0 1px 0; border-color: #827e7e;border-style: solid;">
-                <div id="gear" class="unselectable" style="height:0;border-width:23px 0;border-style:dashed;border-color: #d8d8d8;width:5000px;position: absolute;left:-2500px;cursor: pointer;"
-                    ontouchstart="
-                        var touch = event.targetTouches[0];
-                        this.startX = touch.pageX;
-                        this.startY = touch.pageY;
-                        pauseVideo()
-                    "
-                    ontouchmove="
-                        var touch = event.targetTouches[0];
-                        this.endX = touch.pageX;
-                        this.endY = touch.pageY;
-                        var distanceX=endX-this.startX;
-                        var distanceY=endY-this.startY;
-                        console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+            <div id="gearframe1" style="position: relative;">
+                <div id="gearframe" class="unselectable" style="position: relative;height:46px;overflow: hidden;border-width: 0 0 1px 0; border-color: #827e7e;border-style: solid;">
+                    <div id="gear" class="unselectable" style="height:0;border-width:23px 0;border-style:dashed;border-color: #d8d8d8;width:5000px;position: absolute;left:-2500px;cursor: pointer;"
+                        ontouchstart="
+                            var touch = event.targetTouches[0];
+                            this.startX = touch.pageX;
+                            this.startY = touch.pageY;
+                            pauseVideo()
+                        "
+                        ontouchmove="
+                            var touch = event.targetTouches[0];
+                            this.endX = touch.pageX;
+                            this.endY = touch.pageY;
+                            var distanceX=endX-this.startX;
+                            var distanceY=endY-this.startY;
+                            console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
-                        if(this.lastDist==null||this.lastDist==undefined)
+                            if(this.lastDist==null||this.lastDist==undefined)
+                                this.lastDist=distanceX;
+                            var dd = distanceX-this.lastDist;
                             this.lastDist=distanceX;
-                        var dd = distanceX-this.lastDist;
-                        this.lastDist=distanceX;
-                        var left = parseInt(this.style.left.replace('px'))+dd;
-                        if(left <=0 && left>=-4900)
-                            this.style.left=left+'px';
-                        if(!this.xx)
+                            var left = parseInt(this.style.left.replace('px'))+dd;
+                            if(left <=0 && left>=-4900)
+                                this.style.left=left+'px';
+                            if(!this.xx)
+                                this.xx=0
+                            this.xx=this.xx+dd;
+                            var wno = null;
+                            if(this.xx>30){
+                                wno = currwordno
+                                wno++;
+                            }else if(this.xx < -30){
+                                wno = currwordno
+                                wno--;
+                            }
+                            if(wno != null){
+                                if(wno<1)
+                                    wno=_this.en.currentwords.length;
+                                if(wno>_this.en.currentwords.length)
+                                    wno=1
+                                locateWord(wno)
+                                this.xx=0
+                            }
+                            event.preventDefault()
+                        "
+                        ontouchend="
+                            this.lastDist=null
                             this.xx=0
-                        this.xx=this.xx+dd;
-                        var wno = null;
-                        if(this.xx>30){
-                            wno = currwordno
-                            wno++;
-                        }else if(this.xx < -30){
-                            wno = currwordno
-                            wno--;
-                        }
-                        if(wno != null){
-                            if(wno<1)
-                                wno=_this.en.currentwords.length;
-                            if(wno>_this.en.currentwords.length)
-                                wno=1
-                            locateWord(wno)
-                            this.xx=0
-                        }
-                        event.preventDefault()
-                    "
-                    ontouchend="
-                        this.lastDist=null
-                        this.xx=0
-                    "
-                    >
+                        "
+                        >
+                    </div>
                 </div>
+                <img id="finger" src="./img/finger.svg" style="position:absolute;left:50%;transform: translateX(-50%);top:45%;width:40px;"/>
             </div>
-            
             <!-- 字幕控制显示组件块 -->
             <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 0px 0px;">
                 <button id="hideBtn" class="unselectable" onclick="enSubtitlesShow()" style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     HIDE
+                </button>
+                <button class="unselectable" style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;"
+                    onclick="search()">
+                    <img src="./img/search.svg" style="width:15px;height: 14px;"/>
                 </button>
                 <button onclick="chShowDialog()" class="unselectable" style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     整句
@@ -285,8 +277,7 @@
                     </div>
                 </div>
             </div>
-            <div class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
-                电脑快捷键: q,w,e,a,s,d,space,enter
+            <div id="pcrecommand" class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
             </div>
         </div>
         <div  class="unselectable" style="display: none;">

@@ -101,12 +101,13 @@
                     <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
                 </li> -->
             </ul>
-            <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:20px;font-size:0;background-color: #ececec;display:none;">
+            <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:20px;font-size:0;background-color: #ececec;">
                 <span id="msg" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:90%;height:100%;display:inline-block;font-size:14px;color:#4a4a4a;
                                 box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;"
                     onclick="
                         alert(this.innerText)
                     ">
+                    您可以在此留言
                 </span>
                 <span  style="width:10%;height:100%;display:inline-block;background-color: #b3b3b3;font-size:14px;cursor: pointer;text-align: center;color:#4a4a4a;font-weight: 900;
                         vertical-align: middle;"
@@ -163,7 +164,6 @@
                             $('#msg').text("系统: "+msg.text)
                         else
                             $('#msg').text("网友: "+msg.text)
-                        $('#msgframe').show()
                     }
                 }
             })
