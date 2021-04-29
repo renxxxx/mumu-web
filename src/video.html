@@ -5,6 +5,7 @@
         setInterval(function(){
             navigator.sendBeacon("/mumu/page-on");
         },60000)
+
     </script>
     <head>
         <meta charset="utf-8">
@@ -20,11 +21,18 @@
         <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
-        <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script>      
-        <script src="./page-pre-min.js" type="application/javascript"></script>
+        <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>     
+        <script src="./page-pre.js" type="application/javascript"></script>
         <script>
             if(!isPc()){
                 document.title=location.host + " - mumu"
+            }
+            debugger
+            var haveindex = localStorage.getItem('haveindex')
+            if(!haveindex){
+                localStorage.setItem('redirect',location.href)
+                location.replace('./index.html')
             }
         </script>
     </head>
@@ -284,6 +292,6 @@
             <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
     </body>
-    <script src="./video-post-min.js" type="application/javascript"></script>
-    <script src="./page-post-min.js" type="application/javascript"></script>
+    <script src="./video-post.js" type="application/javascript"></script>
+    <script src="./page-post.js" type="application/javascript"></script>
 </html>

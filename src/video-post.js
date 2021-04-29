@@ -39,7 +39,7 @@ function getVideo(){
         url: '/mumu/video?',
         type: 'get',
         data: 'videoNo='+videoNo,
-        async: true,
+        async: false,
         success: function(res) {
             video=res.data.video;
             if(video.height && video.width){
@@ -310,7 +310,7 @@ function setline(item){
         var vv = _v[i].split('\\n');
         if(vv[0])
             $("#zh_subtitles").append(
-                '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseover="this.ttt=setTimeout(function(){pauseVideo();locateWord('+(i+1)+');},100)" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>'
+                '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseout="$(this).css(\'border-bottom\',\'\')" onmouseover="$(this).css(\'border-bottom\',\'2px solid black\')" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>'
             )
         if(vv[1]){
             _v.splice(i+1,0,vv[1])
@@ -488,15 +488,17 @@ function translatee(_data){
                 $('#summtrans-vv').html('').scrollTop(0)
                 if(res.data.translations){
                     $(res.data.translations).each(function(index,item){
-                        $('#summtrans-vv').append(`<div>${item}</div>`)
+                        $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                     })
                 }
                 if(res.data.webTranslations){
                     $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
                     $(res.data.webTranslations).each(function(index,item){
-                        $('#summtrans-vv').append(`<div>${item}</div>`)
+                        $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                     })
                 }
+
+                
                 $('#summtrans-vv').show()
                 $('#summtrans-value').show()
                 $('#summtrans').show()
@@ -912,6 +914,7 @@ document.onfocus = function(){
 window.onbeforeunload=function(){
     console.log('onbeforeunload')
     navigator.sendBeacon("/mumu/page-out");
+    localStorage.removeItem('havindex')
 }
 var lastTouchEnd;
 document.addEventListener('touchend', function(event) {
@@ -954,4 +957,52 @@ function search(){
         $('#video').css('top','-1000px')
         pauseVideo();
     }
+}
+
+
+$.get('/mumu/wxjsapiticket',(res)=>{
+    $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
+        console.log(JSON.stringify(res));
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: res.data.appid, // 必填，公众号的唯一标识
+            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+            nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+            signature:  res.data.signature,// 必填，签名
+            jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+        });
+    })
+})
+
+wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+    wx.updateAppMessageShareData({ 
+        title: video.name, // 分享标题
+        desc: 'renx.cc', // 分享描述
+        link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+        success: function () {
+            // 设置成功
+        }
+    })
+
+    wx.updateTimelineShareData({ 
+        title: video.name, // 分享标题
+        desc: 'renx.cc', // 分享描述
+        link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+        success: function () {
+        // 设置成功
+        }
+    })
+});
+
+function lightkeytrans(ss){
+    if(!ss)
+        return ss
+    var sss= ss.match(/(\w*)\s*?(的过去|的现在|的复数|的第三|的ing)/)
+    if(!sss)
+        return ss
+    sss[1]
+    ss = ss.replace(sss[1],`<span style="text-decoration: underline;cursor:pointer;" onclick="translatee('${sss[1]}')">${sss[1]}</span>`)
+    return ss;
 }

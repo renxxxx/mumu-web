@@ -5,6 +5,7 @@
         setInterval(function(){
             navigator.sendBeacon("/mumu/page-on");
         },60000)
+       
     </script>
     <head>
         <meta charset="utf-8">
@@ -20,11 +21,20 @@
         <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
-        <script src="./page-pre-min.js" type="application/javascript"></script>
+        <script src="./page-pre.js" type="application/javascript"></script>
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
         <script>
             if(!isPc()){
                 document.title=location.host + " - 幕幕"
             }
+            debugger
+            localStorage.setItem('havindex',1)
+
+            var redirect = localStorage.getItem('redirect')
+            localStorage.removeItem('redirect')
+            if(redirect)
+                location.assign(redirect)
+            
         </script>
         <style>
             /* @media screen and (min-width: 850px) {
@@ -127,7 +137,7 @@
         </div>
     </body>
     
-    <script src="./page-post-min.js" type="application/javascript"></script>
+    <script src="./page-post.js" type="application/javascript"></script>
     <script>
         // if(navigator.geolocation) {
         //     navigator.geolocation.getCurrentPosition(function(position){
@@ -173,7 +183,7 @@
             $.ajax({
                 url: '/mumu/videos?',
                 type: 'get',
-                data: 'kw='+''+'&start='+1+'&pageSize='+10,
+                data: 'kw='+''+'&start='+1+'&pageSize='+30,
                 async: true,
                 success: function(res) {
                     $(res.data.videos).each((inx,item)=>{
@@ -188,7 +198,8 @@
                                     item.type==1?'./img/movie.svg':
                                     item.type==2?'./img/mv.svg':
                                     item.type==4?'./img/speech.svg':
-                                    item.type==3?'./img/ted.svg':''
+                                    item.type==3?'./img/ted.svg':
+                                    item.type==5?'./img/shortmovie.svg':''
                                 }
                             "/></span>`+
                             '<span class="line1" style="margin-left: 5px;">'+item.name+(item.language == 4?' - es':'')+'</span>'+
@@ -226,6 +237,7 @@
         window.onbeforeunload=function(){
             console.log('onbeforeunload')
             navigator.sendBeacon("/mumu/page-out");
+            localStorage.removeItem('havindex')
         }
 
         var lastTouchEnd;
@@ -236,5 +248,41 @@
             }
             lastTouchEnd = now;
         }, false);
+        $.get('/mumu/wxjsapiticket',(res)=>{
+            $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
+                console.log(JSON.stringify(res));
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.data.appid, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+                    signature:  res.data.signature,// 必填，签名
+                    jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+                });
+            })
+        })
+        
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+            wx.updateAppMessageShareData({ 
+                title: '幕幕 - mumu', // 分享标题
+                desc: 'renx.cc', // 分享描述
+                link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
+                    // 设置成功
+                }
+            })
+
+            wx.updateTimelineShareData({ 
+                title: '幕幕 - mumu', // 分享标题
+                desc: 'renx.cc', // 分享描述
+                link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
+                // 设置成功
+                }
+            })
+        });
     </script>
+    
 </html>
