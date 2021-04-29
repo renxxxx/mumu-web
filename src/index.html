@@ -23,18 +23,12 @@
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script src="./page-pre.js" type="application/javascript"></script>
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.js" type="application/javascript"></script>
+        <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.css" type="text/css" rel="stylesheet" />
         <script>
             if(!isPc()){
                 document.title=location.host + " - 幕幕"
             }
-            debugger
-            localStorage.setItem('havindex',1)
-
-            var redirect = localStorage.getItem('redirect')
-            localStorage.removeItem('redirect')
-            if(redirect)
-                location.assign(redirect)
-            
         </script>
         <style>
             /* @media screen and (min-width: 850px) {
@@ -113,11 +107,11 @@
             </ul>
             <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:20px;font-size:0;background-color: #ececec;">
                 <span id="msg" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:90%;height:100%;display:inline-block;font-size:14px;color:#4a4a4a;
-                                box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;"
-                    onclick="
-                        alert(this.innerText)
-                    ">
-                    您可以在此留言
+                                box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;">
+                    您可以在此留言, 或联系我<span id="wxqrcode"><img  src="./img/wxqrcode.jpg" style="width:20px;height:20px;cursor: pointer;vertical-align: bottom;" 
+                        onclick="
+                            $('#wxqrcode').viewer({title:false});
+                        " /></span>
                 </span>
                 <span  style="width:10%;height:100%;display:inline-block;background-color: #b3b3b3;font-size:14px;cursor: pointer;text-align: center;color:#4a4a4a;font-weight: 900;
                         vertical-align: middle;"
@@ -237,7 +231,6 @@
         window.onbeforeunload=function(){
             console.log('onbeforeunload')
             navigator.sendBeacon("/mumu/page-out");
-            localStorage.removeItem('havindex')
         }
 
         var lastTouchEnd;
@@ -257,7 +250,7 @@
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
                     signature:  res.data.signature,// 必填，签名
-                    jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+                    jsApiList: ['updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
                 });
             })
         })
@@ -275,7 +268,6 @@
 
             wx.updateTimelineShareData({ 
                 title: '幕幕 - mumu', // 分享标题
-                desc: 'renx.cc', // 分享描述
                 link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -283,6 +275,7 @@
                 }
             })
         });
+
     </script>
     
 </html>
