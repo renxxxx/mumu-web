@@ -410,7 +410,7 @@ function addhistoryword(word){
     var historywordele = $('#historyword_template').clone()
     historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
     historywordele.text(word)
-    historywordele.show()
+    historywordele.css('display','inline-block')
     $('#historywordspad').prepend(historywordele)
     localStorage.setItem('historywords',JSON.stringify(historywords))
 }
@@ -424,6 +424,7 @@ function showallhistorywords(){
         var historywordele = $('#historyword_template').clone()
         historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
         historywordele.text(word)
+        historywordele.css('display','inline-block')
         historywordele.show()
         $('#historywordspad').append(historywordele)
     }
