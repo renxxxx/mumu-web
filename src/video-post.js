@@ -4,6 +4,8 @@ $("#finger,gear").animate({left:'+=150px'},2000,function(){
 $("#gear").animate({left:'+=150px'},2000,function(){
     $("#gear").animate({left:'-=300px'},2000);
 });
+var historywords=[]
+showallhistorywords()
 
 var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
 var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
@@ -298,9 +300,11 @@ function getEnSubtitles(_result){
     }
     $('#video').attr("src",video.url)
 }
+
 function setline(item){
     if(!item)
         return;
+    
     console.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
     localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
     localStorage.setItem("currentIndex-"+videoNo,_this.en.currentIndex)
@@ -397,6 +401,40 @@ function nextline(){
     }
 }
 
+function addhistoryword(word){
+    historywords=historywords?historywords:[]
+    var i = historywords.indexOf(word);
+    if(i>-1)
+        historywords.splice(i,1)
+    historywords.unshift(word)
+    var historywordele = $('#historyword_template').clone()
+    historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
+    historywordele.text(word)
+    historywordele.show()
+    $('#historywordspad').prepend(historywordele)
+    localStorage.setItem('historywords',JSON.stringify(historywords))
+}
+
+function showallhistorywords(){
+    var historywordsstr = localStorage.getItem('historywords')
+    if(historywordsstr)
+        historywords=JSON.parse(historywordsstr)
+    for (let index = 0; index < historywords.length; index++) {
+        const word = historywords[index];
+        var historywordele = $('#historyword_template').clone()
+        historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
+        historywordele.text(word)
+        historywordele.show()
+        $('#historywordspad').append(historywordele)
+    }
+}
+
+function removehistoryword(word){
+    var i = historywords.indexOf(word)
+    if(i>-1)
+        historywords.splice(i,1)
+    $('#historyword-'+word.replace(/[^\w]/g, '')).remove()
+}
 
 function translatee(_data){
     _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
@@ -788,6 +826,10 @@ function choooseEnd(_value){
     // && _this.translationtext != _data && translationtext.indexOf(_data)<0
     if(_data){
         _this.translationtext = _data;
+        if(_data.split(' ').length==1){
+            removehistoryword(_data)
+            addhistoryword(_data)
+        }
         translatee(_data)
     }else{
         _this.translationtext = ""
@@ -837,20 +879,20 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
         case '13'://enter
             search();
     　　　　 break;
-        case '113'://Q
-        case '81'://q
+        case '97'://A
+        case '65'://a
             if(document.activeElement == $('#word-in')[0])
                 return;
             prevline()
     　　　　 break;
-        case '119'://W
-        case '87'://w
+        case '115'://S
+        case '83'://s
             if(document.activeElement == $('#word-in')[0])
                 return;
             currline()
     　　　　 break; 
-        case '115'://S
-        case '83'://s
+        case '119'://W
+        case '87'://w
             if(document.activeElement == $('#word-in')[0])
                 return;
             if($('.chDialog').is(":hidden"))
@@ -858,14 +900,14 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
             else
                 chHideDialog()
     　　　　 break;
-        case '101'://E
-        case '69'://e
+        case '100'://D
+        case '68'://d
             if(document.activeElement == $('#word-in')[0])
                 return;
             nextline()
     　　　　 break;
-        case '97'://A
-        case '65'://a
+        case '113'://Q
+        case '81'://q
             if(document.activeElement == $('#word-in')[0])
                 return;
             if(currwordno<=1)
@@ -874,8 +916,8 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
                 currwordno--;
             locateWord(currwordno)
     　　　　 break;
-        case '100'://D
-        case '68'://d
+        case '101'://E
+        case '69'://e
             if(document.activeElement == $('#word-in')[0])
                 return;
             currwordno++;
@@ -900,7 +942,13 @@ function locateWord(no){
     $('#summtrans-word').show()
     if(currwordno>0){
         $('#wordsframe').hide()
-        translatee(_this.en.currentwords[currwordno-1])
+        var word = _this.en.currentwords[currwordno-1];
+        translatee(word)
+        clearTimeout(window.timeoutdo2)
+        window.timeoutdo2= setTimeout(()=>{
+            removehistoryword(word)
+            addhistoryword(word)
+        },500)
     }
 }
 
@@ -931,7 +979,7 @@ onresize()
 function onresize(){
     if(isPc()){
         $('#gearframe1').hide()
-        $('#pcrecommand').text('翻译快捷键(a,s,d,enter) 控制快捷键(q,w,e,space)')
+        $('#pcrecommand').text('控制键(a,s,d,space) 翻译键(q,w,e,enter)')
     }else{
         $('#gearframe1').show()
         $('#pcrecommand').text('PC端操作更方便')
@@ -1008,3 +1056,4 @@ function lightkeytrans(ss){
     ss = ss.replace(sss[1],`<span style="text-decoration: underline;cursor:pointer;" onclick="translatee('${sss[1]}')">${sss[1]}</span>`)
     return ss;
 }
+

@@ -40,7 +40,7 @@
                 onmouseout="$('#video').attr('controls', false);" oncanplay="onCanPlay()" ondurationchange="onDurationChange()" onloadeddata="onLoadedData()" onloadstart="onLoadStart()"
                 onplaying="onPlaying()" onprogress="onProgress()" onreadystatechange="onReadyStateChange()" onsuspend="onSuspend()" ontimeupdate="onTimeUpdate()" onwaiting="onWaiting()"
                 onclick="onClick();" onloadedmetadata="onLoadedMetadata()" ontouchend="$('#video').attr('controls', true);" onfocus="$('#video').attr('controls', true);" onblur="$('#video').attr('controls', false);"
-                style="background: #000000;display: block;position: relative;"
+                style="background: #000000;display: block;position: relative;margin-bottom:5px;"
                 >
             </video>
 
@@ -126,13 +126,17 @@
                                 $('#word-in').val('')
                                 $('#words .word').remove()
                                 translatee(this.item.q)
+                                removehistoryword(this.item.q)
+                                addhistoryword(this.item.q)
                             ">
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;margin-top:5px;"  
-                ontouchstart="touchstartFn(event);event.preventDefault()" ontouchmove="touchmoveFn(event);event.preventDefault()" ontouchend="touchendFn(event);event.preventDefault()">
+            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;"  
+                ontouchstart="touchstartFn(event);event.preventDefault()" 
+                ontouchmove="touchmoveFn(event);event.preventDefault()" 
+                ontouchend="touchendFn(event);event.preventDefault()">
             </div>
             
             <!-- 电影开始暂停功能块 -->
@@ -218,17 +222,40 @@
                 <img id="finger" src="./img/finger.svg" style="position:absolute;left:50%;transform: translateX(-50%);top:45%;width:40px;"/>
             </div>
             <!-- 字幕控制显示组件块 -->
-            <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 0px 0px;">
-                <button id="hideBtn" class="unselectable" onclick="enSubtitlesShow()" style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
+            <div style="justify-content: center;display: flex;margin: 10px 0px 0px 0px;height: 20px;">
+                <button onclick="
+                            debugger
+                            $('#video')[0].currentTime=0
+                            _this.en.currentIndex=0
+                            _this.en.current=_this.en.subtitlesList[0]
+                            currline();
+                            playVideo()
+                        " class="unselectable" 
+                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;
+                        border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
+                    重播
+                </button>
+                <button id="hideBtn" class="unselectable" onclick="enSubtitlesShow()" 
+                    style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;
+                        border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     HIDE
                 </button>
                 <button class="unselectable" style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;"
                     onclick="search()">
                     <img src="./img/search.svg" style="width:15px;height: 14px;"/>
                 </button>
-                <button onclick="chShowDialog()" class="unselectable" style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
+                <button onclick="chShowDialog()" class="unselectable" 
+                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;
+                        border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     整句
                 </button>
+                <button onclick="chShowDialog()" class="unselectable" style="visibility: hidden;cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
+                    整句
+                </button>
+            </div>
+            <div id="historywordspad" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: hidden;">
+                <span id="historyword_template" style="font-size:14px;display:none;margin-right:10px;display: inline-block;cursor: pointer;margin-bottom:5px;color:#9f9f9f;" 
+                    onclick="pauseVideo();translatee(this.innerText);"></span>
             </div>
             <!-- 循环字幕功能块 -->
             <!-- <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 10px 0px;">
@@ -281,15 +308,16 @@
             </div>
             <div id="pcrecommand" class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
             </div>
+            <div style="font-size:16px;width:90px;height:25px;line-height:25px;position: absolute;right:0;bottom:0;cursor: pointer;
+                border-style:solid;border-width:1px 0 0 1px;border-color: #acacac;color: #acacac;text-align: center;border-radius: 3px 0 0 0;"
+                onclick="location.href='./index.html'">
+                返回主页
+            </div>
         </div>
         <div  class="unselectable" style="display: none;">
             <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
-        <div style="font-size:16px;width:90px;height:25px;line-height:25px;position: absolute;right:0;bottom:0;cursor: pointer;
-                border-style:solid;border-width:1px 0 0 1px;border-color: #acacac;color: #acacac;text-align: center;border-radius: 3px 0 0 0;"
-            onclick="location.href='./index.html'">
-            返回主页
-        </div>
+        
     </body>
     <script src="./video-post.js" type="application/javascript"></script>
     <script src="./page-post.js" type="application/javascript"></script>
