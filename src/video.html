@@ -30,41 +30,26 @@
             }
         </script>
     </head>
-    <body style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" onresize="onresize()">
+    <body style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
         <div id="index" style="max-width:850px;height:100%;margin: auto;position:relative;background-color: #ffffff;" >
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <!-- 视频块 -->
-             <video controls x5-playsinline="" playsinline="" controls360=no webkit-playsinline="" width="100%" id="video" onplay="videoPlay()" onpause="videoPause()" poster=""  preload="preload"  onmouseover="$('#video').attr('controls', true);" 
-                onmouseout="$('#video').attr('controls', false);" oncanplay="onCanPlay()" ondurationchange="onDurationChange()" onloadeddata="onLoadedData()" onloadstart="onLoadStart()"
-                onplaying="onPlaying()" onprogress="onProgress()" onreadystatechange="onReadyStateChange()" onsuspend="onSuspend()" ontimeupdate="onTimeUpdate()" onwaiting="onWaiting()"
-                onclick="onClick();" onloadedmetadata="onLoadedMetadata()" ontouchend="$('#video').attr('controls', true);" onfocus="$('#video').attr('controls', true);" onblur="$('#video').attr('controls', false);"
-                style="background: #000000;display: block;position: relative;margin-bottom:5px;"
-                >
+             <video controls x5-playsinline="" playsinline="" controls360=no webkit-playsinline="" width="100%" id="video" poster="" preload="preload" 
+                style="background: #000000;display: block;position: relative;margin-bottom:5px;">
             </video>
 
             <div id="summtrans" 
                 style="z-index:999999;box-sizing: border-box;font-size:0;background-color: #000000;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
-                <div id="summtrans-word" style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;"
-                    onclick="
-                         $('#summtrans').hide()
-                        $('#wordsframe').show()
-                        $('#word-in').val(this.innerText).focus()
-                        $('#word-in').trigger('input')
-                    ">
+                <div id="summtrans-word" 
+                    style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;
+                        line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
                 </div>
                 <div style="height: 20px;line-height: 20px;">
                     <span id="summtrans-phonetic" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
-                    <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"
-                        onclick="
-                            if(!this.audio){
-                                this.audio=new Audio();
-                            }
-                            this.audio.src=$(this).attr('play-url')
-                            this.audio.play()
-                        ">
+                    <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200">
                         <defs><style type="text/css"/></defs>
                         <path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/>
                         <path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/>
@@ -80,179 +65,76 @@
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
                 <input id="word-in" autocomplete="off" 
                     style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
-                        background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;"
-                    oninput="
-                        var tag = this
-                        var value  =this.value
-                        if(value){
-                            $.ajax({
-                                url:'/mumu/words',
-                                method:'get',
-                                data:{
-                                    kw:value,
-                                    start:1,
-                                    pageSize:10,
-                                    from:video.language,
-                                    to:2
-                                },
-                                success:function(res){
-                                    if(tag.value==value){
-                                        $('#words .word').remove()
-                                        var words = res.data.words
-                                        $(words).each((inx,item)=>{
-                                            var wordele = $('#wordtempl').clone(true)
-                                            wordele[0].item=item
-                                            wordele.attr('id','word'+(inx+1))
-                                            wordele.addClass('word')
-                                            wordele.text(item.q+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain1||'')+(item.explain2?' | ':'')+(item.explain2||'')+(item.explain3?' | ':'')
-                                                +(item.explain3||'')+(item.explain4?' | ':'')+(item.explain4||'')+(item.explain5?' | ':'')+(item.explain5||''))
-                                            $('#words').append(wordele)
-                                            wordele.show();
-                                        })
-                                    }
-                                }
-                            })
-                        }else{
-                            $('#words .word').remove();
-                        }
-                        
-                    "
-                    />
+                        background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;"/>
                 <div id="wordss" style="font-size:14px;position:absolute;top:27px;bottom:0;left:0;right:0;padding:3px 10px 5px 10px;">
                     <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
-                        <div id="wordtempl" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" 
-                            onclick="
-                                $('#wordsframe').hide()
-                                $('#word-in').val('')
-                                $('#words .word').remove()
-                                translatee(this.item.q)
-                                removehistoryword(this.item.q)
-                                addhistoryword(this.item.q)
-                            ">
+                        <div id="wordtempl" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" >
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;"  
-                ontouchstart="touchstartFn(event);event.preventDefault()" 
-                ontouchmove="touchmoveFn(event);event.preventDefault()" 
-                ontouchend="touchendFn(event);event.preventDefault()">
+            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;" >
             </div>
             
             <!-- 电影开始暂停功能块 -->
             <div style="box-sizing: border-box;text-align: center;margin-top: 5px;">
-                <button  class="startFn unselectable" onclick="playVideo();$('#video').attr('controls', false);                " 
+                <button id="startFn"  class="startFn unselectable" 
                     style="cursor:pointer;text-align: center;line-height: 40px;padding: 0px;background: white;border: 1px solid #827e7e;
                         font-size: 14px;padding: 0px;width: 100%;height: 40px;border-style:solid none solid none;">
                     <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
                 </button>
-                <button class="stopFn unselectable" 
-                    onclick="
-                        pauseVideo()
-                        $('#video').attr('controls', false);
-                    "  
+                <button id="stopFn" class="stopFn unselectable" 
                     style="cursor:pointer;text-align: center;line-height: 40px;padding: 0px;display: none;background: white;border: 1px solid #827e7e;
                         font-size: 15px;padding: 0px;width: 100%;height: 40px;border-style:solid none solid none;">
                     ||
                 </button>
             </div>
             <div style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;">    
-                <button onclick="prevline()" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
+                <button id="prevline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
                     上一句
                 </button>
-                <button onclick="currline()" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 1px 1px 1px;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style: solid;">
+                <button id="currline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 1px 1px 1px;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style: solid;">
                     本句
                 </button>
-                <button onclick="nextline()" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color:#827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
+                <button id="nextline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color:#827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
                     下一句
                 </button>
             </div>
             <div id="gearframe1" style="position: relative;">
                 <div id="gearframe" class="unselectable" style="position: relative;height:46px;overflow: hidden;border-width: 0 0 1px 0; border-color: #827e7e;border-style: solid;">
-                    <div id="gear" class="unselectable" style="height:0;border-width:23px 0;border-style:dashed;border-color: #d8d8d8;width:5000px;position: absolute;left:-2500px;cursor: pointer;"
-                        ontouchstart="
-                            var touch = event.targetTouches[0];
-                            this.startX = touch.pageX;
-                            this.startY = touch.pageY;
-                            pauseVideo()
-                        "
-                        ontouchmove="
-                            var touch = event.targetTouches[0];
-                            this.endX = touch.pageX;
-                            this.endY = touch.pageY;
-                            var distanceX=endX-this.startX;
-                            var distanceY=endY-this.startY;
-                            console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
-
-                            if(this.lastDist==null||this.lastDist==undefined)
-                                this.lastDist=distanceX;
-                            var dd = distanceX-this.lastDist;
-                            this.lastDist=distanceX;
-                            var left = parseInt(this.style.left.replace('px'))+dd;
-                            if(left <=0 && left>=-4900)
-                                this.style.left=left+'px';
-                            if(!this.xx)
-                                this.xx=0
-                            this.xx=this.xx+dd;
-                            var wno = null;
-                            if(this.xx>30){
-                                wno = currwordno
-                                wno++;
-                            }else if(this.xx < -30){
-                                wno = currwordno
-                                wno--;
-                            }
-                            if(wno != null){
-                                if(wno<1)
-                                    wno=_this.en.currentwords.length;
-                                if(wno>_this.en.currentwords.length)
-                                    wno=1
-                                locateWord(wno)
-                                this.xx=0
-                            }
-                            event.preventDefault()
-                        "
-                        ontouchend="
-                            this.lastDist=null
-                            this.xx=0
-                        "
-                        >
+                    <div id="gear" class="unselectable" 
+                        style="height:0;border-width:23px 0;border-style:dashed;border-color: #d8d8d8;width:5000px;
+                            position: absolute;left:-2500px;cursor: pointer;">
                     </div>
                 </div>
                 <img id="finger" src="./img/finger.svg" style="position:absolute;left:50%;transform: translateX(-50%);top:45%;width:40px;"/>
             </div>
             <!-- 字幕控制显示组件块 -->
             <div style="justify-content: center;display: flex;margin: 10px 0px 0px 0px;height: 20px;">
-                <button onclick="
-                            debugger
-                            $('#video')[0].currentTime=0
-                            _this.en.currentIndex=0
-                            _this.en.current=_this.en.subtitlesList[0]
-                            currline();
-                            playVideo()
-                        " class="unselectable" 
+                <button id="replay" class="unselectable" 
                     style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     重播
                 </button>
-                <button id="hideBtn" class="unselectable" onclick="enSubtitlesShow()" 
+                <button id="hideBtn" class="unselectable"
                     style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     HIDE
                 </button>
-                <button class="unselectable" style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;"
-                    onclick="search()">
+                <button id="searchbtn" class="unselectable" 
+                    style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;
+                        border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     <img src="./img/search.svg" style="width:15px;height: 14px;"/>
                 </button>
-                <button onclick="chShowDialog()" class="unselectable" 
+                <button id="wholebtn" class="unselectable" 
                     style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     整句
                 </button>
             </div>
             <div id="historywordspad" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: hidden;">
-                <span id="historyword_template" style="font-size:14px;display:none;margin-right:10px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;" 
-                    onclick="pauseVideo();translatee(this.innerText);"></span>
+                <span id="historyword_template" style="font-size:14px;display:none;margin-right:10px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
+                </span>
             </div>
             <!-- 循环字幕功能块 -->
             <!-- <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 10px 0px;">
@@ -265,49 +147,16 @@
             </div> -->
             <!-- 中文字幕弹窗块 -->
             
-            <div class="chDialog" onclick="chHideDialog()" style="display:none;position: absolute;background: rgba(0, 0, 0, 0.3);;top: 0;left: 0;right:0;bottom:0;z-index: 999999999;">
+            <div id="chDialog" class="chDialog" style="display:none;position: absolute;background: rgba(0, 0, 0, 0.3);;top: 0;left: 0;right:0;bottom:0;z-index: 999999999;">
                 <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;background: #ffffff;letter-spacing: 0.5px;">
                 </div>
             </div>
-            <div style="display:none;">
-                <div class="dialogTitle" onclick="showSearchFn()" style="font-size:0;height: 40px;background-color: #f3f3f3;cursor: pointer;justify-content: left;min-height:40px;line-height: 40px;width: 100%;">
-                    <svg style="width: 15px;height: 15px;object-fit: cover;padding: 12px 5px 12px 10px;vertical-align: top;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#cecece" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#cecece" p-id="3109"></path></svg>
-                    <span id="kw" style="font-size: 20px;font-weight: bolder;"></span>
-                </div>
-                <div class="dialogSearch" style="display: none;width: 100%;height: 40px;border: 1px solid #000000;justify-content: space-between;box-sizing: border-box;background-color: #ffffff;">
-                    <!--  -->
-                    <div style="height: 100%;width: 100%;box-sizing: border-box;position: relative;">
-                        <input onBlur="hideSearchFn()" onInput="
-                            clearTimeout(tt)
-                            tt = setTimeout(function(){
-                                let kw = $('.searchClass').val();
-                                translatee(kw);
-                            },500)
-                        " style="font-size: 18px;border: none;text-align: left;width: 100%;height: 38px;padding: 0px 10px 0px 10px;box-sizing: border-box;background-color: #f3f3f3;" 
-                        class="searchClass" onkeydown ="searchFn(event)" type="input" >
-                        <!-- <svg onclick="searchClearFn()" style="width: 15px;height: 15px;object-fit: cover;cursor: pointer;position: absolute;right: 6px;top: 9px;" t="1614847724921" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2158" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M803.84 863.744c-8.704 0-16.896-3.584-23.552-10.24L512 585.728l-267.264 267.264c-6.656 6.656-14.336 10.24-23.04 10.24-12.288 0-25.088-7.168-39.424-21.504-14.848-14.848-21.504-27.648-21.504-39.936 0-8.704 3.584-16.384 10.752-23.04L438.272 512 170.496 244.224c-25.6-26.112 0-52.736 9.728-62.464 11.776-11.776 25.088-23.04 39.424-23.04 8.192 0 16.384 3.584 24.576 11.264L512 438.272l267.776-267.264c7.168-7.168 15.36-10.752 23.552-10.752 12.288 0 24.064 7.168 40.96 23.552 11.264 11.264 35.328 35.328 9.216 60.928L585.728 512l267.264 267.264c23.04 23.04 9.216 44.032-9.216 62.976-13.824 14.336-27.648 21.504-39.936 21.504z" fill="#2C2C2C" p-id="2159"></path></svg> -->
-                    </div>
-                    <!-- <div onclick="searchFn()" style="cursor: pointer;width: 35px;height: 35px;box-sizing: border-box;text-align: center;line-height: 30px;border: none;">
-                        <svg  style="width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" t="1614838488004" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3107" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M431.616 791.04c-209.408 0-379.904-170.496-379.904-379.904S222.208 31.232 431.616 31.232 811.52 201.728 811.52 411.136 641.024 791.04 431.616 791.04z m0-693.248c-172.544 0-313.344 140.288-313.344 313.344 0 172.544 140.288 313.344 313.344 313.344 172.544 0 313.344-140.288 313.344-313.344 0-172.544-140.8-313.344-313.344-313.344z" fill="#707070" p-id="3108"></path><path d="M676.864 660.48l278.528 278.528c12.8 12.8 12.8 34.304 0 47.104-12.8 12.8-34.304 12.8-47.104 0L629.76 707.584c-12.8-12.8-12.8-34.304 0-47.104 12.8-12.8 34.304-12.8 47.104 0z" fill="#707070" p-id="3109"></path></svg>
-                    </div> -->
-                </div>
-                <div class="dialog" style="display:none;background: white;max-width: 100%;border:none;box-shadow: 0px 0px 0px #888383;padding: 0 10px;box-sizing: border-box;">
-                    
-                    <div style="font-size: 14px;margin-top: 3px;" class="yibiao">
-                        
-                    </div>  
-                    <div style="font-size: 14px;margin:5px 0 0 0;">
-                        <div class="fanyi">
-    
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
             <div id="pcrecommand" class="unselectable" style="color: #827e7e;position: absolute;bottom:0;font-size:14px;">
             </div>
-            <div style="font-size:16px;width:90px;height:25px;line-height:25px;position: absolute;right:0;bottom:0;cursor: pointer;
-                border-style:solid;border-width:1px 0 0 1px;border-color: #acacac;color: #acacac;text-align: center;border-radius: 3px 0 0 0;"
-                onclick="location.href='./index.html'">
+            <div    style="font-size:16px;width:90px;height:25px;line-height:25px;position: absolute;right:0;bottom:0;cursor: pointer;
+                        border-style:solid;border-width:1px 0 0 1px;border-color: #acacac;color: #acacac;text-align: center;border-radius: 3px 0 0 0;"
+                    onclick="location.href='./index.html'">
                 返回主页
             </div>
         </div>
@@ -316,6 +165,6 @@
         </div>
         
     </body>
-    <script src="./video-post.js" type="application/javascript"></script>
+    <script src="./video-post.min.js" type="application/javascript"></script>
     <script src="./page-post.js" type="application/javascript"></script>
 </html>

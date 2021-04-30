@@ -5,7 +5,6 @@ $("#gear").animate({left:'+=150px'},2000,function(){
     $("#gear").animate({left:'-=300px'},2000);
 });
 var historywords=[]
-showallhistorywords()
 
 var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
 var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
@@ -28,14 +27,21 @@ en = {
     currentIndex:currentIndex
 },
 chooseDomList = [],translationtext = '';
-var _this=window;
+
+setline=setline
 var videoele=$('#video')[0];
 if(currentCaption)
-    _this.setline(currentCaption);
+    setline(currentCaption);
 init();
 function init(){
     getVideo();
 }
+
+$('#historyword_template').bind('click',function(event){
+    pauseVideo();
+    translatee1(this.innerText);
+})
+showallhistorywords()
 function getVideo(){
     $.ajax({
         url: '/mumu/video?',
@@ -93,45 +99,45 @@ function playRestore(){
 
 function onCanPlay(){
     console.log("onCanPlay: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     playRestore()
 }
 function onDurationChange(){
     console.log("ondurationchange: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onLoadedMetadata(){
     console.log("onloadedmetadata: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onLoadedData(){
     console.log("onloadeddata: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onLoadStart(){
     console.log("onloadstart: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onPlaying(){
     console.log("onplaying: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onProgress(){
     console.log("onprogress: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onReadyStateChange(){
     console.log("onreadystatechange: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onSuspend(){
     console.log("onsuspend: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 
 function onTimeUpdate(){
     console.log("ontimeupdate: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     restore()
     if(videoele.paused)
         monitor(videoele.currentTime*1000)
@@ -150,35 +156,35 @@ function monitor(_time){
         }
     }
 
-    if(_this.en.current && _this.en.current.startTime<=_time && _time<_this.en.current.endTime){
+    if(en.current && en.current.startTime<=_time && _time<en.current.endTime){
         return;
     }
 
-    var next = _this.en.subtitlesList[_this.en.currentIndex+1]
-    console.log("currentIndex: "+_this.en.currentIndex)
+    var next = en.subtitlesList[en.currentIndex+1]
+    console.log("currentIndex: "+en.currentIndex)
     console.log("next: "+JSON.stringify(next))
     if(next && next.startTime<=_time && _time<next.endTime){
         console.log("next ")
-        _this.en.current = next
-        _this.en.currentIndex++
-        _this.setline(next)
+        en.current = next
+        en.currentIndex++
+        setline(next)
         return;
     }
 
-    if(next && _time < next.startTime &&  (!_this.en.current || _time > _this.en.current.endTime)){
+    if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
         console.log("before next")
-        console.log("next: st: "+next.startTime+" currinx: "+_this.en.currentIndex)
+        console.log("next: st: "+next.startTime+" currinx: "+en.currentIndex)
         return;
     }
 
     
-    $(_this.en.subtitlesList).each(function(inx,item){
+    $(en.subtitlesList).each(function(inx,item){
         if(item.startTime<=_time && _time<item.endTime){
             debugger
             console.log("search all ")
-            _this.en.current = item
-            _this.en.currentIndex = inx
-            _this.setline(item)
+            en.current = item
+            en.currentIndex = inx
+            setline(item)
             return;
         }
     })
@@ -186,11 +192,11 @@ function monitor(_time){
 
 function onWaiting(){
     console.log("onwaiting: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
 }
 function onClick(){
     console.log("onclick: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     $('#video').attr('controls', true);
 }
 
@@ -222,7 +228,7 @@ function searchFn(_value){
     console.log(_value)
     if(_value.keyCode == 13){
         let kw = $('.searchClass').val();
-        translatee(kw);
+        translatee1(kw);
         hideSearchFn()
     }
 }
@@ -249,22 +255,22 @@ function getEnSubtitles(_result){
             if(ss.indexOf('{\\pos')>=0 || st.indexOf('{\\pos')>=0){
                 return;
             }
-            _this.en.subtitlesList.push({
-                startTime : _this.timeCycle(item.split(' --> ')[0].replace(',','.')),
-                endTime : _this.timeCycle(item.split(' --> ')[1].replace(',','.')),
+            en.subtitlesList.push({
+                startTime : timeCycle(item.split(' --> ')[0].replace(',','.')),
+                endTime : timeCycle(item.split(' --> ')[1].replace(',','.')),
                 chValue: st,
                 enValue: ss,
             })
         }
     });
     var iii = null
-    for (let inx = 0; inx < _this.en.subtitlesList.length; inx++) {
+    for (let inx = 0; inx < en.subtitlesList.length; inx++) {
         iii=inx
-        const curr = _this.en.subtitlesList[inx];
-        const next = _this.en.subtitlesList[inx+1];
-        if(inx<_this.en.subtitlesList.length-2){
+        const curr = en.subtitlesList[inx];
+        const next = en.subtitlesList[inx+1];
+        if(inx<en.subtitlesList.length-2){
             if((next.startTime - curr.endTime)>1000){
-                _this.en.subtitlesList.splice(inx+1,0,{
+                en.subtitlesList.splice(inx+1,0,{
                     startTime:parseInt(curr.endTime)+1000,
                     endTime:next.startTime,
                     chValue:'',
@@ -274,29 +280,29 @@ function getEnSubtitles(_result){
         }
     }
    
-    var first = _this.en.subtitlesList[0]
+    var first = en.subtitlesList[0]
     if(first && first.startTime>0){
-        _this.en.subtitlesList.splice(0,0,{
+        en.subtitlesList.splice(0,0,{
                     startTime:0,
                     endTime:first.startTime,
                     chValue:'',
                     enValue:''
                 })
     }
-    var last = _this.en.subtitlesList[_this.en.subtitlesList.length-1]
+    var last = en.subtitlesList[en.subtitlesList.length-1]
     if(last){
-        _this.en.subtitlesList.push({
+        en.subtitlesList.push({
                         startTime:parseInt(last.endTime)+1000,
                         endTime:video.duration*1000,
                         chValue:'',
                         enValue:''
                     })
     }
-    if(_this.en.currentIndex>=0){
-        _this.en.current=_this.en.subtitlesList[_this.en.currentIndex]
-        _this.setline(_this.en.current)
+    if(en.currentIndex>=0){
+        en.current=en.subtitlesList[en.currentIndex]
+        setline(en.current)
     }else{
-        setline(_this.en.subtitlesList[0])
+        setline(en.subtitlesList[0])
     }
     $('#video').attr("src",video.url)
 }
@@ -307,17 +313,25 @@ function setline(item){
     
     console.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
     localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
-    localStorage.setItem("currentIndex-"+videoNo,_this.en.currentIndex)
+    localStorage.setItem("currentIndex-"+videoNo,en.currentIndex)
     ////let _this = this;
     let _v= item.enValue.split(' ');
     $("#zh_subtitles").html('')
-    _this.en.currentwords=_v
+    en.currentwords=_v
     for(let i=0; i < _v.length; i++){
         var vv = _v[i].split('\\n');
-        if(vv[0])
-            $("#zh_subtitles").append(
-                '<span onmousedown="pauseVideo()" ontouchstart="pauseVideo()" onclick="pauseVideo();locateWord('+(i+1)+')" onmouseout="$(this).css(\'border-bottom\',\'\')" onmouseover="$(this).css(\'border-bottom\',\'2px solid black\')" onmouseout="clearTimeout(this.ttt)" style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>'
-            )
+        if(vv[0]){
+            var sp = $('<span style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>')
+            sp.bind('click',function(){
+                pauseVideo()
+                locateWord(i+1)
+            }).bind('mouseout',function(){
+                $(this).css('border-bottom','')
+            }).bind('mouseover',function(){
+                $(this).css('border-bottom','2px solid black')
+            })
+            $("#zh_subtitles").append(sp)
+        }
         if(vv[1]){
             _v.splice(i+1,0,vv[1])
             $("#zh_subtitles").append('<br/>')
@@ -335,21 +349,21 @@ function setline(item){
 }
 function prevline(){
     ////let _this = this;
-    if(_this.en.currentIndex>0){
-        var inx = _this.en.currentIndex
-        var prev = _this.en.subtitlesList[--inx]
+    if(en.currentIndex>0){
+        var inx = en.currentIndex
+        var prev = en.subtitlesList[--inx]
         if(prev){
             if(!prev.enValue)
-                prev = _this.en.subtitlesList[--inx];
+                prev = en.subtitlesList[--inx];
         }
         if(prev){
-            _this.en.currentIndex =inx   
-            _this.en.current= prev
+            en.currentIndex =inx   
+            en.current= prev
             jumpedcaption = prev
             lastCurrentTime = prev.startTime/1000
             $('#video')[0].currentTime = prev.startTime/1000
             console.log("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
-            _this.setline(prev)
+            setline(prev)
             currwordno=0
             chHideDialog()
             $('.dialog').css({'display' : 'none'})
@@ -358,19 +372,19 @@ function prevline(){
     }
 }
 function currline(){
-    var inx = _this.en.currentIndex
-    var curr = _this.en.current
+    var inx = en.currentIndex
+    var curr = en.current
     if(curr){
         if(!curr.enValue)
-            curr = _this.en.subtitlesList[--inx];
+            curr = en.subtitlesList[--inx];
         if(curr){
-            _this.en.currentIndex =inx   
-            _this.en.current= curr
+            en.currentIndex =inx   
+            en.current= curr
             $('#video')[0].currentTime = curr.startTime/1000
             jumpedcaption = curr
             lastCurrentTime = curr.startTime/1000
             console.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
-            _this.setline(curr)
+            setline(curr)
             currwordno=0
         
             chHideDialog()
@@ -380,19 +394,19 @@ function currline(){
     }
 }
 function nextline(){
-    var inx = _this.en.currentIndex
-    var next = _this.en.subtitlesList[++inx]
+    var inx = en.currentIndex
+    var next = en.subtitlesList[++inx]
     if(next){
         if(!next.enValue)
-            next = _this.en.subtitlesList[++inx];
+            next = en.subtitlesList[++inx];
         if(next){
-            _this.en.currentIndex =inx   
-            _this.en.current= next
+            en.currentIndex =inx   
+            en.current= next
             jumpedcaption = next
             lastCurrentTime = next.startTime/1000
             $('#video')[0].currentTime = next.startTime/1000
             console.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
-            _this.setline(next)
+            setline(next)
             currwordno=0
             chHideDialog()
             $('.dialog').css({'display' : 'none'})
@@ -407,7 +421,7 @@ function addhistoryword(word){
     if(i>-1)
         historywords.splice(i,1)
     historywords.unshift(word)
-    var historywordele = $('#historyword_template').clone()
+    var historywordele = $('#historyword_template').clone(true)
     historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
     historywordele.text(word)
     historywordele.css('display','inline-block')
@@ -421,7 +435,7 @@ function showallhistorywords(){
         historywords=JSON.parse(historywordsstr)
     for (let index = 0; index < historywords.length; index++) {
         const word = historywords[index];
-        var historywordele = $('#historyword_template').clone()
+        var historywordele = $('#historyword_template').clone(true)
         historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
         historywordele.text(word)
         historywordele.css('display','inline-block')
@@ -437,7 +451,8 @@ function removehistoryword(word){
     $('#historyword-'+word.replace(/[^\w]/g, '')).remove()
 }
 
-function translatee(_data){
+function translatee1(_data){
+    console.log(_data+3)
     _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
     $('#summtrans').show()
     $('#summtrans-word').text(_data)
@@ -557,7 +572,7 @@ function playVideo(){
 }
 function videoPlay(){
     console.log("onplay: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     $('.dialog').hide()
     $('#summtrans').hide()
     $('#summtrans-word').text('')
@@ -569,12 +584,12 @@ function videoPlay(){
     $('#summtrans-speak').attr('play-src','').hide('')
       
     $('#video').css('top','0px')
-    clearInterval(_this.en.monitor)
-    _this.en.monitor = setInterval(function(){
+    clearInterval(en.monitor)
+    en.monitor = setInterval(function(){
         monitor(videoele.currentTime*1000)
     },10)
     currwordno=0
-    _this.translationtext = '';
+    translationtext = '';
     $('#zh_subtitles span').css({"background": "transparent","color": "black"})
     $('.startFn').css({'display':'none'})
     $('.stopFn').css({'display':'inline'})
@@ -587,8 +602,8 @@ function videoPlay(){
 }
 function videoPause(){
     console.log("onpause: "+ ++runstep)
-    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(_this.en.current && _this.en.current.startTime)+" et: " +(_this.en.current && _this.en.current.endTime)+" "+(_this.en.current&&_this.en.current.enValue.substr(0,5)))
-    clearInterval(_this.en.monitor)
+    console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+    clearInterval(en.monitor)
     $('.stopFn').css({'display':'none'})
     $('.startFn').css({'display':'inline'})
 }
@@ -604,12 +619,12 @@ function enSubtitlesShow(){
     }
 }
 function chShowDialog(){
-    if(!_this.en.current)
+    if(!en.current)
         return;
     //let _this = this
     let _time = $('#video')[0].currentTime*1000
     $('.chDialog').css("display","block")
-    $('.chDialog div').html(_this.en.current.chValue.replace('\\n','</br>'))
+    $('.chDialog div').html(en.current.chValue.replace('\\n','</br>'))
     pauseVideo()
 }
 function chHideDialog(){
@@ -637,7 +652,7 @@ function timeCycle(_value){
 }
 $('#zh_subtitles').mousedown(_ev => {
     //let _this = this
-    _this.moveStata = true;
+    moveStata = true;
     _coordinates = {
         clientX : _ev.clientX,
         clientY : _ev.clientY,
@@ -645,9 +660,9 @@ $('#zh_subtitles').mousedown(_ev => {
         pageY : _ev.pageY
     };
     //console.log(_ev)
-    choooseStart(_this._coordinates); 
+    choooseStart(_coordinates); 
     $("#zh_subtitles").mousemove(_e => {
-        if(_this.moveStata){
+        if(moveStata){
             _coordinates = {
                 clientX : _e.clientX,
                 clientY : _e.clientY,
@@ -655,17 +670,17 @@ $('#zh_subtitles').mousedown(_ev => {
                 pageY : _e.pageY
             };
             // console.log(_e)
-            _this.choooseMove(_this._coordinates); 
+            choooseMove(_coordinates); 
         }
     }).mouseup(function(_up){
-        _this.moveStata = false;
+        moveStata = false;
         _coordinates = {
             clientX : _up.clientX,
             clientY : _up.clientY,
             pageX : _up.pageX,
             pageY : _up.pageY
         };
-        _this.choooseEnd(_this._coordinates);
+        choooseEnd(_coordinates);
         $("#zh_subtitles").unbind('mousemove').unbind('mouseup')
     })
     
@@ -718,9 +733,9 @@ function choooseStart(_value){
     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left+ 5) && ($("#zh_subtitles").offset().top +5)<my && my<(height - 5)){
         if(ele.className.lastIndexOf('font span ')<0){
             // 匹配是否是上次点击的字段
-            // && ele.innerHTML!= translationtext && !_this.chooseDomList.length && translationtext.indexOf(ele.innerHTML)<0
+            // && ele.innerHTML!= translationtext && !chooseDomList.length && translationtext.indexOf(ele.innerHTML)<0
             if(ele.innerHTML!=" "){
-                _this.chooseDomList.push({
+                chooseDomList.push({
                     class:ele.className,
                     value:ele.innerHTML,
                 })
@@ -744,18 +759,18 @@ function choooseMove(_value){
     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left + 5) && ($("#zh_subtitles").offset().top + 5)<my && my<(height - 5)){
         if(ele.className.lastIndexOf('font span ')<0){
             let status = true;
-            _this.chooseDomList.findIndex(function(_value, inx){
+            chooseDomList.findIndex(function(_value, inx){
                 if(_value.class == ele.className){
                     status=false
                 }
             })
             if(status && ele.innerHTML!=" "){
-                if(_this.chooseDomList.length){
-                    let _last = parseInt(_this.chooseDomList[_this.chooseDomList.length-1].class.replace('font span',''));
+                if(chooseDomList.length){
+                    let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
                     let _now = parseInt(ele.className.replace('font span',''));
                     console.log(_now-_last)
                     if( _now == (_last+1)){
-                        _this.chooseDomList.push({
+                        chooseDomList.push({
                             class:ele.className,
                             value:ele.innerHTML,
                         })
@@ -767,7 +782,7 @@ function choooseMove(_value){
                         
                         for(let i = _last; i < _now; i++){
                             $('.span'+i)
-                            _this.chooseDomList.push({
+                            chooseDomList.push({
                                 class:$('.span'+i).attr('class'),
                                 value:$('.span'+i).html(),
                             })
@@ -779,7 +794,7 @@ function choooseMove(_value){
                     }else{
                         for(let i = _now; i < _last; i++){
                             $('.span'+i)
-                            _this.chooseDomList.push({
+                            chooseDomList.push({
                                 class:$('.span'+i).attr('class'),
                                 value:$('.span'+i).html(),
                             })
@@ -790,7 +805,7 @@ function choooseMove(_value){
                         }
                     }
                 }else{
-                    _this.chooseDomList.push({
+                    chooseDomList.push({
                         class:ele.className,
                         value:ele.innerHTML,
                     })
@@ -806,17 +821,17 @@ function choooseMove(_value){
 function choooseEnd(_value){
     ////let _this = this;
     ele = document.elementFromPoint(_value.pageX, _value.pageY);
-    for(let i=0;i<_this.chooseDomList.length-1;i++){
-        for(let j=0;j<_this.chooseDomList.length-i-1;j++){
-            if(parseInt(_this.chooseDomList[j].class.replace('font span',''))>parseInt(_this.chooseDomList[j+1].class.replace('font span',''))){
-                let _swap = _this.chooseDomList[j];
-                _this.chooseDomList[j] = _this.chooseDomList[j+1];
-                _this.chooseDomList[j+1] = _swap;
+    for(let i=0;i<chooseDomList.length-1;i++){
+        for(let j=0;j<chooseDomList.length-i-1;j++){
+            if(parseInt(chooseDomList[j].class.replace('font span',''))>parseInt(chooseDomList[j+1].class.replace('font span',''))){
+                let _swap = chooseDomList[j];
+                chooseDomList[j] = chooseDomList[j+1];
+                chooseDomList[j+1] = _swap;
             }
         }
     }
     let _data = ''
-    $(_this.chooseDomList).each(function(inx,item){
+    $(chooseDomList).each(function(inx,item){
         if(inx>0){
             _data+=' '+item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
         }else{
@@ -824,16 +839,16 @@ function choooseEnd(_value){
         }
     })
     // 匹配是否是上次点击的字段
-    // && _this.translationtext != _data && translationtext.indexOf(_data)<0
+    // && translationtext != _data && translationtext.indexOf(_data)<0
     if(_data){
-        _this.translationtext = _data;
+        translationtext = _data;
         if(_data.split(' ').length==1){
             removehistoryword(_data)
             addhistoryword(_data)
         }
-        translatee(_data)
+        translatee1(_data)
     }else{
-        _this.translationtext = ""
+        translationtext = ""
     }
     $('.searchClass').blur();
 }
@@ -912,7 +927,7 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
             if(document.activeElement == $('#word-in')[0])
                 return;
             if(currwordno<=1)
-                currwordno=_this.en.currentwords.length
+                currwordno=en.currentwords.length
             else
                 currwordno--;
             locateWord(currwordno)
@@ -922,7 +937,7 @@ document.onkeydown = function(event){        //在全局中绑定按下事件
             if(document.activeElement == $('#word-in')[0])
                 return;
             currwordno++;
-            if(currwordno>_this.en.currentwords.length)
+            if(currwordno>en.currentwords.length)
                 currwordno=1
             locateWord(currwordno)
     　　　　 break;
@@ -943,8 +958,11 @@ function locateWord(no){
     $('#summtrans-word').show()
     if(currwordno>0){
         $('#wordsframe').hide()
-        var word = _this.en.currentwords[currwordno-1];
-        translatee(word)
+        var word = en.currentwords[currwordno-1];
+        console.log(word+1)
+        console.log(translatee1)
+        translatee1(word)
+        console.log(word+2)
         clearTimeout(window.timeoutdo2)
         window.timeoutdo2= setTimeout(()=>{
             removehistoryword(word)
@@ -988,12 +1006,14 @@ function onresize(){
     if(video.height && video.width)
         $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
 }
-
+$(document.body).bind('resize',function(){
+    onresize()
+})
 
 function search(){
     if(document.activeElement == $('#word-in')[0]){
         $('#wordsframe').hide()
-        translatee($('#word-in').val())
+        translatee1($('#word-in').val())
         if(!$('#word-in').val()){
             $('#summtrans').hide()
             $('#wordsframe').hide()
@@ -1054,7 +1074,209 @@ function lightkeytrans(ss){
     if(!sss)
         return ss
     sss[1]
-    ss = ss.replace(sss[1],`<span style="text-decoration: underline;cursor:pointer;" onclick="translatee('${sss[1]}')">${sss[1]}</span>`)
+    ss = ss.replace(sss[1],`<span style="text-decoration: underline;cursor:pointer;" onclick="translatee1('${sss[1]}')">${sss[1]}</span>`)
     return ss;
 }
+
+$('#video').bind('play',function(){
+    videoPlay()
+}).bind('pause',function(){
+    videoPause()
+}).bind('mouseover',function(){
+    $('#video').attr('controls', true)
+}).bind('mouseout',function(){
+    $('#video').attr('controls', false)
+}).bind('canplay',function(){
+    onCanPlay()
+}).bind('durationchange',function(){
+    onDurationChange()
+}).bind('loadeddata',function(){
+    onLoadedData()
+}).bind('loadstart',function(){
+    onLoadStart()
+}).bind('playing',function(){
+    onPlaying()
+}).bind('progress',function(){
+    onProgress()
+}).bind('readystatechange',function(){
+    onReadyStateChange()
+}).bind('suspend',function(){
+    onSuspend()
+}).bind('timeupdate',function(){
+    onTimeUpdate()
+}).bind('waiting',function(){
+    onWaiting()
+}).bind('click',function(){
+    onClick()
+}).bind('loadedmetadata',function(){
+    onLoadedMetadata()
+}).bind('touchend',function(){
+    $('#video').attr('controls', true);
+}).bind('focus',function(){
+    $('#video').attr('controls', true)
+}).bind('blur',function(){
+    $('#video').attr('controls', false);
+})
+
+
+$('#summtrans-word').bind('click',function(){
+    $('#summtrans').hide()
+    $('#wordsframe').show()
+    $('#word-in').val(this.innerText).focus()
+    $('#word-in').trigger('input')
+})
+
+$('#summtrans-speak').bind('click',function(){
+    if(!this.audio){
+        this.audio=new Audio();
+    }
+    this.audio.src=$(this).attr('play-url')
+    this.audio.play()
+})
+
+$('#wordtempl').bind('click',function(){
+    $('#wordsframe').hide()
+    $('#word-in').val('')
+    $('#words .word').remove()
+    translatee1(this.item.q)
+    removehistoryword(this.item.q)
+    addhistoryword(this.item.q)
+})
+
+$('#word-in').bind('input',function(){
+    var tag = this
+    var value  =this.value
+    if(value){
+        $.ajax({
+            url:'/mumu/words',
+            method:'get',
+            data:{
+                kw:value,
+                start:1,
+                pageSize:10,
+                from:video.language,
+                to:2
+            },
+            success:function(res){
+                if(tag.value==value){
+                    $('#words .word').remove()
+                    var words = res.data.words
+                    $(words).each((inx,item)=>{
+                        var wordele = $('#wordtempl').clone(true)
+                        wordele[0].item=item
+                        wordele.attr('id','word'+(inx+1))
+                        wordele.addClass('word')
+                        wordele.html(item.q+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain1||'')+(item.explain2?' | ':'')+(item.explain2||'')+(item.explain3?' | ':'')
+                            +(item.explain3||'')+(item.explain4?' | ':'')+(item.explain4||'')+(item.explain5?' | ':'')+(item.explain5||''))
+                        $('#words').append(wordele)
+                        wordele.show();
+                    })
+                }
+            }
+        })
+    }else{
+        $('#words .word').remove();
+    }
+})
+
+
+
+
+
+$('#zh_subtitles').bind('touchstart',function(event){
+    touchstartFn(event);
+    event.preventDefault()
+}).bind('touchmove',function(event){
+    touchmoveFn(event);
+    event.preventDefault()
+}).bind('touchend',function(event){
+    touchendFn(event);
+    event.preventDefault()
+})
+
+$('#startFn').bind('click',function(){
+    playVideo();
+    $('#video').attr('controls', false);
+})
+
+$('#stopFn').bind('click',function(){
+    pauseVideo()
+    $('#video').attr('controls', false);
+})
+
+$('#prevline').bind('click',function(){
+    prevline()
+})
+$('#currline').bind('click',function(){
+    currline()
+})
+$('#nextline').bind('click',function(){
+    nextline()
+})
+
+$('#gear').bind('touchstart',function(event){
+    var touch = event.targetTouches[0];
+    this.startX = touch.pageX;
+    this.startY = touch.pageY;
+    pauseVideo()
+}).bind('touchmove',function(event){
+    var touch = event.targetTouches[0];
+    this.endX = touch.pageX;
+    this.endY = touch.pageY;
+    var distanceX=this.endX-this.startX;
+    var distanceY=this.endY-this.startY;
+    console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+
+    if(this.lastDist==null||this.lastDist==undefined)
+        this.lastDist=distanceX;
+    var dd = distanceX-this.lastDist;
+    this.lastDist=distanceX;
+    var left = parseInt(this.style.left.replace('px'))+dd;
+    if(left <=0 && left>=-4900)
+        this.style.left=left+'px';
+    if(!this.xx)
+        this.xx=0
+    this.xx=this.xx+dd;
+    var wno = null;
+    if(this.xx>30){
+        wno = currwordno
+        wno++;
+    }else if(this.xx < -30){
+        wno = currwordno
+        wno--;
+    }
+    if(wno != null){
+        if(wno<1)
+            wno=en.currentwords.length;
+        if(wno>en.currentwords.length)
+            wno=1
+        locateWord(wno)
+        this.xx=0
+    }
+    event.preventDefault()
+}).bind('touchend',function(event){
+    this.lastDist=null
+    this.xx=0
+})
+
+$('#replay').bind('click',function(event){
+    $('#video')[0].currentTime=0
+    en.currentIndex=0
+    en.current=en.subtitlesList[0]
+    currline();
+    playVideo()
+})
+$('#hideBtn').bind('click',function(event){
+    enSubtitlesShow()
+})
+$('#wholebtn').bind('click',function(event){
+    chShowDialog()
+})
+$('#searchbtn').bind('click',function(event){
+    search()
+})
+
+$('#chDialog').bind('click',function(event){
+    chHideDialog()
+})
 

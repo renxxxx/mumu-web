@@ -12,13 +12,13 @@
 //             "
 //         >反 馈</div>`)
 // }
-
+noDebuger()
 function noDebuger() {
     function testDebuger() {
         var d = new Date();
         debugger;
         if (new Date() - d > 10) {
-            document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;">年轻人，不要太好奇</div>';
+            document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
             return true;
         }
        return false;
