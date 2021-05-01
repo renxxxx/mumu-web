@@ -555,6 +555,9 @@
                         })
                     }
 
+                    $(`.lightkeytrans`).bind('click',function(){
+                        translatee(this.innerText)
+                    })
                     
                     $('#summtrans-vv').show()
                     $('#summtrans-value').show()
@@ -717,6 +720,7 @@
         choooseEnd(_coordinates);
     }
     function choooseStart(_value){
+        pauseVideo()
         console.log(_value)
         console.dir($("#zh_subtitles").height())
         let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
@@ -1070,9 +1074,8 @@
             return ss
         var sss= ss.match(/(\w*)\s*?(的过去|的现在|的复数|的第三|的ing)/)
         if(!sss)
-            return ss
-        sss[1]
-        ss = ss.replace(sss[1],`<span style="text-decoration: underline;cursor:pointer;" onclick="translatee('${sss[1]}')">${sss[1]}</span>`)
+            return ss;
+        ss = ss.replace(sss[1],`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;">${sss[1]}</span>`)
         return ss;
     }
 
