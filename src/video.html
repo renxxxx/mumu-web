@@ -22,7 +22,8 @@
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
-        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>     
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script> 
+        <script src="./log.js" type="application/javascript"></script>    
         <script src="./page-pre.js" type="application/javascript"></script>
         <script>
             if(!isPc()){
@@ -36,7 +37,7 @@
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <!-- 视频块 -->
-             <video controls x5-playsinline="" playsinline="" controls360=no webkit-playsinline="" width="100%" id="video" poster="" preload="preload" 
+             <video controls x5-playsinline="" playsinline="" controls360=no webkit-playsinline="" width="100%" id="video" poster="" preload="preload" autoplay
                 style="background: #000000;display: block;position: relative;margin-bottom:5px;">
             </video>
 
@@ -74,7 +75,7 @@
             
             <!-- 电影开始暂停功能块 -->
             <div style="box-sizing: border-box;text-align: center;margin-top: 5px;">
-                <button id="startFn"  class="startFn unselectable" 
+                <button id="startFn"  class="startFn unselectable"
                     style="cursor:pointer;text-align: center;line-height: 40px;padding: 0px;background: white;border: 1px solid #827e7e;
                         font-size: 14px;padding: 0px;width: 100%;height: 40px;border-style:solid none solid none;">
                     <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
@@ -86,15 +87,15 @@
                 </button>
             </div>
             <div style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;">    
-                <button id="prevline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
+                <span id="prevline" class="unselectable" style="text-align: center;line-height: 40px;cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
                     上一句
-                </button>
-                <button id="currline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 1px 1px 1px;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style: solid;">
+                </span>
+                <span id="currline" class="unselectable" style="text-align: center;line-height: 40px;cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 1px 1px 1px;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style: solid;">
                     本句
-                </button>
-                <button id="nextline" class="unselectable" style="cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color:#827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
+                </span>
+                <span id="nextline" class="unselectable" style="text-align: center;line-height: 40px;cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:0 0 1px 0;border-color:#827e7e;font-size: 12px;padding: 0 5px;border-style:solid;">
                     下一句
-                </button>
+                </span>
             </div>
             <div id="gearframe1" style="position: relative;">
                 <div id="gearframe" class="unselectable" style="position: relative;height:46px;overflow: hidden;border-width: 0 0 1px 0; border-color: #827e7e;border-style: solid;">
@@ -107,26 +108,26 @@
             </div>
             <!-- 字幕控制显示组件块 -->
             <div style="justify-content: center;display: flex;margin: 10px 0px 0px 0px;height: 20px;">
-                <button id="replay" class="unselectable" 
-                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;
+                <span id="replay" class="unselectable" 
+                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     重播
-                </button>
-                <button id="hideBtn" class="unselectable"
-                    style="cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;
+                </span>
+                <span id="hideBtn" class="unselectable"
+                    style="cursor:pointer;margin-right: 35px;padding: 0px;width: 55px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     HIDE
-                </button>
-                <button id="searchbtn" class="unselectable" 
-                    style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;
+                </span>
+                <span id="searchbtn" class="unselectable" 
+                    style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
-                    <img src="./img/search.svg" style="width:15px;height: 14px;"/>
-                </button>
-                <button id="wholebtn" class="unselectable" 
-                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;
+                    <img src="./img/search.svg" style="width:15px;height: 15px;vertical-align: middle;"/>
+                </span>
+                <span id="wholebtn" class="unselectable" 
+                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     整句
-                </button>
+                </span>
             </div>
             <div id="historywordspad" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: hidden;">
                 <span id="historyword_template" style="font-size:14px;display:none;margin-right:10px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
@@ -149,8 +150,8 @@
             </div>
            
             <div id="pcrecommand" class="unselectable" style="color: #acacac;position: absolute;bottom:0;right:0;font-size:14px;display:none;"></div>
-            <div style="font-size:14px;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:0;cursor: pointer;
-                    border-style:solid;border-width:1px 0 0 1px;border-color: #d8d8d8;color: #d8d8d8;text-align: center;"
+            <div style="font-size:14px;width:100%;height:25px;line-height:25px;position: absolute;right:0;bottom:0;cursor: pointer;
+                    border-style:solid;border-width:1px 0 0 0;border-color: #d8d8d8;color: #d8d8d8;text-align: center;"
                 onclick="location.href='./index.html'">
                 返回主页
             </div>

@@ -162,8 +162,6 @@
         }
 
         var next = en.subtitlesList[en.currentIndex+1]
-        console.log("currentIndex: "+en.currentIndex)
-        console.log("next: "+JSON.stringify(next))
         if(next && next.startTime<=_time && _time<next.endTime){
             console.log("next ")
             en.current = next
@@ -239,7 +237,8 @@
         _mp3.play();
     })
     function getEnSubtitles(_result){
-        console.log("getEnSubtitles: "+ ++runstep)
+        log.debug("getEnSubtitles: "+ ++runstep)
+
         ////let _this = this;
         let _fileString = [];
         _fileString = _result.split(/[(\r\n)\r\n]+/);
@@ -311,8 +310,7 @@
     function setline(item){
         if(!item)
             return;
-        
-        console.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
+        log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
         localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
         localStorage.setItem("currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
@@ -610,6 +608,9 @@
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
+        if($('#video')[0].duration==$('#video')[0].currentTime){
+            $('#replay').click()
+        }
     }
     function enSubtitlesShow(){
         var thisEle = this;
@@ -1280,5 +1281,7 @@
     $('#chDialog').bind('click',function(event){
         chHideDialog()
     })
-
+    document.body.addEventListener('click',function(){
+        console.log(event.target)
+    })
 })()
