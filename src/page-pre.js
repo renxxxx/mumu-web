@@ -76,3 +76,7 @@ function O(p_value){
 function o(data){
   return new O(data);
 }
+
+window.onerror=function(message, source, lineno, colno, error){
+  log.info(message+"-"+source+"-"+lineno+"-"+colno+"-"+error)
+}

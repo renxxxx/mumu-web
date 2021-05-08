@@ -1,3 +1,4 @@
+
 (function(){
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
@@ -245,7 +246,7 @@
         _fileString.forEach((item,inx) => {
             let startValue = false
             if(!item){
-            _fileString.splice(inx,1);
+                _fileString.splice(inx,1);
             }
             let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
             let regExp = new RegExp(reg);
@@ -623,13 +624,15 @@
             $('#hideBtn').text("HIDE")
         }
     }
+
+  
     function chShowDialog(){
-        if(!en.current)
+        if(!en.current || !en.current.chValue)
             return;
         //let _this = this
         let _time = $('#video')[0].currentTime*1000
         $('.chDialog').css("display","block")
-        $('.chDialog div').html(en.current.chValue.replace('\\n','</br>'))
+        $('.chDialog div').html(en.current.chValue.replace(/\\n/g,'<br/>'))
         pauseVideo()
     }
     function chHideDialog(){
@@ -1285,3 +1288,4 @@
         console.log(event.target)
     })
 })()
+
