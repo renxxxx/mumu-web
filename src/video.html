@@ -51,14 +51,22 @@
         </style>
     </head>
     <body style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
-        <div id="index" style="max-width:850px;height:100%;margin: auto;position:relative;background-color: #ffffff;" >
+        <div id="index" style="max-width:850px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <!-- 视频块 -->
              <video controls x5-playsinline="" playsinline="" controls360=no webkit-playsinline="" width="100%" id="video" poster="" preload="preload" autoplay
-                style="background: #000000;display: block;position: relative;margin-bottom:5px;">
+                style="background: #000000;display: block;position: relative;display:none;">
             </video>
+
+            
+
+            <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: 1px solid rgba(255, 255, 255, 0.048);">
+                <div style="font-size:20px;font-weight: 900;margin-top:54px;color:#00aeff;">'点击字幕' 或 '拖动滑块'</div>
+                <div style="font-size:20px;font-weight: 900;margin-top:10px;color:#00aeff;">即可查词和词组</div>
+                <div id="hintssec" style="font-size:18px;font-weight: 900;margin-top:10px;color:#00aeff;">3</div>
+            </div>
 
             <div id="summtrans" 
                 style="z-index:999999;box-sizing: border-box;font-size:0;background-color: #000000;width:100%;position:absolute;
@@ -89,7 +97,8 @@
                     </div>
                 </div>
             </div>
-            <div id="zh_subtitles" class="unselectable" style="line-height: 30px;width: 100%;text-align: center;min-height: 62px;background-color: #ffffff;" >
+            <div id="zh_subtitles" class="unselectable" 
+                style="line-height: 30px;width: 100%;text-align: center;min-height: 60px;background-color: #ffffff;margin-top:5px;font-size: 18px;" >
             </div>
             
             <!-- 电影开始暂停功能块 -->
@@ -128,30 +137,31 @@
             <!-- 字幕控制显示组件块 -->
             <div style="justify-content: center;display: flex;margin: 10px 0px 0px 0px;height: 20px;">
                 <span id="replay" class="unselectable" 
-                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;text-align: center;line-height: 20px;
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;margin-right: 35px;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     重播
                 </span>
-                <span id="hideBtn" class="unselectable"
-                    style="cursor:pointer;margin-right: 35px;padding: 0px;width: 55px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
+                <span id="wholebtn" class="unselectable" 
+                    style="font-size: 14px;cursor:pointer;margin-right: 35px;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
-                    HIDE
+                    整句
                 </span>
                 <span id="searchbtn" class="unselectable" 
                     style="line-height: 24px;cursor:pointer;margin-right: 35px;padding: 0px;width: 60px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
                     <img src="./img/search.svg" style="width:15px;height: 15px;vertical-align: middle;"/>
                 </span>
-                <span id="wholebtn" class="unselectable" 
-                    style="cursor:pointer;padding: 0px;width: 50px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
+                <span id="hideBtn" class="unselectable"
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 55px;height: 20px;color: #bfbbbb;text-align: center;line-height: 20px;
                         border: 1px solid #bfbbbb;background: transparent;border-radius: 3px;">
-                    整句
+                    HIDE
                 </span>
             </div>
-            <div id="historywordspad" class="scrollbar" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: auto;">
+            <div id="historywordspad" class="scrollbar" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: auto;position: relative;">
                 <span id="historyword_template" style="font-size:16px;display:none;margin-right:10px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
                 </span>
             </div>
+            
             <!-- 循环字幕功能块 -->
             <!-- <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 10px 0px;">
                 <button style="height: 30px;line-height: 35px;background: transparent;border: none;padding: 0px;box-sizing: border-box;font-size: 18px;">◁</button>
@@ -165,7 +175,7 @@
             
             <div id="chDialog" class="chDialog" style="display:none;position: absolute;background: rgba(0, 0, 0, 0.3);;top: 0;left: 0;right:0;bottom:0;z-index: 999999999;">
                 <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;
-                        background: #ffffff;letter-spacing: 0.5px;"></div>
+                        background: #ffffff;letter-spacing: 0.5px;font-size:20px;"></div>
             </div>
            
             <div id="pcrecommand" class="unselectable" style="color: #acacac;position: absolute;bottom:0;right:0;font-size:14px;display:none;"></div>

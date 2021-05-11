@@ -1,11 +1,16 @@
 
 (function(){
+    window.page={}
+
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
     });
     $("#gear").animate({left:'+=150px'},2000,function(){
         $("#gear").animate({left:'-=300px'},2000);
     });
+
+    
+
     var historywords=[]
 
     var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
@@ -20,15 +25,17 @@
         subtitles : '',
         monitor : '',
         subtitlesList : [],
-    },
-    en = {
+    };
+    var en = {
         subtitles : '',
         monitor : '',
         subtitlesList : [],
         current:currentCaption,
         currentIndex:currentIndex
-    },
-    chooseDomList = [],translationtext = '';
+    }
+    page.en=en
+    var chooseDomList = [];
+    var translationtext = '';
 
     setline=setline
     var videoele=$('#video')[0];
@@ -43,6 +50,34 @@
         pauseVideo();
         translatee(this.innerText);
     })
+
+
+    function guide(){
+        var translateed = localStorage.getItem('translateed')
+        if(!translateed){
+            pauseVideo()
+            $('#video').hide()
+            $('#hints').css('height',$('#video').css('height')).show()
+            setTimeout(function(){
+                $('#hints').fadeOut(1000,function(){
+                    $('#video').show()
+                    playVideo()
+                });
+            },3000)
+            var ccc = setInterval(function(){
+                var sec = $('#hintssec').text()-1;
+                if(sec<1){
+                    clearInterval(ccc)
+                }else {
+                    $('#hintssec').text(sec)
+                }
+            },1000)
+            
+        }else{
+            $('#video').show()
+            playVideo()
+        }
+    }
     showallhistorywords()
     function getVideo(){
         $.ajax({
@@ -53,10 +88,12 @@
             success: function(res) {
                 video=res.data.video;
                 if(video.height && video.width){
-                    $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
+                    var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
+                    $('#video').css('height',videoheight)
                     $('#summtrans').css('height',$('#video').css('height'))
                     $('#wordsframe').css('height',$('#video').css('height'))
                 }
+                guide()
                 $.ajax({
                     url: video.captionUrl,
                     type: 'get',
@@ -70,17 +107,14 @@
     }
     function restore(){
         if(!restored){
-            console.log("1");
             if(lastCurrentTime == 0){
                 restored=1;
                 return;
             }
             if(lastCurrentTime){
-                console.log("2");
                 $('#video')[0].currentTime = lastCurrentTime;
                 console.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime){
-                    console.log("3");
                     restored=1;
                 }
             }
@@ -100,46 +134,44 @@
 
 
     function onCanPlay(){
-        console.log("onCanPlay: "+ ++runstep)
+        log.debug("onCanPlay: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         playRestore()
     }
     function onDurationChange(){
-        console.log("ondurationchange: "+ ++runstep)
+        log.debug("ondurationchange: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedMetadata(){
-        console.log("onloadedmetadata: "+ ++runstep)
+        log.debug("onloadedmetadata: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedData(){
-        console.log("onloadeddata: "+ ++runstep)
+        log.debug("onloadeddata: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadStart(){
-        console.log("onloadstart: "+ ++runstep)
+        log.debug("onloadstart: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onPlaying(){
-        console.log("onplaying: "+ ++runstep)
+        log.debug("onplaying: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onProgress(){
-        console.log("onprogress: "+ ++runstep)
+        log.debug("onprogress: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onReadyStateChange(){
-        console.log("onreadystatechange: "+ ++runstep)
+        log.debug("onreadystatechange: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onSuspend(){
-        console.log("onsuspend: "+ ++runstep)
+        log.debug("onsuspend: "+ ++runstep)
         console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
 
     function onTimeUpdate(){
-        console.log("ontimeupdate: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         restore()
         if(videoele.paused)
             monitor(videoele.currentTime*1000)
@@ -319,9 +351,13 @@
         $("#zh_subtitles").html('')
         en.currentwords=_v
         for(let i=0; i < _v.length; i++){
+            if(_v[i]=='\\n'){
+                $("#zh_subtitles").append('<br/>')
+                continue;
+            }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" class="font span'+i+'">'+vv[0]+'</span>')
+                var sp = $('<span style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
                 sp.bind('click',function(){
                     pauseVideo()
                     locateWord(i+1)
@@ -333,8 +369,13 @@
                 $("#zh_subtitles").append(sp)
             }
             if(vv[1]){
-                _v.splice(i+1,0,vv[1])
-                $("#zh_subtitles").append('<br/>')
+                _v.splice(i+1,0,'\\n',vv[1])
+            }
+            if(vv[2]){
+                _v.splice(i+3,0,'\\n',vv[2])
+            }
+            if(vv[3]){
+                _v.splice(i+5,0,'\\n',vv[3])
             }
         }
         $('.dialog').css({'display' : 'none'})
@@ -453,6 +494,9 @@
 
     function translatee(_data){
         console.log(_data+3)
+        var translateed = localStorage.getItem('translateed')
+        translateed =parseInt(translateed?++translateed:1)
+        localStorage.setItem('translateed',translateed)
         _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
@@ -568,14 +612,16 @@
         
     }   
     function pauseVideo(){
+        log.debug("pauseVideo()")
         $('#video')[0].pause();
     }
     function playVideo(){
+        log.debug("playVideo()")
         $('#video')[0].play();
     }
     function videoPlay(){
-        console.log("onplay: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug("onplay: "+ ++runstep)
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         $('.dialog').hide()
         $('#summtrans').hide()
         $('#summtrans-word').text('')
@@ -604,8 +650,8 @@
         
     }
     function videoPause(){
-        console.log("onpause: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug("onpause: "+ ++runstep)
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
@@ -615,7 +661,7 @@
     }
     function enSubtitlesShow(){
         var thisEle = this;
-        console.log($("#zh_subtitles").css("opacity"))
+        $("#zh_subtitles").css("opacity")
         if($("#zh_subtitles").css("opacity") == 1){
             $("#zh_subtitles").css("opacity",0)
             $('#hideBtn').text("SHOW")
