@@ -9,7 +9,9 @@
         $("#gear").animate({left:'-=300px'},2000);
     });
 
-    
+    document.addEventListener('WeixinJSBridgeReady',function(){
+        $('#video')[0].play();
+    },false);
 
     var historywords=[]
 
@@ -61,7 +63,8 @@
             setTimeout(function(){
                 $('#hints').fadeOut(1000,function(){
                     $('#video').show()
-                    playVideo()
+                    $('#video').attr("src",video.url)
+                    setTimeout(function(){$('#video')[0].muted=false},500)
                 });
             },3000)
             var ccc = setInterval(function(){
@@ -75,9 +78,12 @@
             
         }else{
             $('#video').show()
-            playVideo()
+            $('#video').attr('autoplay',true)
+            $('#video').attr("src",video.url)
+            setTimeout(function(){$('#video')[0].muted=false},500)
         }
     }
+
     showallhistorywords()
     function getVideo(){
         $.ajax({
@@ -337,7 +343,6 @@
         }else{
             setline(en.subtitlesList[0])
         }
-        $('#video').attr("src",video.url)
     }
 
     function setline(item){
@@ -520,61 +525,6 @@
                 async: true,
                 success: function(res) {
                     clearTimeout(window.aaa)
-                    // $('.dialog').css({'display' : 'block'})
-                    // $('.dialogTitle #kw').html(_data);
-                    // $('.searchClass').val(_data);
-                    // $('.yibiao').html('')
-                    // $('.fanyi').html('')
-                    // if(res.data.phoneticUs && res.data.phoneticUs!="undefined" && res.data.phoneticUs!="null"){
-                    //     $('.yibiao').append(
-                    //         '<span style="margin-right:15px;display: inline-block;">'+
-                    //             '<span class="us" style="margin:0 5px 0 0;">'+'美 '+'/'+(res.data.phoneticUs||'')+'/'+'</span>'+
-                    //             '<svg playSrc="'+res.data.pronounceUs+'" class="beauty" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
-                    //         // '<audio src="'+res.data.pronounceUs+'" class="beauty"></audio>'+
-                    //         '</span>'
-                    //     )
-                    // }
-                    // if(res.data.phoneticUk && res.data.phoneticUk!="undefined" && res.data.phoneticUk!="null"){
-                    //     $('.yibiao').append(
-                    //         '<span style="margin-right:15px;display: inline-block;">'+
-                    //             '<span class="uk" style="margin:0 5px 0 0;">'+'英 '+'/'+(res.data.phoneticUk||'')+'/'+'</span>'+
-                    //             '<svg playSrc="'+res.data.pronounceUk+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'+
-                    //         // '<audio src="'+res.data.pronounceUk+'" class="ritish"></audio>'+
-                    //         '</span>'
-                    //     )
-                    // }
-                    // if(res.data.from!=1){
-                    //     if(res.data.phonetic || res.data.speakUrl){
-                    //         $('.yibiao').append(
-                    //             '<span style="margin-right:15px;display: inline-block;">'+
-                    //                 (res.data.phonetic?('<span style="margin:0 5px 0 0;">'+'/'+res.data.phonetic+'/'+'</span>'):'') +
-                    //                 (res.data.speakUrl?('<svg playSrc="'+res.data.speakUrl+'" style="cursor:pointer;width: 15px;height: 15px;object-fit: cover;vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>'):'') +
-                    //             '</span>'
-                    //         )
-                    //     }
-                    // }
-                    // if(res.data.translations){
-                    //     for(let i=0;res.data &&  i <= res.data.translations.length; i++){
-                    //         if(res.data.translations[i]){
-                    //             $('.fanyi').append( 
-                    //                 '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.translations[i]+'</p>'
-                    //             )
-                    //         }
-                    //     }
-                    // }
-                    
-                    // if(res.data.webTranslations){
-                    //     $('.fanyi').append( 
-                    //         '<p style="margin-block-start: 10px;margin-block-end: 3px;">'+"网络释义："+'</p>'
-                    //     )
-                    //     for(let i=0;res.data &&  i <= res.data.webTranslations.length; i++){
-                    //         if(res.data.webTranslations[i]){
-                    //             $('.fanyi').append(
-                    //                 '<p style="margin-block-start: 0;margin-block-end: 3px;">'+res.data.webTranslations[i]+'</p>'
-                    //             )
-                    //         }
-                    //     }
-                    // }
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
                     }else{
@@ -618,6 +568,8 @@
     function playVideo(){
         log.debug("playVideo()")
         $('#video')[0].play();
+        clearTimeout(window.timeoutdo1)
+        clearTimeout(window.timeoutdo2)
     }
     function videoPlay(){
         log.debug("onplay: "+ ++runstep)
@@ -655,9 +607,6 @@
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
-        if($('#video')[0].duration==$('#video')[0].currentTime){
-            $('#replay').click()
-        }
     }
     function enSubtitlesShow(){
         var thisEle = this;
@@ -1311,11 +1260,7 @@
     })
 
     $('#replay').bind('click',function(event){
-        $('#video')[0].currentTime=0
-        en.currentIndex=0
-        en.current=en.subtitlesList[0]
-        currline();
-        playVideo()
+        $('#video')[0].load()
     })
     $('#hideBtn').bind('click',function(event){
         enSubtitlesShow()
