@@ -1065,7 +1065,6 @@
             // 设置成功
             }
         })
-        
     });
 
     function lightkeytrans(ss){
