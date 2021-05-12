@@ -362,12 +362,12 @@
             }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                var sp = $('<span style="border-bottom:2px solid #ffffff;;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
                 sp.bind('click',function(){
                     pauseVideo()
                     locateWord(i+1)
                 }).bind('mouseout',function(){
-                    $(this).css('border-bottom','')
+                    $(this).css('border-bottom','2px solid #ffffff')
                 }).bind('mouseover',function(){
                     $(this).css('border-bottom','2px solid black')
                 })
@@ -654,6 +654,8 @@
         return ms
     }
     $('#zh_subtitles').mousedown(_ev => {
+        if(!$(_ev.target).hasClass('font'))
+            return;
         //let _this = this
         moveStata = true;
         _coordinates = {
@@ -665,6 +667,8 @@
         //console.log(_ev)
         choooseStart(_coordinates); 
         $("#zh_subtitles").mousemove(_e => {
+            if(!$(_e.target).hasClass('font'))
+                return;
             if(moveStata){
                 _coordinates = {
                     clientX : _e.clientX,
@@ -676,6 +680,8 @@
                 choooseMove(_coordinates); 
             }
         }).mouseup(function(_up){
+            if(!$(_up.target).hasClass('font'))
+                return;
             moveStata = false;
             _coordinates = {
                 clientX : _up.clientX,
@@ -1183,12 +1189,18 @@
 
 
     $('#zh_subtitles').bind('touchstart',function(event){
+        if(!$(event.target).hasClass('font'))
+            return;
         touchstartFn(event);
         event.preventDefault()
     }).bind('touchmove',function(event){
+        if(!$(event.target).hasClass('font'))
+            return;
         touchmoveFn(event);
         event.preventDefault()
     }).bind('touchend',function(event){
+        if(!$(event.target).hasClass('font'))
+            return;
         touchendFn(event);
         event.preventDefault()
     })
