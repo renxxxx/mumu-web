@@ -1272,6 +1272,7 @@
 
     $('#replay').bind('click',function(event){
         $('#video')[0].load()
+        setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
         enSubtitlesShow()
