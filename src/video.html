@@ -10,7 +10,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>mumu</title>
+        <title>幕幕</title>
         <meta name="x5-fullscreen" content="true">
         <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
         <link rel="stylesheet" type="text/css" href="./css/page.css" />
@@ -26,9 +26,7 @@
         <script src="./js/log.js" type="application/javascript"></script>    
         <script src="./js/page-pre.js" type="application/javascript"></script>
         <script>
-            if(!isPc()){
-                document.title=location.host + " - mumu"
-            }
+            
         </script>
         <style>
             .scrollbar::-webkit-scrollbar{
@@ -71,16 +69,16 @@
             <div id="summtrans" 
                 style="z-index:999999;box-sizing: border-box;font-size:0;background-color: #000000;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
-                <div id="summtrans-word" 
+                <div id="summtrans-word" class="unselectable"
                     style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;
                         line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
                 </div>
                 <div style="height: 20px;line-height: 20px;">
-                    <span id="summtrans-phonetic" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
+                    <span id="summtrans-phonetic" class="unselectable" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
                     <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>
                 </div>
                 <div id="summtrans-value"  style="font-size:13px;position:absolute;top:49px;bottom:0;left:0;right:0;padding:0 10px 5px 10px;">
-                    <div id="summtrans-vv" class="scrollbar1" style="width:100%;height:100%;overflow: auto;"></div>
+                    <div id="summtrans-vv" class="scrollbar1 unselectable" style="width:100%;height:100%;overflow: auto;"></div>
                 </div>
             </div> 
 
@@ -92,7 +90,7 @@
                         background-color: #eaeaea;border-radius: 1px;line-height: 20px;height: 20px;"/>
                 <div id="wordss" style="font-size:14px;position:absolute;top:27px;bottom:0;left:0;right:0;padding:3px 10px 5px 10px;">
                     <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
-                        <div id="wordtempl" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" >
+                        <div id="wordtempl" class="unselectable" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" >
                         </div>
                     </div>
                 </div>
