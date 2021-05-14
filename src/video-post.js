@@ -1,7 +1,7 @@
 
 (function(){
     window.page={}
-
+    log.debugon=0
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
     });
@@ -49,6 +49,7 @@
     }
 
     $('#historyword_template').bind('click',function(event){
+        log.info('$(#historyword_template).click '+$(this).attr('data'))
         pauseVideo();
         translatee(this.innerText);
     })
@@ -119,7 +120,7 @@
             }
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                console.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime){
                     restored=1;
                 }
@@ -131,7 +132,7 @@
         if(!playRestored){
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                console.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime)
                     playRestored=1;
             }
@@ -141,40 +142,40 @@
 
     function onCanPlay(){
         log.debug("onCanPlay: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         playRestore()
     }
     function onDurationChange(){
         log.debug("ondurationchange: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedMetadata(){
         log.debug("onloadedmetadata: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedData(){
         log.debug("onloadeddata: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadStart(){
         log.debug("onloadstart: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onPlaying(){
         log.debug("onplaying: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onProgress(){
         log.debug("onprogress: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onReadyStateChange(){
         log.debug("onreadystatechange: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onSuspend(){
         log.debug("onsuspend: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
 
     function onTimeUpdate(){
@@ -202,7 +203,7 @@
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            console.log("next ")
+            log.debug("next ")
             en.current = next
             en.currentIndex++
             setline(next)
@@ -210,8 +211,8 @@
         }
 
         if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
-            console.log("before next")
-            console.log("next: st: "+next.startTime+" currinx: "+en.currentIndex)
+            log.debug("before next")
+            log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
             return;
         }
 
@@ -219,7 +220,7 @@
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
                 debugger
-                console.log("search all ")
+                log.debug("search all ")
                 en.current = item
                 en.currentIndex = inx
                 setline(item)
@@ -229,12 +230,12 @@
     }
 
     function onWaiting(){
-        console.log("onwaiting: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug("onwaiting: "+ ++runstep)
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onClick(){
-        console.log("onclick: "+ ++runstep)
-        console.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.debug("onclick: "+ ++runstep)
+        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         $('#video').attr('controls', true);
     }
 
@@ -263,7 +264,6 @@
         }
     }
     function searchFn(_value){
-        console.log(_value)
         if(_value.keyCode == 13){
             let kw = $('.searchClass').val();
             translatee(kw);
@@ -272,6 +272,7 @@
     }
 
     $('.yibiao').on('click','span svg',function(){
+        log.info('$(.yibiao).click')
         let _mp3 = new Audio($(this).attr('playsrc'));
         _mp3.play();
     })
@@ -408,7 +409,7 @@
                 jumpedcaption = prev
                 lastCurrentTime = prev.startTime/1000
                 $('#video')[0].currentTime = prev.startTime/1000
-                console.log("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.debug("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(prev)
                 currwordno=0
                 chHideDialog()
@@ -429,7 +430,7 @@
                 $('#video')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
-                console.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
             
@@ -451,7 +452,7 @@
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
-                console.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
                 chHideDialog()
@@ -469,6 +470,7 @@
         historywords.unshift(word)
         var historywordele = $('#historyword_template').clone(true)
         historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
+        historywordele.attr('data',word)
         historywordele.text(word)
         historywordele.css('display','inline-block')
         $('#historywordspad').prepend(historywordele)
@@ -483,6 +485,7 @@
             const word = historywords[index];
             var historywordele = $('#historyword_template').clone(true)
             historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
+            historywordele.attr('data',word)
             historywordele.text(word)
             historywordele.css('display','inline-block')
             historywordele.show()
@@ -498,7 +501,7 @@
     }
 
     function translatee(_data){
-        console.log(_data+3)
+        log.debug(_data+3)
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
         localStorage.setItem('translateed',translateed)
@@ -654,6 +657,7 @@
         return ms
     }
     $('#zh_subtitles').mousedown(_ev => {
+        log.info('#zh_subtitles.mousedown')
         if(!$(_ev.target).hasClass('font'))
             return;
         //let _this = this
@@ -664,7 +668,6 @@
             pageX : _ev.pageX,
             pageY : _ev.pageY
         };
-        //console.log(_ev)
         choooseStart(_coordinates); 
         $("#zh_subtitles").mousemove(_e => {
             if(!$(_e.target).hasClass('font'))
@@ -676,10 +679,10 @@
                     pageX : _e.pageX,   
                     pageY : _e.pageY
                 };
-                // console.log(_e)
                 choooseMove(_coordinates); 
             }
         }).mouseup(function(_up){
+            log.info('#zh_subtitles.mouseup')
             if(!$(_up.target).hasClass('font'))
                 return;
             moveStata = false;
@@ -726,7 +729,7 @@
     }
     function choooseStart(_value){
         pauseVideo()
-        console.log(_value)
+        log.debug(_value)
         console.dir($("#zh_subtitles").height())
         let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
         height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
@@ -778,7 +781,7 @@
                     if(chooseDomList.length){
                         let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
                         let _now = parseInt(ele.className.replace('font span',''));
-                        console.log(_now-_last)
+                        log.debug(_now-_last)
                         if( _now == (_last+1)){
                             chooseDomList.push({
                                 class:ele.className,
@@ -866,9 +869,9 @@
 
     var currwordno=0;
     var keyCodes=[]
-    document.onkeydown = function(event){        //在全局中绑定按下事件
-    　　　　 var e  = event  ||  window.e;
-    　　　　 var keyCode = e.keyCode || e.which;
+    document.onkeydown = function(event){
+　　　　 var e  = event  ||  window.e;
+　　　　 var keyCode = e.keyCode || e.which;
 
         keyCodes=[]
         var last = keyCodes.pop()
@@ -876,7 +879,7 @@
             keyCodes.push(last)
         if(keyCode!=last)
             keyCodes.push(keyCode)
-        console.log(keyCodes+" down")
+        log.debug(keyCodes+" down")
         var keyy = keyCodes.join()
         switch(keyy){
     　　　　 case '27'://esc
@@ -979,20 +982,21 @@
     }
 
     document.onkeyup = function(event){      
-        console.log(keyCodes+" up")
+        log.debug(keyCodes+" up")
         keyCodes.pop()　
     }
     document.onfocus = function(){
-        console.log('document.blur()')
+        log.debug('document.blur()')
         keyCodes=[]
     }
 
     window.onbeforeunload=function(){
-        console.log('onbeforeunload')
+        log.debug('onbeforeunload')
         navigator.sendBeacon("/mumu/page-out");
+        log.flush()
     }
     var lastTouchEnd;
-    document.addEventListener('tou  chend', function(event) {
+    document.addEventListener('touchend', function(event) {
         var now = new Date().getTime();
         if (now - lastTouchEnd <= 300) {
             event.preventDefault();
@@ -1039,7 +1043,7 @@
 
     $.get('/mumu/wxjsapiticket',(res)=>{
         $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-            console.log(JSON.stringify(res));
+            log.debug(JSON.stringify(res));
             wx.config({
                 debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: res.data.appid, // 必填，公众号的唯一标识
@@ -1125,6 +1129,7 @@
 
 
     $('#summtrans-word').bind('click',function(){
+        log.info('#summtrans-word.click')
         $('#summtrans').hide()
         $('#wordsframe').show()
         $('#word-in').val(this.innerText).focus()
@@ -1132,6 +1137,7 @@
     })
 
     $('#summtrans-speak').bind('click',function(){
+        log.info('#summtrans-speak.click')
         if(!this.audio){
             this.audio=new Audio();
         }
@@ -1140,6 +1146,7 @@
     })
 
     $('#wordtempl').bind('click',function(){
+        log.info('#wordtempl.click')
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
@@ -1149,6 +1156,7 @@
     })
 
     $('#word-in').bind('input',function(){
+        log.info('#word-in.input')
         var tag = this
         var value  =this.value
         if(value){
@@ -1189,6 +1197,7 @@
 
 
     $('#zh_subtitles').bind('touchstart',function(event){
+        log.info('#zh_subtitles.touchstart')
         if(!$(event.target).hasClass('font'))
             return;
         touchstartFn(event);
@@ -1199,6 +1208,7 @@
         touchmoveFn(event);
         event.preventDefault()
     }).bind('touchend',function(event){
+        log.info('#zh_subtitles.touchend')
         if(!$(event.target).hasClass('font'))
             return;
         touchendFn(event);
@@ -1206,26 +1216,32 @@
     })
 
     $('#startFn').bind('click',function(){
+        log.info('#startFn.click')
         playVideo();
         $('#video').attr('controls', false);
     })
 
     $('#stopFn').bind('click',function(){
+        log.info('#stopFn.click')
         pauseVideo()
         $('#video').attr('controls', false);
     })
 
     $('#prevline').bind('click',function(){
+        log.info('#prevline.click')
         prevline()
     })
     $('#currline').bind('click',function(){
+        log.info('#nextline.click')
         currline()
     })
     $('#nextline').bind('click',function(){
+        log.info('#nextline.click')
         nextline()
     })
 
     $('#gear').bind('touchstart',function(event){
+        log.info('#gear.touchstart')
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
@@ -1236,7 +1252,7 @@
         this.endY = touch.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        console.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1266,29 +1282,35 @@
         }
         event.preventDefault()
     }).bind('touchend',function(event){
+        log.info('#gear.touchend')
         this.lastDist=null
         this.xx=0
     })
 
     $('#replay').bind('click',function(event){
+        log.info('#replay.click')
         $('#video')[0].load()
         setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
+        log.info('#hideBtn.click')
         enSubtitlesShow()
     })
     $('#wholebtn').bind('click',function(event){
+        log.info('#wholebtn.click')
         chShowDialog()
     })
     $('#searchbtn').bind('click',function(event){
+        log.info('#searchbtn.click')
         search()
     })
 
     $('#chDialog').bind('click',function(event){
+        log.info('#chDialog.click')
         chHideDialog()
     })
     document.body.addEventListener('click',function(){
-        console.log(event.target)
+        log.debug(event.target)
     })
 })()
 

@@ -2,14 +2,14 @@
     window.log={};
     var logsstr = localStorage.getItem('logs')
     log.logs=logsstr?JSON.parse(logsstr):[];
-    log.debug=1
+    log.debugon=1
 
     log.info=function(content){
         log.log(content)
     }
 
     log.debug=function(content){
-        if(log.debug)
+        if(log.debugon)
             log.log(content)
     }
 
@@ -22,19 +22,28 @@
     }
 
     log.flush=function(){
+        console.log('log.flush')
         var toflushlogs = log.logs.splice(0,log.logs.length)
         localStorage.setItem('logs',JSON.stringify(log.logs))
-        $.ajax(
-            {
-                url:"/mumu/front-log-do",
-                method:"post",
-                data:{log:toflushlogs.join(',,,,')},
-                success:function(res){
-                    if(res.code == 0){
-                    }
-                }
-            }
-        )
+        if(toflushlogs.length <= 0)
+            return;
+        var data = {
+            log:toflushlogs.join(',,,,'),
+            page:location.href
+        };
+        var blob = new Blob([$.param(data)], {type : 'application/x-www-form-urlencoded'})
+        navigator.sendBeacon('/mumu/front-log-do',blob)
+        // $.ajax(
+        //     {
+        //         url:"/mumu/front-log-do",
+        //         method:"post",
+        //         data:{log:toflushlogs.join(',,,,')},
+        //         success:function(res){
+        //             if(res.code == 0){
+        //             }
+        //         }
+        //     }
+        // )
     }
 
     log.getlogs=function(kw,rstart,rcount){

@@ -27,6 +27,7 @@
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.js" type="application/javascript"></script>
         <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.css" type="text/css" rel="stylesheet" />
         <script>
+            log.debugon=0
             if(!isPc()){
                 document.title=location.host + " - 幕幕"
             }
@@ -188,7 +189,7 @@
                         var durationsec = localStorage.getItem('durationsec-'+item.no)
                         var currentTime = localStorage.getItem('currentTime-'+item.no)
                         $('.videoList').append(
-                            '<li style="cursor:pointer;" onclick="routerFn('+item.no+')">'+
+                            '<li style="cursor:pointer;" >'+
                             `<a style="text-decoration:none;" href="./video.html?videoNo=${item.no}">`+
                             `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
                                 ${
@@ -234,6 +235,7 @@
         window.onbeforeunload=function(){
             console.log('onbeforeunload')
             navigator.sendBeacon("/mumu/page-out");
+            log.flush()
         }
 
         var lastTouchEnd;
