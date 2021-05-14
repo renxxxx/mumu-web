@@ -463,6 +463,7 @@
     }
 
     function addhistoryword(word){
+        word = word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
         historywords=historywords?historywords:[]
         var i = historywords.indexOf(word);
         if(i>-1)
@@ -482,7 +483,8 @@
         if(historywordsstr)
             historywords=JSON.parse(historywordsstr)
         for (let index = 0; index < historywords.length; index++) {
-            const word = historywords[index];
+            var word = historywords[index];
+            word = word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
             var historywordele = $('#historyword_template').clone(true)
             historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
             historywordele.attr('data',word)
@@ -505,7 +507,7 @@
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
         localStorage.setItem('translateed',translateed)
-        _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
+        _data=_data.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')  
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
         $('#word-in').val(_data)
@@ -1059,7 +1061,7 @@
 
         wx.updateAppMessageShareData({ 
             title: video.name, // 分享标题
-            desc: 'renx.cc', // 分享描述
+            desc: '幕幕 - 英语练习', // 分享描述
             link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1068,7 +1070,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: video.name, // 分享标题
+            title: video.name + '\n幕幕 - 英语练习', // 分享标题
             link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
