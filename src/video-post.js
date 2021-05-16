@@ -54,6 +54,71 @@
         translatee(this.innerText);
     })
 
+    var videos =JSON.parse(localStorage.getItem('videos'))
+    var videosIndex =localStorage.getItem('videosIndex')
+    if(!videos){
+        videos=[]
+    }
+    if(videosIndex==null||videosIndex==undefined){
+        videosIndex=-1
+    }
+    if(!videos || videos.length==0){
+        $.ajax({
+            url: '/mumu/videos?',
+            type: 'get',
+            data: 'kw='+''+'&start='+1+'&pageSize='+30,
+            async: false,
+            success: function(res) {
+                videos=videos.push(res.data.videos)
+                localStorage.setItem('videos',JSON.stringify(videos))
+            }
+        })
+    }
+    
+
+    function goNextVideo(){
+        if(!videos[videosIndex+1]){
+            var start = videos.length+1
+            $.ajax({
+                url: '/mumu/videos?',
+                type: 'get',
+                data: 'kw='+''+'&start='+start+'&pageSize='+30,
+                async: false,
+                success: function(res) {
+                    videos=videos.push(res.data.videos)
+                    localStorage.setItem('videos',JSON.stringify(videos))
+                    videosIndex=videosIndex+1
+                    var nextVideo = videos[videosIndex]
+                    localStorage.setItem('videosIndex',videosIndex)
+                    location.load(nextVideo.url)
+                }
+            })
+        } else{
+            location.load(nextVideo.url)
+        }
+    }
+
+    function goPrevVideo(){
+        if(!videos[videosIndex-1]){
+            var start = videos.length+1
+            $.ajax({
+                url: '/mumu/videos?',
+                type: 'get',
+                data: 'kw='+''+'&start='+start+'&pageSize='+30,
+                async: false,
+                success: function(res) {
+                    videos=videos.unshift(res.data.videos)
+                    localStorage.setItem('videos',JSON.stringify(videos))
+                    videosIndex=videosIndex-1
+                    var prevVideo = videos[videosIndex]
+                    localStorage.setItem('videosIndex',videosIndex)
+                    location.load(prevVideo.url)
+                }
+            })
+        } else{
+            location.load(prevVideo.url)
+        }
+    }
 
     function guide(){
         var translateed = localStorage.getItem('translateed')
@@ -618,10 +683,10 @@
         $("#zh_subtitles").css("opacity")
         if($("#zh_subtitles").css("opacity") == 1){
             $("#zh_subtitles").css("opacity",0)
-            $('#hideBtn').text("SHOW")
+            $('#hideBtn').text("显示")
         }else{
             $("#zh_subtitles").css("opacity",1)
-            $('#hideBtn').text("HIDE")
+            $('#hideBtn').text("隐藏")
         }
     }
 
