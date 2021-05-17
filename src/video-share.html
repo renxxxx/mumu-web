@@ -123,32 +123,32 @@
             <!-- 字幕控制显示组件块 -->
             <div style="justify-content: space-around;display: flex;margin: 10px 0px 0px 0px;height: 40px;line-height:40px;align-items: center;">
                 <span id="replay" class="unselectable" 
-                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 50px;height: 28px;color: #bfbbbb;text-align: center;line-height: 28px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     重播
                 </span>
                 <span id="searchbtn" class="unselectable" 
-                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 50px;height: 28px;color: #bfbbbb;text-align: center;line-height: 28px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     查词
                 </span>
                 <span id="startFn"  class="startFn unselectable"
-                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: white;border: 1px solid #bfbbbb;
-                        font-size: 14px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
+                    style="cursor:pointer;text-align: center;line-height: 28px;padding: 0px;background: white;border: 1px solid #bfbbbb;
+                        font-size: 14px;padding: 0px;width: 60px;height: 28px;border-radius: 3px;">
                     <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200" fill="#bfbbbb"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
                 </span>
                 <span id="stopFn" class="stopFn unselectable" 
-                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
-                        font-size: 15px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
+                    style="cursor:pointer;text-align: center;line-height: 28px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
+                        font-size: 15px;padding: 0px;width: 60px;height: 28px;border-radius: 3px;">
                     ||
                 </span>
                 <span id="wholebtn" class="unselectable" 
-                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 50px;height: 28px;color: #bfbbbb;text-align: center;line-height: 28px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     整句
                 </span>
                 <span id="hideBtn" class="unselectable"
-                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
+                    style="font-size: 14px;cursor:pointer;padding: 0px;width: 50px;height: 28px;color: #bfbbbb;text-align: center;line-height: 28px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     隐藏
                 </span>
@@ -174,22 +174,11 @@
                         background: #ffffff;letter-spacing: 0.5px;font-size:20px;"></div>
             </div>
            
-            <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #cdcdcd;background: #ffffff;">
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:33%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                    onclick="location.replace('index.html')">
-                    主页
-                </span>
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:33%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
-                    onclick="location.replace('list.html')">
-                    列表
-                </span>
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:34%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                    onclick="location.replace('my.html')">
-                    我的
-                </span>
+            <div id="pcrecommand" class="unselectable" style="color: #acacac;position: absolute;bottom:0;right:0;font-size:14px;display:none;"></div>
+            <div class="unselectable" style="font-size:14px;width:100%;height:30px;line-height:30px;position: absolute;right:0;bottom:0;cursor: pointer;
+                    border-style:solid;border-width:1px 0 0 0;border-color: #d8d8d8;color: #d8d8d8;text-align: center;"
+                onclick="location.replace('./index.html')">
+                返回主页
             </div>
         </div>
         <div  class="unselectable" style="display: none;">

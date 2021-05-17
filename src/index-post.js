@@ -1,6 +1,7 @@
 
 (function(){
-    window.page={}
+    var page = {}
+    window.page=page
     log.debugon=0
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
@@ -15,14 +16,38 @@
 
     var historywords=[]
 
-    var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
+    var video;
+    var videoNo;
+    var start = 0;
+    var videos =JSON.parse(localStorage.getItem('videos'))
+    var videosIndex =parseInt(localStorage.getItem('videosIndex'))
+    if(!videos){
+        videos=[]
+    }
+    if(videosIndex==null||videosIndex==undefined||isNaN(videosIndex)){
+        videosIndex=-1
+    }
+    if(!videos || videos.length==0){
+        $.ajax({
+            url: '/mumu/videos?',
+            type: 'get',
+            data: 'kw='+''+'&start='+1+'&pageSize='+30,
+            async: false,
+            success: function(res) {
+                videos.push(...res.data.videos)
+                localStorage.setItem('videos',JSON.stringify(videos))
+            }
+        })
+    }
+    
+
+
     var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
     var currentIndex =parseInt(localStorage.getItem("currentIndex-"+videoNo));
     var currentCaption = JSON.parse(localStorage.getItem("currentCaption-"+videoNo));
     var jumpedcaption = currentCaption;
     var tt,runstep=0;
     var playRestored=0,restored=0;
-    var video;
     var zh = {
         subtitles : '',
         monitor : '',
@@ -43,86 +68,77 @@
     var videoele=$('#video')[0];
     if(currentCaption)
         setline(currentCaption);
-    init();
-    function init(){
-        getVideo();
-    }
 
+    goNextVideo()
     $('#historyword_template').bind('click',function(event){
         log.info('$(#historyword_template).click '+$(this).attr('data'))
         pauseVideo();
         translatee(this.innerText);
     })
 
-    var videos =JSON.parse(localStorage.getItem('videos'))
-    var videosIndex =localStorage.getItem('videosIndex')
-    if(!videos){
-        videos=[]
-    }
-    if(videosIndex==null||videosIndex==undefined){
-        videosIndex=-1
-    }
-    if(!videos || videos.length==0){
-        $.ajax({
-            url: '/mumu/videos?',
-            type: 'get',
-            data: 'kw='+''+'&start='+1+'&pageSize='+30,
-            async: false,
-            success: function(res) {
-                videos=videos.push(res.data.videos)
-                localStorage.setItem('videos',JSON.stringify(videos))
-            }
-        })
-    }
     
 
     function goNextVideo(){
         if(!videos[videosIndex+1]){
-            var start = videos.length+1
+            start++;
             $.ajax({
                 url: '/mumu/videos?',
                 type: 'get',
                 data: 'kw='+''+'&start='+start+'&pageSize='+30,
                 async: false,
                 success: function(res) {
-                    videos=videos.push(res.data.videos)
+                    if(res.data.videos.length==0){
+                        start=0;
+                        goNextVideo()
+                    }
+                    videos.push(...res.data.videos)
                     localStorage.setItem('videos',JSON.stringify(videos))
                     videosIndex=videosIndex+1
-                    var nextVideo = videos[videosIndex]
-                    localStorage.setItem('videosIndex',videosIndex)
-                    location.load(nextVideo.url)
                 }
             })
-        } else{
-            location.load(nextVideo.url)
+        } else {
+            videosIndex++
         }
+        videoNo = videos[videosIndex].no
+        localStorage.setItem('videosIndex',videosIndex)
+        getVideo(videoNo)
     }
 
     function goPrevVideo(){
         if(!videos[videosIndex-1]){
-            var start = videos.length+1
+            start++;
             $.ajax({
                 url: '/mumu/videos?',
                 type: 'get',
                 data: 'kw='+''+'&start='+start+'&pageSize='+30,
                 async: false,
                 success: function(res) {
-                    videos=videos.unshift(res.data.videos)
+                    if(res.data.videos.length==0){
+                        start=0;
+                        goPrevVideo()
+                    }
+                    videos.unshift(...res.data.videos)
                     localStorage.setItem('videos',JSON.stringify(videos))
                     videosIndex=videosIndex-1
-                    var prevVideo = videos[videosIndex]
-                    localStorage.setItem('videosIndex',videosIndex)
-                    location.load(prevVideo.url)
                 }
             })
-        } else{
-            location.load(prevVideo.url)
+        } else {
+            videosIndex--
         }
+        videoNo = videos[videosIndex].no
+        localStorage.setItem('videosIndex',videosIndex)
+        getVideo(videoNo)
     }
 
+    function playend(){
+        setTimeout(function(){
+            goNextVideo()
+        },3000)
+    }
     function guide(){
         var translateed = localStorage.getItem('translateed')
         if(!translateed){
+            $('#hintssec').text(3)
             pauseVideo()
             $('#video').hide()
             $('#hints').css('height',$('#video').css('height')).show()
@@ -151,7 +167,7 @@
     }
 
     showallhistorywords()
-    function getVideo(){
+    function getVideo(videoNo){
         $.ajax({
             url: '/mumu/video?',
             type: 'get',
@@ -169,7 +185,7 @@
                 $.ajax({
                     url: video.captionUrl,
                     type: 'get',
-                    async: true,
+                    async: false,
                     success: function(res) {
                         getEnSubtitles(res);
                     }
@@ -203,6 +219,7 @@
             }
         }
     }
+
 
 
     function onCanPlay(){
@@ -677,6 +694,10 @@
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
+
+        if($('#video')[0].currentTime == $('#video')[0].duration){
+            playend()
+        }
     }
     function enSubtitlesShow(){
         var thisEle = this;
@@ -1122,13 +1143,12 @@
         })
     })
 
-    var shareLink = location.origin+'/mumu/video-share.html';
     wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
 
         wx.updateAppMessageShareData({ 
-            title: video.name, // 分享标题
-            desc: '幕幕 - 英语练习', // 分享描述
-            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: '幕幕', // 分享标题
+            desc: '英语练习',
+            link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
                 // 设置成功
@@ -1136,8 +1156,8 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: video.name + '\n幕幕 - 英语练习', // 分享标题
-            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: '幕幕 - 英语练习', // 分享标题
+            link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
             // 设置成功
@@ -1379,6 +1399,14 @@
     })
     document.body.addEventListener('click',function(){
         log.debug(event.target)
+    })
+
+
+    $('#goPrevVideo').click(function(){
+        goPrevVideo()
+    })
+    $('#goNextVideo').click(function(){
+        goNextVideo()
     })
 })()
 
