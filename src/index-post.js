@@ -15,7 +15,7 @@
     document.addEventListener('WeixinJSBridgeReady',function(){
         $('#video')[0].play();
     },false);
-
+    var pausebeforech = null;
     var historywords=[]
     var videoNoC = window.location.search.substring(1).split("&")[0].split("=")[1];
     var videoC = null
@@ -117,10 +117,10 @@
     }
 
     function goPrevVideo(){
-        pauseVideo()
         if(!videos[videosIndex-1]){
             return;
         }
+        pauseVideo()
         videosIndex--;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
@@ -179,6 +179,7 @@
 
     function getvideodone(videop){
         video=videop;
+        $('#titleinback').text(video.name)
         // if(video.height && video.width){
         //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
         //     $('#video').css('height',videoheight)
@@ -199,6 +200,11 @@
             var historyvideos = JSON.parse(localStorage.getItem('historyvideos'))
             if(!historyvideos)
                 historyvideos=[]
+            for(var i = 0; i < historyvideos.length; i++){
+                if(historyvideos[i].no==video.no){  
+                    historyvideos.splice(i,1) 
+                }  
+            }  
             historyvideos.unshift(video)
             localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
         },5000)
@@ -504,7 +510,7 @@
                 log.debug("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(prev)
                 currwordno=0
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -525,8 +531,7 @@
                 log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
-            
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -547,7 +552,7 @@
                 log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -732,7 +737,7 @@
                 $('#videoshasow').show()
                 $('#video').css('top','-1000px')
                 clearTimeout(page.timeout11)
-            },300)
+            },100)
         }
         
     }
@@ -748,7 +753,7 @@
         }
     }
 
-    var pausebeforech = null;
+    
     function chShowDialog(){
         if(!en.current || !en.current.chValue)
             return;
@@ -1053,8 +1058,9 @@
             case '87'://w
                 if(document.activeElement == $('#word-in')[0])
                     return;
-                if($('.chDialog').is(":hidden"))
+                if($('.chDialog').is(":hidden")){
                     chShowDialog()
+                }
                 else
                     chHideDialog()
         　　　　 break;

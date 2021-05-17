@@ -115,6 +115,11 @@
                     var historyvideos = JSON.parse(localStorage.getItem('historyvideos'))
                     if(!historyvideos)
                         historyvideos=[]
+                    for(var i = 0; i < historyvideos.length; i++){
+                        if(historyvideos[i].no==video.no){  
+                            historyvideos.splice(i,1) 
+                        }  
+                    }
                     historyvideos.unshift(video)
                     localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
                 },5000)
@@ -421,7 +426,7 @@
                 log.debug("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(prev)
                 currwordno=0
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -442,8 +447,7 @@
                 log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
-            
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -464,7 +468,7 @@
                 log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
-                chHideDialog()
+                $('.chDialog').hide()
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
