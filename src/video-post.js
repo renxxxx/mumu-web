@@ -110,6 +110,14 @@
                         getEnSubtitles(res);
                     }
                 })
+
+                setTimeout(function(){
+                    var historyvideos = JSON.parse(localStorage.getItem('historyvideos'))
+                    if(!historyvideos)
+                        historyvideos=[]
+                    historyvideos.unshift(video)
+                    localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
+                },5000)
             }
         })
     }
@@ -514,6 +522,7 @@
 
     function translatee(_data){
         log.debug(_data+3)
+        $('#summrest').hide()
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
         localStorage.setItem('translateed',translateed)
@@ -567,7 +576,8 @@
                     $(`.lightkeytrans`).bind('click',function(){
                         translatee(this.innerText)
                     })
-                    
+                    $('#wordsframe').hide()
+                    $('#summrest').show()
                     $('#summtrans-vv').show()
                     $('#summtrans-value').show()
                     $('#summtrans').show()
@@ -585,11 +595,11 @@
         log.debug("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
-        clearTimeout(window.timeoutdo2)
     }
     function videoPlay(){
         log.debug("onplay: "+ ++runstep)
         log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        clearTimeout(window.timeoutdo1)
         $('.dialog').hide()
         $('#summtrans').hide()
         $('#summtrans-word').text('')
@@ -637,9 +647,12 @@
     }
 
   
+    var pausebeforech = null;
     function chShowDialog(){
         if(!en.current || !en.current.chValue)
             return;
+        
+        pausebeforech=$('#video')[0].paused;
         //let _this = this
         let _time = $('#video')[0].currentTime*1000
         $('.chDialog').css("display","block")
@@ -649,6 +662,11 @@
     function chHideDialog(){
         // $('#video')[0].play();
         $('.chDialog').css("display","none")
+        if(pausebeforech){
+            pauseVideo()
+        }else{
+            playVideo()
+        }
     }
 
     function timeCycle(_value){
@@ -1248,7 +1266,6 @@
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
-        pauseVideo()
     }).bind('touchmove',function(event){
         var touch = event.targetTouches[0];
         this.endX = touch.pageX;
@@ -1280,6 +1297,7 @@
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)
                 wno=1
+            pauseVideo()
             locateWord(wno)
             this.xx=0
         }
@@ -1314,6 +1332,14 @@
     })
     document.body.addEventListener('click',function(){
         log.debug(event.target)
+    })
+
+    $('#word-in').bind('blur',function(){
+        if(this.value == ''){
+            $('#wordsframe').hide()
+            $('#video').css('top',0)
+            playVideo()
+        }
     })
 })()
 

@@ -3,6 +3,8 @@
     var page = {}
     window.page=page
     log.debugon=0
+
+    $('#video')[0].crossOrigin = 'anonymous';
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
     });
@@ -31,15 +33,9 @@
 
     var video;
     var videoNo;
-    var videos =JSON.parse(localStorage.getItem('videos'))
-    var videosIndex =parseInt(localStorage.getItem('videosIndex'))
-    if(!videos){
-        videos=[]
-    }
-    if(videosIndex==null||videosIndex==undefined||isNaN(videosIndex)){
-        videosIndex=-1
-    }
-    videosIndex=-1
+    var videos =[]
+    var videosIndex =-1
+
     if(!videos || videos.length==0){
         $.ajax({
             url: '/mumu/explore-videos?',
@@ -86,6 +82,7 @@
     goNextVideo()
     $('#historyword_template').bind('click',function(event){
         log.info('$(#historyword_template).click '+$(this).attr('data'))
+        page.dovideoshadow=1
         pauseVideo();
         translatee(this.innerText);
     })
@@ -134,7 +131,7 @@
     function playend(){
         setTimeout(function(){
             goNextVideo()
-        },3000)
+        },1000)
     }
     function guide(){
         var translateed = localStorage.getItem('translateed')
@@ -197,6 +194,14 @@
                 getEnSubtitles(res);
             }
         })
+
+        setTimeout(function(){
+            var historyvideos = JSON.parse(localStorage.getItem('historyvideos'))
+            if(!historyvideos)
+                historyvideos=[]
+            historyvideos.unshift(video)
+            localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
+        },5000)
     }
     function restore(){
         if(!restored){
@@ -601,6 +606,7 @@
 
     function translatee(_data){
         log.debug(_data+3)
+        $('#summrest').hide()
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
         localStorage.setItem('translateed',translateed)
@@ -654,7 +660,8 @@
                     $(`.lightkeytrans`).bind('click',function(){
                         translatee(this.innerText)
                     })
-                    
+                    $('#wordsframe').hide()
+                    $('#summrest').show()
                     $('#summtrans-vv').show()
                     $('#summtrans-value').show()
                     $('#summtrans').show()
@@ -672,11 +679,12 @@
         log.debug("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
-        clearTimeout(window.timeoutdo2)
     }
     function videoPlay(){
         log.debug("onplay: "+ ++runstep)
         log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        page.dovideoshadow=0
+        clearTimeout(page.timeout11)
         $('.dialog').hide()
         $('#summtrans').hide()
         $('#summtrans-word').text('')
@@ -702,8 +710,9 @@
         $('.searchClass').val('');
         $('.yibiao').html('')
         $('.fanyi').html('')
-        
+        $('#videoshasow').hide()
     }
+    page.dovideoshadow=0
     function videoPause(){
         log.debug("onpause: "+ ++runstep)
         log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
@@ -714,6 +723,18 @@
         if($('#video')[0].currentTime == $('#video')[0].duration){
             playend()
         }
+
+        if(page.dovideoshadow && $('#videoshasow').is(':hidden')){
+            clearTimeout(page.timeout11)
+            page.timeout11 =setTimeout(function(){
+                var img = videocapture($('#video')[0])
+                $('#videoshasowimg').attr('src',img.src)
+                $('#videoshasow').show()
+                $('#video').css('top','-1000px')
+                clearTimeout(page.timeout11)
+            },300)
+        }
+        
     }
     function enSubtitlesShow(){
         var thisEle = this;
@@ -727,10 +748,12 @@
         }
     }
 
-  
+    var pausebeforech = null;
     function chShowDialog(){
         if(!en.current || !en.current.chValue)
             return;
+        
+        pausebeforech=$('#video')[0].paused;
         //let _this = this
         let _time = $('#video')[0].currentTime*1000
         $('.chDialog').css("display","block")
@@ -740,6 +763,11 @@
     function chHideDialog(){
         // $('#video')[0].play();
         $('.chDialog').css("display","none")
+        if(pausebeforech){
+            pauseVideo()
+        }else{
+            playVideo()
+        }
     }
 
     function timeCycle(_value){
@@ -832,8 +860,9 @@
         choooseEnd(_coordinates);
     }
     function choooseStart(_value){
-        pauseVideo()
         log.debug(_value)
+        page.dovideoshadow=1
+        pauseVideo()
         console.dir($("#zh_subtitles").height())
         let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
         height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
@@ -1067,6 +1096,7 @@
         $('.font.span'+(currwordno-1)).css({
             'background' : '#d2cbcb'
         })
+        page.dovideoshadow=1
         pauseVideo()
         $('#summtrans-word').show()
         if(currwordno>0){
@@ -1130,7 +1160,7 @@
             $('#wordsframe').show()
             $('#word-in').focus()
             $('#word-in').trigger("input")
-            $('#video').css('top','-1000px')
+            page.dovideoshadow=1
             pauseVideo();
         }
     }
@@ -1339,7 +1369,6 @@
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
-        pauseVideo()
     }).bind('touchmove',function(event){
         var touch = event.targetTouches[0];
         this.endX = touch.pageX;
@@ -1371,6 +1400,8 @@
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)
                 wno=1
+            page.dovideoshadow=1
+            pauseVideo()
             locateWord(wno)
             this.xx=0
         }
@@ -1415,6 +1446,15 @@
     $('#goNextVideo').click(function(){
         log.info('#goNextVideo.click')
         goNextVideo()
+    })
+
+
+    $('#word-in').bind('blur',function(){
+        if(this.value == ''){
+            $('#wordsframe').hide()
+            $('#video').css('top',0)
+            playVideo()
+        }
     })
 })()
 

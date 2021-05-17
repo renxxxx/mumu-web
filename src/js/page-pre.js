@@ -89,3 +89,31 @@ function clearAllCookie() {
           document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
   }  
 }
+
+function videocapture(videoele){
+  var scale = 0.25;
+  let canvas = document.createElement("canvas");
+  canvas.width = videoele.clientWidth;
+  canvas.height = videoele.clientHeight;
+  console.log('v宽', videoele.videoWidth, '高', videoele.videoHeight);
+  console.log('c宽', canvas.width, '高', canvas.height);
+
+  var lw = null;
+  var lh = null;
+  //高碰边
+  var ww = canvas.height / (videoele.videoHeight/videoele.videoWidth)
+  var hh = canvas.width * (videoele.videoHeight/videoele.videoWidth)
+  if(ww<=canvas.width){
+    lw=ww
+    lh=canvas.height 
+  }else if(hh<=canvas.height) {
+    lw=canvas.width
+    lh=hh
+  }
+  
+  canvas.getContext('2d').drawImage(videoele, (canvas.width-lw)/2, (canvas.height-lh)/2, lw, lh);
+  let image = document.createElement('img');
+  image.src = canvas.toDataURL();
+  return image;
+}
+

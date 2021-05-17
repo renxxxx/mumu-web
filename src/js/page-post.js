@@ -12,7 +12,7 @@
 //             "
 //         >反 馈</div>`)
 // }
-//noDebuger()
+noDebuger()
 function noDebuger() {
     function testDebuger() {
         var d = new Date();
