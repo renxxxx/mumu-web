@@ -94,7 +94,6 @@
 
     function goNextVideo(){
         pauseVideo()
-        $('#video').attr('src','')
         if(!videos[videosIndex+1]){
             $.ajax({
                 url: '/mumu/explore-videos?',
@@ -122,7 +121,6 @@
 
     function goPrevVideo(){
         pauseVideo()
-        $('#video').attr('src','')
         if(!videos[videosIndex-1]){
             return;
         }
