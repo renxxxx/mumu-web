@@ -548,10 +548,13 @@
     }
     $('#favor').click(function(){
         log.info('#favor.click')
-        if($(this).attr('word').split(' ').length>2)
+        var word = $(this).attr('word')
+        if(/.*[\u4e00-\u9fa5]+.*$/.test(word))
             return;
-        removehistoryword($(this).attr('word'))
-        addhistoryword($(this).attr('word'))
+        if($(this).attr('word').split(' ').length>3)
+            return;
+        removehistoryword(word)
+        addhistoryword(word)
     })
     
     function addhistoryword(word){
@@ -605,6 +608,7 @@
         $('#word-in').val(_data)
         clearTimeout(window.timeoutdo1)
         window.timeoutdo1=setTimeout(function(){
+            $('#favor').attr('word',_data)
             window.aaa=setTimeout(function(){
                 $('#summtrans-phonetic').hide();
                 $('#summtrans-speak').hide();
@@ -644,7 +648,7 @@
                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                         })
                     }
-                    $('#favor').attr('word',_data)
+                    
                     $(`.lightkeytrans`).bind('click',function(){
                         translatee(this.innerText)
                     })
