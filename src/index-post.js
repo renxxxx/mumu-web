@@ -15,10 +15,22 @@
     },false);
 
     var historywords=[]
+    var videoNoC = window.location.search.substring(1).split("&")[0].split("=")[1];
+    var videoC = null
+    if(videoNoC){
+        $.ajax({
+            url: '/mumu/video?',
+            type: 'get',
+            data: 'videoNo='+videoNoC,
+            async: false,
+            success: function(res) {
+                videoC = res.data.video
+            }
+        })
+    }
 
     var video;
     var videoNo;
-    var start = 0;
     var videos =JSON.parse(localStorage.getItem('videos'))
     var videosIndex =parseInt(localStorage.getItem('videosIndex'))
     if(!videos){
@@ -27,11 +39,12 @@
     if(videosIndex==null||videosIndex==undefined||isNaN(videosIndex)){
         videosIndex=-1
     }
+    videosIndex=-1
     if(!videos || videos.length==0){
         $.ajax({
-            url: '/mumu/videos?',
+            url: '/mumu/explore-videos?',
             type: 'get',
-            data: 'kw='+''+'&start='+1+'&pageSize='+30,
+            data: 'shortvideo=1&kw='+'&pageSize='+30,
             async: false,
             success: function(res) {
                 videos.push(...res.data.videos)
@@ -39,7 +52,8 @@
             }
         })
     }
-    
+    if(videoC)
+        videos.unshift(videoC)
 
 
     var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
@@ -80,54 +94,39 @@
 
     function goNextVideo(){
         if(!videos[videosIndex+1]){
-            start++;
             $.ajax({
-                url: '/mumu/videos?',
+                url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'kw='+''+'&start='+start+'&pageSize='+30,
+                data: 'shortvideo=1&kw='+'&pageSize='+30,
                 async: false,
                 success: function(res) {
-                    if(res.data.videos.length==0){
-                        start=0;
-                        goNextVideo()
+                    if(res.data.videos.length>0){
+                        videos.push(...res.data.videos)
+                        localStorage.setItem('videos',JSON.stringify(videos))
                     }
-                    videos.push(...res.data.videos)
-                    localStorage.setItem('videos',JSON.stringify(videos))
-                    videosIndex=videosIndex+1
                 }
             })
-        } else {
-            videosIndex++
         }
+
+        if(!videos[videosIndex+1]){
+            return;
+        }
+        videosIndex++;
         videoNo = videos[videosIndex].no
+        video = videos[videosIndex]
         localStorage.setItem('videosIndex',videosIndex)
-        getVideo(videoNo)
+        getvideodone(video)
     }
 
     function goPrevVideo(){
         if(!videos[videosIndex-1]){
-            start++;
-            $.ajax({
-                url: '/mumu/videos?',
-                type: 'get',
-                data: 'kw='+''+'&start='+start+'&pageSize='+30,
-                async: false,
-                success: function(res) {
-                    if(res.data.videos.length==0){
-                        start=0;
-                        goPrevVideo()
-                    }
-                    videos.unshift(...res.data.videos)
-                    localStorage.setItem('videos',JSON.stringify(videos))
-                    videosIndex=videosIndex-1
-                }
-            })
-        } else {
-            videosIndex--
+            return;
         }
+        videosIndex--;
         videoNo = videos[videosIndex].no
+        video = videos[videosIndex]
         localStorage.setItem('videosIndex',videosIndex)
-        getVideo(videoNo)
+        getvideodone(video)
     }
 
     function playend(){
@@ -140,11 +139,11 @@
         if(!translateed){
             $('#hintssec').text(3)
             pauseVideo()
-            $('#video').hide()
+            $('#video').css('top','-1000px')
             $('#hints').css('height',$('#video').css('height')).show()
             setTimeout(function(){
                 $('#hints').fadeOut(1000,function(){
-                    $('#video').show()
+                    $('#video').css('top','0')
                     $('#video').attr("src",video.url)
                     setTimeout(function(){$('#video')[0].muted=false},500)
                 });
@@ -159,7 +158,7 @@
             },1000)
             
         }else{
-            $('#video').show()
+            $('#video').css('top','0')
             $('#video').attr('autoplay',true)
             $('#video').attr("src",video.url)
             setTimeout(function(){$('#video')[0].muted=false},500)
@@ -174,22 +173,26 @@
             data: 'videoNo='+videoNo,
             async: false,
             success: function(res) {
-                video=res.data.video;
-                if(video.height && video.width){
-                    var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
-                    $('#video').css('height',videoheight)
-                    $('#summtrans').css('height',$('#video').css('height'))
-                    $('#wordsframe').css('height',$('#video').css('height'))
-                }
-                guide()
-                $.ajax({
-                    url: video.captionUrl,
-                    type: 'get',
-                    async: false,
-                    success: function(res) {
-                        getEnSubtitles(res);
-                    }
-                })
+                getvideodone(res.data.video)
+            }
+        })
+    }
+
+    function getvideodone(videop){
+        video=videop;
+        // if(video.height && video.width){
+        //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
+        //     $('#video').css('height',videoheight)
+        //     $('#summtrans').css('height',$('#video').css('height'))
+        //     $('#wordsframe').css('height',$('#video').css('height'))
+        // }
+        guide()
+        $.ajax({
+            url: video.captionUrl,
+            type: 'get',
+            async: false,
+            success: function(res) {
+                getEnSubtitles(res);
             }
         })
     }
@@ -543,7 +546,14 @@
             }
         }
     }
-
+    $('#favor').click(function(){
+        log.info('#favor.click')
+        if($(this).attr('word').split(' ').length>2)
+            return;
+        removehistoryword($(this).attr('word'))
+        addhistoryword($(this).attr('word'))
+    })
+    
     function addhistoryword(word){
         word = word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
         historywords=historywords?historywords:[]
@@ -634,7 +644,7 @@
                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                         })
                     }
-
+                    $('#favor').attr('word',_data)
                     $(`.lightkeytrans`).bind('click',function(){
                         translatee(this.innerText)
                     })
@@ -943,10 +953,6 @@
         // && translationtext != _data && translationtext.indexOf(_data)<0
         if(_data){
             translationtext = _data;
-            if(_data.split(' ').length==1){
-                removehistoryword(_data)
-                addhistoryword(_data)
-            }
             translatee(_data)
         }else{
             translationtext = ""
@@ -1061,11 +1067,6 @@
             $('#wordsframe').hide()
             var word = en.currentwords[currwordno-1];
             translatee(word)
-            clearTimeout(window.timeoutdo2)
-            window.timeoutdo2= setTimeout(()=>{
-                removehistoryword(word)
-                addhistoryword(word)
-            },500)
         }
     }
 
@@ -1102,8 +1103,8 @@
             $('#gearframe1').show()
             $('#pcrecommand').text('PC端操作更方便')
         }
-        if(video.height && video.width)
-            $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
+        // if(video.height && video.width)
+        //     $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
     }
     $(document.body).bind('resize',function(){
         onresize()
@@ -1143,12 +1144,13 @@
         })
     })
 
+    var shareLink = location.origin+'/mumu/index.html?videoNo='+videoNo;
     wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
 
         wx.updateAppMessageShareData({ 
-            title: '幕幕', // 分享标题
-            desc: '英语练习',
-            link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: video.name, // 分享标题
+            desc: '幕幕 - 英语练习', // 分享描述
+            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
                 // 设置成功
@@ -1156,8 +1158,8 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: '幕幕 - 英语练习', // 分享标题
-            link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: video.name + '\n幕幕 - 英语练习', // 分享标题
+            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
             // 设置成功
@@ -1239,8 +1241,6 @@
         $('#word-in').val('')
         $('#words .word').remove()
         translatee(this.item.q)
-        removehistoryword(this.item.q)
-        addhistoryword(this.item.q)
     })
 
     $('#word-in').bind('input',function(){
@@ -1403,9 +1403,11 @@
 
 
     $('#goPrevVideo').click(function(){
+        log.info('#goPrevVideo.click')
         goPrevVideo()
     })
     $('#goNextVideo').click(function(){
+        log.info('#goNextVideo.click')
         goNextVideo()
     })
 })()

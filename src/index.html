@@ -29,6 +29,17 @@
             
         </script>
         <style>
+            @media screen and (min-width: 850px) {
+                #video,#summtrans,#wordsframe {
+                    height:400px;
+                }
+            }
+            @media screen and (max-width: 850px) {
+                #video,#summtrans,#wordsframe {
+                    height:250px;
+                }
+            }
+
             .scrollbar::-webkit-scrollbar{
                 width:3px;
             }
@@ -55,12 +66,13 @@
             </div>
             <!-- 视频块 -->
              <video controls x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload muted
-                style="background: #000000;display: block;position: relative;display:none;">
+                style="background: #000000;display: block;position: relative;top:-1000px;">
             </video>
 
             
 
-            <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: 1px solid rgba(255, 255, 255, 0.048);">
+            <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: 1px solid rgba(255, 255, 255, 0.048);
+                                position:absolute;top:0;">
                 <div style="font-size:20px;font-weight: 900;margin-top:54px;color:#00aeff;">点击字幕</div>
                 <div style="font-size:20px;font-weight: 900;margin-top:10px;color:#00aeff;">查词和词组</div>
                 <div id="hintssec" style="font-size:18px;font-weight: 900;margin-top:10px;color:#00aeff;">3</div>
@@ -77,8 +89,12 @@
                     <span id="summtrans-phonetic" class="unselectable" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
                     <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 15px;height: 15px;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>
                 </div>
-                <div id="summtrans-value"  style="font-size:13px;position:absolute;top:49px;bottom:0;left:0;right:0;padding:0 10px 5px 10px;">
+                <div id="summtrans-value"  style="font-size:13px;position:absolute;top:49px;bottom:30px;left:0;right:0;padding:0 10px 5px 10px;">
                     <div id="summtrans-vv" class="scrollbar1 unselectable" style="width:100%;height:100%;overflow: auto;"></div>
+                </div>
+                <div id="favor" style="position:absolute;bottom:0;left:0;right:0;width:100%;font-size:14px;text-align: center;padding: 5px 0;
+                        border-top: 1px solid #595959;cursor: pointer;">
+                    收藏
                 </div>
             </div> 
 
@@ -145,7 +161,7 @@
                 <span id="wholebtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
-                    整句
+                    中文
                 </span>
                 <span id="hideBtn" class="unselectable"
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
@@ -153,7 +169,7 @@
                     隐藏
                 </span>
             </div>
-            <div  id="historywordspad" class="scrollbar" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 100px;overflow: auto;position: relative;">
+            <div  id="historywordspad" class="scrollbar" style="font-size:0;word-break: break-all;white-space: normal;margin-top: 20px;height: 150px;overflow: auto;position: relative;">
                 <span id="historyword_template" class="unselectable" style="font-size:16px;display:none;margin-right:10px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
                 </span>
             </div>
@@ -173,39 +189,45 @@
                 <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;
                         background: #ffffff;letter-spacing: 0.5px;font-size:20px;"></div>
             </div>
+            <div style="font-size:0;height:40px;position: absolute;bottom:51px;width:100%;border-top: 1px solid #bfbbbb;background: #ffffff;">
+                <span id="goPrevVideo" class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:50%;height:40px;line-height:40px;cursor: pointer;text-align: center;color:#bfbbbb;">
+                    上一部
+                </span>
+                <span id="goNextVideo" class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:50%;height:40px;line-height:40px;cursor: pointer;text-align: center;color:#bfbbbb;">
+                    下一部
+                </span>
+            </div>
+            <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #cdcdcd;background: #ffffff;">
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
+                    onclick="location.replace('index.html')">
+                    探索
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('list.html')">
+                    资源
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('history.html')">
+                    历史
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('my.html')">
+                    我的
+                </span>
+            </div>
         </div>
-        <div style="font-size:0;height:40px;position: absolute;bottom:51px;width:100%;border-top: 1px solid #bfbbbb;background: #ffffff;">
-            <span id="goPrevVideo" class="unselectable" 
-                style="font-size:16px;display: inline-block;width:50%;height:40px;line-height:40px;cursor: pointer;text-align: center;color:#bfbbbb;">
-                < <
-            </span>
-            <span id="goNextVideo" class="unselectable" 
-                style="font-size:16px;display: inline-block;width:50%;height:40px;line-height:40px;cursor: pointer;text-align: center;color:#bfbbbb;">
-                > >
-            </span>
-        </div>
-        <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #cdcdcd;background: #ffffff;">
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:33%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
-                onclick="location.replace('index.html')">
-                主页
-            </span>
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:33%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                onclick="location.replace('list.html')">
-                列表
-            </span>
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:34%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                onclick="location.replace('my.html')">
-                我的
-            </span>
-        </div>
+        
         <div  class="unselectable" style="display: none;">
             <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
         
     </body>
-    <script src="./index-post.js" type="application/javascript"></script>
+    <script src="./index-post.min.js" type="application/javascript"></script>
     <script src="./js/page-post.js" type="application/javascript"></script>
 </html>
