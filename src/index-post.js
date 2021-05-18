@@ -2,7 +2,7 @@
 (function(){
     var page = {}
     window.page=page
-    log.debugon=0
+    log.debugon=1
 
     $('#video')[0].crossOrigin = 'anonymous';
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
@@ -612,6 +612,7 @@
     function translatee(_data){
         log.debug(_data+3)
         $('#summrest').hide()
+        doshadow()
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
         localStorage.setItem('translateed',translateed)
@@ -729,18 +730,19 @@
             playend()
         }
 
-        if(page.dovideoshadow && $('#videoshasow').is(':hidden')){
-            clearTimeout(page.timeout11)
-            page.timeout11 =setTimeout(function(){
-                var img = videocapture($('#video')[0])
-                $('#videoshasowimg').attr('src',img.src)
-                $('#videoshasow').show()
-                $('#video').css('top','-1000px')
-                clearTimeout(page.timeout11)
-            },100)
-        }
-        
+        doshadow()
     }
+
+    function doshadow(){
+        if(page.dovideoshadow && $('#videoshasow').is(':hidden')){
+            var img = videocapture($('#video')[0])
+            $('#videoshasowimg').attr('src',img.src)
+            $('#videoshasow').show()
+            log.debug(`$('#videoshasow').show()`)
+            $('#video').css('top','-1000px')
+        }
+    }
+
     function enSubtitlesShow(){
         var thisEle = this;
         $("#zh_subtitles").css("opacity")

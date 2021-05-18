@@ -5,10 +5,12 @@
     log.debugon=1
 
     log.info=function(content){
+        content="IN: " + content
         log.log(content)
     }
 
     log.debug=function(content){
+        content="DE: " + content
         if(log.debugon)
             log.log(content)
     }

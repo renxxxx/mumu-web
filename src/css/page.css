@@ -1,9 +1,26 @@
+body {
+    -moz-user-select:none;/*火狐*/
+    -webkit-user-select:none;/*webkit浏览器*/
+    -ms-user-select:none;/*IE10*/
+    -khtml-user-select:none;/*早期浏览器*/
+    user-select:none;
+}
+
+
 .unselectable {
     -moz-user-select:none;/*火狐*/
     -webkit-user-select:none;/*webkit浏览器*/
     -ms-user-select:none;/*IE10*/
     -khtml-user-select:none;/*早期浏览器*/
     user-select:none;
+}
+
+.selectable {
+    -moz-user-select:auto;/*火狐*/
+    -webkit-user-select:auto;/*webkit浏览器*/
+    -ms-user-select:auto;/*IE10*/
+    -khtml-user-select:auto;/*早期浏览器*/
+    user-select:auto;
 }
 
 .scrollbar1::-webkit-scrollbar{

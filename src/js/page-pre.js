@@ -114,6 +114,9 @@ function videocapture(videoele){
   canvas.getContext('2d').drawImage(videoele, (canvas.width-lw)/2, (canvas.height-lh)/2, lw, lh);
   let image = document.createElement('img');
   image.src = canvas.toDataURL();
+  if(!image.src){
+    image.style.backgroundColor='#000000'
+  }
   return image;
 }
 
