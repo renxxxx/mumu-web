@@ -1,4 +1,3 @@
-
 (function(){
     var page = {}
     window.page=page
@@ -239,41 +238,23 @@
 
 
     function onCanPlay(){
-        log.debug("onCanPlay: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         playRestore()
     }
     function onDurationChange(){
-        log.debug("ondurationchange: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedMetadata(){
-        log.debug("onloadedmetadata: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedData(){
-        log.debug("onloadeddata: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadStart(){
-        log.debug("onloadstart: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
-    }
+   }
     function onPlaying(){
-        log.debug("onplaying: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onProgress(){
-        log.debug("onprogress: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onReadyStateChange(){
-        log.debug("onreadystatechange: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onSuspend(){
-        log.debug("onsuspend: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
 
     function onTimeUpdate(){
@@ -328,12 +309,8 @@
     }
 
     function onWaiting(){
-        log.debug("onwaiting: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onClick(){
-        log.debug("onclick: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         $('#video').attr('controls', true);
     }
 
@@ -1034,6 +1011,8 @@
     　　　　 case '32'://space
                 if(document.activeElement == $('#word-in')[0])
                     return;
+                if(document.activeElement.tagName=="INPUT")
+                    return;
                 if($('#video')[0].paused){
                     chHideDialog()
                     playVideo()
@@ -1042,11 +1021,14 @@
                     pauseVideo();
         　　　　 break;
             case '13'://enter
-                search();
+                if(document.activeElement.tagName!="INPUT")
+                    search();
         　　　　 break;
             case '97'://A
             case '65'://a
                 if(document.activeElement == $('#word-in')[0])
+                    return;
+                if(document.activeElement.tagName=="INPUT")
                     return;
                 prevline()
         　　　　 break;
@@ -1054,11 +1036,15 @@
             case '83'://s
                 if(document.activeElement == $('#word-in')[0])
                     return;
+                if(document.activeElement.tagName=="INPUT")
+                    return;
                 currline()
         　　　　 break; 
             case '119'://W
             case '87'://w
                 if(document.activeElement == $('#word-in')[0])
+                    return;
+                if(document.activeElement.tagName=="INPUT")
                     return;
                 if($('.chDialog').is(":hidden")){
                     chShowDialog()
@@ -1070,11 +1056,15 @@
             case '68'://d
                 if(document.activeElement == $('#word-in')[0])
                     return;
+                if(document.activeElement.tagName=="INPUT")
+                    return;
                 nextline()
         　　　　 break;
             case '113'://Q
             case '81'://q
                 if(document.activeElement == $('#word-in')[0])
+                    return;
+                if(document.activeElement.tagName=="INPUT")
                     return;
                 if(currwordno<=1)
                     currwordno=en.currentwords.length
@@ -1085,6 +1075,8 @@
             case '101'://E
             case '69'://e
                 if(document.activeElement == $('#word-in')[0])
+                    return;
+                if(document.activeElement.tagName=="INPUT")
                     return;
                 currwordno++;
                 if(currwordno>en.currentwords.length)
@@ -1464,5 +1456,121 @@
             playVideo()
         }
     })
+
+
+
+
+    $('#chatpadhidebtn').click(function(){
+        $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
+        $('#chatpad').slideUp(100)
+    })
+    $('#chatminpad').click(function(){
+        $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
+        $('#chatpad').slideDown(100)
+    })
+
+    $('#chatpad').bind('touchstart',function(e){
+        var touch = e.targetTouches[0];
+        this.touchstart = touch.pageY;
+        log.debug("touchstart "+this.touchstart)
+    }).bind('touchmove',function(e){
+        var touch = e.targetTouches[0];
+        this.touchend = touch.pageY;
+        if($('#chatmsgspad').scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        log.debug("touchend "+this.touchend)
+        if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
+            $('#chatpad').slideUp(100)
+        }
+        this.touchstart=null
+        this.touchend=null
+    })
+
+    $('#word-in').keydown(function(){
+        var evt = window.event || e;
+        if (evt.keyCode == 13) {
+            search()
+        }
+    })
+
+    $('#chatinput').keydown(function(){
+        var evt = window.event || e;
+        if (evt.keyCode == 13) {
+            if(this.value=='')
+                return;
+            var msg = "网友: "+this.value
+
+            var o = {
+                text:msg,
+                action:1
+            }
+            ws.send(JSON.stringify(o))
+
+            var ele = $('#chatmsgtemple').clone(true)
+            ele.attr('id','chatmsg'+1)
+            ele.css('color','green')
+            ele.text(msg)
+            ele.show();
+            $('#chatmsgspad').prepend(ele)
+            this.value=''
+
+            $('#lastmsg').text(msg)
+        }
+    })
+
+    
+    $.ajax({
+        url: '/mumu/chatroom-msgs?',
+        type: 'get',
+        data: 'rcount='+300,
+        async: true,
+        success: function(res) {
+            $(res.data.rows).each((inx,item)=>{
+                if(inx==0)
+                    $('#lastmsg').text(item.text)
+                var ele = $('#chatmsgtemple').clone(true)
+                ele.attr('id','chatmsg'+item.msgNo)
+                if(item.userNo==$.cookie('token'))
+                    ele.css('color','green')
+                ele.text(item.text)
+                ele.show();
+                $('#chatmsgspad').append(ele)
+            })
+        }
+    })
+
+    var ws = new WebSocket(`wss://${location.host}/mumu/websocket/${$.cookie('token')}`); 
+    //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
+    ws.onopen = function(){
+    　　//当WebSocket创建成功时，触发onopen事件
+        log.debug("ws onopen");
+    }
+    ws.onmessage = function(e){
+    　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+    　　log.debug("ws onmessage: "+e.data);
+        var data = JSON.parse(e.data)
+        if(data.action == 1){
+            var ele = $('#chatmsgtemple').clone(true)
+            ele.attr('id','chatmsg'+data.msgNo)
+            if(data.userNo==$.cookie('token'))
+                ele.css('color','green')
+            ele.text(data.text)
+            ele.show();
+            $('#chatmsgspad').prepend(ele)
+            $('#lastmsg').text(data.text)
+        }
+    }
+    ws.onclose = function(e){
+    　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+    　　log.debug("ws close");
+        alert("ws close:" + JSON.stringify(e))
+    }
+    ws.onerror = function(e){
+    　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+    　　log.debug("ws error:"+e);
+        alert("ws error:" + JSON.stringify(e))
+}
 })()
 

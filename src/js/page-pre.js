@@ -120,3 +120,22 @@ function videocapture(videoele){
   return image;
 }
 
+function geteletop(element,offsetTop) {
+	debugger
+  if(!element)
+    return null;
+  offsetTop=offsetTop?offsetTop:0
+	var actualTop = element.offsetTop;
+  actualTop=actualTop?actualTop:0
+
+	offsetTop=offsetTop+actualTop
+	var current = element.offsetParent;
+	if(current == null)
+		return offsetTop;
+	else
+		return geteletop(current,offsetTop)
+}
+
+
+
+

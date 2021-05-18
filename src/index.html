@@ -57,6 +57,9 @@
                 background-color:#d4d4d4;
             }
 
+            #cnzz_stat_icon_1279792021 a:link,a:visited {
+                color:#4e4e4e
+            }
         </style>
     </head>
     <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
@@ -142,7 +145,7 @@
                 <img id="finger" src="./img/finger.svg" style="position:absolute;left:50%;transform: translateX(-50%);top:45%;width:40px;"/>
             </div>
             <!-- 字幕控制显示组件块 -->
-            <div style="justify-content: space-around;display: flex;margin: 10px 0px 0px 0px;height: 40px;line-height:40px;align-items: center;">
+            <div id="controlpad" style="justify-content: space-around;display: flex;margin: 10px 0px 0px 0px;height: 40px;line-height:40px;align-items: center;">
                 <span id="replay" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
@@ -194,10 +197,17 @@
                 <div style="width: 100%;position: absolute;top: 285px;padding: 10px 0px;box-sizing: border-box;margin: auto;text-align: center;
                         background: #ffffff;letter-spacing: 0.5px;font-size:20px;"></div>
             </div>
-            <div class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:87px;cursor: pointer;
+
+            
+            <div class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:117px;cursor: pointer;
                     background-color: #ffffff;box-sizing: border-box;padding: 0 5px;
                     overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
                 <span id="titleinback" style="font-size:12px;color:#bfbbbb;"></span>
+            </div>
+            <div id="chatminpad" style="position:absolute;bottom:87px;width:100%;background-color: #d8d8d8;height:30px;line-height:30px;cursor: pointer;padding:0 17px 0 5px;
+                                    font-size:0px;box-sizing: border-box;">
+                <span id="lastmsg" style="font-size: 14px;color:#6f6f6f;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;"></span>
+                <img id="lastmsgtipimg" src="./img/chat.svg" draggable=false style="width:18px;height:18px;position:absolute;right:2px;top:6px;"/>
             </div>
             <div style="font-size:0;height:35px;position: absolute;bottom:51px;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span id="goPrevVideo" class="unselectable" 
@@ -230,12 +240,31 @@
                     onclick="$('#video')[0].pause();location.replace('my.html');">
                     我的
                 </span>
-            </div> 
+            </div>
+            
+            
+            <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #9f9f9f;display:none;box-shadow: 0px 0px 10px 0px black;">
+                <div id="chatpadhidebtn" style="height:30px;background-color: #737373;width:100%;cursor: pointer;font-size:14px;text-align: center;line-height:30px;">
+                    点我关闭
+                </div>
+                <div style="height:30px;width:100%;">
+                    <input id="chatinput" placeholder="在这输入"
+                        style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
+                            background-color: #eaeaea;padding:0 3px;" />
+                </div>
+                <div id="chatmsgspad" style="width:100%;overflow: auto;box-sizing: border-box;padding:3px;position:absolute;bottom:0;top:60px;font-size:0;margin-top:5px;">
+                    <div id="chatmsgtemple" 
+                        style="font-size:14px;width:100%;min-height:20px;max-height:60px;line-height:20px;
+                            display:none;margin-bottom:10px;overflow:hidden;">
+                    </div>
+                </div>
+                <div class="unselectable" draggable=false style="display:none;">
+                    <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+                </div>
+            </div>
         </div>
         
-        <div  class="unselectable" style="display: none;">
-            <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
-        </div>
+        
         
     </body>
     <script src="./index-post.min.js" type="application/javascript"></script>
