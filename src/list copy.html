@@ -98,19 +98,34 @@
     </head>
     <body style="max-width: 800px; margin: auto;background-color: #000000;">
         <div class="index" style="background-color: #ffffff;position: relative;">
-            <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
-                <li id="videotemplate" style="display:block;float:left;width:45%;height:205px;background-color: #919191;padding:0;margin-left:3.33%;margin-top:10px;
-                        border-radius: 5px;font-size:0;position:relative;cursor: pointer;display:none;">
-                    <div style="width:100%;height:159px;background-color: #dddddd;border-radius: 5px 5px 0 0;">
-                        <img class="cover" src="" style="width:100%;height:156px;object-fit: cover;border-radius: 5px 5px 0 0;"/>
-                    </div>
-                    <progress class="progress" style="width:100%;height:5px;position:absolute;top:155px;"></progress>
-                    <div class="name" style="width:100%;height:46px;background-color: #dddddd;font-size:14px;line-height:20px;overflow: hidden;word-break: break-word;
-                            padding:3px;box-sizing: border-box;border-radius: 0 0 5px 5px;">
-                    </div>
-                </li>
+            <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;">
+                <!-- <li>
+                    <span>名词一</span>
+                    <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
+                </li> -->
             </ul>
-           
+            <!-- <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:25px;font-size:0;background-color: #ececec;">
+                <span id="msg" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:90%;height:100%;display:inline-block;font-size:14px;color:#4a4a4a;
+                                box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;">
+                    <span id="wxqrcode">
+                        <img  src="./img/wxqrcode.jpg" style="width:25px;height:25px;cursor: pointer;vertical-align: bottom;" 
+                            onclick="
+                                $('#wxqrcode').viewer({title:false});
+                            " />
+                    </span>
+                </span>
+                <span  style="width:10%;height:100%;display:inline-block;background-color: #b3b3b3;font-size:14px;cursor: pointer;text-align: center;color:#4a4a4a;font-weight: 900;
+                        vertical-align: middle;"
+                    onclick="
+                        var r= prompt('留言')
+                        if(r){
+                            $.post('/mumu/sendboardmsg',{text:r})
+                            alert('您的留言将在明天展示一段时间')
+                        }
+                    ">
+                    ,,,
+                </span>
+            </div> -->
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
@@ -192,16 +207,26 @@
                         _this.videoList.push(item)
                         var durationsec = localStorage.getItem('durationsec-'+item.no)
                         var currentTime = localStorage.getItem('currentTime-'+item.no)
-                        var videoele = $('#videotemplate').clone(true)
-                        videoele.attr('id','video'+item.no)
-                        videoele.find('.cover').attr('src',item.cover)
-                        videoele.find('.name').text(item.name)
-                        if(currentTime && durationsec)
-                            videoele.find('.progress').attr('value',currentTime).attr('max',durationsec)
-                        else
-                            videoele.find('.progress').hide()
-                        videoele.css('display','block')
-                        $('.videoList').append(videoele)
+                        $('.videoList').append(
+                            '<li style="cursor:pointer;" >'+
+                            `<a style="text-decoration:none;" draggable=false href=./video.html?videoNo=${item.no}>`+
+                            `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
+                                ${
+                                    item.type==1?'./img/movie.svg':
+                                    item.type==2?'./img/mv.svg':
+                                    item.type==4?'./img/speech.svg':
+                                    item.type==3?'./img/ted.svg':
+                                    item.type==5?'./img/shortmovie.svg':''
+                                }
+                            "/></span>`+
+                            '<span class="line1" style="margin-left: 5px;">'+item.name+(item.language == 4?' - es':'')+'</span>'+
+                            (
+                                (durationsec&&currentTime)?
+                                ('<progress style="width:50px;margin: 16px 0;" value="'+currentTime+'" max="'+durationsec+'"></progress> ')
+                                :''
+                            )+
+                            '</a>'
+                        )
                     })
                     console.log(_this.videoList)
                 }
