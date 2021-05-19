@@ -3,6 +3,12 @@
     window.page=page
     log.debugon=1
 
+    setTimeout(function(){
+        $('#logo').hide()
+        $('#index').show()
+    },1000)
+
+
     $('#video')[0].crossOrigin = 'anonymous';
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
@@ -44,17 +50,23 @@
         success: function(res) {
             $(res.data.rows).each((inx,item)=>{
                 if(inx==0){
-                    $('#lastmsg').text(item.text)
+                    $('#lastmsg').text("南京网友: "+item.text)
                     $('#chatminpad').show()
                 }
                 var ele = $('#chatmsgtemple').clone(true)
                 ele.attr('id','chatmsg'+item.msgNo)
                 if(item.userNo==$.cookie('token'))
                     ele.css('color','green')
-                ele.text(item.text)
+                ele.find('.name').text("南京网友")
+                ele.find('.msg').text(item.text);
+                ele.find('.msghold').text(item.text);
                 ele.show();
                 $('#chatmsgspad').append(ele)
             })
+            if(res.data.rows.length==0){
+                $('#lastmsg').text("聊天室")
+                $('#chatminpad').show()
+            }
         }
     })
 
@@ -616,6 +628,8 @@
     function translatee(_data){
         log.debug(_data+3)
         $('#summrest').hide()
+        page.dovideoshadow=1
+        pauseVideo()
         doshadow()
         var translateed = localStorage.getItem('translateed')
         translateed =parseInt(translateed?++translateed:1)
@@ -741,6 +755,8 @@
         if(page.dovideoshadow && $('#videoshasow').is(':hidden')){
             var img = videocapture($('#video')[0])
             $('#videoshasowimg').attr('src',img.src)
+            if(!img.src)
+                $('#videoshasowimg').css('background-color',"#000000")
             $('#videoshasow').show()
             log.debug(`$('#videoshasow').show()`)
             $('#video').css('top','-1000px')
@@ -1520,24 +1536,72 @@
         $(this).css('background-color','#d7d7d7')
         $('#chatroombtn').css('background-color','#737373')
     })
+    $('#index').bind('click',function(e){
+        if($(e.target).hasClass('translatable')){
+            translatee(e.target.innerHTML)
+        }
+    })
     $('#index').bind('touchstart',function(e){
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        var touch = e.targetTouches[0];
+        this.indextouchstart = touch.pageY;
+        log.debug("indextouchstart "+this.indextouchstart)
+    }).bind('touchmove',function(e){
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        var touch = e.targetTouches[0];
+        this.indextouchend = touch.pageY;
+        if($(e.target).scrollTop()==0 && this.indextouchstart<this.indextouchend){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        log.debug("indextouchend "+this.indextouchend)
+        this.indextouchstart=null
+        this.indextouchend=null
+    })
+
+
+    $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
         this.touchstart = touch.pageY;
         log.debug("touchstart "+this.touchstart)
     }).bind('touchmove',function(e){
         var touch = e.targetTouches[0];
         this.touchend = touch.pageY;
-        if($(e.target).scrollTop()==0 && this.touchstart<this.touchend){
+        if($(this).scrollTop()==0 && this.touchstart<this.touchend){
             e.preventDefault()
         }
     }).bind('touchend',function(e){
         log.debug("touchend "+this.touchend)
+        if(this.touchend-this.touchstart>50){
+            $('#chatpad').slideUp(100)
+        }
         this.touchstart=null
         this.touchend=null
     })
 
+    $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
+        log.debug("mousedown "+ e.pageY)
+        this.mousedown = e.pageY;
+    }).bind('mousemove',function(e){
+        this.mouseup = e.pageY;
+        if($(this).scrollTop()==0 && this.mousedown<this.mouseup){
+            e.preventDefault()
+        }
+    }).bind('mouseup',function(e){
+        log.debug("mouseup "+e.pageY)
+        this.mouseup = e.pageY;
+        if(this.mouseup-this.mousedown>50){
+            $('#chatpad').slideUp(100)
+        }
+        this.mousedown=null
+        this.mouseup=null
+    })
 
-    $('#chatpad').bind('touchstart',function(e){
+    $('#chatmsgspad').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
         this.touchstart = touch.pageY;
         log.debug("touchstart "+this.touchstart)
@@ -1556,7 +1620,7 @@
         this.touchend=null
     })
 
-    $('#chatpad').bind('mousedown',function(e){
+    $('#chatmsgspad').bind('mousedown',function(e){
         log.debug("mousedown "+ e.pageY)
         this.mousedown = e.pageY;
     }).bind('mousemove',function(e){
@@ -1586,7 +1650,7 @@
         if (evt.keyCode == 13) {
             if(this.value=='')
                 return;
-            var msg = "网友: "+this.value
+            var msg = this.value
 
             var o = {
                 text:msg,
@@ -1628,10 +1692,12 @@
                 ele.attr('id','chatmsg'+data.msgNo)
                 if(data.userNo==$.cookie('token'))
                     ele.css('color','green')
-                ele.text(data.text)
+                ele.find('.name').text("南京网友")
+                ele.find('.msg').text(data.text);
+                ele.find('.msghold').text(data.text);
                 ele.show();
                 $('#chatmsgspad').prepend(ele)
-                $('#lastmsg').text(data.text)
+                $('#lastmsg').text("南京网友: "+data.text)
             }
         }
         ws.onclose = function(e){

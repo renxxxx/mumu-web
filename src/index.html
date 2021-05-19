@@ -63,7 +63,11 @@
         </style>
     </head>
     <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
-        <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
+        <div id="logo" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;text-align: center;" >
+            <img src="./favicon.ico" />
+        </div>
+        
+        <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;display: none;" >
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
@@ -118,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="wordsframe_cancel" style="text-align: center;width:100%;font-size:16px;position:absolute;top:100px;">点击取消</div>
+                <div id="wordsframe_cancel" style="text-align: center;font-size:16px;position:absolute;top:100px;left:0;right:0;">点击取消</div>
             </div>
             <div id="zh_subtitles" class="unselectable" 
                 style="line-height: 30px;width: 100%;text-align: center;min-height: 64px;background-color: #ffffff;margin-top:5px;font-size: 18px;" >
@@ -263,15 +267,29 @@
                             style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
                                 background-color: #eaeaea;padding:0 3px;" />
                     </div>
-                    <div id="chatmsgspad" style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;position:absolute;bottom:0;top:30px;font-size:0;margin-top:5px;">
+                    <div id="chatmsgspad" class="scrollable" style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;position:absolute;bottom:0;top:30px;font-size:0;margin-top:5px;">
                         <div id="chatmsgtemple" 
-                            style="font-size:13px;width:100%;min-height:20px;max-height:40px;line-height:20px;
-                                display:none;margin-bottom:5px;overflow:hidden;">
+                            style="font-size:0;width:100%;min-height:20px;max-height:40px;display:none;margin-bottom:5px;position: relative;">
+                            <span class="name" 
+                                style="vertical-align: middle;height:20px;display:inline-block;font-size:13px;line-height:20px;width:55px;
+                                    overflow: hidden;text-align: right;">
+                            </span>
+                            <span style="vertical-align: middle;height:20px;display:inline-block;font-size:13px;line-height:20px;">
+                                :
+                            </span>
+                            <span class="msghold" 
+                                style="visibility: hidden;vertical-align: middle;display:inline-block;font-size:13px;line-height:20px;
+                                    min-height:20px;max-height:40px;overflow: hidden;">
+                            </span>
+                            <span class="msg translatable" 
+                                style="top: 0;vertical-align: middle;display:inline-block;font-size:13px;line-height:20px;position: absolute;left:65px;
+                                    right:0px;min-height:20px;max-height:40px;overflow: hidden;">
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;display:none;font-size:0;">
-                    <span style="font-size:16px;margin-top:30px;">coming soon</span>
+                    <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
                 </div>
             </div>
             
