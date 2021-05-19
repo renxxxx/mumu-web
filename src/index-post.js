@@ -11,7 +11,7 @@
 
 
     $('#video')[0].crossOrigin = 'anonymous';
-    $("#finger,gear").animate({left:'+=150px'},2000,function(){
+    $("#finger").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
     });
     $("#gear").animate({left:'+=150px'},2000,function(){
@@ -60,7 +60,7 @@
                     ele.css('color','green')
                 ele.find('.name').text("南京网友")
                 ele.find('.msg').text(item.text);
-                ele.find('.msghold').text(item.text);
+                ele.find('.looking').text(item.looking);
                 ele.show();
                 $('#chatmsgspad').append(ele)
             })
@@ -653,6 +653,9 @@
                 $('#summtrans-speak').hide();
                 $('#summtrans-value').hide();
                 return;
+            }
+            for (const ajax of page.translateajaxs) {
+                ajax.abort()
             }
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
@@ -1735,7 +1738,8 @@
 
             var o = {
                 text:msg,
-                action:1
+                action:1,
+                looking:video.name
             }
             ws.send(JSON.stringify(o))
 
@@ -1775,7 +1779,7 @@
                     ele.css('color','green')
                 ele.find('.name').text("南京网友")
                 ele.find('.msg').text(data.text);
-                ele.find('.msghold').text(data.text);
+                ele.find('.looking').text(data.looking);
                 ele.show();
                 $('#chatmsgspad').prepend(ele)
                 $('#lastmsg').text("南京网友: "+data.text)
