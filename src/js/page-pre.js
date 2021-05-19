@@ -1,7 +1,7 @@
 var vConsole = new VConsole({
   onReady:function(){
       $('#__vconsole .vc-switch').text('v').addClass('unselectable')
-      //vConsole.hideSwitch();
+      vConsole.hideSwitch();
   }
 });
 
