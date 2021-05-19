@@ -2,6 +2,11 @@
 (function(){
     window.page={}
     log.debugon=0
+
+    setTimeout(function(){
+        $('#logo').hide()
+    },500)
+    
     $("#finger,gear").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
     });
@@ -586,6 +591,11 @@
                     $('#summtrans-value').show()
                     $('#summtrans').show()
                     $('#video').css('top','-1000px')
+
+                    var totaltranslatesno = localStorage.getItem("totaltranslatesno")
+                    totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
+                    totaltranslatesno++;
+                    localStorage.setItem("totaltranslatesno",totaltranslatesno)
                 },
             })
         },200)
@@ -1240,13 +1250,13 @@
         event.preventDefault()
     })
 
-    $('#startFn').bind('click',function(){
+    $('#startFn1').bind('click',function(){
         log.info('#startFn.click')
         playVideo();
         $('#video').attr('controls', false);
     })
 
-    $('#stopFn').bind('click',function(){
+    $('#stopFn1').bind('click',function(){
         log.info('#stopFn.click')
         pauseVideo()
         $('#video').attr('controls', false);
@@ -1365,5 +1375,15 @@
         this.touchstart=null
         this.touchend=null
     })
+
+
+    setInterval(function(){
+        var totalsecondsno = localStorage.getItem("totalsecondsno")
+        totalsecondsno = totalsecondsno?totalsecondsno:0;
+        totalsecondsno++;
+        localStorage.setItem("totalsecondsno",totalsecondsno)
+    },1000)
+
+    statisticsexps()
 })()
 

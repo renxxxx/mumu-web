@@ -695,6 +695,11 @@
                     $('#summtrans-value').show()
                     $('#summtrans').show()
                     $('#video').css('top','-1000px')
+
+                    var totaltranslatesno = localStorage.getItem("totaltranslatesno")
+                    totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
+                    totaltranslatesno++;
+                    localStorage.setItem("totaltranslatesno",totaltranslatesno)
                 },
             }))
         },200)
@@ -1559,7 +1564,7 @@
     $('#index').bind('touchstart',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
             return;
         var touch = e.targetTouches[0];
         this.indextouchstartX = touch.pageX;
@@ -1567,7 +1572,7 @@
     }).bind('touchmove',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
             return;
         var touch = e.targetTouches[0];
         this.indextouchendX = touch.pageX;
@@ -1578,7 +1583,7 @@
     }).bind('touchend',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
             return;
         log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
@@ -1806,5 +1811,15 @@
             ws.send("0")
         }
     },30000)
+
+
+    setInterval(function(){
+        var totalsecondsno = localStorage.getItem("totalsecondsno")
+        totalsecondsno = totalsecondsno?totalsecondsno:0;
+        totalsecondsno++;
+        localStorage.setItem("totalsecondsno",totalsecondsno)
+    },1000)
+
+    statisticsexps()
 })()
 

@@ -139,3 +139,30 @@ function geteletop(element,offsetTop) {
 
 
 
+function statisticsexps(){
+      var nowdate = moment().format('L')
+      var lastAddDate = localStorage.getItem('lastAddDate')
+      if(!lastAddDate)
+        localStorage.setItem('lastAddDate',nowdate)
+      if(lastAddDate != nowdate){
+        var totalTranslates = localStorage.getItem('totaltranslates')
+        var totalSeconds = localStorage.getItem('totalseconds')
+        totalTranslates=parseInt(totalTranslates?totalTranslates:0)
+        totalSeconds=parseInt(totalSeconds?totalSeconds:0)
+
+        var totalTranslatesNo = localStorage.getItem('totaltranslatesno')
+        var totalSecondsNo = localStorage.getItem('totalsecondsno')
+        totalTranslatesNo=parseInt(totalTranslatesNo?totalTranslatesNo:0)
+        totalSecondsNo=parseInt(totalSecondsNo?totalSecondsNo:0)
+        totalTranslates+=totalTranslatesNo
+        totalSeconds+=totalSecondsNo
+
+        localStorage.setItem('totaltranslates',totalTranslates)
+        localStorage.setItem('totalseconds',totalSeconds)
+
+        localStorage.setItem('totaltranslatesno',0)
+        localStorage.setItem('totalsecondsno',0)
+
+        localStorage.setItem('lastAddDate',nowdate)
+      }
+}

@@ -20,6 +20,7 @@
         <link rel="shortcut icon" href="./favicon.ico" >
         <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script> 
@@ -61,6 +62,9 @@
     </head>
     <body style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
         <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
+            <div id="logo" style="width:100%;position:absolute;top:0;bottom:51px;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
+                <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
+            </div>
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
@@ -150,15 +154,15 @@
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     查词
                 </span>
-                <span id="startFn"  class="startFn unselectable"
-                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: white;border: 1px solid #bfbbbb;
+                <span id="startFn1"  class="startFn unselectable"
+                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: #d8d8d8;border: 1px solid #bfbbbb;
                         font-size: 14px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
-                    <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200" fill="#bfbbbb"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
+                    <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#ffffff" p-id="2560"></path></svg>
                 </span>
-                <span id="stopFn" class="stopFn unselectable" 
+                <span id="stopFn1" class="stopFn unselectable" 
                     style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
                         font-size: 15px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
-                    ||
+                    <svg style="width: 15px;height: 15px;vertical-align: text-bottom;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
                 </span>
                 <span id="wholebtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;

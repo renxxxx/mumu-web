@@ -36,7 +36,7 @@
                     border-style: none solid none solid;
                 }
             } */
-            html,body,.index{
+            html,body,#index{
                 margin: 0px;width: 100%;height: 100%;
             }
             .videoList>li,.videoList>li>a{
@@ -96,21 +96,24 @@
             }
         </style>
     </head>
-    <body style="max-width: 800px; margin: auto;background-color: #000000;">
-        <div class="index" style="background-color: #ffffff;position: relative;">
+    <body style="background-color: #000000;">
+        <div id="index" style="max-width: 800px;background-color: #ffffff;position: relative;top:0;height:100%;margin:auto;">
+            <div id="logo" style="width:100%;position:absolute;top:0;bottom:51px;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
+                <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
+            </div>
             <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
-                <li id="videotemplate" style="display:block;float:left;width:45%;height:205px;background-color: #919191;padding:0;margin-left:3.33%;margin-top:10px;
-                        border-radius: 5px;font-size:0;position:relative;cursor: pointer;display:none;">
-                    <div style="width:100%;height:159px;background-color: #dddddd;border-radius: 5px 5px 0 0;">
-                        <img class="cover" src="" style="width:100%;height:156px;object-fit: cover;border-radius: 5px 5px 0 0;"/>
+                <a id="videotemplate" style="display:block;float:left;width:45%;height:155px;padding:0;margin-left:3.33%;margin-top:10px;
+                        border-radius: 5px;font-size:0;position:relative;cursor: pointer;display:none;text-decoration: blink;color:#000000;">
+                    <div style="width:100%;height:109px;background-color: #dddddd;border-radius: 3px 3px 0 0;">
+                        <img class="cover" src="" style="width:100%;height:106px;object-fit: cover;border-radius: 3px 3px 0 0;"/>
                     </div>
-                    <progress class="progress" style="width:100%;height:5px;position:absolute;top:155px;"></progress>
-                    <div class="name" style="width:100%;height:46px;background-color: #dddddd;font-size:14px;line-height:20px;overflow: hidden;word-break: break-word;
-                            padding:3px;box-sizing: border-box;border-radius: 0 0 5px 5px;">
+                    <progress class="progress" style="width:100%;height:5px;position:absolute;top:105px;"></progress>
+                    <div class="name" style="width:100%;height:46px;background-color: #ffffff;font-size:13px;line-height:20px;overflow: hidden;word-break: break-word;
+                            padding:3px;box-sizing: border-box;border-radius: 0 0 5px 5px;color:#444444;">
                     </div>
-                </li>
+                </a>
             </ul>
-           
+            
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
@@ -133,6 +136,8 @@
                     我的
                 </span>
             </div>
+
+            
         </div>
         <div  class="unselectable" style="display: none;">
             <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
@@ -157,6 +162,10 @@
         //         $.cookie('position', JSON.stringify(o)); 
         //     });
         // }
+
+        setTimeout(function(){
+            $('#logo').hide()
+        },500)
 
         var videoList = [];
         (function(win){
@@ -201,6 +210,7 @@
                         else
                             videoele.find('.progress').hide()
                         videoele.css('display','block')
+                        videoele.attr('href',`./video.html?videoNo=${item.no}`)
                         $('.videoList').append(videoele)
                     })
                     console.log(_this.videoList)

@@ -20,6 +20,7 @@
         <link rel="shortcut icon" href="./favicon.ico" >
         <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
@@ -28,43 +29,72 @@
         <script src="./js/page-pre.js" type="application/javascript"></script>
         
     </head>
-    <body style="width: 100%;height: 100%;margin:0;padding:0;background-color: #ffffff;" >
-        <div style="text-align: center;box-sizing: border-box;border: 1px solid #ffffff14;">
-            <div style="text-align: center;border:1px solid #000000;padding:3px 10px;width:200px;border-radius: 3px;margin:auto;margin-top:200px;cursor: pointer;"
-                onclick="
-                    localStorage.clear()
-                    clearAllCookie()
-                    alert('重置完成')
-                    location.replace('./index.html')
-                ">
-                重 置
+    <body style="background-color: #000000;width: 100%;height: 100%;margin:0;padding:0;" >
+        <div id="index" style="max-width: 800px;background-color: #ffffff;position: relative;top:0;height:100%;margin:auto;">
+            <div id="logo" style="width:100%;position:absolute;top:0;bottom:51px;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
+                <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
+            </div>
+            <div style="text-align: center;box-sizing: border-box;border: 1px solid #ffffff;">
+                <div style="width:100%;font-size:0;height:60px;margin-top:100px;">
+                    <div style="width:100%;font-size:16px;height:30px;text-align: center;line-height: 30px;">
+                        已学习
+                    </div>
+                    <div id="totalSeconds" style="width:100%;font-size:18px;height:30px;text-align: center;line-height: 30px;">
+                    </div>
+                </div>
+    
+                <div style="width:100%;font-size:0;height:60px;margin-top:50px;">
+                    <div style="width:100%;font-size:16px;height:30px;text-align: center;line-height: 30px;">
+                        已查词
+                    </div>
+                    <div id="totalTranslates" style="width:100%;font-size:18px;height:30px;text-align: center;line-height: 30px;">
+                    </div>
+                </div>
+                <div style="width:100%;font-size:14px;height:30px;text-align: center;line-height: 30px;margin-top:20px;color:#919191;">
+                    翌日更新
+                </div>
+                <div style="text-align: center;border:1px solid #868686;padding:3px 10px;width:200px;border-radius: 3px;margin:auto;cursor: pointer;
+                        position:absolute;bottom:100px;left:50%;transform:translateX(-50%);color:#868686;"
+                    onclick="
+                        localStorage.clear()
+                        clearAllCookie()
+                        alert('重置完成')
+                        location.replace('./index.html')
+                    ">
+                    重 置
+                </div>
+            </div>
+            
+            <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('index.html')">
+                    发现
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('list.html')">
+                    资源
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('history.html')">
+                    看过
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
+                    onclick="location.replace('my.html')">
+                    我的
+                </span>
             </div>
         </div>
         
-        <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                onclick="location.replace('index.html')">
-                发现
-            </span>
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                onclick="location.replace('list.html')">
-                资源
-            </span>
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                onclick="location.replace('history.html')">
-                看过
-            </span>
-            <span class="unselectable" 
-                style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
-                onclick="location.replace('my.html')">
-                我的
-            </span>
-        </div>
     </body>
     <script>
+        setTimeout(function(){
+            $('#logo').hide()
+        },500)
+
          $.get('/mumu/wxjsapiticket',(res)=>{
             $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
                 console.log(JSON.stringify(res));
@@ -99,5 +129,13 @@
                 }
             })
         });
+
+        statisticsexps()
+        var totalTranslates = localStorage.getItem('totaltranslates')
+        var totalSeconds = localStorage.getItem('totalseconds')
+        if(totalTranslates)
+            $('#totalTranslates').text(totalTranslates+ ' 次')
+        if(totalSeconds)
+            $('#totalSeconds').text(parseInt(totalSeconds/3600)+' 小时')
     </script>
 </html>
