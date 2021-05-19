@@ -35,20 +35,44 @@
     var videos =[]
     var videosIndex =-1
 
-    if(!videos || videos.length==0){
-        $.ajax({
-            url: '/mumu/explore-videos?',
-            type: 'get',
-            data: 'shortvideo=1&kw='+'&pageSize='+30,
-            async: false,
-            success: function(res) {
-                videos.push(...res.data.videos)
-                localStorage.setItem('videos',JSON.stringify(videos))
-            }
-        })
-    }
-    if(videoC)
-        videos.unshift(videoC)
+
+    $.ajax({
+        url: '/mumu/chatroom-msgs?',
+        type: 'get',
+        data: 'rcount='+300,
+        async: true,
+        success: function(res) {
+            $(res.data.rows).each((inx,item)=>{
+                if(inx==0){
+                    $('#lastmsg').text(item.text)
+                    $('#chatminpad').show()
+                }
+                var ele = $('#chatmsgtemple').clone(true)
+                ele.attr('id','chatmsg'+item.msgNo)
+                if(item.userNo==$.cookie('token'))
+                    ele.css('color','green')
+                ele.text(item.text)
+                ele.show();
+                $('#chatmsgspad').append(ele)
+            })
+        }
+    })
+
+
+    $.ajax({
+        url: '/mumu/explore-videos?',
+        type: 'get',
+        data: 'shortvideo=1&kw='+'&pageSize='+30,
+        async: false,
+        success: function(res) {
+            videos.push(...res.data.videos)
+            localStorage.setItem('videos',JSON.stringify(videos))
+
+            if(videoC)
+                videos.unshift(videoC)
+        }
+    })
+    
 
 
     var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
@@ -78,7 +102,9 @@
     if(currentCaption)
         setline(currentCaption);
 
-    goNextVideo()
+    
+
+    
     $('#historyword_template').bind('click',function(event){
         log.info('$(#historyword_template).click '+$(this).attr('data'))
         page.dovideoshadow=1
@@ -87,7 +113,7 @@
     })
 
     
-
+    goNextVideo()
     function goNextVideo(){
         pauseVideo()
         if(!videos[videosIndex+1]){
@@ -179,6 +205,7 @@
     function getvideodone(videop){
         video=videop;
         $('#titleinback').text(video.name)
+        $('#titleinbackpad').show()
         // if(video.height && video.width){
         //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
         //     $('#video').css('height',videoheight)
@@ -1283,6 +1310,12 @@
         log.info('#word-in.input')
         var tag = this
         var value  =this.value
+
+        if(this.value==''){
+            $('#wordsframe_cancel').show()
+        }else{
+            $('#wordsframe_cancel').hide()
+        }
         if(value){
             $.ajax({
                 url:'/mumu/words',
@@ -1457,17 +1490,52 @@
         }
     })
 
-
-
-
-    $('#chatpadhidebtn').click(function(){
-        $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
-        $('#chatpad').slideUp(100)
+    $('#word-in').bind('focus',function(){
+        this.select()
+        if(this.value==''){
+            $('#wordsframe_cancel').show()
+        }else{
+            $('#wordsframe_cancel').hide()
+        }
     })
+
+
+    // $('#chatpadhidebtn').click(function(){
+    //     $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
+    //     $('#chatpad').slideUp(100)
+    // })
     $('#chatminpad').click(function(){
         $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         $('#chatpad').slideDown(100)
     })
+    $('#chatroombtn').click(function(){
+        $('#chatroompad').show();
+        $('#chatprivatepad').hide();
+        $(this).css('background-color','#d7d7d7')
+        $('#chatprivatebtn').css('background-color','#737373')
+    })
+    $('#chatprivatebtn').click(function(){
+        $('#chatroompad').hide();
+        $('#chatprivatepad').show();
+        $(this).css('background-color','#d7d7d7')
+        $('#chatroombtn').css('background-color','#737373')
+    })
+    $('#index').bind('touchstart',function(e){
+        var touch = e.targetTouches[0];
+        this.touchstart = touch.pageY;
+        log.debug("touchstart "+this.touchstart)
+    }).bind('touchmove',function(e){
+        var touch = e.targetTouches[0];
+        this.touchend = touch.pageY;
+        if($(e.target).scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        log.debug("touchend "+this.touchend)
+        this.touchstart=null
+        this.touchend=null
+    })
+
 
     $('#chatpad').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
@@ -1486,6 +1554,24 @@
         }
         this.touchstart=null
         this.touchend=null
+    })
+
+    $('#chatpad').bind('mousedown',function(e){
+        log.debug("mousedown "+ e.pageY)
+        this.mousedown = e.pageY;
+    }).bind('mousemove',function(e){
+        this.mouseup = e.pageY;
+        if($('#chatmsgspad').scrollTop()==0 && this.mousedown<this.mouseup){
+            e.preventDefault()
+        }
+    }).bind('mouseup',function(e){
+        log.debug("mouseup "+e.pageY)
+        this.mouseup = e.pageY;
+        if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
+            $('#chatpad').slideUp(100)
+        }
+        this.mousedown=null
+        this.mouseup=null
     })
 
     $('#word-in').keydown(function(){
@@ -1508,69 +1594,66 @@
             }
             ws.send(JSON.stringify(o))
 
-            var ele = $('#chatmsgtemple').clone(true)
-            ele.attr('id','chatmsg'+1)
-            ele.css('color','green')
-            ele.text(msg)
-            ele.show();
-            $('#chatmsgspad').prepend(ele)
+            // var ele = $('#chatmsgtemple').clone(true)
+            // ele.attr('id','chatmsg'+1)
+            // ele.css('color','green')
+            // ele.text(msg)
+            // ele.show();
+            // $('#chatmsgspad').prepend(ele)
             this.value=''
 
-            $('#lastmsg').text(msg)
+            // $('#lastmsg').text(msg)
         }
     })
 
     
-    $.ajax({
-        url: '/mumu/chatroom-msgs?',
-        type: 'get',
-        data: 'rcount='+300,
-        async: true,
-        success: function(res) {
-            $(res.data.rows).each((inx,item)=>{
-                if(inx==0)
-                    $('#lastmsg').text(item.text)
-                var ele = $('#chatmsgtemple').clone(true)
-                ele.attr('id','chatmsg'+item.msgNo)
-                if(item.userNo==$.cookie('token'))
-                    ele.css('color','green')
-                ele.text(item.text)
-                ele.show();
-                $('#chatmsgspad').append(ele)
-            })
-        }
-    })
+    
 
-    var ws = new WebSocket(`wss://${location.host}/mumu/websocket/${$.cookie('token')}`); 
-    //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
-    ws.onopen = function(){
-    　　//当WebSocket创建成功时，触发onopen事件
-        log.debug("ws onopen");
-    }
-    ws.onmessage = function(e){
-    　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
-    　　log.debug("ws onmessage: "+e.data);
-        var data = JSON.parse(e.data)
-        if(data.action == 1){
-            var ele = $('#chatmsgtemple').clone(true)
-            ele.attr('id','chatmsg'+data.msgNo)
-            if(data.userNo==$.cookie('token'))
-                ele.css('color','green')
-            ele.text(data.text)
-            ele.show();
-            $('#chatmsgspad').prepend(ele)
-            $('#lastmsg').text(data.text)
+    var ws = null;
+    initws()
+    function initws(){
+        ws = new WebSocket(`wss://${location.host}/mumu/websocket/${$.cookie('token')}`); 
+        //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
+        ws.onopen = function(){
+        　　//当WebSocket创建成功时，触发onopen事件
+            log.debug("ws onopen");            
+            page.ws=ws
         }
+        ws.onmessage = function(e){
+        　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+        　　log.debug("ws onmessage: "+e.data);
+            var data = JSON.parse(e.data)
+            if(data.action == 1){
+                var ele = $('#chatmsgtemple').clone(true)
+                ele.attr('id','chatmsg'+data.msgNo)
+                if(data.userNo==$.cookie('token'))
+                    ele.css('color','green')
+                ele.text(data.text)
+                ele.show();
+                $('#chatmsgspad').prepend(ele)
+                $('#lastmsg').text(data.text)
+            }
+        }
+        ws.onclose = function(e){
+        　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+        }
+        ws.onerror = function(e){
+        　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+        }   
     }
-    ws.onclose = function(e){
-    　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
-    　　log.debug("ws close");
-        alert("ws close:" + JSON.stringify(e))
-    }
-    ws.onerror = function(e){
-    　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
-    　　log.debug("ws error:"+e);
-        alert("ws error:" + JSON.stringify(e))
-}
+
+    setInterval(() => {
+        if(ws && ws.readyState==3){
+            log.debug("to ws init after 3")
+            initws()
+        }
+    }, 1000);
+    
+    setInterval(function(){
+        if(ws && ws.readyState==1){
+            log.debug("to ws heart check")
+            ws.send("0")
+        }
+    },30000)
 })()
 

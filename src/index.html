@@ -118,6 +118,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="wordsframe_cancel" style="text-align: center;width:100%;font-size:16px;position:absolute;top:100px;">点击取消</div>
             </div>
             <div id="zh_subtitles" class="unselectable" 
                 style="line-height: 30px;width: 100%;text-align: center;min-height: 64px;background-color: #ffffff;margin-top:5px;font-size: 18px;" >
@@ -199,13 +200,12 @@
             </div>
 
             
-            <div class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:117px;cursor: pointer;
-                    background-color: #ffffff;box-sizing: border-box;padding: 0 5px;
-                    overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+            <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:117px;cursor: pointer;
+                    background-color: #ffffff;box-sizing: border-box;padding: 0 5px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;">
                 <span id="titleinback" style="font-size:12px;color:#bfbbbb;"></span>
             </div>
             <div id="chatminpad" style="position:absolute;bottom:87px;width:100%;background-color: #d8d8d8;height:30px;line-height:30px;cursor: pointer;padding:0 17px 0 5px;
-                                    font-size:0px;box-sizing: border-box;">
+                                    font-size:0px;box-sizing: border-box;display:none;">
                 <span id="lastmsg" style="font-size: 14px;color:#6f6f6f;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;"></span>
                 <img id="lastmsgtipimg" src="./img/chat.svg" draggable=false style="width:18px;height:18px;position:absolute;right:2px;top:6px;"/>
             </div>
@@ -223,7 +223,7 @@
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
                     onclick="$('#video')[0].pause();location.replace('index.html');">
-                    探索
+                    发现
                 </span>
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
@@ -244,28 +244,41 @@
             
             
             <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #9f9f9f;display:none;box-shadow: 0px 0px 10px 0px black;">
-                <div id="chatpadhidebtn" style="height:30px;background-color: #737373;width:100%;cursor: pointer;font-size:14px;text-align: center;line-height:30px;">
-                    点我关闭
+                <div style="height:30px;width:100%;font-size:0;">
+                    <span id="chatroombtn" 
+                        style="display:inline-block;height:30px;background-color: #d7d7d7;width:50%;cursor: pointer;
+                            font-size:14px;text-align: center;line-height:30px;">
+                        聊天室
+                    </span>
+                    <span id="chatprivatebtn" 
+                        style="display:inline-block;height:30px;background-color: #737373;width:50%;cursor: pointer;
+                            font-size:14px;text-align: center;line-height:30px;">
+                        私聊
+                    </span>
                 </div>
-                <div style="height:30px;width:100%;">
-                    <input id="chatinput" placeholder="在这输入"
-                        style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
-                            background-color: #eaeaea;padding:0 3px;" />
-                </div>
-                <div id="chatmsgspad" style="width:100%;overflow: auto;box-sizing: border-box;padding:3px;position:absolute;bottom:0;top:60px;font-size:0;margin-top:5px;">
-                    <div id="chatmsgtemple" 
-                        style="font-size:14px;width:100%;min-height:20px;max-height:60px;line-height:20px;
-                            display:none;margin-bottom:10px;overflow:hidden;">
+                
+                <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;">
+                    <div style="height:30px;width:100%;">
+                        <input id="chatinput" placeholder="在这输入" autocomplete="off"
+                            style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
+                                background-color: #eaeaea;padding:0 3px;" />
+                    </div>
+                    <div id="chatmsgspad" style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;position:absolute;bottom:0;top:30px;font-size:0;margin-top:5px;">
+                        <div id="chatmsgtemple" 
+                            style="font-size:13px;width:100%;min-height:20px;max-height:40px;line-height:20px;
+                                display:none;margin-bottom:5px;overflow:hidden;">
+                        </div>
                     </div>
                 </div>
-                <div class="unselectable" draggable=false style="display:none;">
-                    <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+                <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;display:none;font-size:0;">
+                    <span style="font-size:16px;margin-top:30px;">coming soon</span>
                 </div>
             </div>
+            
+            <div class="unselectable" draggable=false style="display:none;">
+                <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+            </div>
         </div>
-        
-        
-        
     </body>
     <script src="./index-post.min.js" type="application/javascript"></script>
     <script src="./js/page-post.js" type="application/javascript"></script>

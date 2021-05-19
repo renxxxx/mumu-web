@@ -1345,5 +1345,25 @@
             playVideo()
         }
     })
+
+    $('#word-in').bind('focus',function(){
+        this.select()
+    })
+
+    $('#index').bind('touchstart',function(e){
+        var touch = e.targetTouches[0];
+        this.touchstart = touch.pageY;
+        log.debug("touchstart "+this.touchstart)
+    }).bind('touchmove',function(e){
+        var touch = e.targetTouches[0];
+        this.touchend = touch.pageY;
+        if($(e.target).scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        log.debug("touchend "+this.touchend)
+        this.touchstart=null
+        this.touchend=null
+    })
 })()
 
