@@ -1,6 +1,7 @@
 (function(){
     var page = {}
     window.page=page
+    page.translateajaxs=[]
     log.debugon=1
 
     setTimeout(function(){
@@ -652,7 +653,7 @@
                 $('#summtrans-value').hide();
                 return;
             }
-            page.ajaxtranslate=$.ajax({
+            page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
                 type: 'get',
                 async: true,
@@ -691,7 +692,7 @@
                     $('#summtrans').show()
                     $('#video').css('top','-1000px')
                 },
-            })
+            }))
         },200)
         
     }   
@@ -709,6 +710,9 @@
         log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         if(page.ajaxtranslate)
             page.ajaxtranslate.abort()
+        for (const ajax of page.translateajaxs) {
+            ajax.abort()
+        }
         page.dovideoshadow=0
         // clearTimeout(page.timeout11)
         $('.dialog').hide()
