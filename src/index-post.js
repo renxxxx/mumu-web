@@ -1555,23 +1555,40 @@
     $('#index').bind('touchstart',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
+        if($(e.target).parents('#gearframe1').length>0)
+            return;
         var touch = e.targetTouches[0];
-        this.indextouchstart = touch.pageY;
-        log.debug("indextouchstart "+this.indextouchstart)
+        this.indextouchstartX = touch.pageX;
+        this.indextouchstartY = touch.pageY;
     }).bind('touchmove',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
+        if($(e.target).parents('#gearframe1').length>0)
+            return;
         var touch = e.targetTouches[0];
-        this.indextouchend = touch.pageY;
-        if($(e.target).scrollTop()==0 && this.indextouchstart<this.indextouchend){
+        this.indextouchendX = touch.pageX;
+        this.indextouchendY = touch.pageY;
+        if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
             e.preventDefault()
         }
     }).bind('touchend',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        log.debug("indextouchend "+this.indextouchend)
-        this.indextouchstart=null
-        this.indextouchend=null
+        if($(e.target).parents('#gearframe1').length>0)
+            return;
+        log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+            if(this.indextouchstartX-this.indextouchendX>100){
+                goNextVideo()
+            }else if(this.indextouchstartX-this.indextouchendX<-100){
+                goPrevVideo()
+            }
+        }
+        
+        this.indextouchstartX=null
+        this.indextouchstartY=null
+        this.indextouchendX=null
+        this.indextouchendY=null
     })
 
 
