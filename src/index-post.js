@@ -1181,13 +1181,13 @@
 
     onresize()
     function onresize(){
-        if(isPc()){
-            $('#gearframe1').hide()
-            $('#pcrecommand').text('控制键(a,s,d,space) 翻译键(q,w,e,enter)')
-        }else{
-            $('#gearframe1').show()
-            $('#pcrecommand').text('PC端操作更方便')
-        }
+        // if(isPc()){
+        //     $('#gearframe1').hide()
+        //     $('#pcrecommand').text('控制键(a,s,d,space) 翻译键(q,w,e,enter)')
+        // }else{
+        //     $('#gearframe1').show()
+        //     $('#pcrecommand').text('PC端操作更方便')
+        // }
         // if(video.height && video.width)
         //     $('#video').css('height',parseInt($('#video').css('width').replace('px',''))*(video.height/video.width))
     }
@@ -1528,8 +1528,9 @@
     // })
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#startstoppad').height()+5))+'px')
-        $('#startstoppad').show()
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+10))+'px')
+        $('#gearframe1').hide()
+        $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
             $('#video').attr('loop','loop')
         })
@@ -1587,7 +1588,8 @@
     }).bind('touchend',function(e){
         log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50){
-            $('#startstoppad').hide()
+            $('#gearframe1').show()
+            $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
             })
@@ -1608,7 +1610,8 @@
         log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50){
-            $('#startstoppad').hide()
+            $('#gearframe1').show()
+            $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
             })
@@ -1630,7 +1633,8 @@
     }).bind('touchend',function(e){
         log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#startstoppad').hide()
+            $('#gearframe1').show()
+            $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
             })
@@ -1651,7 +1655,8 @@
         log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#startstoppad').hide()
+            $('#gearframe1').show()
+            $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
             })
