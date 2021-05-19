@@ -652,7 +652,7 @@
                 $('#summtrans-value').hide();
                 return;
             }
-            $.ajax({
+            page.ajaxtranslate=$.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
                 type: 'get',
                 async: true,
@@ -707,8 +707,10 @@
     function videoPlay(){
         log.debug("onplay: "+ ++runstep)
         log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        if(page.ajaxtranslate)
+            page.ajaxtranslate.abort()
         page.dovideoshadow=0
-        clearTimeout(page.timeout11)
+        // clearTimeout(page.timeout11)
         $('.dialog').hide()
         $('#summtrans').hide()
         $('#summtrans-word').text('')
@@ -1388,13 +1390,13 @@
         event.preventDefault()
     })
 
-    $('#startFn').bind('click',function(){
+    $('#startFn,#startFn1').bind('click',function(){
         log.info('#startFn.click')
         playVideo();
         $('#video').attr('controls', false);
     })
 
-    $('#stopFn').bind('click',function(){
+    $('#stopFn,#stopFn1').bind('click',function(){
         log.info('#stopFn.click')
         pauseVideo()
         $('#video').attr('controls', false);
@@ -1521,8 +1523,12 @@
     //     $('#chatpad').slideUp(100)
     // })
     $('#chatminpad').click(function(){
-        $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
-        $('#chatpad').slideDown(100)
+        //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#startstoppad').height()+5))+'px')
+        $('#startstoppad').show()
+        $('#chatpad').slideDown(100,function(){
+            $('#video').attr('loop','loop')
+        })
     })
     $('#chatroombtn').click(function(){
         $('#chatroompad').show();
@@ -1577,7 +1583,10 @@
     }).bind('touchend',function(e){
         log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50){
-            $('#chatpad').slideUp(100)
+            $('#startstoppad').hide()
+            $('#chatpad').slideUp(100,function(){
+                $('#video').attr('loop',false)
+            })
         }
         this.touchstart=null
         this.touchend=null
@@ -1595,7 +1604,10 @@
         log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50){
-            $('#chatpad').slideUp(100)
+            $('#startstoppad').hide()
+            $('#chatpad').slideUp(100,function(){
+                $('#video').attr('loop',false)
+            })
         }
         this.mousedown=null
         this.mouseup=null
@@ -1614,7 +1626,10 @@
     }).bind('touchend',function(e){
         log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#chatpad').slideUp(100)
+            $('#startstoppad').hide()
+            $('#chatpad').slideUp(100,function(){
+                $('#video').attr('loop',false)
+            })
         }
         this.touchstart=null
         this.touchend=null
@@ -1632,7 +1647,10 @@
         log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#chatpad').slideUp(100)
+            $('#startstoppad').hide()
+            $('#chatpad').slideUp(100,function(){
+                $('#video').attr('loop',false)
+            })
         }
         this.mousedown=null
         this.mouseup=null

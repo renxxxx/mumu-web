@@ -128,7 +128,18 @@
                 style="line-height: 30px;width: 100%;text-align: center;min-height: 64px;background-color: #ffffff;margin-top:5px;font-size: 18px;" >
             </div>
             
-           
+            <div id="startstoppad" style="box-sizing: border-box;text-align: center;display:none;">
+                <button id="startFn"  class="startFn unselectable"
+                    style="cursor:pointer;text-align: center;line-height: 40px;padding: 0px;background: white;border: 1px solid #827e7e;
+                        font-size: 14px;padding: 0px;width: 100%;height: 40px;border-style:solid none solid none;">
+                    <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
+                </button>
+                <button id="stopFn" class="stopFn unselectable" 
+                    style="cursor:pointer;text-align: center;line-height: 40px;padding: 0px;display: none;background: white;border: 1px solid #827e7e;
+                        font-size: 15px;padding: 0px;width: 100%;height: 40px;border-style:solid none solid none;">
+                    ||
+                </button>
+            </div>
             <div style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;">    
                 <span id="prevline" class="unselectable" style="text-align: center;line-height: 40px;cursor:pointer;height: 40px;box-sizing: border-box;width: 33.3333333333%;background: white;border-width:1px 0 1px 0;border-color: #827e7e;font-size: 12px;padding: 0 5px;border-style:solid;background-color: #ffffff;">
                     上一句
@@ -161,12 +172,12 @@
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     查词
                 </span>
-                <span id="startFn"  class="startFn unselectable"
+                <span id="startFn1"  class="startFn unselectable"
                     style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: white;border: 1px solid #bfbbbb;
                         font-size: 14px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
                     <svg style="width: 15px;height: 15px;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200" fill="#bfbbbb"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
                 </span>
-                <span id="stopFn" class="stopFn unselectable" 
+                <span id="stopFn1" class="stopFn unselectable" 
                     style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
                         font-size: 15px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
                     ||
@@ -211,7 +222,7 @@
             <div id="chatminpad" style="position:absolute;bottom:87px;width:100%;background-color: #d8d8d8;height:30px;line-height:30px;cursor: pointer;padding:0 17px 0 5px;
                                     font-size:0px;box-sizing: border-box;display:none;">
                 <span id="lastmsg" style="font-size: 14px;color:#6f6f6f;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;"></span>
-                <img id="lastmsgtipimg" src="./img/chat.svg" draggable=false style="width:18px;height:18px;position:absolute;right:2px;top:6px;"/>
+                <svg style="position:absolute;right:2px;top:6px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
             </div>
             <div style="font-size:0;height:35px;position: absolute;bottom:51px;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span id="goPrevVideo" class="unselectable" 
