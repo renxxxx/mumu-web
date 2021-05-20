@@ -164,3 +164,10 @@ function statisticsexps(){
         localStorage.setItem('lastAddDate',nowdate)
       }
 }
+
+
+$ajaxCache.config({ 
+  cacheValidate: function (res) {
+    //选填，配置全局的验证是否需要进行缓存的方法,“全局配置” 和 ”自定义“，至少有一处实现cacheValidate方法 return res.state === 'ok';
+    return res.code == 0;
+}})
