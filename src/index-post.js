@@ -526,7 +526,7 @@
             $('#loopLine').css('background-color',"#ffffff")
         }else{
             loopLine=1
-            $('#loopLine').css('background-color',"#ff9d00")
+            $('#loopLine').css('background-color',"#ffcc79")
         }
     }
     function currline(){
@@ -695,6 +695,8 @@
                     totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
                     totaltranslatesno++;
                     localStorage.setItem("totaltranslatesno",totaltranslatesno)
+
+                    $('#summtrans-speak').click()
                 },
             }))
         },200)
@@ -1083,7 +1085,8 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                pauseVideo()
+                if(!loopLine)
+                    pauseVideo()
                 prevline()
         　　　　 break;
             case '115'://S
@@ -1112,7 +1115,8 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                pauseVideo()
+                if(!loopLine)
+                    pauseVideo()
                 nextline()
         　　　　 break;
             case '113'://Q
@@ -1433,7 +1437,8 @@
 
     $('#prevline').bind('click',function(){
         log.info('#prevline.click')
-        pauseVideo()
+        if(!loopLine)
+            pauseVideo()
         prevline()
     })
     $('#currline').bind('click',function(){
@@ -1442,7 +1447,8 @@
     })
     $('#nextline').bind('click',function(){
         log.info('#nextline.click')
-        pauseVideo()
+        if(!loopLine)
+            pauseVideo()
         nextline()
     })
 
