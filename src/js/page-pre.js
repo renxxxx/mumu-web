@@ -1,6 +1,6 @@
 var config={}
 window.config=config
-config.version="2.2.0"
+config.version="dev-2.2.0"
 config.debug=0
 
 
