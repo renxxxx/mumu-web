@@ -105,6 +105,7 @@
     goNextVideo()
     function goNextVideo(){
         pauseVideo()
+        closeLoopLine()
         if(!videos[videosIndex+1]){
             $.ajax({
                 url: '/mumu/explore-videos?',
@@ -131,6 +132,7 @@
     }
 
     function goPrevVideo(){
+        closeLoopLine()
         if(!videos[videosIndex-1]){
             location.replace('./index.html')
             return;
@@ -529,6 +531,15 @@
             $('#loopLine').css('background-color',"#ffcc79")
         }
     }
+    function closeLoopLine(){
+        loopLine=0
+        $('#loopLine').css('background-color',"#ffffff")
+    }
+    function openLoopLine(){
+        loopLine=1
+        $('#loopLine').css('background-color',"#ffcc79")
+    }
+
     function currline(){
         var inx = en.currentIndex
         var curr = en.current
@@ -1437,8 +1448,8 @@
 
     $('#prevline').bind('click',function(){
         log.info('#prevline.click')
-        if(!loopLine)
-            pauseVideo()
+        // if(!loopLine)
+        //     pauseVideo()
         prevline()
     })
     $('#currline').bind('click',function(){
@@ -1447,8 +1458,8 @@
     })
     $('#nextline').bind('click',function(){
         log.info('#nextline.click')
-        if(!loopLine)
-            pauseVideo()
+        // if(!loopLine)
+        //     pauseVideo()
         nextline()
     })
 
