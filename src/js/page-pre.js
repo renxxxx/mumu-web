@@ -1,7 +1,7 @@
 var config={}
 window.config=config
 config.version="2.2.0"
-config.debug=1
+config.debug=0
 
 
 
