@@ -2,7 +2,7 @@
     window.log={};
     var logsstr = localStorage.getItem('logs')
     log.logs=logsstr?JSON.parse(logsstr):[];
-    log.debugon=1
+    log.debugon=0
 
     log.info=function(content){
         content="IN: " + content
@@ -19,7 +19,7 @@
         console.log(content)
         log.logs.push(content)
         localStorage.setItem('logs',JSON.stringify(log.logs))
-        if(log.logs.length>=20)
+        if(log.logs.length>=100)
             log.flush()
     }
 

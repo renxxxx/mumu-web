@@ -2,7 +2,7 @@
     var page = {}
     window.page=page
     page.translateajaxs=[]
-    log.debugon=1
+    log.debugon=0
 
     setTimeout(function(){
         $('#logo').hide()

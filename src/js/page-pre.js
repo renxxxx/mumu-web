@@ -95,8 +95,6 @@ function videocapture(videoele){
   let canvas = document.createElement("canvas");
   canvas.width = videoele.clientWidth;
   canvas.height = videoele.clientHeight;
-  console.log('v宽', videoele.videoWidth, '高', videoele.videoHeight);
-  console.log('c宽', canvas.width, '高', canvas.height);
 
   var lw = null;
   var lh = null;
