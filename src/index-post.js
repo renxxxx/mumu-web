@@ -1658,7 +1658,7 @@
     $('#index').bind('touchstart',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         var touch = e.targetTouches[0];
         this.indextouchstartX = touch.pageX;
@@ -1666,7 +1666,7 @@
     }).bind('touchmove',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         var touch = e.targetTouches[0];
         this.indextouchendX = touch.pageX;
@@ -1677,7 +1677,7 @@
     }).bind('touchend',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
@@ -1698,14 +1698,14 @@
     $('#index').bind('mousedown',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         this.indextouchstartX = e.pageX;
         this.indextouchstartY = e.pageY;
     }).bind('mousemove',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         this.indextouchendX = e.pageX;
         this.indextouchendY = e.pageY;
@@ -1715,7 +1715,7 @@
     }).bind('mouseup',function(e){
         if($(e.target).parents('.scrollable').length>0)
             return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
@@ -1731,6 +1731,7 @@
         this.indextouchendX=null
         this.indextouchendY=null
     })
+
     $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
         this.touchstart = touch.pageY;

@@ -91,7 +91,7 @@
             </div>
 
             <div id="summtrans" 
-                style="z-index:999999;box-sizing: border-box;font-size:0;width:100%;position:absolute;
+                style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
                 <div id="summtrans-word" class="unselectable"
                     style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;
@@ -113,11 +113,13 @@
             </div> 
 
             <div id="wordsframe" 
-                style="z-index:999999;box-sizing: border-box;font-size:0;width:100%;position:absolute;
+                style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
                     top: 0;color: #ffffff;padding:5px 10px;display:none;">
-                <input id="word-in" autocomplete="off" 
-                    style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
-                        background-color: #eaeaea;border-radius: 1px;line-height: 25px;height: 25px;"/>
+                <form onsubmit="return false">
+                    <input id="word-in" autocomplete="off" type="text"
+                        style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
+                            background-color: #eaeaea;border-radius: 1px;line-height: 25px;height: 25px;"/>
+                </form>
                 <div id="wordss" style="font-size:14px;position:absolute;top:30px;bottom:0;left:0;right:0;padding:3px 10px 5px 10px;">
                     <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
                         <div id="wordtempl" class="unselectable" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:100%;display:none;cursor: pointer;" >
@@ -221,17 +223,23 @@
 
             
             
-            <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:80px;
+            <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:106px;
                     background-color: #ffffff;box-sizing: border-box;padding: 0 5px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;">
                 <span id="titleinback" style="font-size:12px;color:#bfbbbb;"></span>
             </div>
-            <!-- <div style="width:100%;height:30px;position:absolute;bottom:80px;border-top:1px solid #d8d8d8;box-sizing: border-box;">
-                <input style="width:100%;box-sizing: border-box;height:29px;line-height: 29px;border:none;padding:0 5px;"/>
-            </div> -->
-            <div id="chatminpad" style="position:absolute;bottom:50px;width:100%;background-color: #d8d8d8;height:30px;line-height:30px;cursor: pointer;padding:0 17px 0 5px;
-                                    font-size:0px;box-sizing: border-box;display:none;">
-                <span id="lastmsg" style="font-size: 13px;color:#6f6f6f;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;"></span>
-                <svg style="position:absolute;right:2px;top:6px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
+            <div style="position:absolute;bottom:78px;width:100%;background-color: #ffffff;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
+                                    font-size:0px;box-sizing: border-box;border-top:1px solid #efefef;">
+                <span style="font-size: 13px;color:#bfbbbb;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
+                    搜索
+                </span>
+                <svg style="position:absolute;right:2px;top:4px;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="18" height="18"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#3D3942" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#3D3942" p-id="3667"></path></svg>            
+            </div>
+            <div id="chatminpad" style="position:absolute;bottom:50px;width:100%;background-color: #d8d8d8;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
+                                    font-size:0px;box-sizing: border-box;">
+                <span id="lastmsg" style="font-size: 13px;color:#6f6f6f;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
+                    聊天室
+                </span>
+                <svg style="position:absolute;right:2px;top:4px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
             </div>
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span class="unselectable" 
@@ -273,7 +281,7 @@
                 
                 <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;">
                     <div style="height:30px;width:100%;">
-                        <input id="chatinput" placeholder="在这输入" autocomplete="off"
+                        <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
                             style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
                                 background-color: #eaeaea;padding:0 3px;" />
                     </div>
@@ -303,6 +311,9 @@
                 <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;display:none;font-size:0;">
                     <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
                 </div>
+
+
+                <div></div>
             </div>
             
             <div class="unselectable" draggable=false style="display:none;">
