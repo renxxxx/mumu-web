@@ -1287,7 +1287,7 @@
         var sss= ss.match(/(\w*)\s*?(的过去|的现在|的复数|的第三|的ing)/)
         if(!sss)
             return ss;
-        ss = ss.replace(sss[1],`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;">${sss[1]}</span>`)
+        ss = ss.replace(sss[1],`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;margin:0 5px;color: bisque;">${sss[1]}</span>`)
         return ss;
     }
 
@@ -1481,7 +1481,8 @@
             wno = currwordno
             wno--;
         }
-        if(wno != null){
+
+        if(en.current && en.current.enValue && wno != null){
             if(wno<1)
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)
@@ -1533,7 +1534,7 @@
             wno = currwordno
             wno--;
         }
-        if(wno != null){
+        if(en.current && en.current.enValue && wno != null){
             if(wno<1)
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)

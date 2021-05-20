@@ -1308,7 +1308,7 @@
             wno = currwordno
             wno--;
         }
-        if(wno != null){
+        if(en.current && en.current.enValue && wno != null){
             if(wno<1)
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)
@@ -1360,7 +1360,7 @@
             wno = currwordno
             wno--;
         }
-        if(wno != null){
+        if(en.current && en.current.enValue && wno != null){
             if(wno<1)
                 wno=en.currentwords.length;
             if(wno>en.currentwords.length)
