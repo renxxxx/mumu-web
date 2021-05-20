@@ -70,7 +70,7 @@
                 $('#hints').fadeOut(1000,function(){
                     $('#video').css('top','0')
                     $('#video').attr("src",video.url)
-                    setTimeout(function(){$('#video')[0].muted=false},500)
+                    //setTimeout(function(){$('#video')[0].muted=false},500)
                 });
             },3000)
             var ccc = setInterval(function(){
@@ -86,7 +86,7 @@
             $('#video').css('top','0')
             $('#video').attr('autoplay',true)
             $('#video').attr("src",video.url)
-            setTimeout(function(){$('#video')[0].muted=false},500)
+            //setTimeout(function(){$('#video')[0].muted=false},500)
         }
     }
 
@@ -1387,7 +1387,7 @@
     $('#replay').bind('click',function(event){
         log.info('#replay.click')
         $('#video')[0].load()
-        setTimeout(function(){$('#video')[0].muted=false},500)
+        //setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
         log.info('#hideBtn.click')
