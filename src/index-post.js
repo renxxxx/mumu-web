@@ -1908,6 +1908,8 @@
 
 
     setInterval(function(){
+        if($('#video')[0].paused)
+            return;
         var totalsecondsno = localStorage.getItem("totalsecondsno")
         totalsecondsno = totalsecondsno?totalsecondsno:0;
         totalsecondsno++;
