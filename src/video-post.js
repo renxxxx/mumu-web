@@ -597,6 +597,8 @@
                     totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
                     totaltranslatesno++;
                     localStorage.setItem("totaltranslatesno",totaltranslatesno)
+
+                    $('#summtrans-speak').click()
                 },
             })
         },200)
