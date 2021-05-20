@@ -1434,6 +1434,8 @@
         this.startX = touch.pageX;
         this.startY = touch.pageY;
     }).bind('touchmove',function(event){
+        if(!this.startX || !this.startY)
+            return
         var touch = event.targetTouches[0];
         this.endX = touch.pageX;
         this.endY = touch.pageY;
@@ -1472,6 +1474,62 @@
         event.preventDefault()
     }).bind('touchend',function(event){
         log.info('#gear.touchend')
+        this.startX=null
+        this.startY=null
+        this.endX = null;
+        this.endY = null;
+        this.lastDist=null
+        this.xx=0
+    })
+
+    $('#gear').bind('mousedown',function(event){
+        log.info('#gear.mousedown')
+        this.startX = event.pageX;
+        this.startY = event.pageY;
+    }).bind('mousemove',function(event){
+        if(!this.startX || !this.startY)
+            return
+        this.endX = event.pageX;
+        this.endY = event.pageY;
+        var distanceX=this.endX-this.startX;
+        var distanceY=this.endY-this.startY;
+        log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
+
+        if(this.lastDist==null||this.lastDist==undefined)
+            this.lastDist=distanceX;
+        var dd = distanceX-this.lastDist;
+        this.lastDist=distanceX;
+        var left = parseInt(this.style.left.replace('px'))+dd;
+        if(left <=0 && left>=-4900)
+            this.style.left=left+'px';
+        if(!this.xx)
+            this.xx=0
+        this.xx=this.xx+dd;
+        var wno = null;
+        if(this.xx>30){
+            wno = currwordno
+            wno++;
+        }else if(this.xx < -30){
+            wno = currwordno
+            wno--;
+        }
+        if(wno != null){
+            if(wno<1)
+                wno=en.currentwords.length;
+            if(wno>en.currentwords.length)
+                wno=1
+            page.dovideoshadow=1
+            pauseVideo()
+            locateWord(wno)
+            this.xx=0
+        }
+        //event.preventDefault()
+    }).bind('mouseup',function(event){
+        log.info('#gear.mouseup')
+        this.startX=null
+        this.startY=null
+        this.endX = null;
+        this.endY = null;
         this.lastDist=null
         this.xx=0
     })
