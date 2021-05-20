@@ -29,6 +29,7 @@
         $.ajax({
             url: '/mumu/video?',
             type: 'get',
+            ajaxCache:true,
             data: 'videoNo='+videoNoC,
             async: false,
             success: function(res) {

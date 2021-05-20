@@ -96,6 +96,7 @@
             url: '/mumu/video?',
             type: 'get',
             data: 'videoNo='+videoNo,
+            ajaxCache:true,
             async: false,
             success: function(res) {
                 video=res.data.video;
