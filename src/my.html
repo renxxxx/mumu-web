@@ -41,16 +41,24 @@
                     </div>
                     <div id="totalSeconds" style="width:100%;font-size:18px;height:30px;text-align: center;line-height: 30px;">
                     </div>
+                    <div style="font-size:0px;width:100%;height:15px;margin-top:10px;position:relative;">
+                        <progress id="ht" style="height:5px;width:150px;height:15px;line-height:15px;vertical-align: middle;" max=0 value=0></progress>
+                        <span id="hm" style="height:5px;height:15px;line-height:15px;font-size:12px;vertical-align: middle;margin-left:5px;position: absolute;color:#898989;"></span>
+                    </div>
                 </div>
     
-                <div style="width:100%;font-size:0;height:60px;margin-top:50px;">
+                <div style="width:100%;font-size:0;height:60px;margin-top:70px;">
                     <div style="width:100%;font-size:16px;height:30px;text-align: center;line-height: 30px;">
                         已查词
                     </div>
                     <div id="totalTranslates" style="width:100%;font-size:18px;height:30px;text-align: center;line-height: 30px;">
                     </div>
+                    <div style="font-size:0px;width:100%;height:15px;margin-top:10px;position:relative;">
+                        <progress id="tt" style="height:5px;width:150px;height:15px;line-height:15px;vertical-align: middle;" max=0 value=0></progress>
+                        <span id="tm" style="height:5px;height:15px;line-height:15px;font-size:12px;vertical-align: middle;margin-left:5px;position: absolute;color:#898989;"></span>
+                    </div>
                 </div>
-                <div style="width:100%;font-size:14px;height:30px;text-align: center;line-height: 30px;margin-top:20px;color:#919191;">
+                <div style="width:100%;font-size:14px;height:30px;text-align: center;line-height: 30px;margin-top:100px;color:#919191;">
                     翌日更新
                 </div>
                 <div style="text-align: center;border:1px solid #868686;padding:3px 10px;width:200px;border-radius: 3px;margin:auto;cursor: pointer;
@@ -139,5 +147,34 @@
             $('#totalTranslates').text(totalTranslates+ ' 次')
         if(totalSeconds)
             $('#totalSeconds').text(parseInt(totalSeconds/3600)+' 小时')
+        var totalhours = totalSeconds/3600
+
+        if(totalTranslates < 100){
+            $('#tt').attr('max',100).attr('value',totalTranslates)
+            $('#tm').text('100')
+        } else if(totalTranslates < 500){
+            $('#tt').attr('max',500).attr('value',totalTranslates)
+            $('#tm').text('500')
+        } else if(totalTranslates < 2000){
+            $('#tt').attr('max',2000).attr('value',totalTranslates)
+            $('#tm').text('2000')
+        } else if(totalTranslates < 5000){
+            $('#tt').attr('max',5000).attr('value',totalTranslates)
+            $('#tm').text('5000')
+        }
+
+        if(totalhours < 100){
+            $('#ht').attr('max',100).attr('value',totalhours)
+            $('#hm').text('100')
+        } else if(totalhours < 500){
+            $('#ht').attr('max',500).attr('value',totalhours)
+            $('#hm').text('500')
+        } else if(totalhours < 2000){
+            $('#ht').attr('max',2000).attr('value',totalhours)
+            $('#hm').text('2000')
+        } else if(totalhours < 5000){
+            $('#ht').attr('max',5000).attr('value',totalhours)
+            $('#hm').text('5000')
+        }
     </script>
 </html>
