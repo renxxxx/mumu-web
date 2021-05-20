@@ -1,7 +1,11 @@
 var config={}
 window.config=config
-config.version="2.1.0"
+config.version="2.2.0"
+config.debug=1
 
+
+
+log.debugon=config.debug
 var vConsole = new VConsole({
   onReady:function(){
       $('#__vconsole .vc-switch').text('v').addClass('unselectable')

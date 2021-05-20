@@ -2,13 +2,14 @@
     var page = {}
     window.page=page
     page.translateajaxs=[]
-    log.debugon=0
+    //log.debugon=0
 
     setTimeout(function(){
         $('#logo').hide()
         $('#index').show()
     },1000)
 
+    var loopLine=0
 
     $('#video')[0].crossOrigin = 'anonymous';
     $("#finger").animate({left:'+=150px'},2000,function(){
@@ -233,7 +234,7 @@
             }
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime){
                     restored=1;
                 }
@@ -245,7 +246,7 @@
         if(!playRestored){
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime)
                     playRestored=1;
             }
@@ -296,10 +297,17 @@
         if(en.current && en.current.startTime<=_time && _time<en.current.endTime){
             return;
         }
+        
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            log.debug("next ")
+            if(loopLine){
+                log.debug("loopLine "+_time +" - next start time "+ next.startTime+" - "+ en.current.enValue.substr(0,10))
+                currline()
+                return;
+            }
+
+            //log.debug("next ")
             en.current = next
             en.currentIndex++
             setline(next)
@@ -307,8 +315,8 @@
         }
 
         if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
-            log.debug("before next")
-            log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
+            //log.debug("before next")
+            //log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
             return;
         }
 
@@ -316,7 +324,7 @@
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
                 debugger
-                log.debug("search all ")
+                //log.debug("search all ")
                 en.current = item
                 en.currentIndex = inx
                 setline(item)
@@ -369,7 +377,7 @@
         _mp3.play();
     })
     function getEnSubtitles(_result){
-        log.debug("getEnSubtitles: "+ ++runstep)
+        //log.debug("getEnSubtitles: "+ ++runstep)
         en.subtitlesList=[]
         ////let _this = this;
         let _fileString = [];
@@ -441,7 +449,7 @@
     function setline(item){
         if(!item)
             return;
-        log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
+        //log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
         localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
         localStorage.setItem("currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
@@ -494,20 +502,31 @@
             if(prev){
                 if(!prev.enValue)
                     prev = en.subtitlesList[--inx];
+                if(prev){
+                    en.currentIndex =inx   
+                    en.current= prev
+                    jumpedcaption = prev
+                    lastCurrentTime = prev.startTime/1000
+                    $('#video')[0].currentTime = prev.startTime/1000
+                    log.debug("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
+                    setline(prev)
+                    currwordno=0
+                    $('.chDialog').hide()
+                    $('.dialog').css({'display' : 'none'})
+                    $('.dialogTitle #kw').html('');
+                }
             }
-            if(prev){
-                en.currentIndex =inx   
-                en.current= prev
-                jumpedcaption = prev
-                lastCurrentTime = prev.startTime/1000
-                $('#video')[0].currentTime = prev.startTime/1000
-                log.debug("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
-                setline(prev)
-                currwordno=0
-                $('.chDialog').hide()
-                $('.dialog').css({'display' : 'none'})
-                $('.dialogTitle #kw').html('');
-            }
+        }
+    }
+
+    $('#loopLine').click(troggleLoopLine)
+    function troggleLoopLine(){
+        if(loopLine){
+            loopLine=0
+            $('#loopLine').css('background-color',"#ffffff")
+        }else{
+            loopLine=1
+            $('#loopLine').css('background-color',"#ff9d00")
         }
     }
     function currline(){
@@ -522,7 +541,7 @@
                 $('#video')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
-                log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
                 $('.chDialog').hide()
@@ -543,7 +562,7 @@
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
-                log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
                 $('.chDialog').hide()
@@ -604,7 +623,7 @@
     }
 
     function translatee(_data){
-        log.debug(_data+3)
+        //log.debug(_data+3)
         $('#summrest').hide()
         page.dovideoshadow=1
         pauseVideo()
@@ -682,17 +701,17 @@
         
     }   
     function pauseVideo(){
-        log.debug("pauseVideo()")
+        //log.debug("pauseVideo()")
         $('#video')[0].pause();
     }
     function playVideo(){
-        log.debug("playVideo()")
+        //log.debug("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
     }
     function videoPlay(){
-        log.debug("onplay: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.debug("onplay: "+ ++runstep)
+        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         if(page.ajaxtranslate)
             page.ajaxtranslate.abort()
         for (const ajax of page.translateajaxs) {
@@ -729,8 +748,8 @@
     }
     page.dovideoshadow=0
     function videoPause(){
-        log.debug("onpause: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.debug("onpause: "+ ++runstep)
+        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
@@ -749,7 +768,7 @@
             if(!img.src)
                 $('#videoshasowimg').css('background-color',"#000000")
             $('#videoshasow').show()
-            log.debug(`$('#videoshasow').show()`)
+            //log.debug(`$('#videoshasow').show()`)
             $('#video').css('top','-1000px')
         }
     }
@@ -878,7 +897,7 @@
         choooseEnd(_coordinates);
     }
     function choooseStart(_value){
-        log.debug(_value)
+        //log.debug(_value)
         page.dovideoshadow=1
         pauseVideo()
         console.dir($("#zh_subtitles").height())
@@ -932,7 +951,7 @@
                     if(chooseDomList.length){
                         let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
                         let _now = parseInt(ele.className.replace('font span',''));
-                        log.debug(_now-_last)
+                        //log.debug(_now-_last)
                         if( _now == (_last+1)){
                             chooseDomList.push({
                                 class:ele.className,
@@ -1026,7 +1045,7 @@
             keyCodes.push(last)
         if(keyCode!=last)
             keyCodes.push(keyCode)
-        log.debug(keyCodes+" down")
+        //log.debug(keyCodes+" down")
         var keyy = keyCodes.join()
         switch(keyy){
     　　　　 case '27'://esc
@@ -1064,6 +1083,7 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
+                pauseVideo()
                 prevline()
         　　　　 break;
             case '115'://S
@@ -1092,6 +1112,7 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
+                pauseVideo()
                 nextline()
         　　　　 break;
             case '113'://Q
@@ -1141,16 +1162,16 @@
     }
 
     document.onkeyup = function(event){      
-        log.debug(keyCodes+" up")
+        //log.debug(keyCodes+" up")
         keyCodes.pop()　
     }
     document.onfocus = function(){
-        log.debug('document.blur()')
+        //log.debug('document.blur()')
         keyCodes=[]
     }
 
     window.onbeforeunload=function(){
-        log.debug('onbeforeunload')
+        //log.debug('onbeforeunload')
         navigator.sendBeacon("/mumu/page-out");
         log.flush()
     }
@@ -1202,7 +1223,7 @@
 
     $.get('/mumu/wxjsapiticket',(res)=>{
         $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-            log.debug(JSON.stringify(res));
+            //log.debug(JSON.stringify(res));
             wx.config({
                 debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: res.data.appid, // 必填，公众号的唯一标识
@@ -1412,6 +1433,7 @@
 
     $('#prevline').bind('click',function(){
         log.info('#prevline.click')
+        pauseVideo()
         prevline()
     })
     $('#currline').bind('click',function(){
@@ -1420,6 +1442,7 @@
     })
     $('#nextline').bind('click',function(){
         log.info('#nextline.click')
+        pauseVideo()
         nextline()
     })
 
@@ -1436,7 +1459,7 @@
         this.endY = touch.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1489,7 +1512,7 @@
         this.endY = event.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1553,7 +1576,7 @@
         chHideDialog()
     })
     document.body.addEventListener('click',function(){
-        log.debug(event.target)
+        //log.debug(event.target)
     })
 
 
@@ -1639,7 +1662,7 @@
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad').length>0)
             return;
-        log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             if(this.indextouchstartX-this.indextouchendX>100){
                 goNextVideo()
@@ -1677,7 +1700,7 @@
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles').length>0)
             return;
-        log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             if(this.indextouchstartX-this.indextouchendX>100){
                 goNextVideo()
@@ -1694,7 +1717,7 @@
     $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
         this.touchstart = touch.pageY;
-        log.debug("touchstart "+this.touchstart)
+        //log.debug("touchstart "+this.touchstart)
     }).bind('touchmove',function(e){
         var touch = e.targetTouches[0];
         this.touchend = touch.pageY;
@@ -1702,7 +1725,7 @@
             e.preventDefault()
         }
     }).bind('touchend',function(e){
-        log.debug("touchend "+this.touchend)
+        //log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50){
             $('#gearframe1').show()
             $('#prevnextpad').show()
@@ -1715,7 +1738,7 @@
     })
 
     $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
-        log.debug("mousedown "+ e.pageY)
+        //log.debug("mousedown "+ e.pageY)
         this.mousedown = e.pageY;
     }).bind('mousemove',function(e){
         this.mouseup = e.pageY;
@@ -1723,7 +1746,7 @@
             e.preventDefault()
         }
     }).bind('mouseup',function(e){
-        log.debug("mouseup "+e.pageY)
+        //log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50){
             $('#gearframe1').show()
@@ -1739,7 +1762,7 @@
     $('#chatmsgspad').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
         this.touchstart = touch.pageY;
-        log.debug("touchstart "+this.touchstart)
+        //log.debug("touchstart "+this.touchstart)
     }).bind('touchmove',function(e){
         var touch = e.targetTouches[0];
         this.touchend = touch.pageY;
@@ -1747,7 +1770,7 @@
             e.preventDefault()
         }
     }).bind('touchend',function(e){
-        log.debug("touchend "+this.touchend)
+        //log.debug("touchend "+this.touchend)
         if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
             $('#gearframe1').show()
             $('#prevnextpad').show()
@@ -1760,7 +1783,7 @@
     })
 
     $('#chatmsgspad').bind('mousedown',function(e){
-        log.debug("mousedown "+ e.pageY)
+        //log.debug("mousedown "+ e.pageY)
         this.mousedown = e.pageY;
     }).bind('mousemove',function(e){
         this.mouseup = e.pageY;
@@ -1768,7 +1791,7 @@
             e.preventDefault()
         }
     }).bind('mouseup',function(e){
-        log.debug("mouseup "+e.pageY)
+        //log.debug("mouseup "+e.pageY)
         this.mouseup = e.pageY;
         if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
             $('#gearframe1').show()
@@ -1824,12 +1847,12 @@
         //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
         ws.onopen = function(){
         　　//当WebSocket创建成功时，触发onopen事件
-            log.debug("ws onopen");            
+            //log.debug("ws onopen");            
             page.ws=ws
         }
         ws.onmessage = function(e){
         　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
-        　　log.debug("ws onmessage: "+e.data);
+        　　//log.debug("ws onmessage: "+e.data);
             var data = JSON.parse(e.data)
             if(data.action == 1){
                 var ele = $('#chatmsgtemple').clone(true)
@@ -1854,14 +1877,14 @@
 
     setInterval(() => {
         if(ws && ws.readyState==3){
-            log.debug("to ws init after 3")
+            //log.debug("to ws init after 3")
             initws()
         }
     }, 1000);
     
     setInterval(function(){
         if(ws && ws.readyState==1){
-            log.debug("to ws heart check")
+            //log.debug("to ws heart check")
             ws.send("0")
         }
     },30000)
