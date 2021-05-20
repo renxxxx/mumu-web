@@ -44,33 +44,7 @@
     var videosIndex =-1
 
 
-    $.ajax({
-        url: '/mumu/chatroom-msgs?',
-        type: 'get',
-        data: 'rcount='+300,
-        async: true,
-        success: function(res) {
-            $(res.data.rows).each((inx,item)=>{
-                if(inx==0){
-                    $('#lastmsg').text("南京网友: "+item.text)
-                    $('#chatminpad').show()
-                }
-                var ele = $('#chatmsgtemple').clone(true)
-                ele.attr('id','chatmsg'+item.msgNo)
-                if(item.userNo==$.cookie('token'))
-                    ele.css('color','green')
-                ele.find('.name').text("南京网友")
-                ele.find('.msg').text(item.text);
-                ele.find('.looking').text(item.looking);
-                ele.show();
-                $('#chatmsgspad').append(ele)
-            })
-            if(res.data.rows.length==0){
-                $('#lastmsg').text("聊天室")
-                $('#chatminpad').show()
-            }
-        }
-    })
+    
 
 
     $.ajax({
@@ -1901,5 +1875,34 @@
     },1000)
 
     statisticsexps()
+
+
+    $.ajax({
+        url: '/mumu/chatroom-msgs?',
+        type: 'get',
+        data: 'rcount='+300,
+        async: true,
+        success: function(res) {
+            $(res.data.rows).each((inx,item)=>{
+                if(inx==0){
+                    $('#lastmsg').text("南京网友: "+item.text)
+                    $('#chatminpad').show()
+                }
+                var ele = $('#chatmsgtemple').clone(true)
+                ele.attr('id','chatmsg'+item.msgNo)
+                if(item.userNo==$.cookie('token'))
+                    ele.css('color','green')
+                ele.find('.name').text("南京网友")
+                ele.find('.msg').text(item.text);
+                ele.find('.looking').text(item.looking);
+                ele.show();
+                $('#chatmsgspad').append(ele)
+            })
+            if(res.data.rows.length==0){
+                $('#lastmsg').text("聊天室")
+                $('#chatminpad').show()
+            }
+        }
+    })
 })()
 
