@@ -1632,7 +1632,7 @@
     // })
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+10))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+20))+'px')
         $('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
