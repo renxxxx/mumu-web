@@ -1,10 +1,3 @@
-var config={}
-window.config=config
-config.version="dev-2.2.0"
-config.debug=0
-
-
-
 log.debugon=config.debug
 var vConsole = new VConsole({
   onReady:function(){
