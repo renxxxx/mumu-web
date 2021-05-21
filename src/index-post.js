@@ -52,7 +52,7 @@
     $.ajax({
         url: '/mumu/explore-videos?',
         type: 'get',
-        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
+        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
         async: false,
         success: function(res) {
             videos.push(...res.data.videos)
@@ -111,7 +111,7 @@
             $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
                 async: false,
                 success: function(res) {
                     if(res.data.videos.length>0){
@@ -1650,7 +1650,7 @@
         $.ajax({
             url: '/mumu/explore-videos?',
             type: 'get',
-            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
+            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
             async: true,
             success: function(res) {
                 videos=[]
@@ -1670,7 +1670,7 @@
         $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
                 async: true,
                 success: function(res) {
                     videos=[]
