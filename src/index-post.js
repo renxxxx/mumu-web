@@ -1690,7 +1690,20 @@
         this.touchend=null
     })
 
-
+    $('#searchpad').bind('mousedown',function(e){
+        this.touchstart = e.pageY;
+    }).bind('mousemove',function(e){
+        this.touchend = e.pageY;
+        if($(this).scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('mouseup',function(e){
+        if(this.touchend-this.touchstart>50){
+            $('#searchpad').slideUp(100)
+        }
+        this.touchstart=null
+        this.touchend=null
+    })
 
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
