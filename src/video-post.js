@@ -1095,7 +1095,7 @@
         })
     })
 
-    var shareLink = location.origin+'/mumu/index.html?videoNo='+videoNo;
+    var shareLink = location.origin+'/mumu?videoNo='+videoNo;
     wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
 
         wx.updateAppMessageShareData({ 

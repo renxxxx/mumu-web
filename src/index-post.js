@@ -199,6 +199,7 @@
 
     function getvideodone(videop){
         video=videop;
+        videoNo=videop.no
         genShareData()
         $('#titleinback').text(video.name)
         $('#titleinbackpad').show()
@@ -642,9 +643,7 @@
         page.dovideoshadow=1
         pauseVideo()
         doshadow()
-        var translateed = localStorage.getItem('translateed')
-        translateed =parseInt(translateed?++translateed:1)
-        localStorage.setItem('translateed',translateed)
+        
         _data=_data.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')  
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
@@ -712,6 +711,17 @@
                     localStorage.setItem("totaltranslatesno",totaltranslatesno)
 
                     $('#summtrans-speak').click()
+
+                    var translateed = localStorage.getItem('translateed')
+                    translateed =parseInt(translateed?++translateed:1)
+                    if(translateed >= 4){
+                        ws.send(JSON.stringify({
+                            action:3,
+                            words:3
+                        }))
+                        translateed=1
+                    }
+                    localStorage.setItem('translateed',translateed)
                 },
             }))
         },200)
@@ -1251,7 +1261,7 @@
     })
 
     function genShareData(){
-        shareLink = location.origin+'/mumu/index.html?videoNo='+videoNo;
+        shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: video.name, // 分享标题
             desc: '幕幕 - 英语练习', // 分享描述
@@ -1937,7 +1947,7 @@
     var ws = null;
     initws()
     function initws(){
-        ws = new WebSocket(`wss://${location.host}/mumu/websocket/${$.cookie('token')}`); 
+        ws = new WebSocket(`wss://${location.host}/mumu/websocket/${pagePre.login.userNo}`); 
         //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
         ws.onopen = function(){
         　　//当WebSocket创建成功时，触发onopen事件
@@ -1949,16 +1959,19 @@
         　　//log.debug("ws onmessage: "+e.data);
             var data = JSON.parse(e.data)
             if(data.action == 1){
+                if(data.nickname!=null){
+                    data.nickname = data.nickname.substr(0, 1) + '...' +data.nickname.substr(3)
+                }
                 var ele = $('#chatmsgtemple').clone(true)
                 ele.attr('id','chatmsg'+data.msgNo)
                 if(data.userNo==$.cookie('token'))
                     ele.css('color','green')
-                ele.find('.name').text("南京网友")
+                ele.find('.name').text(data.nickname||"网友")
                 ele.find('.msg').text(data.text);
                 ele.find('.looking').text(data.looking);
                 ele.show();
                 $('#chatmsgspad').prepend(ele)
-                $('#lastmsg').text("南京网友: "+data.text)
+                $('#lastmsg').text((data.nickname||"网友").substr(0,6) +" : "+data.text)
             }
         }
         ws.onclose = function(e){
@@ -1974,7 +1987,20 @@
             //log.debug("to ws init after 3")
             initws()
         }
-    }, 1000);
+
+        if($('#video')[0].paused)
+            return;
+        var totalsecondsno = localStorage.getItem("totalsecondsno")
+        totalsecondsno = parseInt(totalsecondsno?totalsecondsno:0);
+        totalsecondsno+=5;
+        localStorage.setItem("totalsecondsno",totalsecondsno)
+
+        ws.send(JSON.stringify({
+            action:2,
+            videoNo:videoNo,
+            seconds:5
+        }))
+    }, 5000);
     
     setInterval(function(){
         if(ws && ws.readyState==1){
@@ -1983,15 +2009,6 @@
         }
     },30000)
 
-
-    setInterval(function(){
-        if($('#video')[0].paused)
-            return;
-        var totalsecondsno = localStorage.getItem("totalsecondsno")
-        totalsecondsno = totalsecondsno?totalsecondsno:0;
-        totalsecondsno++;
-        localStorage.setItem("totalsecondsno",totalsecondsno)
-    },1000)
 
     statisticsexps()
 
@@ -2003,15 +2020,19 @@
         async: true,
         success: function(res) {
             $(res.data.rows).each((inx,item)=>{
+                if(item.nickname!=null){
+                    item.nickname = item.nickname.substr(0, 1) + '...' +item.nickname.substr(3)
+                }
+
                 if(inx==0){
-                    $('#lastmsg').text("南京网友: "+item.text)
+                    $('#lastmsg').text((item.nickname||"网友").substr(0,6)+" : "+item.text)
                     $('#chatminpad').show()
                 }
                 var ele = $('#chatmsgtemple').clone(true)
                 ele.attr('id','chatmsg'+item.msgNo)
                 if(item.userNo==$.cookie('token'))
                     ele.css('color','green')
-                ele.find('.name').text("南京网友")
+                ele.find('.name').text(item.nickname||"网友")
                 ele.find('.msg').text(item.text);
                 ele.find('.looking').text(item.looking);
                 ele.show();

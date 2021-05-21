@@ -1,4 +1,7 @@
 log.debugon=config.debug
+var pagePre={}
+window.pagePre=pagePre
+
 var vConsole = new VConsole({
   onReady:function(){
       $('#__vconsole .vc-switch').text('v').addClass('unselectable')
@@ -7,12 +10,59 @@ var vConsole = new VConsole({
   }
 });
 
-
-var token = $.cookie('token')
-if(!token){
-  token = new Date().getTime()+randomnum(5);
-    $.cookie('token',token,{path:"/"})
+function is_weixn(){  
+  var ua = navigator.userAgent.toLowerCase();  
+  if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+      return true;  
+  } else {  
+      return false;  
+  }  
 }
+
+
+$.ajax({
+  url:'/mumu/login-refresh',
+  method:'get',
+  async:false,
+  success:function(res){
+    if(res.code==0){
+      pagePre.login=res.data
+    } else {
+      login()
+    }
+  }
+})
+
+function login(){
+  if(is_weixn()){
+    var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+    var appId="wx0856c17f2d972911"
+    var state=encodeURIComponent(location.href)
+    var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+    location.replace(url)
+  }else{
+    $.ajax({
+      url:'/mumu/anonlogin',
+      method:'post',
+      async:false,
+      success:function(res){
+        if(res.code==0){
+          $.ajax({
+            url:'/mumu/login-refresh',
+            method:'get',
+            async:false,
+            success:function(res){
+              if(res.code==0){
+                pagePre.login=res.data
+              }
+            }
+          })
+        }
+      }
+    })
+  }
+}
+
 
 function randomnum(n){ 
     var t=''; 
@@ -173,3 +223,4 @@ $ajaxCache.config({
     //选填，配置全局的验证是否需要进行缓存的方法,“全局配置” 和 ”自定义“，至少有一处实现cacheValidate方法 return res.state === 'ok';
     return res.code == 0;
 }})
+
