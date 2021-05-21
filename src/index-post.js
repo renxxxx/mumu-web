@@ -1962,7 +1962,7 @@
             var data = JSON.parse(e.data)
             if(data.action == 1){
                 if(data.nickname!=null){
-                    data.nickname = data.nickname.substr(0, 1) + '…' +data.nickname.substr(3)
+                    data.nickname = data.nickname.substr(0, 1) + '...' +data.nickname.substr(3)
                 }
                 var ele = $('#chatmsgtemple').clone(true)
                 ele.attr('id','chatmsg'+data.msgNo)
@@ -2023,7 +2023,7 @@
         success: function(res) {
             $(res.data.rows).each((inx,item)=>{
                 if(item.nickname!=null){
-                    item.nickname = item.nickname.substr(0, 1) + '…' +item.nickname.substr(3)
+                    item.nickname = item.nickname.substr(0, 1) + '...' +item.nickname.substr(3)
                 }
 
                 if(inx==0){
