@@ -282,9 +282,11 @@
                 
                 <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;">
                     <div style="height:30px;width:100%;">
-                        <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
-                            style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
-                                background-color: #eaeaea;padding:0 3px;" />
+                        <form onsubmit="return false" action="javascript:return true">
+                            <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
+                                style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
+                                    background-color: #eaeaea;padding:0 3px;" />
+                        </form>
                     </div>
                     <div id="chatmsgspad" class="scrollable" 
                         style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;
@@ -313,7 +315,7 @@
                     <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
                 </div>
             </div>
-            <div id="searchpad" style="position:absolute;width:100%;background-color: rgba(0, 0, 0, 0.749);bottom:51px;
+            <div id="searchpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
                     box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;padding:10px 5px;">
                 <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
                         border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
@@ -328,8 +330,8 @@
                     购物
                 </span>
 
-                <div id="searchclear" style="cursor: pointer;position:absolute;width:150px;height:25px;line-height: 25px;font-size:14px;background-color: #fefefe;bottom:10px;left:50%;
-                        transform: translateX(-50%);text-align: center;border-radius: 3px;">
+                <div id="searchclear" style="cursor: pointer;position:absolute;width:150px;height:25px;line-height: 25px;font-size:14px;background-color: #fefefe;
+                        transform: translateX(-50%);text-align: center;border-radius: 3px;bottom:50px;left:50%;">
                     重 置
                 </div>
             </div>

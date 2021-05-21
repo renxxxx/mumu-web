@@ -1682,7 +1682,7 @@
             })
     })
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+60))+'px')
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+10))+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
