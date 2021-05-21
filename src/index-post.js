@@ -3,7 +3,7 @@
     window.page=page
     page.translateajaxs=[]
     //log.debugon=0
-
+    var searchKw=''
     setTimeout(function(){
         $('#logo').hide()
         $('#index').show()
@@ -51,7 +51,7 @@
     $.ajax({
         url: '/mumu/explore-videos?',
         type: 'get',
-        data: 'shortvideo=1&kw='+'&pageSize='+30,
+        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
         async: false,
         success: function(res) {
             videos.push(...res.data.videos)
@@ -110,12 +110,14 @@
             $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+'&pageSize='+30,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
                 async: false,
                 success: function(res) {
                     if(res.data.videos.length>0){
                         videos.push(...res.data.videos)
                         localStorage.setItem('videos',JSON.stringify(videos))
+                    }else{
+                        alert("暂无视频, 请重新搜索")
                     }
                 }
             })
@@ -132,12 +134,12 @@
     }
 
     function goPrevVideo(){
+        pauseVideo()
         closeLoopLine()
         if(!videos[videosIndex-1]){
             location.replace('./index.html')
             return;
         }
-        pauseVideo()
         videosIndex--;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
@@ -1630,6 +1632,68 @@
     //     $('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
     //     $('#chatpad').slideUp(100)
     // })
+
+    $('#searchclear').click(function(){
+        searchKw=''
+        $('#searchtext').text('搜索').css('color','#bfbbbb')
+        $('#searchpad').slideUp(100)
+        $.ajax({
+            url: '/mumu/explore-videos?',
+            type: 'get',
+            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+            async: true,
+            success: function(res) {
+                videos=[]
+                videosIndex=-1
+                videos.push(...res.data.videos)
+                localStorage.setItem('videos',JSON.stringify(videos))
+                goNextVideo()
+            }
+        })
+    })
+
+    $('.searchtag').click(function(){
+        searchKw=this.innerText
+        $('#searchtext').text(this.innerText).css('color','#6f6f6f')
+        $('#searchpad').slideUp(100)
+
+        $.ajax({
+                url: '/mumu/explore-videos?',
+                type: 'get',
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+                async: true,
+                success: function(res) {
+                    videos=[]
+                    videosIndex=-1
+                    videos.push(...res.data.videos)
+                    localStorage.setItem('videos',JSON.stringify(videos))
+                    goNextVideo()
+                }
+            })
+    })
+    $('#searchpadbtn').click(function(){
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+60))+'px')
+        $('#searchpad').slideDown(100)
+    })
+    $('#searchpad').bind('touchstart',function(e){
+        var touch = e.targetTouches[0];
+        this.touchstart = touch.pageY;
+    }).bind('touchmove',function(e){
+        var touch = e.targetTouches[0];
+        this.touchend = touch.pageY;
+        if($(this).scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        if(this.touchend-this.touchstart>50){
+            $('#searchpad').slideUp(100)
+        }
+        this.touchstart=null
+        this.touchend=null
+    })
+
+
+
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+20))+'px')
