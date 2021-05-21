@@ -3,7 +3,8 @@
     window.page=page
     page.translateajaxs=[]
     //log.debugon=0
-    var searchKw=''
+    var searchKw='' 
+    var searchtag='' 
     setTimeout(function(){
         $('#logo').hide()
         $('#index').show()
@@ -51,7 +52,7 @@
     $.ajax({
         url: '/mumu/explore-videos?',
         type: 'get',
-        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
         async: false,
         success: function(res) {
             videos.push(...res.data.videos)
@@ -110,7 +111,7 @@
             $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
                 async: false,
                 success: function(res) {
                     if(res.data.videos.length>0){
@@ -1635,12 +1636,13 @@
 
     $('#searchclear').click(function(){
         searchKw=''
+        searchtag=''
         $('#searchtext').text('搜索').css('color','#bfbbbb')
         $('#searchpad').slideUp(100)
         $.ajax({
             url: '/mumu/explore-videos?',
             type: 'get',
-            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
             async: true,
             success: function(res) {
                 videos=[]
@@ -1653,14 +1655,14 @@
     })
 
     $('.searchtag').click(function(){
-        searchKw=this.innerText
-        $('#searchtext').text(this.innerText).css('color','#6f6f6f')
+        searchtag=this.innerText
+        $('#searchtext').text("#"+this.innerText+"#").css('color','#6f6f6f')
         $('#searchpad').slideUp(100)
 
         $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+30+"&tag="+searchtag,
                 async: true,
                 success: function(res) {
                     videos=[]
