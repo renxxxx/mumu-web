@@ -1100,8 +1100,6 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                if(!loopLine)
-                    pauseVideo()
                 prevline()
         　　　　 break;
             case '115'://S
@@ -1110,7 +1108,7 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                currline()
+                troggleLoopLine()
         　　　　 break; 
             case '119'://W
             case '87'://w
@@ -1130,8 +1128,6 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                if(!loopLine)
-                    pauseVideo()
                 nextline()
         　　　　 break;
             case '113'://Q
