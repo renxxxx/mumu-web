@@ -36,8 +36,15 @@
             <div id="logo" style="width:100%;position:absolute;top:0;bottom:51px;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
                 <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
             </div>
+
             <div class="unselectable" style="text-align: center;box-sizing: border-box;border: 1px solid #ffffff;">
-                <div style="width:100%;font-size:0;height:60px;margin-top:100px;">
+                <div style="width:100%;font-size:0;height:30px;margin-top:40px;">
+                    <div id="nickname" style="width:100%;font-size:14px;height:30px;text-align: center;line-height: 30px;">
+                        
+                    </div>
+                </div>
+
+                <div style="width:100%;font-size:0;height:60px;margin-top:60px;">
                     <div style="width:100%;font-size:16px;height:30px;text-align: center;line-height: 30px;">
                         已学习
                     </div>
@@ -181,5 +188,8 @@
             $('#ht').attr('max',5000).attr('value',totalhours)
             $('#hm').text('5000')
         }
+
+
+        $('#nickname').text(pagePre.login.nickname)
     </script>
 </html>
