@@ -557,6 +557,7 @@
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
                 type: 'get',
+                ajaxCache:true,
                 async: true,
                 success: function(res) {
                     clearTimeout(window.aaa)
