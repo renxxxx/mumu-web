@@ -252,7 +252,7 @@
         
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
-                title: '幕幕 - 英语练习', // 分享标题
+                title: '幕幕 - 练英语', // 分享标题
                 desc: 'renx.cc', // 分享描述
                 link: location.origin+'/mumu', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
@@ -262,7 +262,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: '幕幕 - 英语练习', // 分享标题
+                title: '幕幕 - 练英语', // 分享标题
                 link: location.origin+'/mumu', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
