@@ -1814,6 +1814,7 @@
 
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
+        page.preChatPaused=$('#video')[0].paused
         $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+20))+'px')
         $('#gearframe1').hide()
         $('#prevnextpad').hide()
@@ -1932,7 +1933,10 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
+                if(page.preChatPaused)
+                    pauseVideo()
+                else
+                    playVideo()
             })
         }
         this.touchstart=null
@@ -1955,7 +1959,10 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
+                if(page.preChatPaused)
+                    pauseVideo()
+                else
+                    playVideo()
             })
         }
         this.mousedown=null
@@ -1979,7 +1986,10 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
+                if(page.preChatPaused)
+                    pauseVideo()
+                else
+                    playVideo()
             })
         }
         this.touchstart=null
@@ -2002,7 +2012,10 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
+                if(page.preChatPaused)
+                    pauseVideo()
+                else
+                    playVideo()
             })
         }
         this.mousedown=null
