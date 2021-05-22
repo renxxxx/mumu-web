@@ -18,7 +18,8 @@ function noDebuger() {
         var d = new Date();
         debugger;
         if (new Date() - d > 10) {
-            document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
+            debugger;
+            //document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
             return true;
         }
        return false;

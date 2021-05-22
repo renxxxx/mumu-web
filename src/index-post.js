@@ -11,7 +11,7 @@
     },1000)
 
     var loopLine=0
-
+    var diandu=0
     $('#video')[0].crossOrigin = 'anonymous';
     $("#finger").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
@@ -100,8 +100,9 @@
         page.dovideoshadow=1
         pauseVideo();
         translatee(this.innerText);
+        $('.historyword').css('background-color',"#ffffff")
+        $(this).css('background-color',"#e7e7e7")
     })
-
     
     goNextVideo()
     function goNextVideo(){
@@ -203,6 +204,8 @@
         genShareData()
         $('#titleinback').text(video.name)
         $('#titleinbackpad').show()
+        $('#video').attr("poster", video.cover)
+
         // if(video.height && video.width){
         //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
         //     $('#video').css('height',videoheight)
@@ -304,9 +307,12 @@
             return;
         }
         
+        
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
+            if(diandu)
+                pauseVideo()
             if(loopLine){
                 log.debug("loopLine "+_time +" - next start time "+ next.startTime+" - "+ en.current.enValue.substr(0,10))
                 currline()
@@ -746,6 +752,7 @@
         for (const ajax of page.translateajaxs) {
             ajax.abort()
         }
+        $('.historyword').css('background-color',"#ffffff")
         page.dovideoshadow=0
         // clearTimeout(page.timeout11)
         $('.dialog').hide()
@@ -1446,17 +1453,105 @@
         event.preventDefault()
     })
 
-    $('#startFn,#startFn1').bind('click',function(){
-        log.info('#startFn.click')
-        playVideo();
-        $('#video').attr('controls', false);
+
+
+    $('#startFn,#startFn1').bind('mousedown',function() {
+        log.info(`#startFn.mousedown`)
+        if(!isPc())
+            return;
+        this.start=new Date()
+        this.ddd = setTimeout(function(){
+            if(diandu){
+                diandu=0
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+            }else{
+                diandu=1
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+            }
+        },1000)
+    }).bind('mouseup',function() { 
+        log.info(`#startFn.mouseup`)
+        if(!isPc())
+            return;
+        this.end=new Date()
+        clearTimeout(this.ddd)
+        var ss = this.end.getTime()-this.start.getTime();
+        if(ss<1000){
+            playVideo();
+            $('#video').attr('controls', false);
+        }
+    }).bind('touchstart',function() { 
+        log.info(`#startFn.touchstart`)
+        this.startt=new Date()
+        this.ddd = setTimeout(function(){
+            if(diandu){
+                diandu=0
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+            }else{
+                diandu=1
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+            }
+        },1000)
+    }).bind('touchend',function() { 
+        log.info(`#startFn.touchend`)
+        this.endt=new Date()
+        clearTimeout(this.ddd)
+        var ss = this.endt.getTime()-this.startt.getTime();
+        if(ss<1000){
+            playVideo();
+            $('#video').attr('controls', false);
+        }
     })
 
-    $('#stopFn,#stopFn1').bind('click',function(){
-        log.info('#stopFn.click')
-        pauseVideo()
-        $('#video').attr('controls', false);
+
+    $('#stopFn,#stopFn1').bind('mousedown',function() { 
+        log.info(`#stopFn.mousedown`)
+        if(!isPc())
+            return;
+        this.start=new Date()
+        this.ddd = setTimeout(function(){
+            if(diandu){
+                diandu=0
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+            }else{
+                diandu=1
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+            }
+        },1000)
+    }).bind('mouseup',function() { 
+        log.info(`#stopFn.mouseup`)
+        if(!isPc())
+            return;
+        this.end=new Date()
+        clearTimeout(this.ddd)
+        var ss = this.end.getTime()-this.start.getTime();
+        if(ss<1000){
+            pauseVideo()
+            $('#video').attr('controls', false);
+        }
+    }).bind('touchstart',function() { 
+        log.info(`#stopFn.touchstart`)
+        this.startt=new Date()
+        this.ddd = setTimeout(function(){
+            if(diandu){
+                diandu=0
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+            }else{
+                diandu=1
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+            }
+        },1000)
+    }).bind('touchend',function() { 
+        log.info(`#stopFn.touchend`)
+        this.endt=new Date()
+        clearTimeout(this.ddd)
+        var ss = this.endt.getTime()-this.startt.getTime();
+        if(ss<1000){
+            pauseVideo()
+            $('#video').attr('controls', false);
+        }
     })
+
 
     $('#prevline').bind('click',function(){
         log.info('#prevline.click')
@@ -1837,6 +1932,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
+                playVideo()
             })
         }
         this.touchstart=null
@@ -1859,6 +1955,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
+                playVideo()
             })
         }
         this.mousedown=null
@@ -1882,6 +1979,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
+                playVideo()
             })
         }
         this.touchstart=null
@@ -1904,6 +2002,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
+                playVideo()
             })
         }
         this.mousedown=null

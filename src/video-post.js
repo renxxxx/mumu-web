@@ -101,6 +101,7 @@
             success: function(res) {
                 video=res.data.video;
                 $('#titleinback').text(video.name)
+                $('#video').attr("poster", video.cover)
                 // if(video.height && video.width){
                 //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
                 //     $('#video').css('height',videoheight)
