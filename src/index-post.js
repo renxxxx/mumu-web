@@ -1843,6 +1843,16 @@
         this.touchend=null
     })
 
+    $('#loopVideoBtn').click(function(){
+        $('#video').attr('loop','loop')
+        $('#unloopVideoBtn').show()
+        $('#loopVideoBtn').hide()
+    })
+    $('#unloopVideoBtn').click(function(){
+        $('#video').attr('loop',false)
+        $('#loopVideoBtn').show()
+        $('#unloopVideoBtn').hide()
+    })
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
@@ -1850,7 +1860,6 @@
         $('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
-            $('#video').attr('loop','loop')
         })
     })
     $('#chatroombtn').click(function(){
@@ -1963,7 +1972,6 @@
             $('#gearframe1').show()
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
-                $('#video').attr('loop',false)
             })
         }
         this.touchstart=null
@@ -1985,7 +1993,6 @@
             $('#gearframe1').show()
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
-                $('#video').attr('loop',false)
             })
         }
         this.mousedown=null
@@ -2008,7 +2015,6 @@
             $('#gearframe1').show()
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
-                $('#video').attr('loop',false)
             })
         }
         this.touchstart=null
@@ -2030,7 +2036,6 @@
             $('#gearframe1').show()
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
-                $('#video').attr('loop',false)
             })
         }
         this.mousedown=null
