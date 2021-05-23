@@ -1466,7 +1466,7 @@
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
                 diandu=1
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('mouseup',function() { 
@@ -1489,7 +1489,7 @@
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
                 diandu=1
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('touchend',function() { 
@@ -1515,7 +1515,7 @@
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
                 diandu=1
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('mouseup',function() { 
@@ -1538,7 +1538,7 @@
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
                 diandu=1
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"#ff9e00")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('touchend',function() { 

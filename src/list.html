@@ -231,6 +231,7 @@
                 data: 'longvideo=1&kw='+''+'&start='+1+'&pageSize='+30,
                 async: true,
                 success: function(res) {
+                    var activeindex = Math.round(Math.random()*3);
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
                         var durationsec = localStorage.getItem('durationsec-'+item.no)
@@ -249,7 +250,6 @@
                         }).bind('touchend',function(){
                             coverout(item,videoele)
                         })
-
                         videoele.find('.name').text(item.name)
                         if(currentTime && durationsec)
                             videoele.find('.progress').attr('value',currentTime).attr('max',durationsec)
@@ -258,6 +258,10 @@
                         videoele.css('display','block')
                         videoele.attr('href',`./video.html?videoNo=${item.no}`)
                         $('.videoList').append(videoele)
+
+                        if(activeindex == inx){
+                            coverin(item,videoele)
+                        }
                     })
                     console.log(_this.videoList)
                 }
