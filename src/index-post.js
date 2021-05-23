@@ -841,7 +841,7 @@
         if(pausebeforech){
             pauseVideo()
         }else{
-            playVideo()
+            recoverManual()
         }
     }
 
@@ -1106,7 +1106,7 @@
                     return;
                 if($('#video')[0].paused){
                     chHideDialog()
-                    playVideo()
+                    recoverManual()
                 }
                 else
                     pauseVideo();
@@ -1474,6 +1474,7 @@
         },1000)
     }).bind('mouseup',function() { 
         log.info(`#startFn.mouseup`)
+        page.manual=1
         if(!isPc())
             return;
         clearTimeout(page.dddd)
@@ -1501,6 +1502,7 @@
     }).bind('touchend',function() { 
         log.info(`#startFn.touchend`)
         clearTimeout(page.dddd)
+        page.manual=1
         if(page.startt){
             page.endt=new Date()
             var ss = page.endt.getTime()-page.startt.getTime();
@@ -1529,6 +1531,7 @@
         },1000)
     }).bind('mouseup',function() { 
         log.info(`#stopFn.mouseup`)
+        page.manual=2
         if(!isPc())
             return; 
         clearTimeout(page.dddd)
@@ -1556,6 +1559,7 @@
     }).bind('touchend',function() { 
         log.info(`#stopFn.touchend`)
         clearTimeout(page.dddd)
+        page.manual=2
         if(page.startt){
             page.endt=new Date()
             var ss = page.endt.getTime()-page.startt.getTime();
@@ -1728,12 +1732,21 @@
     })
 
 
+    function recoverManual(){
+        if(page.manual){
+            if(page.manual==1){
+                playVideo()
+            }else if(page.manual==2){
+                pauseVideo()
+            }
+        }
+    }
     $('#word-in').bind('blur',function(){
         if(this.value == ''){
             setTimeout(function(){
                 $('#wordsframe').hide()
                 $('#video').css('top',0)
-                playVideo()
+                recoverManual()
             },100)
         }
     })
@@ -1949,7 +1962,6 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
             })
         }
         this.touchstart=null
@@ -1972,7 +1984,6 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
             })
         }
         this.mousedown=null
@@ -1996,7 +2007,6 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
             })
         }
         this.touchstart=null
@@ -2019,7 +2029,6 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                playVideo()
             })
         }
         this.mousedown=null
