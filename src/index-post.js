@@ -309,15 +309,16 @@
         }
         
         
-        if(page.diandu)
-            pauseVideo()
-        if(loopLine){
-            currline()
-            return;
-        }
+        
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
             //log.debug("next ")
+            if(page.diandu)
+                pauseVideo()
+            if(loopLine){
+                currline()
+                return;
+            }
             en.current = next
             en.currentIndex++
             setline(next)
@@ -1460,9 +1461,9 @@
 
 
     $('#startFn,#startFn1').bind('mousedown',function() {
-        log.info(`#startFn.mousedown`)
-        if(!isPc())
+        if(isMobile())
             return;
+        log.info(`#startFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1475,10 +1476,10 @@
             }
         },1000)
     }).bind('mouseup',function() { 
+        if(isMobile())
+            return;
         log.info(`#startFn.mouseup`)
         page.manual=1
-        if(!isPc())
-            return;
         clearTimeout(page.dddd)
         if(page.startt){
             page.endt=new Date()
@@ -1517,9 +1518,9 @@
 
 
     $('#stopFn,#stopFn1').bind('mousedown',function() { 
-        log.info(`#stopFn.mousedown`)
-        if(!isPc())
+        if(isMobile())
             return;
+        log.info(`#stopFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1532,10 +1533,10 @@
             }
         },1000)
     }).bind('mouseup',function() { 
+        if(isMobile())
+            return; 
         log.info(`#stopFn.mouseup`)
         page.manual=2
-        if(!isPc())
-            return; 
         clearTimeout(page.dddd)
         if(page.startt){
             page.endt=new Date()

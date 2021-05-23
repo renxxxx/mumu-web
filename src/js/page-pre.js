@@ -72,6 +72,9 @@ function randomnum(n){
     return t; 
 }
 
+function isMobile(){
+  return !isPc()
+}
 function isPc() {
     var userAgentInfo = navigator.userAgent;
     var Agents = ["Android", "iPhone",
