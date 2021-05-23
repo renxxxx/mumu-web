@@ -11,7 +11,6 @@
     },1000)
 
     var loopLine=0
-    var diandu=0
     $('#video')[0].crossOrigin = 'anonymous';
     $("#finger").animate({left:'+=150px'},2000,function(){
         $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
@@ -311,7 +310,7 @@
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            if(diandu)
+            if(page.diandu)
                 pauseVideo()
             if(loopLine){
                 log.debug("loopLine "+_time +" - next start time "+ next.startTime+" - "+ en.current.enValue.substr(0,10))
@@ -752,6 +751,7 @@
         for (const ajax of page.translateajaxs) {
             ajax.abort()
         }
+        
         $('.historyword').css('background-color',"#ffffff")
         page.dovideoshadow=0
         // clearTimeout(page.timeout11)
@@ -786,6 +786,8 @@
     function videoPause(){
         //log.debug("onpause: "+ ++runstep)
         //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        
+        
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
@@ -1459,13 +1461,14 @@
         log.info(`#startFn.mousedown`)
         if(!isPc())
             return;
-        this.start=new Date()
-        this.ddd = setTimeout(function(){
-            if(diandu){
-                diandu=0
+        page.startt=new Date()
+        clearTimeout(page.dddd)
+        page.dddd = setTimeout(function(){
+            if(page.diandu){
+                page.diandu=0
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
-                diandu=1
+                page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
@@ -1473,33 +1476,38 @@
         log.info(`#startFn.mouseup`)
         if(!isPc())
             return;
-        this.end=new Date()
-        clearTimeout(this.ddd)
-        var ss = this.end.getTime()-this.start.getTime();
-        if(ss<1000){
-            playVideo();
-            $('#video').attr('controls', false);
+        clearTimeout(page.dddd)
+        if(page.startt){
+            page.endt=new Date()
+            var ss = page.endt.getTime()-page.startt.getTime();
+            if(ss<1000){
+                playVideo()
+                $('#video').attr('controls', false);
+            }
         }
     }).bind('touchstart',function() { 
         log.info(`#startFn.touchstart`)
-        this.startt=new Date()
-        this.ddd = setTimeout(function(){
-            if(diandu){
-                diandu=0
+        page.startt=new Date()
+        clearTimeout(page.dddd)
+        page.dddd = setTimeout(function(){
+            if(page.diandu){
+                page.diandu=0
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
-                diandu=1
+                page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('touchend',function() { 
         log.info(`#startFn.touchend`)
-        this.endt=new Date()
-        clearTimeout(this.ddd)
-        var ss = this.endt.getTime()-this.startt.getTime();
-        if(ss<1000){
-            playVideo();
-            $('#video').attr('controls', false);
+        clearTimeout(page.dddd)
+        if(page.startt){
+            page.endt=new Date()
+            var ss = page.endt.getTime()-page.startt.getTime();
+            if(ss<1000){
+                playVideo()
+                $('#video').attr('controls', false);
+            }
         }
     })
 
@@ -1508,47 +1516,53 @@
         log.info(`#stopFn.mousedown`)
         if(!isPc())
             return;
-        this.start=new Date()
-        this.ddd = setTimeout(function(){
-            if(diandu){
-                diandu=0
+        page.startt=new Date()
+        clearTimeout(page.dddd)
+        page.dddd = setTimeout(function(){
+            if(page.diandu){
+                page.diandu=0
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
-                diandu=1
+                page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('mouseup',function() { 
         log.info(`#stopFn.mouseup`)
         if(!isPc())
-            return;
-        this.end=new Date()
-        clearTimeout(this.ddd)
-        var ss = this.end.getTime()-this.start.getTime();
-        if(ss<1000){
-            pauseVideo()
-            $('#video').attr('controls', false);
+            return; 
+        clearTimeout(page.dddd)
+        if(page.startt){
+            page.endt=new Date()
+            var ss = page.endt.getTime()-page.startt.getTime();
+            if(ss<1000){
+                pauseVideo()
+                $('#video').attr('controls', false);
+            }
         }
     }).bind('touchstart',function() { 
         log.info(`#stopFn.touchstart`)
-        this.startt=new Date()
-        this.ddd = setTimeout(function(){
-            if(diandu){
-                diandu=0
+        page.startt=new Date()
+        clearTimeout(page.dddd)
+        page.dddd = setTimeout(function(){
+            if(page.diandu){
+                page.diandu=0
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
             }else{
-                diandu=1
+                page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
             }
         },1000)
     }).bind('touchend',function() { 
         log.info(`#stopFn.touchend`)
-        this.endt=new Date()
-        clearTimeout(this.ddd)
-        var ss = this.endt.getTime()-this.startt.getTime();
-        if(ss<1000){
-            pauseVideo()
-            $('#video').attr('controls', false);
+        clearTimeout(page.dddd)
+        if(page.startt){
+            page.endt=new Date()
+            var ss = page.endt.getTime()-page.startt.getTime();
+            if(ss<1000){
+                pauseVideo()
+                $('#video').attr('controls', false);
+            }
         }
     })
 
@@ -1716,9 +1730,11 @@
 
     $('#word-in').bind('blur',function(){
         if(this.value == ''){
-            $('#wordsframe').hide()
-            $('#video').css('top',0)
-            playVideo()
+            setTimeout(function(){
+                $('#wordsframe').hide()
+                $('#video').css('top',0)
+                playVideo()
+            },100)
         }
     })
 
@@ -1933,10 +1949,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                if(page.preChatPaused)
-                    pauseVideo()
-                else
-                    playVideo()
+                playVideo()
             })
         }
         this.touchstart=null
@@ -1959,10 +1972,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                if(page.preChatPaused)
-                    pauseVideo()
-                else
-                    playVideo()
+                playVideo()
             })
         }
         this.mousedown=null
@@ -1986,10 +1996,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                if(page.preChatPaused)
-                    pauseVideo()
-                else
-                    playVideo()
+                playVideo()
             })
         }
         this.touchstart=null
@@ -2012,10 +2019,7 @@
             $('#prevnextpad').show()
             $('#chatpad').slideUp(100,function(){
                 $('#video').attr('loop',false)
-                if(page.preChatPaused)
-                    pauseVideo()
-                else
-                    playVideo()
+                playVideo()
             })
         }
         this.mousedown=null
