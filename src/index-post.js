@@ -1,10 +1,12 @@
 (function(){
-    var page = {}
+    var page = {
+        manual:1,
+    }
     window.page=page
     page.translateajaxs=[]
     //log.debugon=0
     var searchKw='' 
-    var searchtag='' 
+    var searchtag=''
     setTimeout(function(){
         $('#logo').hide()
         $('#index').show()
@@ -1106,10 +1108,13 @@
                     return;
                 if($('#video')[0].paused){
                     chHideDialog()
-                    recoverManual()
+                    playVideo()
+                    page.manual=1
                 }
-                else
+                else{
+                    page.manual=2
                     pauseVideo();
+                }
         　　　　 break;
             case '13'://enter
                 if(document.activeElement.tagName!="INPUT")
