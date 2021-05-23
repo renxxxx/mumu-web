@@ -309,17 +309,14 @@
         }
         
         
-
+        if(page.diandu)
+            pauseVideo()
+        if(loopLine){
+            currline()
+            return;
+        }
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            if(page.diandu)
-                pauseVideo()
-            if(loopLine){
-                log.debug("loopLine "+_time +" - next start time "+ next.startTime+" - "+ en.current.enValue.substr(0,10))
-                currline()
-                return;
-            }
-
             //log.debug("next ")
             en.current = next
             en.currentIndex++
