@@ -10,16 +10,21 @@
     setTimeout(function(){
         $('#logo').hide()
         $('#index').show()
+
+        $("#finger").animate({left:'+=150px'},2000,function(){
+            $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
+        });
+        $("#gear").animate({left:'+=150px'},2000,function(){
+            $("#gear").animate({left:'-=300px'},2000);
+        });
     },1000)
 
     var loopLine=0
     $('#video')[0].crossOrigin = 'anonymous';
-    $("#finger").animate({left:'+=150px'},2000,function(){
-        $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
-    });
-    $("#gear").animate({left:'+=150px'},2000,function(){
-        $("#gear").animate({left:'-=300px'},2000);
-    });
+   
+
+  
+    
 
     document.addEventListener('WeixinJSBridgeReady',function(){
         $('#video')[0].play();
