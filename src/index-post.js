@@ -479,14 +479,15 @@
             }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="border-bottom:2px solid #ffffff;;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
-                sp.bind('click',function(){
-                    pauseVideo()
-                    locateWord(i+1)
-                }).bind('mouseout',function(){
-                    $(this).css('border-bottom','2px solid #ffffff')
+                var sp = $('<span style="border-bottom:2px solid #ffffff;;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-size:bo" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                sp.bind('mouseout',function(){
+                    if(isPc()){
+                        $(this).css('border-bottom','2px solid #ffffff')
+                    }
                 }).bind('mouseover',function(){
-                    $(this).css('border-bottom','2px solid black')
+                    if(isPc()){
+                        $(this).css('border-bottom','2px solid black')
+                    }
                 })
                 $("#zh_subtitles").append(sp)
             }
@@ -869,47 +870,51 @@
         })
         return ms
     }
-    $('#zh_subtitles').mousedown(_ev => {
-        log.info('#zh_subtitles.mousedown')
-        if(!$(_ev.target).hasClass('font'))
-            return;
-        //let _this = this
-        moveStata = true;
-        _coordinates = {
-            clientX : _ev.clientX,
-            clientY : _ev.clientY,
-            pageX : _ev.pageX,
-            pageY : _ev.pageY
-        };
-        choooseStart(_coordinates); 
-        $("#zh_subtitles").mousemove(_e => {
-            if(!$(_e.target).hasClass('font'))
-                return;
-            if(moveStata){
-                _coordinates = {
-                    clientX : _e.clientX,
-                    clientY : _e.clientY,
-                    pageX : _e.pageX,   
-                    pageY : _e.pageY
-                };
-                choooseMove(_coordinates); 
-            }
-        }).mouseup(function(_up){
-            log.info('#zh_subtitles.mouseup')
-            if(!$(_up.target).hasClass('font'))
-                return;
-            moveStata = false;
-            _coordinates = {
-                clientX : _up.clientX,
-                clientY : _up.clientY,
-                pageX : _up.pageX,
-                pageY : _up.pageY
-            };
-            choooseEnd(_coordinates);
-            $("#zh_subtitles").unbind('mousemove').unbind('mouseup')
-        })
+
+
+
+
+    // $('#zh_subtitles').mousedown(_ev => {
+    //     log.info('#zh_subtitles.mousedown')
+    //     if(!$(_ev.target).hasClass('font'))
+    //         return;
+    //     //let _this = this
+    //     moveStata = true;
+    //     _coordinates = {
+    //         clientX : _ev.clientX,
+    //         clientY : _ev.clientY,
+    //         pageX : _ev.pageX,
+    //         pageY : _ev.pageY
+    //     };
+    //     choooseStart(_coordinates); 
+    //     $("#zh_subtitles").mousemove(_e => {
+    //         if(!$(_e.target).hasClass('font'))
+    //             return;
+    //         if(moveStata){
+    //             _coordinates = {
+    //                 clientX : _e.clientX,
+    //                 clientY : _e.clientY,
+    //                 pageX : _e.pageX,   
+    //                 pageY : _e.pageY
+    //             };
+    //             choooseMove(_coordinates); 
+    //         }
+    //     }).mouseup(function(_up){
+    //         log.info('#zh_subtitles.mouseup')
+    //         if(!$(_up.target).hasClass('font'))
+    //             return;
+    //         moveStata = false;
+    //         _coordinates = {
+    //             clientX : _up.clientX,
+    //             clientY : _up.clientY,
+    //             pageX : _up.pageX,
+    //             pageY : _up.pageY
+    //         };
+    //         choooseEnd(_coordinates);
+    //         $("#zh_subtitles").unbind('mousemove').unbind('mouseup')
+    //     })
         
-    })
+    // })
     function touchstartFn(_value){
         //let _this = this,
         _coordinates = {
@@ -1188,6 +1193,7 @@
     }
 
 
+
     function locateWord(no){
         currwordno = no;
         $('.font').css({
@@ -1445,24 +1451,24 @@
 
 
 
-    $('#zh_subtitles').bind('touchstart',function(event){
-        log.info('#zh_subtitles.touchstart')
-        if(!$(event.target).hasClass('font'))
-            return;
-        touchstartFn(event);
-        event.preventDefault()
-    }).bind('touchmove',function(event){
-        if(!$(event.target).hasClass('font'))
-            return;
-        touchmoveFn(event);
-        event.preventDefault()
-    }).bind('touchend',function(event){
-        log.info('#zh_subtitles.touchend')
-        if(!$(event.target).hasClass('font'))
-            return;
-        touchendFn(event);
-        event.preventDefault()
-    })
+    // $('#zh_subtitles').bind('touchstart',function(event){
+    //     log.info('#zh_subtitles.touchstart')
+    //     if(!$(event.target).hasClass('font'))
+    //         return;
+    //     touchstartFn(event);
+    //     event.preventDefault()
+    // }).bind('touchmove',function(event){
+    //     if(!$(event.target).hasClass('font'))
+    //         return;
+    //     touchmoveFn(event);
+    //     event.preventDefault()
+    // }).bind('touchend',function(event){
+    //     log.info('#zh_subtitles.touchend')
+    //     if(!$(event.target).hasClass('font'))
+    //         return;
+    //     touchendFn(event);
+    //     event.preventDefault()
+    // })
 
 
 
@@ -1929,6 +1935,92 @@
         this.indextouchstartY=null
         this.indextouchendX=null
         this.indextouchendY=null
+    })
+
+
+
+    page.spans =[]
+    page.spansIs=0
+    page.firstRangeWordInx=0
+    page.lastRangeWordInx=0
+    $('#zh_subtitles').bind('mousedown touchstart',function(e){
+        log.info(`#zh_subtitles.mousedown touchstart`)
+        var currTarget = null;
+        if(e.type=='touchmove'){
+            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+        }else{
+            currTarget = e.target;
+        }
+        if($(currTarget).hasClass('font')){
+            page.firstRangeWordInx=0
+            page.lastRangeWordInx=0
+            pauseVideo()
+            var index = parseInt($(currTarget).attr('index'));
+            currwordno=index+1
+            page.spansIs=1
+            page.spans =[]
+            page.firstRangeWordInx=index
+            page.lastRangeWordInx=index
+            $('#zh_subtitles .font').css('background-color','#ffffff')
+            $('#zh_subtitles .font.span'+index).css('background-color','rgb(210, 203, 203)')
+        }
+        
+    }).bind('mousemove touchmove',function(e){
+        log.info(`#zh_subtitles.mousemove touchmove`)
+        var currTarget = null;
+        if(e.type=='touchmove'){
+            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+        }else{
+            currTarget = e.target;
+        }
+
+        if($(currTarget).hasClass('font')){
+            if(!page.spansIs)
+                return
+            $('#zh_subtitles .font').css('background-color','#ffffff')
+            var index = parseInt($(currTarget).attr('index'));
+            if(page.spans[page.spans.length-1] != index){
+                page.spans.push(index)
+            }
+            var first = page.spans[0]
+            var last = page.spans[page.spans.length-1]
+            if(first>last){
+                var t = first
+                first=last
+                last=t
+            }
+            page.firstRangeWordInx=first
+            page.lastRangeWordInx=last
+            for (var inx = first; inx <= last; inx++) {
+                $('#zh_subtitles .font.span'+inx).css('background-color','rgb(210, 203, 203)')
+            }
+        }
+        e.preventDefault()
+    }).bind('mouseup touchend',function(e){
+        log.info(`#zh_subtitles.mouseup touchend`)
+        var currTarget = null;
+        if(e.type=='touchmove'){
+            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+        }else{
+            currTarget = e.target;
+        }
+        if($(currTarget).hasClass('font')){
+            if(page.spansIs){
+                var first = page.firstRangeWordInx
+                var last = page.lastRangeWordInx
+                var word = '';
+                for (var inx = first; inx <= last; inx++) {
+                    word+=($('#zh_subtitles .font.span'+inx).text()+' ')
+                }
+                word.substr(0,word.length-1)
+                page.dovideoshadow=1
+                pauseVideo()
+                translatee(word)
+                page.spansIs=0
+                page.spans =[]
+            }
+        }
+        
     })
 
 
