@@ -23,7 +23,9 @@
     $('#video')[0].crossOrigin = 'anonymous';
    
 
-  
+    if(isPcWeChat()){
+        $('#video').css('object-fit','')
+    }
     
 
     document.addEventListener('WeixinJSBridgeReady',function(){

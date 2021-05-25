@@ -227,3 +227,21 @@ $ajaxCache.config({
     return res.code == 0;
 }})
 
+function isPcWeChat(){
+  var ua = window.navigator.userAgent.toLowerCase();
+  if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      var system = {
+         win: false,
+          mac: false
+     };
+      //检测平台
+      var p = navigator.platform;
+     system.win = p.indexOf("Win") == 0;
+    system.mac = p.indexOf("Mac") == 0;
+    if (system.win || system.mac) {
+         return true;
+    }
+
+}
+return false
+} 
