@@ -813,6 +813,7 @@
             $('#videoshasow').show()
             //log.debug(`$('#videoshasow').show()`)
             $('#video').css('top','-1000px')
+            $('#videoshasow').css('height',$('#video').css('height'))
         }
     }
 
