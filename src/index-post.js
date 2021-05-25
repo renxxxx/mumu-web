@@ -166,7 +166,7 @@
             $('#hintssec').text(3)
             pauseVideo()
             $('#video').css('top','-1000px')
-            $('#hints').css('height',$('#video').css('height')).show()
+            $('#hints').show()
             setTimeout(function(){
                 $('#hints').fadeOut(1000,function(){
                     $('#video').css('top','0')
@@ -813,7 +813,7 @@
             $('#videoshasow').show()
             //log.debug(`$('#videoshasow').show()`)
             $('#video').css('top','-1000px')
-            $('#videoshasow').css('height',$('#video').css('height'))
+            //$('#videoshasow').css('height',$('#video').css('height'))
         }
     }
 
@@ -822,10 +822,10 @@
         $("#zh_subtitles").css("opacity")
         if($("#zh_subtitles").css("opacity") == 1){
             $("#zh_subtitles").css("opacity",0)
-            $('#hideBtn').text("显示")
+            $('#hideBtn').css("background-color","rgb(230, 230, 230)")
         }else{
             $("#zh_subtitles").css("opacity",1)
-            $('#hideBtn').text("隐藏")
+            $('#hideBtn').css("background-color","#ffffff")
         }
     }
 
@@ -1851,9 +1851,15 @@
     })
 
     $('#loopVideoBtn').click(function(){
-        $('#video').attr('loop','loop')
-        $('#unloopVideoBtn').show()
-        $('#loopVideoBtn').hide()
+        if($('#video').attr('loop')){
+            $('#video').attr('loop',false)
+            $(this).css('background-color','#ffffff')
+        }else{
+            $('#video').attr('loop','loop')
+            $(this).css('background-color','#e6e6e6')
+        }
+        // $('#unloopVideoBtn').show()
+        // $('#loopVideoBtn').hide()
     })
     $('#unloopVideoBtn').click(function(){
         $('#video').attr('loop',false)
