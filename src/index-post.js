@@ -1968,7 +1968,6 @@
         }
         
     }).bind('mousemove touchmove',function(e){
-        log.info(`#zh_subtitles.mousemove touchmove`)
         var currTarget = null;
         if(e.type=='touchmove'){
             currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
