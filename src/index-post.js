@@ -1902,7 +1902,9 @@
             translatee(e.target.innerHTML)
         }
     })
+
     $('#index').bind('touchstart',function(e){
+        this.startTime = new Date().getTime();
         if($(e.target).parents('.scrollable').length>0)
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
@@ -1922,12 +1924,14 @@
             e.preventDefault()
         }
     }).bind('touchend',function(e){
+        this.endTime = new Date().getTime();
         if($(e.target).parents('.scrollable').length>0)
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+        log.debug(this.endTime-this.startTime)
+        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             if(this.indextouchstartX-this.indextouchendX>100){
                 goNextVideo()
             }else if(this.indextouchstartX-this.indextouchendX<-100){
@@ -2028,6 +2032,7 @@
 
 
     $('#index').bind('mousedown',function(e){
+        this.startTime = new Date().getTime();
         if($(e.target).parents('.scrollable').length>0)
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
@@ -2045,12 +2050,13 @@
             e.preventDefault()
         }
     }).bind('mouseup',function(e){
+        this.endTime = new Date().getTime();
         if($(e.target).parents('.scrollable').length>0)
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
         //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             if(this.indextouchstartX-this.indextouchendX>100){
                 goNextVideo()
             }else if(this.indextouchstartX-this.indextouchendX<-100){
