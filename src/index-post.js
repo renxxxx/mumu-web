@@ -210,16 +210,19 @@
         video=videop;
         videoNo=videop.no
         genShareData()
+        $('#zh_subtitles').html('')
         $('#titleinback').text(video.name)
         $('#titleinbackpad').show()
         $('#video').attr("poster", video.cover)
-
+        
         // if(video.height && video.width){
         //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
         //     $('#video').css('height',videoheight)
         //     $('#summtrans').css('height',$('#video').css('height'))
         //     $('#wordsframe').css('height',$('#video').css('height'))
         // }
+        jumpedcaption=null
+        en.currentIndex=0
         guide()
         $.ajax({
             url: video.captionUrl,
@@ -315,8 +318,7 @@
             return;
         }
         
-        
-        
+
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
             //log.debug("next ")
