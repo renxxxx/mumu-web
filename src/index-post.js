@@ -4,6 +4,9 @@
     }
     window.page=page
     page.translateajaxs=[]
+    page.seed = Math.ceil(Math.random()*100);
+    page.rstart=1
+    page.currVideos=[]
     //log.debugon=0
     var searchKw='' 
     var searchtag=''
@@ -60,12 +63,12 @@
     $.ajax({
         url: '/mumu/explore-videos?',
         type: 'get',
-        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
+        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+page.rstart,
         async: false,
         success: function(res) {
             videos.push(...res.data.videos)
             localStorage.setItem('videos',JSON.stringify(videos))
-
+            currVideos=res.data.videos
             if(videoC)
                 videos.unshift(videoC)
         }
@@ -120,11 +123,13 @@
             $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+(page.rstart+currVideos.length),
                 async: false,
                 success: function(res) {
                     if(res.data.videos.length>0){
                         videos.push(...res.data.videos)
+                        page.rstart=page.rstart+currVideos.length
+                        currVideos=res.data.videos
                         localStorage.setItem('videos',JSON.stringify(videos))
                     }else{
                         alert("暂无视频, 请重新搜索")
@@ -1803,14 +1808,17 @@
         searchtag=''
         $('#searchtext').text('搜索').css('color','#bfbbbb')
         $('#searchpad').slideUp(100)
+        
         $.ajax({
             url: '/mumu/explore-videos?',
             type: 'get',
-            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
+            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
             async: true,
             success: function(res) {
+                currVideos=res.data.videos
                 videos=[]
                 videosIndex=-1
+                page.rstart=1
                 videos.push(...res.data.videos)
                 localStorage.setItem('videos',JSON.stringify(videos))
                 goNextVideo()
@@ -1826,11 +1834,13 @@
         $.ajax({
                 url: '/mumu/explore-videos?',
                 type: 'get',
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
                 async: true,
                 success: function(res) {
                     videos=[]
                     videosIndex=-1
+                    currVideos=res.data.videos
+                    page.rstart=1
                     videos.push(...res.data.videos)
                     localStorage.setItem('videos',JSON.stringify(videos))
                     goNextVideo()
