@@ -756,6 +756,11 @@
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
     }
+
+    function restorePlayStatus(){
+        
+    }
+
     function videoPlay(){
         //log.debug("onplay: "+ ++runstep)
         //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
