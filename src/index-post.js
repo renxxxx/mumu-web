@@ -23,9 +23,9 @@
     $('#video')[0].crossOrigin = 'anonymous';
    
 
-    if(isPcWeChat()){
-        $('#video').css('object-fit','')
-    }
+    // if(isPcWeChat()){
+    //     $('#video').css('object-fit','')
+    // }
     
 
     document.addEventListener('WeixinJSBridgeReady',function(){
@@ -163,6 +163,7 @@
         },1000)
     }
     function guide(){
+        $('#video').attr("src",video.url)
         var translateed = localStorage.getItem('translateed')
         if(!translateed){
             $('#hintssec').text(3)
@@ -172,7 +173,7 @@
             setTimeout(function(){
                 $('#hints').fadeOut(1000,function(){
                     $('#video').css('top','0')
-                    $('#video').attr("src",video.url)
+                    playVideo()
                     //setTimeout(function(){$('#video')[0].muted=false},500)
                 });
             },3000)
@@ -188,7 +189,7 @@
         }else{
             $('#video').css('top','0')
             $('#video').attr('autoplay',true)
-            $('#video').attr("src",video.url)
+            playVideo()
             //setTimeout(function(){$('#video')[0].muted=false},500)
         }
     }
@@ -223,7 +224,7 @@
         // }
         jumpedcaption=null
         en.currentIndex=0
-        guide()
+        
         $.ajax({
             url: video.captionUrl,
             type: 'get',
@@ -245,6 +246,8 @@
             historyvideos.unshift(video)
             localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
         },5000)
+
+        guide()
     }
     function restore(){
         if(!restored){

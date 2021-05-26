@@ -33,12 +33,12 @@
         </script>
         <style>
             @media screen and (min-width: 700px) {
-                #video,#summtrans,#wordsframe,#hints,#videoshasow {
+                #video,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
                     height:350px;
                 }
             }
             @media screen and (max-width: 700px) {
-                #video,#summtrans,#wordsframe,#hints,#videoshasow {
+                #video,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
                     height:220px;
                 }
             }
@@ -77,10 +77,11 @@
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <!-- 视频块 -->
-             <video controls x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
-                style="background: #000000;display: block;position: relative;top:-1000px;object-fit:cover;">
-            </video>
-
+            <div id="videobox" style="overflow:hidden;">
+                <video controls x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
+                    style="background: #000000;display: block;position: relative;top:-1000px;object-fit:cover;">
+                </video>
+            </div>
             
             <div id="videoshasow" style="position:absolute;top:0;width:100%;display:none;background-color: #000000;">
                 <img id="videoshasowimg" style="position:absolute;top:0;" />
@@ -88,7 +89,7 @@
             </div>
             <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: 1px solid rgba(255, 255, 255, 0.048);
                                 position:absolute;top:0;">
-                <div style="font-size:22px;font-weight: 900;margin-top:54px;color:#00aeff;">点击字幕</div>
+                <div style="font-size:22px;font-weight: 900;margin-top:54px;color:#00aeff;">划触字幕</div>
                 <div style="font-size:22px;font-weight: 900;margin-top:10px;color:#00aeff;">查词和词组</div>
                 <div id="hintssec" style="font-size:18px;font-weight: 900;margin-top:10px;color:#00aeff;">3</div>
             </div>
