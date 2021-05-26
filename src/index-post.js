@@ -38,6 +38,10 @@
     var historywords=[]
     var videoNoC = window.location.search.substring(1).split("&")[0].split("=")[1];
     var videoC = null
+    var video;
+    var videoNo;
+    var videos =[]
+    var videosIndex =-1
     if(videoNoC){
         $.ajax({
             url: '/mumu/video?',
@@ -46,15 +50,13 @@
             data: 'videoNo='+videoNoC,
             async: false,
             success: function(res) {
-                videoC = res.data.video
+                video = videoC = res.data.video
+
             }
         })
     }
 
-    var video;
-    var videoNo;
-    var videos =[]
-    var videosIndex =-1
+   
 
 
     
@@ -1320,7 +1322,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: video.name, // 分享标题
-            desc: '幕幕 - 练英语', // 分享描述
+            desc: '幕幕 - 练英语\n'+(video.chname||' '), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1341,7 +1343,7 @@
     wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
         wx.updateAppMessageShareData({ 
             title: video.name, // 分享标题
-            desc: '幕幕 - 练英语', // 分享描述
+            desc: '幕幕 - 练英语\n'+(video.chname||' '), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
