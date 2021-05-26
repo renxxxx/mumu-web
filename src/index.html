@@ -78,12 +78,12 @@
             </div>
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;">
-                <video controls x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
+                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
                     style="background: #000000;display: block;position: relative;top:-1000px;object-fit:cover;">
                 </video>
                 <div id="chDialog" class="chDialog" 
                     style="position: absolute;bottom: 0;width:100%;min-height:30px;font-size:16px;color:#ffffff;text-align: center;padding:0 5px;
-                        word-break: break-all;box-sizing: border-box;line-height: 25px;font-weight: 900;display:none;">
+                        word-break: break-all;box-sizing: border-box;line-height: 25px;font-weight: 900;">
                 </div>
             </div>
             
@@ -210,8 +210,9 @@
                 </span>
                 <span id="wholebtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
-                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
+                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;position:relative;">
                     中文
+                    <hr id="wholebtnlash" style="border-width:2px;display:none;height:1px;padding:0;margin:0;width:75%;position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border-bottom: none;"/>
                 </span>
                 <span id="hideBtn" class="unselectable"
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;

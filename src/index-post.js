@@ -359,7 +359,7 @@
     function onWaiting(){
     }
     function onClick(){
-        $('#video').attr('controls', true);
+        //$('#video').attr('controls', true);
     }
 
 
@@ -1131,7 +1131,6 @@
                 if(document.activeElement.tagName=="INPUT")
                     return;
                 if($('#video')[0].paused){
-                    chHideDialog()
                     playVideo()
                     page.manual=1
                 }
@@ -1354,9 +1353,9 @@
     }).bind('pause',function(){
         videoPause()
     }).bind('mouseover',function(){
-        $('#video').attr('controls', true)
+        //$('#video').attr('controls', true)
     }).bind('mouseout',function(){
-        $('#video').attr('controls', false)
+        //$('#video').attr('controls', false)
     }).bind('canplay',function(){
         onCanPlay()
     }).bind('durationchange',function(){
@@ -1382,11 +1381,11 @@
     }).bind('loadedmetadata',function(){
         onLoadedMetadata()
     }).bind('touchend',function(){
-        $('#video').attr('controls', true);
+        //$('#video').attr('controls', true);
     }).bind('focus',function(){
-        $('#video').attr('controls', true)
+        //$('#video').attr('controls', true)
     }).bind('blur',function(){
-        $('#video').attr('controls', false);
+        //$('#video').attr('controls', false);
     })
 
 
@@ -1509,7 +1508,7 @@
             var ss = page.endt.getTime()-page.startt.getTime();
             if(ss<1000){
                 playVideo()
-                $('#video').attr('controls', false);
+                //$('#video').attr('controls', false);
             }
         }
     }).bind('touchstart',function() { 
@@ -1534,7 +1533,7 @@
             var ss = page.endt.getTime()-page.startt.getTime();
             if(ss<1000){
                 playVideo()
-                $('#video').attr('controls', false);
+                //$('#video').attr('controls', false);
             }
         }
     })
@@ -1566,7 +1565,7 @@
             var ss = page.endt.getTime()-page.startt.getTime();
             if(ss<1000){
                 pauseVideo()
-                $('#video').attr('controls', false);
+                //$('#video').attr('controls', false);
             }
         }
     }).bind('touchstart',function() { 
@@ -1591,7 +1590,7 @@
             var ss = page.endt.getTime()-page.startt.getTime();
             if(ss<1000){
                 pauseVideo()
-                $('#video').attr('controls', false);
+                //$('#video').attr('controls', false);
             }
         }
     })
@@ -1742,8 +1741,10 @@
     function chdialog(){
         if($('#chDialog').is(':hidden')){
             $('#chDialog').show()
+            $('#wholebtnlash').hide()
         }else{
             $('#chDialog').hide()
+            $('#wholebtnlash').show()
         }
     }
 
