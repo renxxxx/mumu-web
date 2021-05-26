@@ -508,6 +508,7 @@
                 _v.splice(i+5,0,'\\n',vv[3])
             }
         }
+        $('#chDialog').html(item.chValue.replace(/\\n/g,'<br/>'))
         $('.dialog').css({'display' : 'none'})
         $('.dialogTitle #kw').html('');
         currwordno=0
@@ -535,7 +536,7 @@
                     log.debug("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
                     setline(prev)
                     currwordno=0
-                    $('.chDialog').hide()
+                    
                     $('.dialog').css({'display' : 'none'})
                     $('.dialogTitle #kw').html('');
                 }
@@ -577,7 +578,7 @@
                 //log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
-                $('.chDialog').hide()
+                
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -598,7 +599,7 @@
                 //log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
-                $('.chDialog').hide()
+                
                 $('.dialog').css({'display' : 'none'})
                 $('.dialogTitle #kw').html('');
             }
@@ -835,34 +836,36 @@
         $("#zh_subtitles").css("opacity")
         if($("#zh_subtitles").css("opacity") == 1){
             $("#zh_subtitles").css("opacity",0)
+            $('#chDialog').hide()
             $('#hideBtn').css("background-color","rgb(230, 230, 230)")
         }else{
+            $('#chDialog').show()
             $("#zh_subtitles").css("opacity",1)
             $('#hideBtn').css("background-color","#ffffff")
         }
     }
 
     
-    function chShowDialog(){
-        if(!en.current || !en.current.chValue)
-            return;
+    // function chShowDialog(){
+    //     if(!en.current || !en.current.chValue)
+    //         return;
         
-        pausebeforech=$('#video')[0].paused;
-        //let _this = this
-        let _time = $('#video')[0].currentTime*1000
-        $('.chDialog').css("display","block")
-        $('.chDialog div').html(en.current.chValue.replace(/\\n/g,'<br/>'))
-        pauseVideo()
-    }
-    function chHideDialog(){
-        // $('#video')[0].play();
-        $('.chDialog').css("display","none")
-        if(pausebeforech){
-            pauseVideo()
-        }else{
-            recoverManual()
-        }
-    }
+    //     pausebeforech=$('#video')[0].paused;
+    //     //let _this = this
+    //     let _time = $('#video')[0].currentTime*1000
+    //     $('.chDialog').css("display","block")
+    //     $('.chDialog div').html(en.current.chValue.replace(/\\n/g,'<br/>'))
+    //     pauseVideo()
+    // }
+    // function chHideDialog(){
+    //     // $('#video')[0].play();
+    //     $('.chDialog').css("display","none")
+    //     if(pausebeforech){
+    //         pauseVideo()
+    //     }else{
+    //         recoverManual()
+    //     }
+    // }
 
     function timeCycle(_value){
         let _time = _value.split(':')
@@ -1163,11 +1166,7 @@
                     return;
                 if(document.activeElement.tagName=="INPUT")
                     return;
-                if($('.chDialog').is(":hidden")){
-                    chShowDialog()
-                }
-                else
-                    chHideDialog()
+                chdialog()
         　　　　 break;
             case '100'://D
             case '68'://d
@@ -1733,17 +1732,22 @@
     })
     $('#wholebtn').bind('click',function(event){
         log.info('#wholebtn.click')
-        chShowDialog()
+        chdialog()
     })
     $('#searchbtn').bind('click',function(event){
         log.info('#searchbtn.click')
         search()
     })
 
-    $('#chDialog').bind('click',function(event){
-        log.info('#chDialog.click')
-        chHideDialog()
-    })
+    function chdialog(){
+        if($('#chDialog').is(':hidden')){
+            $('#chDialog').show()
+        }else{
+            $('#chDialog').hide()
+        }
+    }
+
+
     document.body.addEventListener('click',function(){
         //log.debug(event.target)
     })
