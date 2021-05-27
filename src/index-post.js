@@ -154,7 +154,7 @@
                 }
             })
         }
-
+        
         if(!videos[videosIndex+1]){
             return;
         }
@@ -163,6 +163,11 @@
         video = videos[videosIndex]
         localStorage.setItem('videosIndex',videosIndex)
         getvideodone(video)
+
+        if(videos[videosIndex+1])
+            $('#video1').attr('poster',videos[videosIndex+1].cover);
+        if(videos[videosIndex-1])
+            $('#video2').attr('poster',videos[videosIndex-1].cover);
     }
 
     function goPrevVideo(){
@@ -1943,48 +1948,7 @@
         }
     })
 
-    $('#index').bind('touchstart',function(e){
-        this.startTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        var touch = e.targetTouches[0];
-        this.indextouchstartX = touch.pageX;
-        this.indextouchstartY = touch.pageY;
-    }).bind('touchmove',function(e){
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        var touch = e.targetTouches[0];
-        this.indextouchendX = touch.pageX;
-        this.indextouchendY = touch.pageY;
-        if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
-            e.preventDefault()
-        }
-    }).bind('touchend',function(e){
-        this.endTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-        log.debug(this.endTime-this.startTime)
-        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-            if(this.indextouchstartX-this.indextouchendX>100){
-                goNextVideo()
-            }else if(this.indextouchstartX-this.indextouchendX<-100){
-                goPrevVideo()
-            }
-        }
-        
-        this.indextouchstartX=null
-        this.indextouchstartY=null
-        this.indextouchendX=null
-        this.indextouchendY=null
-    })
-
+   
 
 
     page.spans =[]
@@ -2069,6 +2033,53 @@
         }
         
     })
+    $('#index').bind('touchstart',function(e){
+        this.startTime = new Date().getTime();
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+            return;
+        var touch = e.targetTouches[0];
+        this.indextouchstartX = touch.pageX;
+        this.indextouchstartY = touch.pageY;
+    }).bind('touchmove',function(e){
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+            return;
+        var touch = e.targetTouches[0];
+        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+            $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
+            $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
+        }
+        this.indextouchendX = touch.pageX;
+        this.indextouchendY = touch.pageY;
+        if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
+            e.preventDefault()
+        }
+    }).bind('touchend',function(e){
+        this.endTime = new Date().getTime();
+        if($(e.target).parents('.scrollable').length>0)
+            return;
+        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+            return;
+        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+        log.debug(this.endTime-this.startTime)
+        $('#video1').css('left','100%')
+        $('#video2').css('left','-100%')
+        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+            if(this.indextouchstartX-this.indextouchendX>100){
+                goNextVideo()
+            }else if(this.indextouchstartX-this.indextouchendX<-100){
+                goPrevVideo()
+            }
+        }
+        
+        this.indextouchstartX=null
+        this.indextouchstartY=null
+        this.indextouchendX=null
+        this.indextouchendY=null
+    })
 
 
     $('#index').bind('mousedown',function(e){
@@ -2084,19 +2095,33 @@
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
+        
+        
+        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+            $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
+            $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
+        }
+
         this.indextouchendX = e.pageX;
         this.indextouchendY = e.pageY;
+
         if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
             e.preventDefault()
         }
+
+        
     }).bind('mouseup',function(e){
         this.endTime = new Date().getTime();
         if($(e.target).parents('.scrollable').length>0)
             return;
         if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
             return;
+
+        $('#video1').css('left','100%')
+        $('#video2').css('left','-100%')
         //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
         if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+            
             if(this.indextouchstartX-this.indextouchendX>100){
                 goNextVideo()
             }else if(this.indextouchstartX-this.indextouchendX<-100){
@@ -2108,6 +2133,8 @@
         this.indextouchstartY=null
         this.indextouchendX=null
         this.indextouchendY=null
+
+       
     })
 
     $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
