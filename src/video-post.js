@@ -1083,43 +1083,45 @@
         }
     }
 
-
-    $.get('/mumu/wxjsapiticket',(res)=>{
-        $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-            log.debug(JSON.stringify(res));
-            wx.config({
-                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                appId: res.data.appid, // 必填，公众号的唯一标识
-                timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
-                signature:  res.data.signature,// 必填，签名
-                jsApiList: ['updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
-            });
+    if(is_weixn()){
+        $.get('/mumu/wxjsapiticket',(res)=>{
+            $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
+                log.debug(JSON.stringify(res));
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.data.appid, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+                    signature:  res.data.signature,// 必填，签名
+                    jsApiList: ['updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                });
+            })
         })
-    })
-
-    var shareLink = location.origin+'/mumu?videoNo='+videoNo;
-    wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
-
-        wx.updateAppMessageShareData({ 
-            title: video.name, // 分享标题
-            desc: '幕幕 - 短视频练英语', // 分享描述
-            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
-            success: function () {
+    
+        var shareLink = location.origin+'/mumu?videoNo='+videoNo;
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+    
+            wx.updateAppMessageShareData({ 
+                title: video.name, // 分享标题
+                desc: '幕幕 - 短视频练英语', // 分享描述
+                link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
+                    // 设置成功
+                }
+            })
+    
+            wx.updateTimelineShareData({ 
+                title: video.name + '\n幕幕 - 短视频练英语', // 分享标题
+                link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
                 // 设置成功
-            }
-        })
-
-        wx.updateTimelineShareData({ 
-            title: video.name + '\n幕幕 - 短视频练英语', // 分享标题
-            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
-            success: function () {
-            // 设置成功
-            }
-        })
-    });
+                }
+            })
+        });
+    }
+   
 
     function lightkeytrans(ss){
         if(!ss)

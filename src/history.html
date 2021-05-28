@@ -236,7 +236,9 @@
             }
             lastTouchEnd = now;
         }, false);
-        $.get('/mumu/wxjsapiticket',(res)=>{
+
+        if(is_weixn()){
+            $.get('/mumu/wxjsapiticket',(res)=>{
             $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
                 console.log(JSON.stringify(res));
                 wx.config({
@@ -270,6 +272,9 @@
                 }
             })
         });
+
+        }
+       
 
     </script>
     

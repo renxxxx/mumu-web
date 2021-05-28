@@ -117,7 +117,10 @@
             $('#logo').hide()
         },500)
         $('#version').text(config.version)
-         $.get('/mumu/wxjsapiticket',(res)=>{
+
+        if(is_weixn()){
+
+            $.get('/mumu/wxjsapiticket',(res)=>{
             $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
                 console.log(JSON.stringify(res));
                 wx.config({
@@ -151,6 +154,9 @@
                 }
             })
         });
+
+            }
+        
 
         statisticsexps()
         var totalTranslates = localStorage.getItem('totaltranslates')

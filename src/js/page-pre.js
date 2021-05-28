@@ -18,20 +18,31 @@ function is_weixn(){
       return false;  
   }  
 }
+try{
+  pagePre.login = JSON.parse(localStorage.getItem('login'))
+  pagePre.loginTime = parseInt(localStorage.getItem('loginTime'))
+}catch(e){
 
+}
 
-$.ajax({
-  url:'/mumu/login-refresh',
-  method:'get',
-  async:false,
-  success:function(res){
-    if(res.code==0){
-      pagePre.login=res.data
-    } else {
-      login()
+if(!pagePre.login || !pagePre.loginTime){
+  $.ajax({
+    url:'/mumu/login-refresh',
+    method:'get',
+    async:false,
+    success:function(res){
+      if(res.code==0){
+        pagePre.login=res.data
+        localStorage.setItem('login',JSON.stringify(pagePre.login))
+        localStorage.setItem('loginTime',new Date().getTime())
+      }else{
+        login()
+      }
     }
-  }
-})
+  })
+}
+  
+
 
 function login(){
   if(is_weixn()){
@@ -53,6 +64,8 @@ function login(){
             async:false,
             success:function(res){
               if(res.code==0){
+                localStorage.setItem('login',JSON.stringify(res.data))
+                localStorage.setItem('loginTime',new Date().getTime())
                 pagePre.login=res.data
               }
             }
