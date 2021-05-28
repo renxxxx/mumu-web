@@ -26,20 +26,7 @@ try{
 }
 
 if(!pagePre.login || !pagePre.loginTime){
-  $.ajax({
-    url:'/mumu/login-refresh',
-    method:'get',
-    async:false,
-    success:function(res){
-      if(res.code==0){
-        pagePre.login=res.data
-        localStorage.setItem('login',JSON.stringify(pagePre.login))
-        localStorage.setItem('loginTime',new Date().getTime())
-      }else{
-        login()
-      }
-    }
-  })
+  login()
 }
   
 
