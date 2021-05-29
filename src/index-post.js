@@ -128,6 +128,7 @@
         log.info('$(#historyword_template).click '+$(this).attr('data'))
         page.dovideoshadow=1
         pauseVideo();
+        loadRelatedWords(this.innerText)
         translatee(this.innerText);
         $('.historyword').css('background-color',"#ffffff")
         $(this).css('background-color',"#e7e7e7")
@@ -735,6 +736,7 @@
                 },
                 async: true,
                 success: function(res) {
+                    var hasTranslate = false;
                     clearTimeout(window.aaa)
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
@@ -747,17 +749,28 @@
                         $('#summtrans-speak').hide()
                     }
                     $('#summtrans-vv').html('').scrollTop(0)
-                    if(res.data.translations){
-                        $(res.data.translations).each(function(index,item){
+                    if(res.data.explains){
+                        $(res.data.explains).each(function(index,item){
+                            hasTranslate=true
                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                         })
                     }
-                    if(res.data.webTranslations){
+                    if(res.data.wfs){
+                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans(res.data.wfs)}</div>`)
+                    }
+                    if(res.data.webs){
                         $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
-                        $(res.data.webTranslations).each(function(index,item){
+                        $(res.data.webs).each(function(index,item){
+                            hasTranslate=true
                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
                         })
                     }
+                     if(!hasTranslate && res.data.translations){
+                         $(res.data.translations).each(function(index,item){
+                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                         })
+                     }
+                    
                     
                     $(`.lightkeytrans`).bind('click',function(){
                         translatee(this.innerText)
@@ -931,213 +944,171 @@
 
 
 
-
-    // $('#zh_subtitles').mousedown(_ev => {
-    //     log.info('#zh_subtitles.mousedown')
-    //     if(!$(_ev.target).hasClass('font'))
-    //         return;
-    //     //let _this = this
-    //     moveStata = true;
+    // function touchstartFn(_value){
+    //     //let _this = this,
     //     _coordinates = {
-    //         clientX : _ev.clientX,
-    //         clientY : _ev.clientY,
-    //         pageX : _ev.pageX,
-    //         pageY : _ev.pageY
+    //         clientX : _value.changedTouches[0].clientX,
+    //         clientY : _value.changedTouches[0].clientY,
+    //         pageX : _value.changedTouches[0].pageX,
+    //         pageY : _value.changedTouches[0].pageY
     //     };
-    //     choooseStart(_coordinates); 
-    //     $("#zh_subtitles").mousemove(_e => {
-    //         if(!$(_e.target).hasClass('font'))
-    //             return;
-    //         if(moveStata){
-    //             _coordinates = {
-    //                 clientX : _e.clientX,
-    //                 clientY : _e.clientY,
-    //                 pageX : _e.pageX,   
-    //                 pageY : _e.pageY
-    //             };
-    //             choooseMove(_coordinates); 
-    //         }
-    //     }).mouseup(function(_up){
-    //         log.info('#zh_subtitles.mouseup')
-    //         if(!$(_up.target).hasClass('font'))
-    //             return;
-    //         moveStata = false;
-    //         _coordinates = {
-    //             clientX : _up.clientX,
-    //             clientY : _up.clientY,
-    //             pageX : _up.pageX,
-    //             pageY : _up.pageY
-    //         };
-    //         choooseEnd(_coordinates);
-    //         $("#zh_subtitles").unbind('mousemove').unbind('mouseup')
-    //     })
-        
-    // })
-    function touchstartFn(_value){
-        //let _this = this,
-        _coordinates = {
-            clientX : _value.changedTouches[0].clientX,
-            clientY : _value.changedTouches[0].clientY,
-            pageX : _value.changedTouches[0].pageX,
-            pageY : _value.changedTouches[0].pageY
-        };
-        choooseStart(_coordinates);
-    }
-    function touchmoveFn(_value){
-        //let _this = this,
-        _coordinates = {
-            clientX : _value.changedTouches[0].clientX,
-            clientY : _value.changedTouches[0].clientY,
-            pageX : _value.changedTouches[0].pageX,
-            pageY : _value.changedTouches[0].pageY
-        };
-        choooseMove(_coordinates);
-    }
-    function touchendFn(_value){
-        //let _this = this,
-        _coordinates = {
-            clientX : _value.changedTouches[0].clientX,
-            clientY : _value.changedTouches[0].clientY,
-            pageX : _value.changedTouches[0].pageX,
-            pageY : _value.changedTouches[0].pageY
-        };
-        choooseEnd(_coordinates);
-    }
-    function choooseStart(_value){
-        //log.debug(_value)
-        page.dovideoshadow=1
-        pauseVideo()
-        console.dir($("#zh_subtitles").height())
-        let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
-        height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
+    //     choooseStart(_coordinates);
+    // }
+    // function touchmoveFn(_value){
+    //     //let _this = this,
+    //     _coordinates = {
+    //         clientX : _value.changedTouches[0].clientX,
+    //         clientY : _value.changedTouches[0].clientY,
+    //         pageX : _value.changedTouches[0].pageX,
+    //         pageY : _value.changedTouches[0].pageY
+    //     };
+    //     choooseMove(_coordinates);
+    // }
+    // function touchendFn(_value){
+    //     //let _this = this,
+    //     _coordinates = {
+    //         clientX : _value.changedTouches[0].clientX,
+    //         clientY : _value.changedTouches[0].clientY,
+    //         pageX : _value.changedTouches[0].pageX,
+    //         pageY : _value.changedTouches[0].pageY
+    //     };
+    //     choooseEnd(_coordinates);
+    // }
+    // function choooseStart(_value){
+    //     //log.debug(_value)
+    //     page.dovideoshadow=1
+    //     pauseVideo()
+    //     console.dir($("#zh_subtitles").height())
+    //     let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
+    //     height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
 
-        ////let _this = this;
-        chooseDomList = [];
-        $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+    //     ////let _this = this;
+    //     chooseDomList = [];
+    //     $('#zh_subtitles span').css({"background": "transparent","color": "black"})
         
-        ele = document.elementFromPoint(_value.pageX, _value.pageY);
-        if(!$(ele).hasClass('font'))
-            return;
-        let mx = _value.clientX || _value.pageX
-        let my = _value.clientY || _value.pageY
-        if((width - 5)>mx && mx>($("#zh_subtitles").offset().left+ 5) && ($("#zh_subtitles").offset().top +5)<my && my<(height - 5)){
-            if(ele.className.lastIndexOf('font span ')<0){
-                // 匹配是否是上次点击的字段
-                // && ele.innerHTML!= translationtext && !chooseDomList.length && translationtext.indexOf(ele.innerHTML)<0
-                if(ele.innerHTML!=" "){
-                    chooseDomList.push({
-                        class:ele.className,
-                        value:ele.innerHTML,
-                    })
-                    $('.'+ele.className.split(' ')[1]).css({
-                        'background' : '#d2cbcb',
-                        'color' : 'black'
-                    })
-                }
-            }
-        }
-    }
-    function choooseMove(_value){
-        //let _this = this,
-        ele = document.elementFromPoint(_value.pageX, _value.pageY);
-        if(!$(ele).hasClass('font'))
-            return;
-        let mx = _value.clientX || _value.pageX
-        let my = _value.clientY || _value.pageY
-        let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left,
-        height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top;
-        if((width - 5)>mx && mx>($("#zh_subtitles").offset().left + 5) && ($("#zh_subtitles").offset().top + 5)<my && my<(height - 5)){
-            if(ele.className.lastIndexOf('font span ')<0){
-                let status = true;
-                chooseDomList.findIndex(function(_value, inx){
-                    if(_value.class == ele.className){
-                        status=false
-                    }
-                })
-                if(status && ele.innerHTML!=" "){
-                    if(chooseDomList.length){
-                        let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
-                        let _now = parseInt(ele.className.replace('font span',''));
-                        //log.debug(_now-_last)
-                        if( _now == (_last+1)){
-                            chooseDomList.push({
-                                class:ele.className,
-                                value:ele.innerHTML,
-                            })
-                            $('.'+ele.className.split(' ')[1]).css({
-                                'background' : '#d2cbcb',
-                                'color' : 'black'
-                            })
-                        }else if(_now > (_last+1)){
+    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
+    //     if(!$(ele).hasClass('font'))
+    //         return;
+    //     let mx = _value.clientX || _value.pageX
+    //     let my = _value.clientY || _value.pageY
+    //     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left+ 5) && ($("#zh_subtitles").offset().top +5)<my && my<(height - 5)){
+    //         if(ele.className.lastIndexOf('font span ')<0){
+    //             // 匹配是否是上次点击的字段
+    //             // && ele.innerHTML!= translationtext && !chooseDomList.length && translationtext.indexOf(ele.innerHTML)<0
+    //             if(ele.innerHTML!=" "){
+    //                 chooseDomList.push({
+    //                     class:ele.className,
+    //                     value:ele.innerHTML,
+    //                 })
+    //                 $('.'+ele.className.split(' ')[1]).css({
+    //                     'background' : '#d2cbcb',
+    //                     'color' : 'black'
+    //                 })
+    //             }
+    //         }
+    //     }
+    // }
+    // function choooseMove(_value){
+    //     //let _this = this,
+    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
+    //     if(!$(ele).hasClass('font'))
+    //         return;
+    //     let mx = _value.clientX || _value.pageX
+    //     let my = _value.clientY || _value.pageY
+    //     let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left,
+    //     height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top;
+    //     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left + 5) && ($("#zh_subtitles").offset().top + 5)<my && my<(height - 5)){
+    //         if(ele.className.lastIndexOf('font span ')<0){
+    //             let status = true;
+    //             chooseDomList.findIndex(function(_value, inx){
+    //                 if(_value.class == ele.className){
+    //                     status=false
+    //                 }
+    //             })
+    //             if(status && ele.innerHTML!=" "){
+    //                 if(chooseDomList.length){
+    //                     let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
+    //                     let _now = parseInt(ele.className.replace('font span',''));
+    //                     //log.debug(_now-_last)
+    //                     if( _now == (_last+1)){
+    //                         chooseDomList.push({
+    //                             class:ele.className,
+    //                             value:ele.innerHTML,
+    //                         })
+    //                         $('.'+ele.className.split(' ')[1]).css({
+    //                             'background' : '#d2cbcb',
+    //                             'color' : 'black'
+    //                         })
+    //                     }else if(_now > (_last+1)){
                             
-                            for(let i = _last; i < _now; i++){
-                                $('.span'+i)
-                                chooseDomList.push({
-                                    class:$('.span'+i).attr('class'),
-                                    value:$('.span'+i).html(),
-                                })
-                                $('.span'+i).css({  
-                                    'background' : '#d2cbcb',
-                                    'color' : 'black'
-                                })
-                            }
-                        }else{
-                            for(let i = _now; i < _last; i++){
-                                $('.span'+i)
-                                chooseDomList.push({
-                                    class:$('.span'+i).attr('class'),
-                                    value:$('.span'+i).html(),
-                                })
-                                $('.span'+i).css({
-                                    'background' : '#d2cbcb',
-                                    'color' : 'black'
-                                })
-                            }
-                        }
-                    }else{
-                        chooseDomList.push({
-                            class:ele.className,
-                            value:ele.innerHTML,
-                        })
-                        $('.'+ele.className.split(' ')[1]).css({
-                            'background' : '#d2cbcb',
-                            'color' : 'black'
-                        })
-                    }
-                }
-            }
-        }
-    }
-    function choooseEnd(_value){
-        ////let _this = this;
-        ele = document.elementFromPoint(_value.pageX, _value.pageY);
-        for(let i=0;i<chooseDomList.length-1;i++){
-            for(let j=0;j<chooseDomList.length-i-1;j++){
-                if(parseInt(chooseDomList[j].class.replace('font span',''))>parseInt(chooseDomList[j+1].class.replace('font span',''))){
-                    let _swap = chooseDomList[j];
-                    chooseDomList[j] = chooseDomList[j+1];
-                    chooseDomList[j+1] = _swap;
-                }
-            }
-        }
-        let _data = ''
-        $(chooseDomList).each(function(inx,item){
-            if(inx>0){
-                _data+=' '+item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
-            }else{
-                _data=item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
-            }
-        })
-        // 匹配是否是上次点击的字段
-        // && translationtext != _data && translationtext.indexOf(_data)<0
-        if(_data){
-            translationtext = _data;
-            translatee(_data)
-        }else{
-            translationtext = ""
-        }
-        $('.searchClass').blur();
-    }
+    //                         for(let i = _last; i < _now; i++){
+    //                             $('.span'+i)
+    //                             chooseDomList.push({
+    //                                 class:$('.span'+i).attr('class'),
+    //                                 value:$('.span'+i).html(),
+    //                             })
+    //                             $('.span'+i).css({  
+    //                                 'background' : '#d2cbcb',
+    //                                 'color' : 'black'
+    //                             })
+    //                         }
+    //                     }else{
+    //                         for(let i = _now; i < _last; i++){
+    //                             $('.span'+i)
+    //                             chooseDomList.push({
+    //                                 class:$('.span'+i).attr('class'),
+    //                                 value:$('.span'+i).html(),
+    //                             })
+    //                             $('.span'+i).css({
+    //                                 'background' : '#d2cbcb',
+    //                                 'color' : 'black'
+    //                             })
+    //                         }
+    //                     }
+    //                 }else{
+    //                     chooseDomList.push({
+    //                         class:ele.className,
+    //                         value:ele.innerHTML,
+    //                     })
+    //                     $('.'+ele.className.split(' ')[1]).css({
+    //                         'background' : '#d2cbcb',
+    //                         'color' : 'black'
+    //                     })
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // function choooseEnd(_value){
+    //     ////let _this = this;
+    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
+    //     for(let i=0;i<chooseDomList.length-1;i++){
+    //         for(let j=0;j<chooseDomList.length-i-1;j++){
+    //             if(parseInt(chooseDomList[j].class.replace('font span',''))>parseInt(chooseDomList[j+1].class.replace('font span',''))){
+    //                 let _swap = chooseDomList[j];
+    //                 chooseDomList[j] = chooseDomList[j+1];
+    //                 chooseDomList[j+1] = _swap;
+    //             }
+    //         }
+    //     }
+    //     let _data = ''
+    //     $(chooseDomList).each(function(inx,item){
+    //         if(inx>0){
+    //             _data+=' '+item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
+    //         }else{
+    //             _data=item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
+    //         }
+    //     })
+    //     // 匹配是否是上次点击的字段
+    //     // && translationtext != _data && translationtext.indexOf(_data)<0
+    //     if(_data){
+    //         translationtext = _data;
+    //         translatee(_data)
+    //     }else{
+    //         translationtext = ""
+    //     }
+    //     $('.searchClass').blur();
+    // }
 
 
     var currwordno=0;
@@ -1308,6 +1279,7 @@
     function search(){
         if(document.activeElement == $('#word-in')[0]){
             $('#wordsframe').hide()
+            loadRelatedWords($('#word-in').val())
             translatee($('#word-in').val())
             if(!$('#word-in').val()){
                 $('#summtrans').hide()
@@ -1458,6 +1430,7 @@
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
+        loadRelatedWords(this.item.q)
         translatee(this.item.q)
     })
 
@@ -1507,25 +1480,6 @@
 
 
 
-
-    // $('#zh_subtitles').bind('touchstart',function(event){
-    //     log.info('#zh_subtitles.touchstart')
-    //     if(!$(event.target).hasClass('font'))
-    //         return;
-    //     touchstartFn(event);
-    //     event.preventDefault()
-    // }).bind('touchmove',function(event){
-    //     if(!$(event.target).hasClass('font'))
-    //         return;
-    //     touchmoveFn(event);
-    //     event.preventDefault()
-    // }).bind('touchend',function(event){
-    //     log.info('#zh_subtitles.touchend')
-    //     if(!$(event.target).hasClass('font'))
-    //         return;
-    //     touchendFn(event);
-    //     event.preventDefault()
-    // })
 
 
 
@@ -1976,82 +1930,81 @@
     page.firstRangeWordInx=0
     page.lastRangeWordInx=0
     $('#zh_subtitles').bind('mousedown touchstart',function(e){
-        log.info(`#zh_subtitles.mousedown touchstart`)
-        var currTarget = null;
-        if(e.type=='touchmove'){
-            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
-        }else{
-            currTarget = e.target;
-        }
-        if($(currTarget).hasClass('font')){
-            page.firstRangeWordInx=0
-            page.lastRangeWordInx=0
-            pauseVideo()
-            var index = parseInt($(currTarget).attr('index'));
-            currwordno=index+1
-            page.spansIs=1
-            page.spans =[]
-            page.firstRangeWordInx=index
-            page.lastRangeWordInx=index
-            $('#zh_subtitles .font').css('background-color','#ffffff')
-            $('#zh_subtitles .font.span'+index).css('background-color','rgb(210, 203, 203)')
-        }
-        
+        log.info(`#zh_subtitles.`+e.type)
+            var currTarget = null;
+            if(e.type=='touchmove'){
+                currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+            }else{
+                currTarget = e.target;
+            }
+            if($(currTarget).hasClass('font')){
+                page.firstRangeWordInx=0
+                page.lastRangeWordInx=0
+                pauseVideo()
+                var index = parseInt($(currTarget).attr('index'));
+                currwordno=index+1
+                page.spansIs=1
+                page.spans =[]
+                page.firstRangeWordInx=index
+                page.lastRangeWordInx=index
+                $('#zh_subtitles .font').css('background-color','#ffffff')
+                $('#zh_subtitles .font.span'+index).css('background-color','rgb(210, 203, 203)')
+            }
     }).bind('mousemove touchmove',function(e){
         var currTarget = null;
-        if(e.type=='touchmove'){
-            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
-        }else{
-            currTarget = e.target;
-        }
-
-        if($(currTarget).hasClass('font')){
-            if(!page.spansIs)
-                return
-            $('#zh_subtitles .font').css('background-color','#ffffff')
-            var index = parseInt($(currTarget).attr('index'));
-            if(page.spans[page.spans.length-1] != index){
-                page.spans.push(index)
+            if(e.type=='touchmove'){
+                currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+            }else{
+                currTarget = e.target;
             }
-            var first = page.spans[0]
-            var last = page.spans[page.spans.length-1]
-            if(first>last){
-                var t = first
-                first=last
-                last=t
-            }
-            page.firstRangeWordInx=first
-            page.lastRangeWordInx=last
-            for (var inx = first; inx <= last; inx++) {
-                $('#zh_subtitles .font.span'+inx).css('background-color','rgb(210, 203, 203)')
-            }
-        }
-        e.preventDefault()
-    }).bind('mouseup touchend',function(e){
-        log.info(`#zh_subtitles.mouseup touchend`)
-        var currTarget = null;
-        if(e.type=='touchmove'){
-            currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
-        }else{
-            currTarget = e.target;
-        }
-        if($(currTarget).hasClass('font')){
-            if(page.spansIs){
-                var first = page.firstRangeWordInx
-                var last = page.lastRangeWordInx
-                var word = '';
-                for (var inx = first; inx <= last; inx++) {
-                    word+=($('#zh_subtitles .font.span'+inx).text()+' ')
+    
+            if($(currTarget).hasClass('font')){
+                if(!page.spansIs)
+                    return
+                $('#zh_subtitles .font').css('background-color','#ffffff')
+                var index = parseInt($(currTarget).attr('index'));
+                if(page.spans[page.spans.length-1] != index){
+                    page.spans.push(index)
                 }
-                word.substr(0,word.length-1)
-                page.dovideoshadow=1
-                pauseVideo()
-                translatee(word)
-                page.spansIs=0
-                page.spans =[]
+                var first = page.spans[0]
+                var last = page.spans[page.spans.length-1]
+                if(first>last){
+                    var t = first
+                    first=last
+                    last=t
+                }
+                page.firstRangeWordInx=first
+                page.lastRangeWordInx=last
+                for (var inx = first; inx <= last; inx++) {
+                    $('#zh_subtitles .font.span'+inx).css('background-color','rgb(210, 203, 203)')
+                }
             }
-        }
-        
+            e.preventDefault()
+    }).bind('mouseup touchend',function(e){
+        log.info(`#zh_subtitles.`+e.type)
+            var currTarget = null;
+            if(e.type=='touchmove'){
+                currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+            }else{
+                currTarget = e.target;
+            }
+            if($(currTarget).hasClass('font')){
+                if(page.spansIs){
+                    var first = page.firstRangeWordInx
+                    var last = page.lastRangeWordInx
+                    var word = '';
+                    for (var inx = first; inx <= last; inx++) {
+                        word+=($('#zh_subtitles .font.span'+inx).text()+' ')
+                    }
+                    word=word.substr(0,word.length-1)
+                    page.dovideoshadow=1
+                    pauseVideo()
+                    loadRelatedWords(word)
+                    translatee(word)
+                    page.spansIs=0
+                    page.spans =[]
+                }
+            }
     })
     $('#index').bind('touchstart',function(e){
         this.startTime = new Date().getTime();
@@ -2347,6 +2300,45 @@
 
     statisticsexps()
 
+
+    function loadRelatedWords(word){
+        
+        clearTimeout(page.sssss)
+        page.sssss=setTimeout(function(){
+            $('#relatedWordsPad .relatedWord').remove()
+            $('#fromRelatedWord').text(word)
+            $.ajax({
+                url:'/mumu/words',
+                method:'get',
+                data:{
+                    kw:word,
+                    start:1,
+                    pageSize:50,
+                    from:video.language,
+                    to:2,
+                    related:1,
+                },
+                success:function(res){
+                    if(res.data.words){
+                        $(res.data.words).each((inx,item)=>{
+                            var ele = $('#relatedWord0').clone(true)
+                            ele[0].data=item
+                            ele.attr('id','relatedWord'+item.no)
+                            ele.addClass('relatedWord')
+                            ele.text(item.q)
+                            $('#relatedWord0').before(ele)
+                            ele.show();
+                        })
+                    }
+                }
+            })
+        },100)
+        
+    }
+
+    $('#relatedWord0').click(function(){
+        translatee(this.innerText);
+    })
 
     $.ajax({
         url: '/mumu/chatroom-msgs?',

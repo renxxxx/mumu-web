@@ -6,6 +6,11 @@ body {
     user-select:none;
 }
 
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .unselectable {
     -moz-user-select:none;/*火狐*/
@@ -23,8 +28,12 @@ body {
     user-select:auto;
 }
 
+.noscrollbar::-webkit-scrollbar{
+    width:0px;
+}
+
 .scrollbar1::-webkit-scrollbar{
-    width:5px;
+    width:3px;
 }
 .scrollbar1::-webkit-scrollbar-track{
     background-color:#000000;
