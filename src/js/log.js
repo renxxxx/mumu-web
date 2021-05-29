@@ -1,6 +1,6 @@
 (function(){
     window.log={};
-    var logsstr = localStorage.getItem('logs')
+    var logsstr = localStorage.getItem(config.project+'-logs')
     log.logs=logsstr?JSON.parse(logsstr):[];
     log.debugon=0
 
@@ -18,7 +18,7 @@
     log.log=function(content){
         console.log(content)
         log.logs.push(content)
-        localStorage.setItem('logs',JSON.stringify(log.logs))
+        localStorage.setItem(config.project+'-logs',JSON.stringify(log.logs))
         if(log.logs.length>=100)
             log.flush()
     }
@@ -26,7 +26,7 @@
     log.flush=function(){
         console.log('log.flush')
         var toflushlogs = log.logs.splice(0,log.logs.length)
-        localStorage.setItem('logs',JSON.stringify(log.logs))
+        localStorage.setItem(config.project+'-logs',JSON.stringify(log.logs))
         if(toflushlogs.length <= 0)
             return;
         var data = {

@@ -23,8 +23,8 @@ function is_weixn(){
 
 
 try{
-  pagePre.login = JSON.parse(localStorage.getItem('login'))
-  pagePre.loginTime = parseInt(localStorage.getItem('loginTime'))
+  pagePre.login = JSON.parse(localStorage.getItem(config.project+'-login'))
+  pagePre.loginTime = parseInt(localStorage.getItem(config.project+'-loginTime'))
 }catch(e){
 
 }
@@ -37,8 +37,8 @@ if(!pagePre.login || !pagePre.loginTime){
     success:function(res){
       if(res.code==0){
         pagePre.login=res.data
-        localStorage.setItem('login',JSON.stringify(pagePre.login))
-        localStorage.setItem('loginTime',new Date().getTime())
+        localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
+        localStorage.setItem(config.project+'-loginTime',new Date().getTime())
       }else{
         login()
       }
@@ -67,8 +67,8 @@ function login(){
             async:false,
             success:function(res){
               if(res.code==0){
-                localStorage.setItem('login',JSON.stringify(res.data))
-                localStorage.setItem('loginTime',new Date().getTime())
+                localStorage.setItem(config.project+'-login',JSON.stringify(res.data))
+                localStorage.setItem(config.project+'-loginTime',new Date().getTime())
                 pagePre.login=res.data
               }
             }
@@ -210,29 +210,29 @@ function geteletop(element,offsetTop) {
 
 function statisticsexps(){
       var nowdate = moment().format('L')
-      var lastAddDate = localStorage.getItem('lastAddDate')
+      var lastAddDate = localStorage.getItem(config.project+'-lastAddDate')
       if(!lastAddDate)
-        localStorage.setItem('lastAddDate',nowdate)
+        localStorage.setItem(config.project+'-lastAddDate',nowdate)
       if(lastAddDate != nowdate){
-        var totalTranslates = localStorage.getItem('totaltranslates')
-        var totalSeconds = localStorage.getItem('totalseconds')
+        var totalTranslates = localStorage.getItem(config.project+'-totaltranslates')
+        var totalSeconds = localStorage.getItem(config.project+'-totalseconds')
         totalTranslates=parseInt(totalTranslates?totalTranslates:0)
         totalSeconds=parseInt(totalSeconds?totalSeconds:0)
 
-        var totalTranslatesNo = localStorage.getItem('totaltranslatesno')
-        var totalSecondsNo = localStorage.getItem('totalsecondsno')
+        var totalTranslatesNo = localStorage.getItem(config.project+'-totaltranslatesno')
+        var totalSecondsNo = localStorage.getItem(config.project+'-totalsecondsno')
         totalTranslatesNo=parseInt(totalTranslatesNo?totalTranslatesNo:0)
         totalSecondsNo=parseInt(totalSecondsNo?totalSecondsNo:0)
         totalTranslates+=totalTranslatesNo
         totalSeconds+=totalSecondsNo
 
-        localStorage.setItem('totaltranslates',totalTranslates)
-        localStorage.setItem('totalseconds',totalSeconds)
+        localStorage.setItem(config.project+'-totaltranslates',totalTranslates)
+        localStorage.setItem(config.project+'-totalseconds',totalSeconds)
 
-        localStorage.setItem('totaltranslatesno',0)
-        localStorage.setItem('totalsecondsno',0)
+        localStorage.setItem(config.project+'-totaltranslatesno',0)
+        localStorage.setItem(config.project+'-totalsecondsno',0)
 
-        localStorage.setItem('lastAddDate',nowdate)
+        localStorage.setItem(config.project+'-lastAddDate',nowdate)
       }
 }
 

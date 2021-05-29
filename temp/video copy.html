@@ -143,7 +143,7 @@
             function onCanPlay(){
                 //console.log("onCanPlay: "+ JSON.stringify(arguments))
                 if(!restored){
-                    var lastTime=localStorage.getItem("lastTime-"+videoNo)
+                    var lastTime=localStorage.getItem(config.project+"-lastTime-"+videoNo)
                     if(lastTime)
                         $('#video')[0].currentTime=lastTime
                     restored=1
@@ -172,7 +172,7 @@
             }
             function onTimeUpdate(){
                 //console.log("ontimeupdate: "+ JSON.stringify(arguments))
-                localStorage.setItem("lastTime-"+videoNo,$('#video')[0].currentTime)
+                localStorage.setItem(config.project+"-lastTime-"+videoNo,$('#video')[0].currentTime)
             }
             function onWaiting(){
                 //console.log("onwaiting: "+ JSON.stringify(arguments))

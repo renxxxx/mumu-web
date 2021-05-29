@@ -19,8 +19,8 @@
           success:function(res){
             if(res.code==0){
               pagePre.login=res.data
-              localStorage.setItem('login',JSON.stringify(pagePre.login))
-              localStorage.setItem('loginTime',new Date().getTime())
+              localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
+              localStorage.setItem(config.project+'-loginTime',new Date().getTime())
             }
           }
         })
@@ -85,7 +85,7 @@
         async: false,
         success: function(res) {
             videos.push(...res.data.videos)
-            localStorage.setItem('videos',JSON.stringify(videos))
+            localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
             page.currVideos=res.data.videos
             if(videoC)
                 videos.unshift(videoC)
@@ -94,9 +94,9 @@
     
 
 
-    var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
-    var currentIndex =parseInt(localStorage.getItem("currentIndex-"+videoNo));
-    var currentCaption = JSON.parse(localStorage.getItem("currentCaption-"+videoNo));
+    var lastCurrentTime = localStorage.getItem(config.project+"-currentTime-"+videoNo);
+    var currentIndex =parseInt(localStorage.getItem(config.project+"-currentIndex-"+videoNo));
+    var currentCaption = JSON.parse(localStorage.getItem(config.project+"-currentCaption-"+videoNo));
     var jumpedcaption = currentCaption;
     var tt,runstep=0;
     var playRestored=0,restored=0;
@@ -148,7 +148,7 @@
                         videos.push(...res.data.videos)
                         page.rstart=page.rstart+page.currVideos.length
                         page.currVideos=res.data.videos
-                        localStorage.setItem('videos',JSON.stringify(videos))
+                        localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                     }else{
                         page.seed = Math.ceil(Math.random()*100);
                         $.ajax({
@@ -162,7 +162,7 @@
                                 videosIndex=-1
                                 page.rstart=1
                                 videos.push(...res.data.videos)
-                                localStorage.setItem('videos',JSON.stringify(videos))
+                                localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                                 goNextVideo()
                             }
                         })
@@ -177,7 +177,7 @@
         videosIndex++;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
-        localStorage.setItem('videosIndex',videosIndex)
+        localStorage.setItem(config.project+'-videosIndex',videosIndex)
         getvideodone(video)
 
         if(videos[videosIndex+1])
@@ -196,7 +196,7 @@
         videosIndex--;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
-        localStorage.setItem('videosIndex',videosIndex)
+        localStorage.setItem(config.project+'-videosIndex',videosIndex)
         getvideodone(video)
     }
 
@@ -207,7 +207,7 @@
     }
     function guide(){
         $('#video').attr("src",video.url)
-        var translateed = localStorage.getItem('translateed')
+        var translateed = localStorage.getItem(config.project+'-translateed')
         if(!translateed){
             $('#hintssec').text(3)
             pauseVideo()
@@ -278,7 +278,7 @@
         })
         clearTimeout(page.addHistoryTimeout)
         page.addHistoryTimeout=setTimeout(function(){
-            var historyvideos = JSON.parse(localStorage.getItem('historyvideos'))
+            var historyvideos = JSON.parse(localStorage.getItem(config.project+'-historyvideos'))
             if(!historyvideos)
                 historyvideos=[]
             for(var i = 0; i < historyvideos.length; i++){
@@ -287,7 +287,7 @@
                 }  
             }  
             historyvideos.unshift(video)
-            localStorage.setItem('historyvideos',JSON.stringify(historyvideos))
+            localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
         },5000)
 
         guide()
@@ -349,8 +349,8 @@
 
     function monitor(_time){
         $('#loading').hide()
-        localStorage.setItem("durationsec-"+videoNo,$('#video')[0].duration)
-        localStorage.setItem("currentTime-"+videoNo,$('#video')[0].currentTime)
+        localStorage.setItem(config.project+"-durationsec-"+videoNo,$('#video')[0].duration)
+        localStorage.setItem(config.project+"-currentTime-"+videoNo,$('#video')[0].currentTime)
 
         if(jumpedcaption){
             if(jumpedcaption.startTime < _time){
@@ -516,8 +516,8 @@
         if(!item)
             return;
         //log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
-        localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
-        localStorage.setItem("currentIndex-"+videoNo,en.currentIndex)
+        localStorage.setItem(config.project+"-currentCaption-"+videoNo,JSON.stringify(item))
+        localStorage.setItem(config.project+"-currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
         let _v= item.enValue.split(' ');
         $("#zh_subtitles").html('')
@@ -672,11 +672,11 @@
         historywordele.text(word)
         historywordele.css('display','inline-block')
         $('#historywordspad').prepend(historywordele)
-        localStorage.setItem('historywords',JSON.stringify(historywords))
+        localStorage.setItem(config.project+'-historywords',JSON.stringify(historywords))
     }
 
     function showallhistorywords(){
-        var historywordsstr = localStorage.getItem('historywords')
+        var historywordsstr = localStorage.getItem(config.project+'-historywords')
         if(historywordsstr)
             historywords=JSON.parse(historywordsstr)
         for (let index = 0; index < historywords.length; index++) {
@@ -769,14 +769,14 @@
                     $('#summtrans').show()
                     $('#video').css('top','-1000px')
 
-                    var totaltranslatesno = localStorage.getItem("totaltranslatesno")
+                    var totaltranslatesno = localStorage.getItem(config.project+"-totaltranslatesno")
                     totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
                     totaltranslatesno++;
-                    localStorage.setItem("totaltranslatesno",totaltranslatesno)
+                    localStorage.setItem(config.project+"-totaltranslatesno",totaltranslatesno)
 
                     $('#summtrans-speak').click()
 
-                    var translateed = localStorage.getItem('translateed')
+                    var translateed = localStorage.getItem(config.project+'-translateed')
                     translateed =parseInt(translateed?++translateed:1)
                     if(translateed >= 4){
                         ws.send(JSON.stringify({
@@ -785,7 +785,7 @@
                         }))
                         translateed=1
                     }
-                    localStorage.setItem('translateed',translateed)
+                    localStorage.setItem(config.project+'-translateed',translateed)
                 },
             }))
         },200)
@@ -1862,7 +1862,7 @@
                 videosIndex=-1
                 page.rstart=1
                 videos.push(...res.data.videos)
-                localStorage.setItem('videos',JSON.stringify(videos))
+                localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                 goNextVideo()
             }
         })
@@ -1884,7 +1884,7 @@
                     page.currVideos=res.data.videos
                     page.rstart=1
                     videos.push(...res.data.videos)
-                    localStorage.setItem('videos',JSON.stringify(videos))
+                    localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                     goNextVideo()
                 }
             })
@@ -2325,10 +2325,10 @@
 
         if($('#video')[0].paused)
             return;
-        var totalsecondsno = localStorage.getItem("totalsecondsno")
+        var totalsecondsno = localStorage.getItem(config.project+"-totalsecondsno")
         totalsecondsno = parseInt(totalsecondsno?totalsecondsno:0);
         totalsecondsno+=5;
-        localStorage.setItem("totalsecondsno",totalsecondsno)
+        localStorage.setItem(config.project+"-totalsecondsno",totalsecondsno)
 
         ws.send(JSON.stringify({
             action:2,

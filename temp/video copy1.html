@@ -195,7 +195,7 @@
                 }
             })
         }
-        var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
+        var lastCurrentTime = localStorage.getItem(config.project+"-currentTime-"+videoNo);
         function restore(){
             if(!restored){
                 console.log("1")
@@ -275,8 +275,8 @@
             restore()
             
             $('#loading').hide()
-            localStorage.setItem("durationsec-"+videoNo,$('#video')[0].duration)
-            localStorage.setItem("currentTime-"+videoNo,$('#video')[0].currentTime)
+            localStorage.setItem(config.project+"-durationsec-"+videoNo,$('#video')[0].duration)
+            localStorage.setItem(config.project+"-currentTime-"+videoNo,$('#video')[0].currentTime)
 
             if(jumpedcaption){
                 if(jumpedcaption.startTime/1000 < videoele.currentTime){

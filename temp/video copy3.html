@@ -238,9 +238,9 @@
 
     <script>
         var videoNo = window.location.search.substring(1).split("&")[0].split("=")[1];
-        var lastCurrentTime = localStorage.getItem("currentTime-"+videoNo);
-        var currentIndex =parseInt(localStorage.getItem("currentIndex-"+videoNo));
-        var currentCaption = JSON.parse(localStorage.getItem("currentCaption-"+videoNo))
+        var lastCurrentTime = localStorage.getItem(config.project+"-currentTime-"+videoNo);
+        var currentIndex =parseInt(localStorage.getItem(config.project+"-currentIndex-"+videoNo));
+        var currentCaption = JSON.parse(localStorage.getItem(config.project+"-currentCaption-"+videoNo))
         var jumpedcaption = currentCaption
         var tt,runstep=0;
         var playRestored=0,restored=0
@@ -364,8 +364,8 @@
         
         function monitor(_time){
             $('#loading').hide()
-            localStorage.setItem("durationsec-"+videoNo,$('#video')[0].duration)
-            localStorage.setItem("currentTime-"+videoNo,$('#video')[0].currentTime)
+            localStorage.setItem(config.project+"-durationsec-"+videoNo,$('#video')[0].duration)
+            localStorage.setItem(config.project+"-currentTime-"+videoNo,$('#video')[0].currentTime)
 
             if(_this.en.current && _this.en.current.startTime<=_time && _time<_this.en.current.endTime){
                 return;
@@ -509,8 +509,8 @@
             if(!item)
                 return;
             console.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
-            localStorage.setItem("currentCaption-"+videoNo,JSON.stringify(item))
-            localStorage.setItem("currentIndex-"+videoNo,_this.en.currentIndex)
+            localStorage.setItem(config.project+"-currentCaption-"+videoNo,JSON.stringify(item))
+            localStorage.setItem(config.project+"-currentIndex-"+videoNo,_this.en.currentIndex)
             ////let _this = this;
             let _v= item.enValue.split(' ');
             $("#zh_subtitles").html('')

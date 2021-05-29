@@ -207,8 +207,8 @@
                 success: function(res) {
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
-                        var durationsec = localStorage.getItem('durationsec-'+item.no)
-                        var currentTime = localStorage.getItem('currentTime-'+item.no)
+                        var durationsec = localStorage.getItem(config.project+'-durationsec-'+item.no)
+                        var currentTime = localStorage.getItem(config.project+'-currentTime-'+item.no)
                         $('.videoList').append(
                             '<li style="cursor:pointer;" >'+
                             `<a style="text-decoration:none;" draggable=false href=./video.html?videoNo=${item.no}>`+

@@ -118,22 +118,22 @@
             
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
                 <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('index.html')">
                     发现
                 </span>
                 <span class="unselectable" 
-                    style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
+                    style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#000000;font-weight:900;"
                     onclick="location.replace('list.html')">
                     资源
                 </span>
                 <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('history.html')">
                     看过
                 </span>
                 <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('my.html')">
                     我的
                 </span>
@@ -234,8 +234,8 @@
                     var activeindex = Math.round(Math.random()*3);
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
-                        var durationsec = localStorage.getItem('durationsec-'+item.no)
-                        var currentTime = localStorage.getItem('currentTime-'+item.no)
+                        var durationsec = localStorage.getItem(config.project+'-durationsec-'+item.no)
+                        var currentTime = localStorage.getItem(config.project+'-currentTime-'+item.no)
                         var videoele = $('#videotemplate').clone(true)
                         videoele.attr('id','video'+item.no)
                         videoele.find('.cover').attr('src',item.cover).hover(
