@@ -18,6 +18,22 @@ function is_weixn(){
       return false;  
   }  
 }
+
+$.ajax({
+  url:'/mumu/login-refresh',
+  method:'get',
+  async:false,
+  ajaxCache:true,
+  success:function(res){
+    if(res.code==0){
+      localStorage.setItem('login',JSON.stringify(res.data))
+      localStorage.setItem('loginTime',new Date().getTime())
+      pagePre.login=res.data
+    }
+  }
+})
+
+
 try{
   pagePre.login = JSON.parse(localStorage.getItem('login'))
   pagePre.loginTime = parseInt(localStorage.getItem('loginTime'))
