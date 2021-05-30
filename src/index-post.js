@@ -1287,6 +1287,7 @@
                 $('#video').css('top',0)
             }
         } else {
+            $('#words .word').remove()
             $('#summtrans').hide()
             $('#wordsframe').show()
             $('#word-in').focus()
@@ -1430,51 +1431,57 @@
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
-        loadRelatedWords(this.item.q)
-        translatee(this.item.q)
+        loadRelatedWords(this.item.word)
+        translatee(this.item.word)
     })
 
     $('#word-in').bind('input',function(){
         log.info('#word-in.input')
-        var tag = this
-        var value  =this.value
+        clearTimeout(page.aaasss)
+        
+        page.aaasss = setTimeout(function(){
+            var tag = $('#word-in')[0]
+            var value  =$('#word-in')[0].value
 
-        if(this.value==''){
-            $('#wordsframe_cancel').show()
-        }else{
-            $('#wordsframe_cancel').hide()
-        }
-        if(value){
-            $.ajax({
-                url:'/mumu/words',
-                method:'get',
-                data:{
-                    kw:value,
-                    start:1,
-                    pageSize:10,
-                    from:video.language,
-                    to:2
-                },
-                success:function(res){
-                    if(tag.value==value){
-                        $('#words .word').remove()
-                        var words = res.data.words
-                        $(words).each((inx,item)=>{
-                            var wordele = $('#wordtempl').clone(true)
-                            wordele[0].item=item
-                            wordele.attr('id','word'+(inx+1))
-                            wordele.addClass('word')
-                            wordele.html(item.q+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain1||'')+(item.explain2?' | ':'')+(item.explain2||'')+(item.explain3?' | ':'')
-                                +(item.explain3||'')+(item.explain4?' | ':'')+(item.explain4||'')+(item.explain5?' | ':'')+(item.explain5||''))
-                            $('#words').append(wordele)
-                            wordele.show();
-                        })
+            if(value==''){
+                $('#wordsframe_cancel').show()
+            }else{
+                $('#wordsframe_cancel').hide()
+            }
+            if(value){
+                $.ajax({
+                    url:'/mumu/words1',
+                    method:'get',
+                    data:{
+                        kw:value,
+                        rstart:1,
+                        rcount:10,
+                        from:video.language,
+                        to:2
+                    },
+                    ajaxCache:{
+                        timeout: 30 * 24 * 60 * 60
+                    },
+                    success:function(res){
+                        if(tag.value==value){
+                            $('#words .word').remove()
+                            var words = res.data.words
+                            $(words).each((inx,item)=>{
+                                var wordele = $('#wordtempl').clone(true)
+                                wordele[0].item=item
+                                wordele.attr('id','word'+item.id)
+                                wordele.addClass('word')
+                                wordele.html(item.word+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain||''))
+                                $('#words').append(wordele)
+                                wordele.show();
+                            })
+                        }
                     }
-                }
-            })
-        }else{
-            $('#words .word').remove();
-        }
+                })
+            }else{
+                $('#words .word').remove();
+            }
+        },300)
     })
 
 
@@ -2302,30 +2309,32 @@
 
 
     function loadRelatedWords(word){
-        
+        word=word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
         clearTimeout(page.sssss)
         page.sssss=setTimeout(function(){
             $('#relatedWordsPad .relatedWord').remove()
             $('#fromRelatedWord').text(word)
             $.ajax({
-                url:'/mumu/words',
+                url:'/mumu/related-words',
                 method:'get',
                 data:{
                     kw:word,
-                    start:1,
-                    pageSize:50,
+                    rstart:1,
+                    rcount:50,
                     from:video.language,
                     to:2,
-                    related:1,
+                },
+                ajaxCache:{
+                    timeout: 30 * 24 * 60 * 60
                 },
                 success:function(res){
                     if(res.data.words){
                         $(res.data.words).each((inx,item)=>{
                             var ele = $('#relatedWord0').clone(true)
                             ele[0].data=item
-                            ele.attr('id','relatedWord'+item.no)
+                            ele.attr('id','relatedWord'+item.id)
                             ele.addClass('relatedWord')
-                            ele.text(item.q)
+                            ele.text(item.word)
                             $('#relatedWord0').before(ele)
                             ele.show();
                         })
