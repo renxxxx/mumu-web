@@ -660,8 +660,13 @@
         addhistoryword(word)
     })
     
+    function pureWord(word){
+        if(!word)
+            return ''
+        return word.replace(/^(\s|:|-|,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(\s|:|-|,|\.|\?|!|\[|\]\(|\))+$/,'').toLowerCase()
+    }
     function addhistoryword(word){
-        word = word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
+        word = pureWord(word)
         historywords=historywords?historywords:[]
         var i = historywords.indexOf(word);
         if(i>-1)
@@ -682,7 +687,6 @@
             historywords=JSON.parse(historywordsstr)
         for (let index = 0; index < historywords.length; index++) {
             var word = historywords[index];
-            word = word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
             var historywordele = $('#historyword_template').clone(true)
             historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
             historywordele.attr('data',word)
@@ -707,7 +711,7 @@
         pauseVideo()
         doshadow()
         
-        _data=_data.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')  
+        _data=pureWord(_data)
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
         $('#word-in').val(_data)
@@ -1437,51 +1441,52 @@
 
     $('#word-in').bind('input',function(){
         log.info('#word-in.input')
-        clearTimeout(page.aaasss)
-        
-        page.aaasss = setTimeout(function(){
-            var tag = $('#word-in')[0]
-            var value  =$('#word-in')[0].value
+        var tag = $('#word-in')[0]
+        var value  =$('#word-in')[0].value
 
-            if(value==''){
-                $('#wordsframe_cancel').show()
-            }else{
-                $('#wordsframe_cancel').hide()
-            }
-            if(value){
-                $.ajax({
-                    url:'/mumu/words1',
-                    method:'get',
-                    data:{
-                        kw:value,
-                        rstart:1,
-                        rcount:10,
-                        from:video.language,
-                        to:2
-                    },
-                    ajaxCache:{
-                        timeout: 30 * 24 * 60 * 60
-                    },
-                    success:function(res){
-                        if(tag.value==value){
-                            $('#words .word').remove()
-                            var words = res.data.words
-                            $(words).each((inx,item)=>{
-                                var wordele = $('#wordtempl').clone(true)
-                                wordele[0].item=item
-                                wordele.attr('id','word'+item.id)
-                                wordele.addClass('word')
-                                wordele.html(item.word+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain||''))
-                                $('#words').append(wordele)
-                                wordele.show();
-                            })
-                        }
+        if(value==''){
+            $('#wordsframe_cancel').show()
+        }else{
+            $('#wordsframe_cancel').hide()
+        }
+        clearTimeout(page.ssssaaa)
+        page.ssssaaa=setTimeout(function(){
+            $('#words .word').remove()
+        },1000)
+        if(value){
+            $.ajax({
+                url:'/mumu/words1',
+                method:'get',
+                data:{
+                    kw:value,
+                    rstart:1,
+                    rcount:10,
+                    from:video.language,
+                    to:2
+                },
+                ajaxCache:{
+                    timeout: 30 * 24 * 60 * 60
+                },
+                success:function(res){
+                    if(tag.value==value){
+                        clearTimeout(page.ssssaaa)
+                        $('#words .word').remove()
+                        var words = res.data.words
+                        $(words).each((inx,item)=>{
+                            var wordele = $('#wordtempl').clone(true)
+                            wordele[0].item=item
+                            wordele.attr('id','word'+item.id)
+                            wordele.addClass('word')
+                            wordele.html(item.word+'&nbsp;&nbsp;'+(item.phonetic?'/'+item.phonetic+'/':'')+'&nbsp;&nbsp;'+(item.explain||''))
+                            $('#words').append(wordele)
+                            wordele.show();
+                        })
                     }
-                })
-            }else{
-                $('#words .word').remove();
-            }
-        },300)
+                }
+            })
+        }else{
+            $('#words .word').remove();
+        }
     })
 
 
@@ -2309,7 +2314,7 @@
 
 
     function loadRelatedWords(word){
-        word=word.replace(/^(,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(,|\.|\?|!|\[|\]\(|\))+$/,'')
+        word=pureWord(word)
         clearTimeout(page.sssss)
         page.sssss=setTimeout(function(){
             $('#relatedWordsPad .relatedWord').remove()
@@ -2348,6 +2353,11 @@
     $('#relatedWord0').click(function(){
         translatee(this.innerText);
     })
+    $('#fromRelatedWordPad').click(function(){
+        translatee($('#fromRelatedWord').text());
+    })
+    
+
 
     $.ajax({
         url: '/mumu/chatroom-msgs?',
