@@ -1460,7 +1460,7 @@
                 data:{
                     kw:value,
                     rstart:1,
-                    rcount:10,
+                    rcount:100,
                     from:video.language,
                     to:2
                 },
@@ -1751,6 +1751,30 @@
         search()
     })
 
+    doSubtitlesStatus()
+    function doSubtitlesStatus(){
+        if(!page.subtitlesStatus)
+            page.subtitlesStatus=0
+        page.subtitlesStatus++;
+        //chDialog zh_subtitles
+        if(page.subtitlesStatus>3){
+            page.subtitlesStatus=1
+        }
+        if(page.subtitlesStatus==1){
+            $('#chDialog').show()
+            $('#zh_subtitles').css('visibility','visible')
+        }else if(page.subtitlesStatus==2){
+            $('#chDialog').hide()
+            $('#zh_subtitles').css('visibility','visible')
+        }else if(page.subtitlesStatus==3){
+            $('#chDialog').hide()
+            $('#zh_subtitles').css('visibility','hidden')
+        }
+    }
+    $('#subtitlesBtn').click(function(){
+        doSubtitlesStatus()
+    })
+
     function chdialog(){
         if($('#chDialog').is(':hidden')){
             $('#chDialog').show()
@@ -1855,6 +1879,40 @@
                 }
             })
     })
+
+    
+    $('#wordbookpad').bind('mousedown touchstart',function(e){
+        if(e.type == 'touchstart'){
+            var touch = e.targetTouches[0];
+            this.touchstart = touch.pageY;
+        }else if(e.type == 'mousedown'){
+            this.touchstart = e.pageY;
+        }
+        
+    }).bind('mousemove touchmove',function(e){
+        if(e.type == 'touchmove'){
+            var touch = e.targetTouches[0];
+            this.touchend = touch.pageY;
+        }else if(e.type == 'mousemove'){
+            this.touchend = e.pageY;
+        }
+        if($(this).scrollTop()==0 && this.touchstart<this.touchend){
+            e.preventDefault()
+        }
+    }).bind('mouseup touchend',function(e){
+        if(this.touchend-this.touchstart>50){
+            $('#wordbookpad').slideUp(100)
+        }
+        this.touchstart=null
+        this.touchend=null
+    })
+
+
+    $('#wordbookpadBtn').click(function(){
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+64+10))+'px')
+        $('#wordbookpad').slideDown(100)
+    })
+
     $('#searchpadbtn').click(function(){
         $('#searchpad').css('height',($(window).height()-($('#video').height()+64+10))+'px')
         $('#searchpad').slideDown(100)
@@ -2325,7 +2383,7 @@
                 data:{
                     kw:word,
                     rstart:1,
-                    rcount:50,
+                    rcount:100,
                     from:video.language,
                     to:2,
                 },

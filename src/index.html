@@ -237,19 +237,18 @@
                     <svg style="width: 15px;height: 15px;vertical-align: middle;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
                 </span>
-                <span id="wholebtn" class="unselectable" 
+                <span id="wordbookpadBtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;position:relative;">
-                    中文
-                    <hr id="wholebtnlash" style="border-width:2px;display:none;height:1px;padding:0;margin:0;width:75%;position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border-bottom: none;"/>
+                    单词本
                 </span>
-                <span id="hideBtn" class="unselectable"
+                <span id="subtitlesBtn" class="unselectable"
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
-                    隐藏
+                    字幕
                 </span>
             </div>
-            <div  id="historywordspad" class="scrollbar" style="padding: 3px 5px;font-size:0;word-break: break-all;white-space: normal;margin-top: 15px;height: 100px;overflow: auto;position: relative;">
+            <div  id="historywordspad" class="scrollbar" style="display:none;padding: 3px 5px;font-size:0;word-break: break-all;white-space: normal;margin-top: 15px;height: 100px;overflow: auto;position: relative;">
                 <span id="historyword_template" class="unselectable historyword" style="padding: 2px 3px;border-radius: 2px;font-size:15px;display:none;margin-right:8px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
                 </span>
             </div>
@@ -380,6 +379,28 @@
                     重 置
                 </div>
             </div>
+
+            <div id="wordbookpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
+                    box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;padding:10px 5px;">
+                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    机场
+                </span>
+                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    办公室
+                </span>
+                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    购物
+                </span>
+
+                <div id="searchclear" style="cursor: pointer;position:absolute;width:150px;height:25px;line-height: 25px;font-size:14px;background-color: #fefefe;
+                        transform: translateX(-50%);text-align: center;border-radius: 3px;bottom:50px;left:50%;">
+                    重 置
+                </div>
+            </div>
+
             <div class="unselectable" draggable=false style="display:none;">
                 <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
             </div>
