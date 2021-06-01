@@ -2076,109 +2076,187 @@
                 }
             }
     })
-    $('#index').bind('touchstart',function(e){
-        this.startTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        var touch = e.targetTouches[0];
-        this.indextouchstartX = touch.pageX;
-        this.indextouchstartY = touch.pageY;
-    }).bind('touchmove',function(e){
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        var touch = e.targetTouches[0];
-        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-            $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
-            $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
-        }
-        this.indextouchendX = touch.pageX;
-        this.indextouchendY = touch.pageY;
-        if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
-            e.preventDefault()
-        }
-    }).bind('touchend',function(e){
-        this.endTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-        log.debug(this.endTime-this.startTime)
-        $('#video1').css('left','100%')
-        $('#video2').css('left','-100%')
-        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-            if(this.indextouchstartX-this.indextouchendX>100){
-                goNextVideo()
-            }else if(this.indextouchstartX-this.indextouchendX<-100){
-                goPrevVideo()
-            }
-        }
+
+    // $('#index').bind('touchstart',function(e){
+    //     this.startTime = new Date().getTime();
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
+    //     var touch = e.targetTouches[0];
+    //     this.indextouchstartX = touch.pageX;
+    //     this.indextouchstartY = touch.pageY;
+    // }).bind('touchmove',function(e){
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
+    //     var touch = e.targetTouches[0];
+    //     if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+    //         $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
+    //         $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
+    //     }
+    //     this.indextouchendX = touch.pageX;
+    //     this.indextouchendY = touch.pageY;
+    //     if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
+    //         e.preventDefault()
+    //     }
+    // }).bind('touchend',function(e){
+    //     this.endTime = new Date().getTime();
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
+    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+    //     log.debug(this.endTime-this.startTime)
+    //     $('#video1').css('left','100%')
+    //     $('#video2').css('left','-100%')
+    //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+    //         if(this.indextouchstartX-this.indextouchendX>100){
+    //             goNextVideo()
+    //         }else if(this.indextouchstartX-this.indextouchendX<-100){
+    //             goPrevVideo()
+    //         }
+    //     }
         
-        this.indextouchstartX=null
-        this.indextouchstartY=null
-        this.indextouchendX=null
-        this.indextouchendY=null
-    })
+    //     this.indextouchstartX=null
+    //     this.indextouchstartY=null
+    //     this.indextouchendX=null
+    //     this.indextouchendY=null
+    // })
 
 
-    $('#index').bind('mousedown',function(e){
-        this.startTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
-        this.indextouchstartX = e.pageX;
-        this.indextouchstartY = e.pageY;
-    }).bind('mousemove',function(e){
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
+    // $('#index').bind('mousedown',function(e){
+    //     this.startTime = new Date().getTime();
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
+    //     this.indextouchstartX = e.pageX;
+    //     this.indextouchstartY = e.pageY;
+    // }).bind('mousemove',function(e){
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
         
         
-        if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-            $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
-            $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
-        }
+    //     if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+    //         $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
+    //         $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
+    //     }
 
-        this.indextouchendX = e.pageX;
-        this.indextouchendY = e.pageY;
+    //     this.indextouchendX = e.pageX;
+    //     this.indextouchendY = e.pageY;
 
-        if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
-            e.preventDefault()
-        }
+    //     if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
+    //         e.preventDefault()
+    //     }
 
         
-    }).bind('mouseup',function(e){
-        this.endTime = new Date().getTime();
-        if($(e.target).parents('.scrollable').length>0)
-            return;
-        if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-            return;
+    // }).bind('mouseup',function(e){
+    //     this.endTime = new Date().getTime();
+    //     if($(e.target).parents('.scrollable').length>0)
+    //         return;
+    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
+    //         return;
 
-        $('#video1').css('left','100%')
-        $('#video2').css('left','-100%')
-        //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-        if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
+    //     $('#video1').css('left','100%')
+    //     $('#video2').css('left','-100%')
+    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+    //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             
-            if(this.indextouchstartX-this.indextouchendX>100){
-                goNextVideo()
-            }else if(this.indextouchstartX-this.indextouchendX<-100){
-                goPrevVideo()
-            }
-        }
+    //         if(this.indextouchstartX-this.indextouchendX>100){
+    //             goNextVideo()
+    //         }else if(this.indextouchstartX-this.indextouchendX<-100){
+    //             goPrevVideo()
+    //         }
+    //     }
         
-        this.indextouchstartX=null
-        this.indextouchstartY=null
-        this.indextouchendX=null
-        this.indextouchendY=null
+    //     this.indextouchstartX=null
+    //     this.indextouchstartY=null
+    //     this.indextouchendX=null
+    //     this.indextouchendY=null
 
        
-    })
+    // })
+
+    
+$('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(e){
+    this.touchstartTime = new Date().getTime();
+    if(e.type=='touchstart'){
+        var touch = e.targetTouches[0];
+        this.touchstartX = touch.pageX;
+        this.touchstartY = touch.pageY;
+    }else if(e.type=='mousedown'){
+        this.touchstartX = e.pageX;
+        this.touchstartY = e.pageY;
+    }
+  }).unbind('touchmove mousemove').bind('touchmove mousemove',function(e){
+    var touchendX;
+    var touchendY;
+    if(e.type=='touchmove'){
+        var touch = e.targetTouches[0];
+        touchendX = touch.pageX;
+        touchendY = touch.pageY;
+    }else if(e.type=='mousemove'){
+        touchendX = e.pageX;
+        touchendY = e.pageY;
+    }
+
+    if(this.touchstartX && this.touchstartY && this.touchendX && this.touchendY){
+        $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
+        $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
+    }
+
+    if(e.type=='touchmove'){
+        var touch = e.targetTouches[0];
+        this.touchendX = touch.pageX;
+        this.touchendY = touch.pageY;
+    }else if(e.type=='mousemove'){
+        this.touchendX = e.pageX;
+        this.touchendY = e.pageY;
+    }
+
+    var parentEle=null;
+    while(true){
+        if(!parentEle)
+            parentEle=$(e.target);
+        else
+            parentEle = $(parentEle).parent()
+
+        if(parentEle.scrollTop()>0){
+            break;
+        }
+        if(parentEle.length==0)
+            break
+    }
+    if(parentEle.length==0 && this.touchstartY<this.touchendY){
+        log.debug('e.preventDefault()')
+        e.preventDefault()
+    }
+
+    
+  }).unbind('touchend mouseup').bind('touchend mouseup',function(e){
+    this.touchendtime = new Date().getTime();
+    
+    $('#video1').css('left','100%')
+    $('#video2').css('left','-100%')
+    if(this.touchendtime-this.touchstartTime < 500 && this.touchstartX && this.touchstartY && this.touchendX && this.touchendY){
+        if(this.touchstartX-this.touchendX>100){
+            goNextVideo()
+        }else if(this.touchstartX-this.touchendX<-100){
+            goPrevVideo()
+        }
+    }
+
+    this.touchstartTime=null
+    this.touchendtime=null
+    this.touchstartX=null
+    this.touchstartY=null
+    this.touchendX=null
+    this.touchendY=null
+  })
 
     $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
         var touch = e.targetTouches[0];
