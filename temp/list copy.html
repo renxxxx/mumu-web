@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+    <script>
+        navigator.sendBeacon("/mumu/page-in");
+        setInterval(function(){
+            navigator.sendBeacon("/mumu/page-on");
+        },60000)
+       
+    </script>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>幕幕</title>
+        <meta name="x5-fullscreen" content="true">
+        <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+        <link rel="stylesheet" type="text/css" href="./css/page.css" />
+        <link rel="apple-touch-startup-image" href="./favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" href="./favicon.ico" />
+        <link rel="apple-touch-icon" href="./favicon.ico" />
+        <link rel="shortcut icon" href="./favicon.ico" >
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
+        <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="./js/jquery-ajax-cache.min.js" type="application/javascript"></script>
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.js" type="application/javascript"></script>
+        <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.css" type="text/css" rel="stylesheet" />
+        <script src="./config.js" type="application/javascript"></script>
+        <script src="./js/log.js" type="application/javascript"></script>
+        <script src="./js/page-pre.js" type="application/javascript"></script>
+        <script>
+            log.debugon=0
+        </script>
+        <style>
+            /* @media screen and (min-width: 850px) {
+                body {
+                    border: 1px solid #d8d8d8;
+                    border-style: none solid none solid;
+                }
+            } */
+            html,body,.index{
+                margin: 0px;width: 100%;height: 100%;
+            }
+            .videoList>li,.videoList>li>a{
+                width: 100%;height: 50px;line-height: 50px;display: flex;
+                justify-content: flex-start;padding: 0px 2% 0 5px;
+                box-sizing: border-box;border-bottom: 1px solid #d8d8d8;
+            }
+            .videoList>li>a>svg{
+                width: 20px;height: 20px;object-fit: cover;margin-top: 15px;
+            }
+            .videoList>li>a>span{
+                width: calc(100% - 30px);
+            }
+            .videoList>li:active,.videoList>li:hover{
+                animation: pulse .3s ease;
+                background-color: #dddddd;
+            }
+            @keyframes pulse {
+                0% {
+                    background-color: #FFFFFF;
+                }
+                100% {
+                    background-color: #dddddd;
+                }
+            }
+            .videoList::-webkit-scrollbar {
+                width: 3px;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-track {
+                background-color: #e0e0e0;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb {
+                background-color: #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:hover {
+                background-color:  #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:active {
+                background-color: #b3b3b3;
+                /* border-radius: 50px; */
+            }
+            .videoList::-webkit-scrollbar-thumb:active {
+                background-color: #e0e0e0;
+                /* border-radius: 50px; */
+            }
+            .line1{
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body style="max-width: 800px; margin: auto;background-color: #000000;">
+        <div class="index" style="background-color: #ffffff;position: relative;">
+            <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;">
+                <!-- <li>
+                    <span>名词一</span>
+                    <svg t="1615254709327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2131" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M795.10335 512 281.764913 1024l-68.164691-68.116889 444.169919-444.169919-444.169919-444.122117 67.638876-67.591075L795.10335 512 795.10335 512z" p-id="2132"></path></svg>
+                </li> -->
+            </ul>
+            <!-- <div id="msgframe" class="unselectable" style="position: absolute;bottom:0;width:100%;height:25px;font-size:0;background-color: #ececec;">
+                <span id="msg" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:90%;height:100%;display:inline-block;font-size:14px;color:#4a4a4a;
+                                box-sizing: border-box;padding:0 5px;vertical-align: middle;cursor: pointer;">
+                    <span id="wxqrcode">
+                        <img  src="./img/wxqrcode.jpg" style="width:25px;height:25px;cursor: pointer;vertical-align: bottom;" 
+                            onclick="
+                                $('#wxqrcode').viewer({title:false});
+                            " />
+                    </span>
+                </span>
+                <span  style="width:10%;height:100%;display:inline-block;background-color: #b3b3b3;font-size:14px;cursor: pointer;text-align: center;color:#4a4a4a;font-weight: 900;
+                        vertical-align: middle;"
+                    onclick="
+                        var r= prompt('留言')
+                        if(r){
+                            $.post('/mumu/sendboardmsg',{text:r})
+                            alert('您的留言将在明天展示一段时间')
+                        }
+                    ">
+                    ,,,
+                </span>
+            </div> -->
+            <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('index.html')">
+                    发现
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#000000;font-weight:900;"
+                    onclick="location.replace('list.html')">
+                    资源
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('history.html')">
+                    看过
+                </span>
+                <span class="unselectable" 
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
+                    onclick="location.replace('my.html')">
+                    我的
+                </span>
+            </div>
+        </div>
+        <div  class="unselectable" style="display: none;">
+            <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </body>
+    
+    <script src="./js/page-post.js" type="application/javascript"></script>
+    <script>
+        // if(navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(function(position){
+        //         var o = {
+        //             "coords":{}
+        //         }
+        //         o.timestamp=position.timestamp
+        //         o.coords.accuracy=position.coords.accuracy
+        //         o.coords.altitude=position.coords.altitude
+        //         o.coords.altitudeAccuracy=position.coords.altitudeAccuracy
+        //         o.coords.heading=position.coords.heading
+        //         o.coords.latitude=position.coords.latitude
+        //         o.coords.longitude=position.coords.longitude
+        //         o.coords.speed=position.coords.speed
+        //         $.cookie('position', JSON.stringify(o)); 
+        //     });
+        // }
+
+        var videoList = [];
+        (function(win){
+            win.start()
+        })(window)
+
+        function start(){
+            getVideoList()
+            $.ajax({
+                url: '/mumu/showedboardmsg?',
+                type: 'get',
+                async: true,
+                success: function(res) {
+                    msg=res.data.msg;
+                    if(msg){
+                        if(msg.sys)
+                            $('#msg').text("系统: "+msg.text)
+                        else
+                            $('#msg').text("网友: "+msg.text)
+                    }
+                }
+            })
+        }
+        function getVideoList(){
+            let _this = this;
+            $.ajax({
+                url: '/mumu/videos?',
+                type: 'get',
+                data: 'longvideo=1&kw='+''+'&start='+1+'&pageSize='+30,
+                async: true,
+                success: function(res) {
+                    $(res.data.videos).each((inx,item)=>{
+                        _this.videoList.push(item)
+                        var durationsec = localStorage.getItem(config.project+'-durationsec-'+item.no)
+                        var currentTime = localStorage.getItem(config.project+'-currentTime-'+item.no)
+                        $('.videoList').append(
+                            '<li style="cursor:pointer;" >'+
+                            `<a style="text-decoration:none;" draggable=false href=./video.html?videoNo=${item.no}>`+
+                            `<span class="logo" style="width: 18px;height:50px;line-height:50px;" ><img class="unselectable" draggable="false" style="width: 18px;height:18px;vertical-align: sub;" src="
+                                ${
+                                    item.type==1?'./img/movie.svg':
+                                    item.type==2?'./img/mv.svg':
+                                    item.type==4?'./img/speech.svg':
+                                    item.type==3?'./img/ted.svg':
+                                    item.type==5?'./img/shortmovie.svg':''
+                                }
+                            "/></span>`+
+                            '<span class="line1" style="margin-left: 5px;">'+item.name+(item.language == 4?' - es':'')+'</span>'+
+                            (
+                                (durationsec&&currentTime)?
+                                ('<progress style="width:50px;margin: 16px 0;" value="'+currentTime+'" max="'+durationsec+'"></progress> ')
+                                :''
+                            )+
+                            '</a>'
+                        )
+                    })
+                    console.log(_this.videoList)
+                }
+            })
+        }
+   
+
+        function niceduration(mills){
+            if(!mills || mills=='0')
+                return ''
+            var ms = mills%1000;
+            var rest = parseInt(mills/1000)
+
+            var s = rest%60;
+            rest = parseInt(rest/60)
+
+            var m = rest%60;
+            rest = parseInt(rest/60)
+
+            var h = rest%60;
+
+            return h+':'+m+':'+s
+        }
+
+        window.onbeforeunload=function(){
+            console.log('onbeforeunload')
+            navigator.sendBeacon("/mumu/page-out");
+            log.flush()
+        }
+
+        var lastTouchEnd;
+        document.addEventListener('touchend', function(event) {
+            var now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        $.get('/mumu/wxjsapiticket',(res)=>{
+            $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
+                console.log(JSON.stringify(res));
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.data.appid, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+                    signature:  res.data.signature,// 必填，签名
+                    jsApiList: ['updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+                });
+            })
+        })
+        
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+            wx.updateAppMessageShareData({ 
+                title: '幕幕 - 练英语', // 分享标题
+                desc: 'renx.cc', // 分享描述
+                link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
+                    // 设置成功
+                }
+            })
+
+            wx.updateTimelineShareData({ 
+                title: '幕幕 - 练英语', // 分享标题
+                link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
+                success: function () {
+                // 设置成功
+                }
+            })
+        });
+
+    </script>
+    
+</html>
