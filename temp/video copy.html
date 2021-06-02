@@ -129,7 +129,7 @@
             function getVideo(){
                 $.ajax({
                     url: '/mumu/video?',
-                    type: 'get',
+                    
                     data: 'videoNo='+videoNo,
                     async: true,
                     success: function(res) {
@@ -186,7 +186,7 @@
             function getSubtitles(){
                 $.ajax({
                     url: '/file/mumu/The-Wolf-of-Wall-Street.srt',
-                        type: 'get',
+                        
                     async: true,
                     success: function(res) {
                         getEnSubtitles(res)
@@ -228,7 +228,7 @@
                     return;
                 $.ajax({
                     url: '/mumu/translate?from=1&to=2&q='+_data,
-                    type: 'get',
+                    
                     async: true,
                     success: function(res) {
                         $('.dialog').css({'display' : 'block'})

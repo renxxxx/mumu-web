@@ -36,7 +36,7 @@
     if(videoNoC){
         $.ajax({
             url: '/mumu/video?',
-            type: 'get',
+            
             ajaxCache:true,
             data: 'videoNo='+videoNoC,
             async: false,
@@ -57,7 +57,7 @@
 
     $.ajax({
         url: '/mumu/explore-videos?',
-        type: 'get',
+        
         data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
         async: false,
         success: function(res) {
@@ -117,7 +117,7 @@
         if(!videos[videosIndex+1]){
             $.ajax({
                 url: '/mumu/explore-videos?',
-                type: 'get',
+                
                 data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
                 async: false,
                 success: function(res) {
@@ -195,7 +195,7 @@
     function getVideo(videoNo){
         $.ajax({
             url: '/mumu/video?',
-            type: 'get',
+            
             data: 'videoNo='+videoNo,
             async: false,
             success: function(res) {
@@ -221,7 +221,7 @@
         guide()
         $.ajax({
             url: video.captionUrl,
-            type: 'get',
+            
             async: false,
             success: function(res) {
                 getEnSubtitles(res);
@@ -677,7 +677,7 @@
             }
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
-                type: 'get',
+                
                 ajaxCache:{
                     timeout: 30 * 24 * 60 * 60
                 },
@@ -1415,7 +1415,6 @@
         if(value){
             $.ajax({
                 url:'/mumu/words',
-                method:'get',
                 data:{
                     kw:value,
                     start:1,
@@ -1786,7 +1785,7 @@
         $('#searchpad').slideUp(100)
         $.ajax({
             url: '/mumu/explore-videos?',
-            type: 'get',
+            
             data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
             async: true,
             success: function(res) {
@@ -1806,7 +1805,7 @@
 
         $.ajax({
                 url: '/mumu/explore-videos?',
-                type: 'get',
+                
                 data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag,
                 async: true,
                 success: function(res) {
@@ -2166,7 +2165,7 @@
 
     $.ajax({
         url: '/mumu/chatroom-msgs?',
-        type: 'get',
+        
         data: 'rcount='+300,
         async: true,
         success: function(res) {

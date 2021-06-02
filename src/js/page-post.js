@@ -12,34 +12,7 @@
 //             "
 //         >反 馈</div>`)
 // }
-if(config.debug=0)
-    noDebuger()
-function noDebuger() {
-    function testDebuger() {
-        var d = new Date();
-        debugger;
-        if (new Date() - d > 10) {
-            debugger;
-            //document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
-            return true;
-        }
-       return false;
-   }
-   function start() {
-       while (testDebuger()) {
-           testDebuger();
-       }
-   }
-   if (!testDebuger()) {
-       window.onblur = function () {
-           setTimeout(function () {
-               start();
-           }, 500)
-       }
-   }else {
-       start();
-   }
-}
+
 
 
 $('#index').bind('touchstart mousedown',function(e){

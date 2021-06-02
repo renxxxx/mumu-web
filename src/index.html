@@ -26,6 +26,7 @@
         <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script> 
         <script src="./config.js" type="application/javascript"></script>
+        <script src="./js/common.js" type="application/javascript"></script>
         <script src="./js/log.js" type="application/javascript"></script>    
         <script src="./js/page-pre.js" type="application/javascript"></script>
         <script>
@@ -88,10 +89,6 @@
                 <video x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video1" poster
                     style="background: #000000;display: block;position: absolute;top:0;left:100%;;object-fit:cover;">
                 </video>
-                <div id="chDialog" class="chDialog" 
-                    style="position: absolute;bottom: 0;width:100%;min-height:30px;font-size:16px;color:#ffffff;text-align: center;padding:0 5px;
-                        word-break: break-all;box-sizing: border-box;line-height: 25px;font-weight: 900;">
-                </div>
             </div>
             
             
@@ -126,9 +123,9 @@
                         </div>
                     </div>
                 </div>
-                <div style="width:110px;display:inline-block;vertical-align: middle;position: absolute;top:0;bottom:30px;left:calc(100% - 111px);">
-                    <div id="fromRelatedWordPad" style="height:24px;width:100%;box-sizing: border-box;border-bottom: 1px solid #3c3c3c;padding:2px 3px;cursor: pointer;">
-                        <span id="fromRelatedWord" class="ellipsis" style="font-size:14px;line-height:20px;height:20px;display:inline-block;
+                <div style="width:110px;display:inline-block;vertical-align: middle;position: absolute;top:0;bottom:31px;left:calc(100% - 111px);">
+                    <div id="fromRelatedWordPad" style="height:25px;width:100%;box-sizing: border-box;border-bottom: 1px solid #3c3c3c;padding:2px 3px;cursor: pointer;">
+                        <span id="fromRelatedWord" class="ellipsis" style="font-size:15px;line-height:21px;height:21px;display:inline-block;
                             width:76px;vertical-align: middle;letter-spacing: 0.5px;">
                             
                         </span>
@@ -136,9 +133,9 @@
                             相关
                         </span>
                     </div>
-                    <div style="width:100%;box-sizing: border-box;position:absolute;top:24px;bottom:0;">
+                    <div style="width:100%;box-sizing: border-box;position:absolute;top:25px;bottom:0;">
                         <div id="relatedWordsPad" class="scrollbar1" style="width:100%;box-sizing: border-box;position:absolute;top:0px;bottom:0;overflow: auto;overflow-x: hidden;">
-                            <div id="relatedWord0" class="ellipsis" style="height:24px;line-height:20px;width:100%;font-size:14px;padding:2px 3px;box-sizing: border-box;
+                            <div id="relatedWord0" class="ellipsis" style="height:25px;line-height:21px;width:100%;font-size:15px;padding:2px 3px;box-sizing: border-box;
                                 border-bottom: 1px dashed  #3c3c3c;cursor: pointer;letter-spacing: 0.5px;display:none;">
                             </div>
                         </div>
@@ -167,9 +164,17 @@
                 </div>
                 <div id="wordsframe_cancel" style="text-align: center;font-size:16px;position:absolute;top:100px;left:0;right:0;">点击取消</div>
             </div>
-            <div id="zh_subtitles" class="unselectable" 
-                style="line-height: 30px;width: 100%;text-align: center;min-height: 64px;background-color: #ffffff;margin-top:5px;font-size: 18px;margin-bottom: 5px;" >
+            <div style="width:100%;min-height: 90px;position: relative;">
+                <div id="zh_subtitles" class="unselectable" 
+                    style="line-height: 30px;width: 100%;text-align: center;background-color: #ffffff;margin-top:5px;font-size: 18px;margin-bottom: 5px;" >
+                </div>
+                <div id="chDialog" class="chDialog" 
+                    style="width:100%;height:20px;font-size:12px;color:#9b9b9b;text-align: center;padding:0 5px;overflow: hidden;
+                        word-break: break-all;box-sizing: border-box;line-height: 20px;letter-spacing: 0.5px;position:absolute;bottom:5px;">
+                </div>
             </div>
+            
+            
             
             <!-- <div id="startstoppad" style="box-sizing: border-box;text-align: center;display:none;">
                 <button id="startFn"  class="startFn unselectable"
@@ -213,11 +218,11 @@
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     循环
                 </span>
-                <span id="unloopVideoBtn" class="unselectable" 
+                <!-- <span id="unloopVideoBtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;display:none;">
                     连续
-                </span>
+                </span> -->
                 <span id="searchbtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
                         border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
@@ -225,14 +230,14 @@
                 </span>
                 <span id="startFn1"  class="startFn unselectable"
                     style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: #d8d8d8;border: 1px solid #bfbbbb;
-                        font-size: 0px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
+                        font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
                     <svg style="width: 15px;height: 15px;vertical-align: middle;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#ffffff" p-id="2560"></path></svg>
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
                 </span>
                 <span id="stopFn1" class="stopFn unselectable" 
                     style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
-                        font-size: 0px;padding: 0px;width: 20%;height: 33px;border-radius: 3px;">
+                        font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
                     <svg style="width: 15px;height: 15px;vertical-align: middle;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
@@ -248,10 +253,10 @@
                     字幕
                 </span>
             </div>
-            <div  id="historywordspad" class="scrollbar" style="display:none;padding: 3px 5px;font-size:0;word-break: break-all;white-space: normal;margin-top: 15px;height: 100px;overflow: auto;position: relative;">
+            <!-- <div  id="historywordspad" class="scrollbar" style="display:none;padding: 3px 5px;font-size:0;word-break: break-all;white-space: normal;margin-top: 15px;height: 100px;overflow: auto;position: relative;">
                 <span id="historyword_template" class="unselectable historyword" style="padding: 2px 3px;border-radius: 2px;font-size:15px;display:none;margin-right:8px;cursor: pointer;margin-bottom:5px;color:#9f9f9f;">
                 </span>
-            </div>
+            </div> -->
             
             <!-- 循环字幕功能块 -->
             <!-- <div style="justify-content: center;display: flex;height: 30px;line-height: 30px;margin: 10px 0px 10px 0px;">
@@ -381,28 +386,159 @@
             </div>
 
             <div id="wordbookpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
-                    box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;padding:10px 5px;">
-                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
-                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
-                    机场
-                </span>
-                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
-                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
-                    办公室
-                </span>
-                <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
-                        border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
-                    购物
-                </span>
-
-                <div id="searchclear" style="cursor: pointer;position:absolute;width:150px;height:25px;line-height: 25px;font-size:14px;background-color: #fefefe;
-                        transform: translateX(-50%);text-align: center;border-radius: 3px;bottom:50px;left:50%;">
-                    重 置
+                    box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;padding:10px 0;">
+                <div style="position:absolute;top:0;height:35px;width:100%;">
+                    <span id="favorsBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                        text-align: center;">
+                        收藏夹
+                    </span>
+                    <span id="wordbooksBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;display:inline-block;cursor: pointer;color:#ffffff;
+                        text-align: center;">
+                        单词本
+                    </span>
+                    <span id="historyWordsBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                        text-align: center;">
+                        历史
+                    </span>
                 </div>
+                
+                <div id="favorsPad" style="position:absolute;bottom:0;top:35px;width:100%;display:none;">
+                    <div style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
+                        <div class="word0 wrap" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
+                            <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                                box-sizing: border-box;">
+                                -
+                            </span>
+                        </div>
+                    </div>
+                    <div style="position:absolute;bottom:0;height:35px;width:100%;">
+                        <span class="coverTargetTextBtn" style="height:35px;line-height:35px;width:66.66666%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                        <span class="coverMainTextBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                    </div>
+                </div>
+
+
+                <div id="historyWordsPad" style="position:absolute;bottom:0;top:35px;width:100%;display:none;">
+                    <div style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
+                        <div class="word0 wrap" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
+                            <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                                box-sizing: border-box;">
+                                -
+                            </span>
+                        </div>
+                    </div>
+                    <div style="position:absolute;bottom:0;height:35px;width:100%;">
+                        <span class="coverTargetTextBtn"  style="height:35px;line-height:35px;width:66.66666%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                        <span  class="coverMainTextBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                    </div>
+                </div>
+
+
+                <div id="wordbooksPad" style="position:absolute;bottom:0;top:35px;width:100%;">
+                    <span style="width:99px;display:inline-block;position:absolute;top:0;bottom:0;left:0;overflow: auto;border-right:1px solid #929292;">
+                        <div  class="catalogs"  class="noscrollbar" style="padding-bottom: 200px;position:absolute;bottom:36px;width:100%;top:0;overflow: auto;">
+                            <div class="ellipsis row0 row" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-bottom:1px solid #929292;
+                            text-align: center;height:35px;line-height:35px;cursor: pointer;display:none;">
+                            </div>
+                        </div>
+                        <div class="ellipsis createRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-top:1px dashed #929292;
+                            text-align: center;height:35px;line-height:35px;cursor: pointer;position:absolute;bottom:0;">
+                            +
+                        </div>
+                        <div class="ellipsis editRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-top:1px solid #929292;
+                            text-align: center;height:35px;line-height:35px;cursor: pointer;display:none;position:absolute;bottom:0;">
+                            EDIT
+                        </div>
+                    </span>
+                    <span style="width:calc(100% - 100px);display:inline-block;position:absolute;top:0;bottom:0;left:100px;padding-bottom:35px;display:none;">
+                        <div style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
+                            <div class="word0 wrap" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
+                                <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                                    box-sizing: border-box;">
+                                    -
+                                </span>
+                            </div>
+                        </div>
+                        <div style="position:absolute;bottom:0;height:35px;width:100%;">
+                            <span class="coverTargetTextBtn"  style="height:35px;line-height:35px;width:66.66666%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                                text-align: center;">
+                                遮盖
+                            </span>
+                            <span  class="coverMainTextBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                                text-align: center;">
+                                遮盖
+                            </span>
+                        </div>
+                    </span>
+                </div>
+
+                
             </div>
 
             <div class="unselectable" draggable=false style="display:none;">
                 <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+            </div>
+
+
+            <div id="wordbookEditPad" style="width:80%;min-height:300px;max-height:500px;position:absolute;top:10%;left:50%;transform: translateX(-50%);
+                display:none;background-color: #ffffff;">
+                <div style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;line-height:35px;border-bottom:1px solid #9f9f9f;font-size:15px;">
+                    单词本
+                </div>
+                <div class="namePad" style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;">
+                    <span class="ellipsis title" style="width:70px;height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                        名称
+                    </span>
+                    <span class="ellipsis value" style="width:calc(100% - 110px);height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                        adasdasdas
+                    </span>
+                    <span class="ellipsis editBtn" style="width:40px;height:35px;line-height:35px;font-size: 11px;display:inline-block;text-align: center;cursor: pointer;">
+                        修改
+                    </span>
+                </div>
+                <div class="deleteBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:0;
+                    cursor: pointer;">
+                    删 除
+                </div>
             </div>
         </div>
     </body>

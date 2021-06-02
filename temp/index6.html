@@ -81,7 +81,7 @@
             function getSubtitles(){
                 $.ajax({
                     url: '/file/zmy/The-Wolf-of-Wall-Street.srt',
-                        type: 'get',
+                        
                     async: true,
                     success: function(res) {
                         getEnSubtitles(res)
@@ -119,7 +119,7 @@
             function translationVlaue(_data){
                 $.ajax({
                     url: '/zmy/translate?q='+_data,
-                    type: 'get',
+                    
                     async: true,
                     success: function(res) {
                         // console.log(res)

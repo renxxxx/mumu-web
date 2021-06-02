@@ -184,7 +184,7 @@
             getVideoList()
             $.ajax({
                 url: '/mumu/showedboardmsg?',
-                type: 'get',
+                
                 async: true,
                 success: function(res) {
                     msg=res.data.msg;
@@ -201,7 +201,7 @@
             let _this = this;
             $.ajax({
                 url: '/mumu/videos?',
-                type: 'get',
+                
                 data: 'longvideo=1&kw='+''+'&start='+1+'&pageSize='+30,
                 async: true,
                 success: function(res) {

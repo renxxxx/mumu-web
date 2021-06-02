@@ -38,7 +38,6 @@
         // $.ajax(
         //     {
         //         url:"/mumu/front-log-do",
-        //         method:"post",
         //         data:{log:toflushlogs.join(',,,,')},
         //         success:function(res){
         //             if(res.code == 0){
@@ -53,7 +52,6 @@
         $.ajax(
             {
                 url:"/mumu/front-logs",
-                method:"get",
                 async:false,
                 data:{kw:kw,rstart:rstart,rcount:rcount},
                 success:function(res){

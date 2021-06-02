@@ -10,6 +10,36 @@ var vConsole = new VConsole({
   }
 });
 
+if(config.debug==0)
+    noDebuger()
+function noDebuger() {
+    function testDebuger() {
+        var d = new Date();
+        debugger;
+        if (new Date() - d > 10) {
+            debugger;
+            //document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
+            return true;
+        }
+       return false;
+   }
+   function start() {
+       while (testDebuger()) {
+           testDebuger();
+       }
+   }
+   if (!testDebuger()) {
+       window.onblur = function () {
+           setTimeout(function () {
+               start();
+           }, 500)
+       }
+   }else {
+       start();
+   }
+}
+
+
 function is_weixn(){  
   var ua = navigator.userAgent.toLowerCase();  
   if(ua.match(/MicroMessenger/i)=="micromessenger") {  
@@ -19,7 +49,9 @@ function is_weixn(){
   }  
 }
 
-
+$.ajaxSetup({
+  type:'post',
+})
 
 
 try{
@@ -32,7 +64,6 @@ try{
 if(!pagePre.login || !pagePre.loginTime){
   $.ajax({
     url:'/mumu/login-refresh',
-    method:'get',
     async:false,
     success:function(res){
       if(res.code==0){
@@ -57,13 +88,11 @@ function login(){
   }else{
     $.ajax({
       url:'/mumu/anonlogin',
-      method:'post',
       async:false,
       success:function(res){
         if(res.code==0){
           $.ajax({
             url:'/mumu/login-refresh',
-            method:'get',
             async:false,
             success:function(res){
               if(res.code==0){
@@ -260,4 +289,13 @@ function isPcWeChat(){
 
 }
 return false
-} 
+}
+
+function concats(){
+  var result = ''
+  for (const iterator of arguments) {
+    var str= iterator==null||iterator==undefined ?'':iterator
+    result+=str
+  }
+  return result
+}

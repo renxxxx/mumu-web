@@ -93,7 +93,7 @@
     function getVideo(){
         $.ajax({
             url: '/mumu/video?',
-            type: 'get',
+            
             data: 'videoNo='+videoNo,
             ajaxCache:true,
             async: false,
@@ -110,7 +110,7 @@
                 guide()
                 $.ajax({
                     url: video.captionUrl,
-                    type: 'get',
+                    
                     async: true,
                     success: function(res) {
                         getEnSubtitles(res);
@@ -556,7 +556,7 @@
             }
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
-                type: 'get',
+                
                 ajaxCache:{
                     timeout: 30 * 24 * 60 * 60
                 },
@@ -1205,7 +1205,6 @@
         if(value){
             $.ajax({
                 url:'/mumu/words',
-                method:'get',
                 data:{
                     kw:value,
                     start:1,

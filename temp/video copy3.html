@@ -269,14 +269,14 @@
         function getVideo(){
             $.ajax({
                 url: '/mumu/video?',
-                type: 'get',
+                
                 data: 'videoNo='+videoNo,
                 async: true,
                 success: function(res) {
                     video=res.data.video
                     $.ajax({
                         url: video.captionUrl,
-                        type: 'get',
+                        
                         async: true,
                         success: function(res) {
                             getEnSubtitles(res)
@@ -597,7 +597,7 @@
             _data=_data.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
-                type: 'get',
+                
                 async: true,
                 success: function(res) {
                     $('.dialog').css({'display' : 'block'})

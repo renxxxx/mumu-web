@@ -105,7 +105,7 @@
             function getVideo(){
                 $.ajax({
                     url: '/mumu/video?',
-                    type: 'get',
+                    
                     data: 'videoNo='+window.location.search.substring(1).split("&")[0].split("=")[1],
                     async: true,
                     success: function(res) {
@@ -121,7 +121,7 @@
             function getSubtitles(){
                 $.ajax({
                     url: video.captionUrl,
-                        type: 'get',
+                        
                     async: true,
                     success: function(res) {
                         getEnSubtitles(res)
@@ -160,7 +160,7 @@
             function translationVlaue(_data){
                 $.ajax({
                     url: '/zmy/translate?q='+_data,
-                    type: 'get',
+                    
                     async: true,
                     success: function(res) {
                         $('.dialog').css({'display' : 'block'})
