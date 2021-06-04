@@ -1327,8 +1327,8 @@
     }
 
     if(is_weixn()){
-        $.get('/mumu/wxjsapiticket',(res)=>{
-            $.get('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
+        $.post('/mumu/wxjsapiticket',(res)=>{
+            $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
                 //log.debug(JSON.stringify(res));
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -1960,7 +1960,7 @@
 
 
     $('#wordbookpadBtn').click(function(){
-        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15))+'px')
         $('#wordbookpad').slideDown(100)
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
@@ -1969,7 +1969,7 @@
     })
 
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+35))+'px')
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+30))+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
@@ -2023,7 +2023,7 @@
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15))+'px')
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
