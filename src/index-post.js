@@ -30,7 +30,15 @@
         currRows:[],
         selected:null,
     }
-    
+    page.wordbooksOnAdd={
+        rows:[],
+        rcount:50,
+        currRows:[],
+        selected:null,
+    }
+    page.currWord=null
+    page.wordBooksWordsMap={}
+
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
           url:'/mumu/login-refresh',
@@ -671,11 +679,7 @@
 
     $('#favor').click(function(){
         log.info('#favor.click')
-        var word =pureWord($(this).attr('word'))
-        ws.send(JSON.stringify({
-            action:4,
-            word:word
-        }))
+        addFavoredWord()
     })
     
     function pureWord(word){
@@ -722,7 +726,7 @@
     //     $('#historyword-'+word.replace(/[^\w]/g, '')).remove()
     // }
 
-    function translatee(_data){
+    function translatee(_data,addHistory){
         //log.debug(_data+3)
         $('#summrest').hide()
         page.dovideoshadow=1
@@ -760,6 +764,7 @@
                 success: function(res) {
                     var hasTranslate = false;
                     clearTimeout(window.aaa)
+                    page.currWord=res.data
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
                     }else{
@@ -795,13 +800,7 @@
                     
                     
                     $(`.lightkeytrans`).bind('click',function(){
-                        translatee(this.innerText)
-                        ws.send(JSON.stringify(
-                            {
-                                action:6,
-                                word:pureWord(this.innerText)
-                            }
-                        ))
+                        translatee(this.innerText,1)
                     })
                     $('#wordsframe').hide()
                     $('#summrest').show()
@@ -827,6 +826,9 @@
                         translateed=1
                     }
                     localStorage.setItem(config.project+'-translateed',translateed)
+
+                    if(addHistory)
+                        addHistoryWord()
                 },
             }))
         },200)
@@ -1260,13 +1262,7 @@
         if(currwordno>0){
             $('#wordsframe').hide()
             var word = en.currentwords[currwordno-1];
-            translatee(word)
-            ws.send(JSON.stringify(
-                {
-                    action:6,
-                    word:pureWord(word)
-                }
-            ))
+            translatee(word,1)
         }
     }
 
@@ -1315,13 +1311,7 @@
         if(document.activeElement == $('#word-in')[0]){
             $('#wordsframe').hide()
             loadRelatedWords(word)
-            translatee(word)
-            ws.send(JSON.stringify(
-                {
-                    action:6,
-                    word:pureWord(word)
-                }
-            ))
+            translatee(word,1)
             if(!$('#word-in').val()){
                 $('#summtrans').hide()
                 $('#wordsframe').hide()
@@ -1473,13 +1463,7 @@
         $('#word-in').val('')
         $('#words .word').remove()
         loadRelatedWords(this.item.word)
-        translatee(this.item.word)
-        ws.send(JSON.stringify(
-            {
-                action:6,
-                word:pureWord(this.item.word)
-            }
-        ))
+        translatee(this.item.word,1)
     })
 
     $('#word-in').bind('input',function(){
@@ -1941,22 +1925,32 @@
     }).bind('mouseup touchend',function(e){
         if(this.touchendY-this.touchstartY>50){
             $('#wordbookpad').slideUp(100)
+            $('#gearframe1').show()
+            $('#prevnextpad').show()
         }
         this.touchstartY=null
         this.touchendY=null
     })
+     
+  
+
+
+
+
+
 
 
     $('#wordbookpadBtn').click(function(){
-        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+64+5))+'px')
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
         $('#wordbookpad').slideDown(100)
-
+        $('#gearframe1').hide()
+        $('#prevnextpad').hide()
         if(page.wordbooks.rows.length==0)
             loadMoreWordbooks()
     })
 
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+5))+'px')
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+35))+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
@@ -2010,7 +2004,7 @@
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+64+$('#controlpad').height()+20))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
         $('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
@@ -2033,22 +2027,10 @@
         var transele = $(e.target).hasClass('translatable')?e.target:$(e.target).parents('.translatable')[0]
         if(transele){
             if(transele.transfrom){
-                translatee(transele.transfrom)
-                ws.send(JSON.stringify(
-                    {
-                        action:6,
-                        word:pureWord(transele.innerText)
-                    }
-                ))
+                translatee(transele.transfrom,1)
             }
             else if(transele.innerText){
-                translatee(transele.innerText)
-                ws.send(JSON.stringify(
-                    {
-                        action:6,
-                        word:pureWord(transele.innerText)
-                    }
-                ))
+                translatee(transele.innerText,1)
             }
             
         }
@@ -2131,13 +2113,7 @@
                     page.dovideoshadow=1
                     pauseVideo()
                     loadRelatedWords(word)
-                    translatee(word)
-                    ws.send(JSON.stringify(
-                        {
-                            action:6,
-                            word:pureWord(word)
-                        }
-                    ))
+                    translatee(word,1)
                     page.spansIs=0
                     page.spans =[]
                 }
@@ -2299,7 +2275,6 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             break
     }
     if(parentEle.length==0 && this.touchstartY<this.touchendY){
-        log.debug('e.preventDefault()')
         e.preventDefault()
     }
 
@@ -2553,22 +2528,10 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     }
 
     $('#relatedWord0').click(function(){
-        translatee(this.innerText);
-        ws.send(JSON.stringify(
-            {
-                action:6,
-                word:pureWord(this.innerText)
-            }
-        ))
+        translatee(this.innerText,1);
     })
     $('#fromRelatedWordPad').click(function(){
-        translatee($('#fromRelatedWord').text());
-        ws.send(JSON.stringify(
-            {
-                action:6,
-                word:pureWord($('#fromRelatedWord').text())
-            }
-        ))
+        translatee($('#fromRelatedWord').text(),1);
     })
     
 
@@ -2622,13 +2585,13 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                                     no:res.data.no,
                                     name:v,
                                 }
-                                var ele = $('#wordbooksPad .row0').clone(true)
+                                var ele = $('#wordbooksPad .wordbooks .row0').clone(true)
                                 ele.removeClass('row0')
                                 ele.addClass('row'+row.no)
                                 ele.text(row.name)
                                 ele[0].data=row
                                 ele.show();
-                                $('#wordbooksPad .row0').before(ele)
+                                $('#wordbooksPad .wordbooks .row0').before(ele)
                             }else{
                                 common.alert(res.msg)
                             }
@@ -2638,64 +2601,367 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             }
         })
     })
-    $('#wordbooksPad .row0').click(function(e){
-        page.wordbooks.selected=this.data;
+    $('#wordbooksPad .wordbooks .row0').click(function(e){
+        var row = page.wordbooks.selected=this.data;
         $('#wordbooksPad .createRowBtn').hide()
         $('#wordbooksPad .editRowBtn').show()
-        
+        chooseWordbook(row.no)
+    })
+
+    $('#wordbooksPad .words .loadmore').click(function(e){
+        loadMoreWordbookWords(page.wordbooks.selected.no)
+    })
+    function chooseWordbook(wordbookNo){
+        var words = page.wordBooksWordsMap['no'+wordbookNo];
+        if(!words){
+            words={
+                rows:[],
+                currRows:[],
+                rcount:50,
+                selected:null,
+            }
+            page.wordBooksWordsMap['no'+wordbookNo]=words
+        }
+        $('#wordbooksPad .words .pad .row').not('.row0').remove()
+        if(words.rows.length==0)
+            loadMoreWordbookWords(wordbookNo);
+        else{
+            if(words.rows.length==0){
+                $(`#wordbooksPad .words .pad .someload`).hide()
+                $(`#wordbooksPad .words .pad .loadnodata`).show()
+            }else if(words.currRows.length < words.rcount){
+                $(`#wordbooksPad .words .pad .someload`).hide()
+                $(`#wordbooksPad .words .pad .loadend`).show()
+            }else{
+                $(`#wordbooksPad .words .pad .someload`).hide()
+                $(`#wordbooksPad .words .pad .loadmore`).show()
+            }
+            renderWordbookWords(words.rows)
+        }
+    }
+
+    function renderWordbookWords(rows){
+        rows.forEach(element => {
+            var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
+            ele.removeClass('row0')
+            ele.addClass('row'+element.no)
+            ele.find('.word').text(element.word)
+            if(element.phonetic){
+                ele.find('.phonetic').text('/'+element.phonetic+'/');
+            }else{
+                ele.find('.word').css('width','66.666666%')
+                ele.find('.phonetic').hide();
+            }
+            ele.find('.translation').text(element.translation)
+            $(`#wordbooksPad .words .pad .row0`).before(ele)
+            ele.show()
+            ele[0].data=element
+        });
+
+    }
+
+    function loadMoreWordbookWords(wordbookNo){
+        var words = page.wordBooksWordsMap['no'+wordbookNo];
+        var rstart = words.rows.length+1
+        var rcount = words.rcount
+        $.ajax({
+            url: '/mumu/wordbook-words?',
+            data: {
+                wordbookNo:wordbookNo,
+                rstart:rstart,
+                rcount:rcount,
+            },
+            beforeSend:()=>{
+                $(`#wordbooksPad .words .pad .someload`).hide()
+                $(`#wordbooksPad .words .pad .loading`).show()
+            },
+            success:function(res){
+                if(res.code==0){
+                    if(rstart==1 && res.data.rows.length==0){
+                        $(`#wordbooksPad .words .pad .someload`).hide()
+                        $(`#wordbooksPad .words .pad .loadnodata`).show()
+                    }else if(res.data.rows.length <rcount){
+                        $(`#wordbooksPad .words .pad .someload`).hide()
+                        $(`#wordbooksPad .words .pad .loadend`).show()
+                    }else{
+                        $(`#wordbooksPad .words .pad .someload`).hide()
+                        $(`#wordbooksPad .words .pad .loadmore`).show()
+                    }
+                    if(res.data.rows.length>0){
+                        words.currRows=res.data.rows
+                        words.rows.push(...res.data.rows)
+                        renderWordbookWords(res.data.rows)
+                    }
+                    
+                }
+            }
+        })
+    }
+
+    // function chooseWordbook(wordbookNo){
+    //     var wordsPad = $('#wordbooksPad .words .pad'+wordbookNo);
+    //     if(wordsPad.length==1){
+    //         $('#wordbooksPad .words .pad').hide()
+    //         wordsPad.show()
+    //     }else{
+    //         var ele = $('#wordbooksPad .words .pad0').clone(true)
+    //         ele.removeClass('pad0').addClass('pad'+wordbookNo);
+    //         $('#wordbooksPad .words .pad0').before(ele)
+    //         $('#wordbooksPad .words .pad').hide()
+    //         ele.show()
+
+    //         var words = page.wordBooksWordsMap['no'+wordbookNo];
+    //         if(!words){
+    //             words={
+    //                 rows:[],
+    //                 currRows:[],
+    //                 rcount:50,
+    //                 selected:null,
+    //             }
+    //             page.wordBooksWordsMap['no'+wordbookNo]=words
+    //         }
+    //         loadMoreWordbookWords(wordbookNo);
+    //     }
+    // }
+    $(`#wordbooksPad .words .pad .row0`).click(function(){
+        var row = this.data;
+        translatee(row.word)
+        loadRelatedWords(row.word)
+    })
+
+    $('#wordbooksPad .words  .coverTargetTextBtn').click(function(){
+        if($('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility')=='hidden')
+            $('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility','visible')
+        else
+            $('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility','hidden')
+    })
+    $('#wordbooksPad .words .coverMainTextBtn').click(function(){
+        if($('#wordbooksPad .words .translation').css('visibility')=='hidden')
+            $('#wordbooksPad .words .translation').css('visibility','visible')
+        else
+            $('#wordbooksPad .words .translation').css('visibility','hidden')
+    })
+
+    $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(){
+        var ele = $(this).parents('.row');
+        var row =ele[0].data;
+        ws.send(JSON.stringify({
+            action:9,
+            wordbookNo:page.wordbooks.selected.no,
+            word:row.word
+        }))
+        ele.remove()
+    })
+
+    function addWordbookWord(wordbookNo){
+        var ele = createWordbookWord(wordbookNo)
+        $(`#wordbooksPad .words .pad `).prepend(ele)
+        ws.send(JSON.stringify({
+            action:8,
+            wordbookNo:wordbookNo,
+            word:page.currWord.word
+        }))
+    }
+
+    function createWordbookWord(wordbookNo){
+        var word = {
+            word:page.currWord.word,
+            translation:page.currWord.translation,
+            phonetic:page.currWord.phonetic,
+            no:randomnum(12)
+        }
+        var words = page.wordBooksWordsMap['no'+wordbookNo];
+        words.rows.splice(0,0,word)
+        var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
+        ele.removeClass('row0')
+        ele.addClass('row'+word.no)
+        ele.find('.word').text(word.word)
+        if(word.phonetic){
+            ele.find('.phonetic').text('/'+word.phonetic+'/');
+        }else{
+            ele.find('.word').css('width','66.666666%')
+            ele.find('.phonetic').hide();
+        }
+        ele.find('.translation').text(word.translation)
+        ele.show()
+        ele[0].data=word
+        return ele
+    }
+
+   
+
+    $('#wordbooksPad .editRowBtn').click(function(e){
+        var row = page.wordbooks.selected;
+        $('#wordbookDetailPad').show()
+        $('#wordbookDetailPad .namePad .value').text(row.name)
+    })
+    $('#wordbookDetailPad .deleteBtn').click(function(e){
+        var row = page.wordbooks.selected;
+        common.prompt({
+            message:'请输入 '+row.name+' 以确认删除.',
+            confirm:function(v){
+                if(v){
+                    if(v==row.name){
+                        $.ajax({
+                            url: '/mumu/delete-wordbook?',
+                            data: {
+                                no:row.no,
+                                name:row.name,
+                            },
+                            success: function(res) {
+                               if(res.code==0){
+                                    $('#wordbookDetailPad').hide()
+                                    $('#wordbooksPad .wordbooks .row'+row.no).remove()
+                                    row = page.wordbooks.selected=null
+                                    $('#wordbooksPad .wordbooks').click()
+                               }else{
+                                   common.alert(res.msg)
+                               }
+                            }
+                        })
+                    }else{
+                        common.alert('输入有误')
+                    }
+                }
+            }
+        })
+    })
+
+    
+    $('#wordbookDetailPad .namePad .editBtn').click(function(e){
+        var row = page.wordbooks.selected;
+        common.prompt({
+            message:'请输入新名称',
+            value:row.name,
+            confirm:function(v){
+                if(v!=row.name){
+                    $.ajax({
+                        url: '/mumu/alter-wordbook?',
+                        data: {
+                            no:row.no,
+                            name:v,
+                        },
+                        success: function(res) {
+                            if(res.code==0){
+                                row.name=v
+                                $('#wordbooksPad .wordbooks .row'+row.no).text(v)
+                                $('#wordbookDetailPad .value').text(v)
+                            }else{
+                                common.alert(res.msg)
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    })
+
+    $('#wordbookDetailPad .closeBtn').click(function(e){
+        $('#wordbookDetailPad').hide()
     })
     
-    $('#wordbooksPad .editRowBtn').click(function(e){
-        $('#wordbookEditPad').show()
-    })
-    $('#wordbooksPad .catalogs').click(function(e){
+    $('#wordbooksPad .wordbooks').click(function(e){
         if(this == e.target){
             page.wordbooks.selected=null;
             $('#wordbooksPad .createRowBtn').show()
             $('#wordbooksPad .editRowBtn').hide()
+            $('#wordbooksPad .words .pad').hide()
         }
         
     })
     function loadMoreWordbooks(){
+        var rstart = page.wordbooks.rows.length+1;
         $.ajax({
             url: '/mumu/wordbooks?',
             data: {
-                rstart:page.favoredWords.rstart,
-                rcount:page.favoredWords.rcount,
+                rstart:rstart,
+                rcount:page.wordbooks.rcount,
             },
             success: function(res) {
                 page.wordbooks.rows.push(...res.data.rows)
                 page.wordbooks.currRows = res.data.rows
                 $(res.data.rows).each((inx,row)=>{
-                    var ele = $('#wordbooksPad .row0').clone(true)
+                    var ele = $('#wordbooksPad .wordbooks .row0').clone(true)
                     ele.removeClass('row0')
                     ele.addClass('row'+row.no)
                     ele.text(row.name)
                     ele[0].data=row
                     ele.show();
-                    $('#wordbooksPad .row0').before(ele)
+                    $('#wordbooksPad .wordbooks .row0').before(ele)
+
+                    var words = page.wordBooksWordsMap['no'+row.no];
+                    if(!words){
+                        words={
+                            rows:[],
+                            currRows:[],
+                            rcount:50,
+                            selected:null,
+                        }
+                        page.wordBooksWordsMap['no'+row.no]=words
+                    }
                 })
+
+                if(rstart==1){
+                    $('#wordbooksPad .wordbooks .row').not('.row0').first().click()
+                }
             }
         })
     }
 
 
     function loadMoreFavoredWords(){
+        var rstart = page.favoredWords.rows.length+1
+        var rcount = page.favoredWords.rcount
         $.ajax({
             url: '/mumu/favored-words?',
-            
             data: {
-                rstart:page.favoredWords.rstart,
-                rcount:page.favoredWords.rcount,
+                rstart,
+                rcount,
+            },
+            beforeSend:()=>{
+                $(`#favorsPad .someload`).hide()
+                $(`#favorsPad .loading`).show()
             },
             success: function(res) {
-                page.favoredWords.rows.push(...res.data.rows)
-                page.favoredWords.currRows = res.data.rows
-                $(res.data.rows).each((inx,item)=>{
-                    $('#favorsPad .word0').before(createFavoredWord(item))
-                })
+                if(res.code==0){
+                    if(rstart==1 && res.data.rows.length==0){
+                        $(`#favorsPad .someload`).hide()
+                        $(`#favorsPad .loadnodata`).show()
+                    }else if(res.data.rows.length <rcount){
+                        $(`#favorsPad .someload`).hide()
+                        $(`#favorsPad .loadend`).show()
+                    }else{
+                        $(`#favorsPad .someload`).hide()
+                        $(`#favorsPad .loadmore`).show()
+                    }
+                    if(res.data.rows.length>0){
+                        page.favoredWords.currRows=res.data.rows
+                        page.favoredWords.rows.push(...res.data.rows)
+                        $(res.data.rows).each((inx,item)=>{
+                            $('#favorsPad .word0').before(createFavoredWord(item))
+                        })
+                    }
+                }
+                
             }
         })
+    }
+    function addFavoredWord(){
+        var word = {
+            word:page.currWord.word,
+            translation:page.currWord.translation,
+            phonetic:page.currWord.phonetic,
+            favorWordNo:randomnum(12)
+        };
+        var ele = createFavoredWord(word)
+        page.favoredWords.rows.splice(0,0,word)
+        $('#favorsPad .words').prepend(ele)
+        ws.send(JSON.stringify(
+            {
+                action:4,
+                word:page.currWord.word
+            }
+        ))
     }
 
     function createFavoredWord(item){
@@ -2703,6 +2969,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         ele.removeClass('word0')
         ele.addClass('word'+item.favorWordNo)
         ele.find('.word').text(item.word)
+        ele.find('.translation').text(item.translation)
         if(item.phonetic){
             ele.find('.phonetic').text('/'+item.phonetic+'/');
         }else{
@@ -2717,6 +2984,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     $('#favorsPad .word0').click(function(e){
         var row = this.data
         translatee(row.word)
+        loadRelatedWords(row.word)
     })
     $('#favorsPad .word0 .removeBtn').click(function(e){
         var wrap = $(this).parents('.wrap')
@@ -2749,33 +3017,73 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
 
     
     function loadMoreHistoryWords(){
+        var rstart = page.historyWords.rows.length+1
+        var rcount = page.historyWords.rcount
         $.ajax({
             url: '/mumu/history-words?',
             data: {
-                rstart:page.historyWords.rstart,
-                rcount:page.historyWords.rcount,
+                rstart,
+                rcount,
+            },
+            beforeSend:()=>{
+                $(`#historyWordsPad .someload`).hide()
+                $(`#historyWordsPad .loading`).show()
             },
             success: function(res) {
-                page.historyWords.rows.push(...res.data.rows)
-                page.historyWords.currRows = res.data.rows
-                $(res.data.rows).each((inx,item)=>{
-                    $('#historyWordsPad .word0').before(createHistoryWord(item))
-                })
+                if(res.code==0){
+                    if(rstart==1 && res.data.rows.length==0){
+                        $(`#historyWordsPad .someload`).hide()
+                        $(`#historyWordsPad .loadnodata`).show()
+                    }else if(res.data.rows.length <rcount){
+                        $(`#historyWordsPad .someload`).hide()
+                        $(`#historyWordsPad .loadend`).show()
+                    }else{
+                        $(`#historyWordsPad .someload`).hide()
+                        $(`#historyWordsPad .loadmore`).show()
+                    }
+                    if(res.data.rows.length>0){
+                        page.historyWords.currRows=res.data.rows
+                        page.historyWords.rows.push(...res.data.rows)
+                        
+                        $(res.data.rows).each((inx,item)=>{
+                            $('#historyWordsPad .word0').before(createHistoryWord(item))
+                        })
+                    }
+                }
+                
             }
         })
     }
-    
+    function addHistoryWord(){
+        var word = {
+            word:page.currWord.word,
+            translation:page.currWord.translation,
+            phonetic:page.currWord.phonetic,
+            historyWordNo:randomnum(12)
+        }
+        var ele = createHistoryWord(word)
+        page.historyWords.rows.splice(0,0,word)
+        $('#historyWordsPad .words').prepend(ele)
+        ws.send(JSON.stringify(
+            {
+                action:6,
+                word:page.currWord.word
+            }
+        ))
+    }
     function createHistoryWord(item){
         var ele = $('#historyWordsPad .word0').clone(true)
         ele.removeClass('word0')
         ele.addClass('word'+item.historyWordNo)
         ele.find('.word').text(item.word)
+        ele.find('.translation').text(item.translation)
         if(item.phonetic){
             ele.find('.phonetic').text('/'+item.phonetic+'/');
         }else{
             ele.find('.word').css('width','66.666666%')
             ele.find('.phonetic').hide();
         }
+        
         ele[0].data=item
         ele[0].transfrom=item.word
         ele.show();
@@ -2799,6 +3107,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     $('#historyWordsPad .word0').click(function(e){
         var row = this.data
         translatee(row.word)
+        loadRelatedWords(row.word)
     })
 
     $('#historyWordsPad .coverTargetTextBtn').click(function(){
@@ -2849,5 +3158,106 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         $('#historyWordsPad').hide()
         $('#wordbooksPad').show()
     })
+
+
+
+
+
+
+
+
+
+
+
+    $('#addToWordbookBtn').click(function(){
+        $('#wordbooksPadOnAdd').show()
+        if(page.wordbooksOnAdd.rows.length==0)
+            loadMoreWordbooksOnAdd()
+        if(page.wordbooks.selected != null){
+            $('#wordbooksPadOnAdd .currRow .name').text(page.wordbooks.selected.name)
+            $('#wordbooksPadOnAdd .currRow')[0].data=page.wordbooks.selected
+            $('#wordbooksPadOnAdd .currRowPad').show()
+        }else{
+            $('#wordbooksPadOnAdd .currRowPad').hide()
+        }
+    })
+
+    $('#wordbooksPadOnAdd .closeBtn').click(function(){
+        $('#wordbooksPadOnAdd').hide()
+    })
+    // $('#wordbooksPadOnAdd .currRow').click(function(){
+    //     var row = this.data
+    //     $('#wordbooksPadOnAdd').hide()
+    //     addWordbookWord(row.no)
+    // })
+    $('#wordbooksPadOnAdd .currRow,#wordbooksPadOnAdd .row0').click(function(){
+        var row = this.data
+        $('#wordbooksPadOnAdd').hide()
+        if(row.no == page.wordbooks.selected.no){
+            addWordbookWord(row.no)
+        }else{
+            var words = page.wordBooksWordsMap['no'+row.no];
+            var word = {
+                word:page.currWord.word,
+                translation:page.currWord.translation,
+                phonetic:page.currWord.phonetic,
+                no:randomnum(12)
+            }
+            words.rows.splice(0,0,word)
+            $('#wordbooksPadOnAdd').hide()
+            ws.send(JSON.stringify({
+                action:8,
+                wordbookNo:row.no,
+                word:page.currWord.word
+            }))
+        }
+    })
+
+    $('#wordbooksPadOnAdd .loadmore').click(function(){
+        loadMoreWordbooksOnAdd()
+    })
+    function loadMoreWordbooksOnAdd(){
+        var rstart=page.wordbooksOnAdd.rows.length+1
+        var rcount=page.wordbooksOnAdd.rcount
+        $.ajax({
+            url:'/mumu/wordbooks',
+            data:{
+                rstart:rstart,
+                rcount:rcount,
+            },
+            beforeSend:()=>{
+                $('#wordbooksPadOnAdd .someload').hide()
+                $('#wordbooksPadOnAdd .loading').show()
+            },
+            success:function(res){
+                if(res.code==0){
+                    if(rstart==1 && res.data.rows.length==0){
+                        $('#wordbooksPadOnAdd .someload').hide()
+                        $('#wordbooksPadOnAdd .loadnodata').show()
+                    }else if(res.data.rows.length <rcount){
+                        $('#wordbooksPadOnAdd .someload').hide()
+                        $('#wordbooksPadOnAdd .loadend').show()
+                    }else{
+                        $('#wordbooksPadOnAdd .someload').hide()
+                        $('#wordbooksPadOnAdd .loadmore').show()
+                    }
+                    if(res.data.rows.length>0){
+                        page.wordbooksOnAdd.currRows=res.data.rows
+                        page.wordbooksOnAdd.rows.push(...res.data.rows)
+                        res.data.rows.forEach(element => {
+                            var ele = $('#wordbooksPadOnAdd .row0').clone(true);
+                            ele.removeClass('row0')
+                            ele.addClass('row'+element.no)
+                            ele.text(element.name)
+                            $('#wordbooksPadOnAdd .row0').before(ele)
+                            ele.show()
+                            ele[0].data=element
+                        });
+                    }
+                    
+                }
+            }
+        })
+    }
 })()
 

@@ -134,6 +134,7 @@ function randomnum(n){
   for(var i=0;i<n;i++){ 
       t+=Math.floor(Math.random()*10); 
   }
+  t=t.replace(/^0/,'1')
   return t; 
 }
 
@@ -217,13 +218,13 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
       </div>
       <textarea class="value" style='resize: none;display:block;border:none;height:164px;font-size:15px;width: 100%;box-sizing:border-box;' placeholder=${placeholder}>${value}</textarea>
       <div style="height:35px;width:100%;border-radius:0 0 3px 3px;">
-        <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;
+        <span class="cancel" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;
           border-top:1px solid #d4d4d4;border-radius:0 0 0 3px;cursor:pointer;">
-          确认
-        </span>
-        <span class="cancel" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
-          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
           取消
+        </span>
+        <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
+          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
+          确认
         </span>
       </div>
     </div>
@@ -317,13 +318,13 @@ common.confirm=function(params,_confirm,_cancel,_parent){
         ${message}
       </div>
       <div style="height:35px;width:100%;border-radius:0 0 3px 3px;">
-        <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;
+        <span class="cancel" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;
           border-top:1px solid #d4d4d4;border-radius:0 0 0 3px;cursor:pointer;">
-          确认
-        </span>
-        <span class="cancel" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
-          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
           取消
+        </span>
+        <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
+          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
+          确认
         </span>
       </div>
     </div>
