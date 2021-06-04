@@ -63,12 +63,12 @@
         $('#logo').hide()
         $('#index').show()
 
-        $("#finger").animate({left:'+=150px'},2000,function(){
-            $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
-        });
-        $("#gear").animate({left:'+=150px'},2000,function(){
-            $("#gear").animate({left:'-=300px'},2000);
-        });
+        // $("#finger").animate({left:'+=150px'},2000,function(){
+        //     $("#finger").animate({left:'-=300px'},2000,()=>{$("#finger").fadeOut(500)});
+        // });
+        // $("#gear").animate({left:'+=150px'},2000,function(){
+        //     $("#gear").animate({left:'-=300px'},2000);
+        // });
     },1000)
 
     var loopLine=0
@@ -162,7 +162,7 @@
         page.dovideoshadow=1
         pauseVideo();
         loadRelatedWords(this.innerText)
-        translatee(this.innerText);
+        translatee1(this.innerText);
         $('.historyword').css('background-color',"#ffffff")
         $(this).css('background-color',"#e7e7e7")
     })
@@ -270,7 +270,12 @@
             //setTimeout(function(){$('#video')[0].muted=false},500)
         }
     }
-
+    function guide1(){
+        $('#video').attr("src",video.url)
+        $('#video').css('top','0')
+        $('#video').attr('autoplay',true)
+        playVideo()
+    }
     //showallhistorywords()
     // function getVideo(videoNo){
     //     $.ajax({
@@ -324,7 +329,7 @@
             localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
         },5000)
 
-        guide()
+        guide1()
     }
     function restore(){
         if(!restored){
@@ -463,13 +468,13 @@
             $('.fanyi').html('')
         }
     }
-    function searchFn(_value){
-        if(_value.keyCode == 13){
-            let kw = $('.searchClass').val();
-            translatee(kw);
-            hideSearchFn()
-        }
-    }
+    // function searchFn(_value){
+    //     if(_value.keyCode == 13){
+    //         let kw = $('.searchClass').val();
+    //         translatee1(kw);
+    //         hideSearchFn()
+    //     }
+    // }
 
     $('.yibiao').on('click','span svg',function(){
         log.info('$(.yibiao).click')
@@ -693,45 +698,32 @@
             return ''
         return word.replace(/^(\s|:|-|,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(\s|:|-|,|\.|\?|!|\[|\]\(|\))+$/,'').toLowerCase()
     }
-    // function addhistoryword(word){
-    //     word = pureWord(word)
-    //     historywords=historywords?historywords:[]
-    //     var i = historywords.indexOf(word);
-    //     if(i>-1)
-    //         historywords.splice(i,1)
-    //     historywords.unshift(word)
-    //     var historywordele = $('#historyword_template').clone(true)
-    //     historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
-    //     historywordele.attr('data',word)
-    //     historywordele.text(word)
-    //     historywordele.css('display','inline-block')
-    //     $('#historywordspad').prepend(historywordele)
-    //     localStorage.setItem(config.project+'-historywords',JSON.stringify(historywords))
-    // }
-
-    // function showallhistorywords(){
-    //     var historywordsstr = localStorage.getItem(config.project+'-historywords')
-    //     if(historywordsstr)
-    //         historywords=JSON.parse(historywordsstr)
-    //     for (let index = 0; index < historywords.length; index++) {
-    //         var word = historywords[index];
-    //         var historywordele = $('#historyword_template').clone(true)
-    //         historywordele.attr('id','historyword-'+word.replace(/[^\w]/g, ''))
-    //         historywordele.attr('data',word)
-    //         historywordele.text(word)
-    //         historywordele.css('display','inline-block')
-    //         historywordele.show()
-    //         $('#historywordspad').append(historywordele)
-    //     }
-    // }
-
-    // function removehistoryword(word){
-    //     var i = historywords.indexOf(word)
-    //     if(i>-1)
-    //         historywords.splice(i,1)
-    //     $('#historyword-'+word.replace(/[^\w]/g, '')).remove()
-    // }
-
+   
+    function translatee1(word,addHistory){
+        word=pureWord(word)
+        page.currWordText=word
+        clearTimeout(window.timeoutdo11)
+        window.timeoutdo11=setTimeout(function(){
+            window.aaa=setTimeout(function(){
+                $('#summtrans-phonetic').hide();
+                $('#summtrans-speak').hide();
+                $('#summtrans-value').hide();
+            },500)
+            // if(word==null || word==undefined || !word.toString().trim()){
+            //     $('#summtrans-phonetic').hide();
+            //     $('#summtrans-speak').hide();
+            //     $('#summtrans-value').hide();
+            //     return;
+            // }
+            ws.send(JSON.stringify({
+                action:10,
+                addHistory:addHistory,
+                word:word,
+                from:1,
+                to:2
+            }))
+        },200)
+    }
     function translatee(_data,addHistory){
         //log.debug(_data+3)
         $('#summrest').hide()
@@ -907,11 +899,11 @@
             playend()
         }
 
-        doshadow()
+        //doshadow()
     }
 
     function doshadow(){
-        if(page.dovideoshadow && $('#videoshasow').is(':hidden')){
+        if($('#videoshasow').is(':hidden')){
             var img = videocapture($('#video')[0])
             $('#videoshasowimg').attr('src',img.src)
             if(!img.src)
@@ -1268,7 +1260,7 @@
         if(currwordno>0){
             $('#wordsframe').hide()
             var word = en.currentwords[currwordno-1];
-            translatee(word,1)
+            translatee1(word,1)
         }
     }
 
@@ -1317,7 +1309,7 @@
         if(document.activeElement == $('#word-in')[0]){
             $('#wordsframe').hide()
             loadRelatedWords(word)
-            translatee(word,1)
+            translatee1(word,1)
             if(!$('#word-in').val()){
                 $('#summtrans').hide()
                 $('#wordsframe').hide()
@@ -1329,8 +1321,8 @@
             $('#wordsframe').show()
             $('#word-in').focus()
             $('#word-in').trigger("input")
-            page.dovideoshadow=1
             pauseVideo();
+            doshadow()
         }
     }
 
@@ -1469,7 +1461,7 @@
         $('#word-in').val('')
         $('#words .word').remove()
         loadRelatedWords(this.item.word)
-        translatee(this.item.word,1)
+        translatee1(this.item.word,1)
     })
 
     $('#word-in').bind('input',function(){
@@ -1793,13 +1785,13 @@
             page.subtitlesStatus=1
         }
         if(page.subtitlesStatus==1){
-            $('#chDialog').show()
+            $('#chDialog').css('visibility','visible')
             $('#zh_subtitles').css('visibility','visible')
         }else if(page.subtitlesStatus==2){
-            $('#chDialog').hide()
+            $('#chDialog').css('visibility','hidden')
             $('#zh_subtitles').css('visibility','visible')
         }else if(page.subtitlesStatus==3){
-            $('#chDialog').hide()
+            $('#chDialog').css('visibility','hidden')
             $('#zh_subtitles').css('visibility','hidden')
         }
     }
@@ -1947,12 +1939,15 @@
             }
             if(parentEle.length==0)
                 break
+            
+            if(parentEle == this)
+                break;
         }
         this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
             $('#wordbookpad').slideUp(100)
-            $('#gearframe1').show()
+            //$('#gearframe1').show()
             $('#prevnextpad').show()
         }
         this.touchstartY=null
@@ -1967,7 +1962,7 @@
     $('#wordbookpadBtn').click(function(){
         $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
         $('#wordbookpad').slideDown(100)
-        $('#gearframe1').hide()
+        //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         if(page.wordbooks.rows.length==0)
             loadMoreWordbooks()
@@ -2029,7 +2024,7 @@
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
         $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+20))+'px')
-        $('#gearframe1').hide()
+        //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
         })
@@ -2051,10 +2046,10 @@
         var transele = $(e.target).hasClass('translatable')?e.target:$(e.target).parents('.translatable')[0]
         if(transele){
             if(transele.transfrom){
-                translatee(transele.transfrom,1)
+                translatee1(transele.transfrom,1)
             }
             else if(transele.innerText){
-                translatee(transele.innerText,1)
+                translatee1(transele.innerText,1)
             }
             
         }
@@ -2137,7 +2132,7 @@
                     page.dovideoshadow=1
                     pauseVideo()
                     loadRelatedWords(word)
-                    translatee(word,1)
+                    translatee1(word,1)
                     page.spansIs=0
                     page.spans =[]
                 }
@@ -2324,91 +2319,138 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     this.touchendY=null
   })
 
-    $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
-        var touch = e.targetTouches[0];
-        this.touchstart = touch.pageY;
-        //log.debug("touchstart "+this.touchstart)
-    }).bind('touchmove',function(e){
-        var touch = e.targetTouches[0];
-        this.touchend = touch.pageY;
-        if($(this).scrollTop()==0 && this.touchstart<this.touchend){
-            e.preventDefault()
+    $('#chatpad').bind('mousedown touchstart',function(e){
+        this.touchstartTime = new Date().getTime();
+        if(e.type=='touchstart'){
+            var touch = e.targetTouches[0];
+            this.touchstartX = touch.pageX;
+            this.touchstartY = touch.pageY;
+        }else if(e.type=='mousedown'){
+            this.touchstartX = e.pageX;
+            this.touchstartY = e.pageY;
         }
-    }).bind('touchend',function(e){
-        //log.debug("touchend "+this.touchend)
-        if(this.touchend-this.touchstart>50){
-            $('#gearframe1').show()
+    }).bind('mousemove touchmove',function(e){
+        if(e.type=='touchmove'){
+            var touch = e.targetTouches[0];
+            this.touchendX = touch.pageX;
+            this.touchendY = touch.pageY;
+        }else if(e.type=='mousemove'){
+            this.touchendX = e.pageX;
+            this.touchendY = e.pageY;
+        }
+
+        var parentEle=null;
+        while(true){
+            if(!parentEle)
+                parentEle=$(e.target);
+            else
+                parentEle = $(parentEle).parent()
+
+            if(parentEle.scrollTop()>0){
+                break;
+            }
+            if(parentEle.length==0)
+                break
+            
+            if(parentEle == this)
+                break;
+        }
+        this.scrollEle = parentEle;
+    }).bind('mouseup touchend',function(e){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
+            $('#chatpad').slideUp(100)
+            //$('#gearframe1').show()
             $('#prevnextpad').show()
-            $('#chatpad').slideUp(100,function(){
-            })
         }
-        this.touchstart=null
-        this.touchend=null
+        this.touchstartY=null
+        this.touchendY=null
     })
 
-    $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
-        //log.debug("mousedown "+ e.pageY)
-        this.mousedown = e.pageY;
-    }).bind('mousemove',function(e){
-        this.mouseup = e.pageY;
-        if($(this).scrollTop()==0 && this.mousedown<this.mouseup){
-            e.preventDefault()
-        }
-    }).bind('mouseup',function(e){
-        //log.debug("mouseup "+e.pageY)
-        this.mouseup = e.pageY;
-        if(this.mouseup-this.mousedown>50){
-            $('#gearframe1').show()
-            $('#prevnextpad').show()
-            $('#chatpad').slideUp(100,function(){
-            })
-        }
-        this.mousedown=null
-        this.mouseup=null
-    })
+    // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
+    //     var touch = e.targetTouches[0];
+    //     this.touchstart = touch.pageY;
+    //     //log.debug("touchstart "+this.touchstart)
+    // }).bind('touchmove',function(e){
+    //     var touch = e.targetTouches[0];
+    //     this.touchend = touch.pageY;
+    //     if($(this).scrollTop()==0 && this.touchstart<this.touchend){
+    //         e.preventDefault()
+    //     }
+    // }).bind('touchend',function(e){
+    //     //log.debug("touchend "+this.touchend)
+    //     if(this.touchend-this.touchstart>50){
+    //        // $('#gearframe1').show()
+    //         $('#prevnextpad').show()
+    //         $('#chatpad').slideUp(100,function(){
+    //         })
+    //     }
+    //     this.touchstart=null
+    //     this.touchend=null
+    // })
 
-    $('#chatmsgspad').bind('touchstart',function(e){
-        var touch = e.targetTouches[0];
-        this.touchstart = touch.pageY;
-        //log.debug("touchstart "+this.touchstart)
-    }).bind('touchmove',function(e){
-        var touch = e.targetTouches[0];
-        this.touchend = touch.pageY;
-        if($('#chatmsgspad').scrollTop()==0 && this.touchstart<this.touchend){
-            e.preventDefault()
-        }
-    }).bind('touchend',function(e){
-        //log.debug("touchend "+this.touchend)
-        if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#gearframe1').show()
-            $('#prevnextpad').show()
-            $('#chatpad').slideUp(100,function(){
-            })
-        }
-        this.touchstart=null
-        this.touchend=null
-    })
+    // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
+    //     //log.debug("mousedown "+ e.pageY)
+    //     this.mousedown = e.pageY;
+    // }).bind('mousemove',function(e){
+    //     this.mouseup = e.pageY;
+    //     if($(this).scrollTop()==0 && this.mousedown<this.mouseup){
+    //         e.preventDefault()
+    //     }
+    // }).bind('mouseup',function(e){
+    //     //log.debug("mouseup "+e.pageY)
+    //     this.mouseup = e.pageY;
+    //     if(this.mouseup-this.mousedown>50){
+    //         //$('#gearframe1').show()
+    //         $('#prevnextpad').show()
+    //         $('#chatpad').slideUp(100,function(){
+    //         })
+    //     }
+    //     this.mousedown=null
+    //     this.mouseup=null
+    // })
 
-    $('#chatmsgspad').bind('mousedown',function(e){
-        //log.debug("mousedown "+ e.pageY)
-        this.mousedown = e.pageY;
-    }).bind('mousemove',function(e){
-        this.mouseup = e.pageY;
-        if($('#chatmsgspad').scrollTop()==0 && this.mousedown<this.mouseup){
-            e.preventDefault()
-        }
-    }).bind('mouseup',function(e){
-        //log.debug("mouseup "+e.pageY)
-        this.mouseup = e.pageY;
-        if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
-            $('#gearframe1').show()
-            $('#prevnextpad').show()
-            $('#chatpad').slideUp(100,function(){
-            })
-        }
-        this.mousedown=null
-        this.mouseup=null
-    })
+    // $('#chatmsgspad').bind('touchstart',function(e){
+    //     var touch = e.targetTouches[0];
+    //     this.touchstart = touch.pageY;
+    //     //log.debug("touchstart "+this.touchstart)
+    // }).bind('touchmove',function(e){
+    //     var touch = e.targetTouches[0];
+    //     this.touchend = touch.pageY;
+    //     if($('#chatmsgspad').scrollTop()==0 && this.touchstart<this.touchend){
+    //         e.preventDefault()
+    //     }
+    // }).bind('touchend',function(e){
+    //     //log.debug("touchend "+this.touchend)
+    //     if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
+    //         //$('#gearframe1').show()
+    //         $('#prevnextpad').show()
+    //         $('#chatpad').slideUp(100,function(){
+    //         })
+    //     }
+    //     this.touchstart=null
+    //     this.touchend=null
+    // })
+
+    // $('#chatmsgspad').bind('mousedown',function(e){
+    //     //log.debug("mousedown "+ e.pageY)
+    //     this.mousedown = e.pageY;
+    // }).bind('mousemove',function(e){
+    //     this.mouseup = e.pageY;
+    //     if($('#chatmsgspad').scrollTop()==0 && this.mousedown<this.mouseup){
+    //         e.preventDefault()
+    //     }
+    // }).bind('mouseup',function(e){
+    //     //log.debug("mouseup "+e.pageY)
+    //     this.mouseup = e.pageY;
+    //     if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
+    //         //$('#gearframe1').show()
+    //         $('#prevnextpad').show()
+    //         $('#chatpad').slideUp(100,function(){
+    //         })
+    //     }
+    //     this.mousedown=null
+    //     this.mouseup=null
+    // })
 
     $('#word-in').keydown(function(){
         var evt = window.event || e;
@@ -2474,6 +2516,77 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 ele.show();
                 $('#chatmsgspad').prepend(ele)
                 $('#lastmsg').text((data.nickname||"网友").substr(0,6) +" : "+data.text)
+            }else if(data.action == 10){
+                if(page.currWordText==data.word){
+                    page.currWord=data
+                    $('#summrest').hide()
+                    pauseVideo()
+                    doshadow()
+
+                    $('#summtrans').show()
+                    $('#summtrans-word').text(page.currWord.word)
+                    $('#word-in').val(page.currWord.word)
+
+                    var hasTranslate = false;
+                    clearTimeout(window.aaa)
+                    if(page.currWord.phonetic){
+                        $('#summtrans-phonetic').text('/'+page.currWord.phonetic+'/').show()
+                    }else{
+                        $('#summtrans-phonetic').hide()
+                    }
+                    if(page.currWord.speakUrl){
+                        $('#summtrans-speak').attr('play-url',page.currWord.speakUrl).show()
+                    }else{
+                        $('#summtrans-speak').hide()
+                    }
+                    $('#summtrans-vv').html('').scrollTop(0)
+                    if(page.currWord.explains){
+                        $(page.currWord.explains).each(function(index,item){
+                            hasTranslate=true
+                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                        })
+                    }
+                    if(page.currWord.wfs){
+                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans(page.currWord.wfs)}</div>`)
+                    }
+                    if(page.currWord.webs){
+                        $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
+                        $(page.currWord.webs).each(function(index,item){
+                            hasTranslate=true
+                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                        })
+                    }
+                        if(!hasTranslate && page.currWord.translations){
+                            $(page.currWord.translations).each(function(index,item){
+                                $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                            })
+                        }
+                    
+                    
+                    $(`.lightkeytrans`).bind('click',function(){
+                        translatee1(this.innerText,1)
+                    })
+                    $('#wordsframe').hide()
+                    $('#summrest').show()
+                    $('#summtrans-vv').show()
+                    $('#summtrans-value').show()
+                    $('#summtrans').show()
+                    $('#video').css('top','-1000px')
+                    $('#summtrans-speak').click()
+
+                    if(data.addHistory){
+                        var word = {
+                            word:page.currWord.word,
+                            translation:page.currWord.translation,
+                            phonetic:page.currWord.phonetic,
+                            historyWordNo:randomnum(12)
+                        }
+                        var ele = createHistoryWord(word)
+                        page.historyWords.rows.splice(0,0,word)
+                        $('#historyWordsPad .words').prepend(ele)
+                    }
+                }
+                
             }
         }
         ws.onclose = function(e){
@@ -2552,10 +2665,10 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     }
 
     $('#relatedWord0').click(function(){
-        translatee(this.innerText,1);
+        translatee1(this.innerText,1);
     })
     $('#fromRelatedWordPad').click(function(){
-        translatee($('#fromRelatedWord').text(),1);
+        translatee1($('#fromRelatedWord').text(),1);
     })
     
 
@@ -2642,7 +2755,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         $('#wordbooksPad .editRowBtn').show()
         chooseWordbook(row.no)
     })
-
+    
     $('#wordbooksPad .words .loadmore').click(function(e){
         loadMoreWordbookWords(page.wordbooks.selected.no)
     })
@@ -2768,7 +2881,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     // }
     $(`#wordbooksPad .words .pad .row0`).click(function(){
         var row = this.data;
-        translatee(row.word)
+        translatee1(row.word)
         loadRelatedWords(row.word)
     })
 
@@ -2797,21 +2910,18 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                     promptEle.remove()
                 },
                 confirm:function(v,promptEle){
-                    if(v == 'delete'){
+                    if(v && v.toLowerCase().trim() == 'delete'){
                         ws.send(JSON.stringify({
                             action:9,
                             wordbookNo:page.wordbooks.selected.no,
                             word:row.word
                         }))
                         ele.remove()
-
-                        if(!s)
-                            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
                         promptEle.remove()
+                        page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
                     }else{
                         common.alert('输入错误')
                     }
-                    
                 }
             })
         }else{
@@ -2820,10 +2930,9 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 wordbookNo:page.wordbooks.selected.no,
                 word:row.word
             }))
+            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
             ele.remove()
         }
-        
-        
     })
 
     function addWordbookWord(wordbookNo){
@@ -3000,7 +3109,9 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             }
         })
     }
-
+    $(`#favorsPad .loadmore`).click(function(){
+        loadMoreFavoredWords()
+    })
 
     function loadMoreFavoredWords(){
         var rstart = page.favoredWords.rows.length+1
@@ -3076,7 +3187,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     }
     $('#favorsPad .word0').click(function(e){
         var row = this.data
-        translatee(row.word)
+        translatee1(row.word)
         loadRelatedWords(row.word)
     })
     $('#favorsPad .word0 .removeBtn').click(function(e){
@@ -3107,7 +3218,9 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             $('#favorsPad .translation').css('visibility','hidden')
     })
 
-
+    $(`#historyWordsPad .loadmore`).click(function(){
+        loadMoreHistoryWords()
+    })
     
     function loadMoreHistoryWords(){
         var rstart = page.historyWords.rows.length+1
@@ -3199,7 +3312,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     })
     $('#historyWordsPad .word0').click(function(e){
         var row = this.data
-        translatee(row.word)
+        translatee1(row.word)
         loadRelatedWords(row.word)
     })
 
@@ -3278,11 +3391,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     $('#wordbooksPadOnAdd .closeBtn').click(function(){
         $('#wordbooksPadOnAdd').hide()
     })
-    // $('#wordbooksPadOnAdd .currRow').click(function(){
-    //     var row = this.data
-    //     $('#wordbooksPadOnAdd').hide()
-    //     addWordbookWord(row.no)
-    // })
+
     $('#wordbooksPadOnAdd .currRow,#wordbooksPadOnAdd .row0').click(function(){
         var row = this.data
         $('#wordbooksPadOnAdd').hide()
@@ -3290,14 +3399,15 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             addWordbookWord(row.no)
         }else{
             var words = page.wordBooksWordsMap['no'+row.no];
-            var word = {
-                word:page.currWord.word,
-                translation:page.currWord.translation,
-                phonetic:page.currWord.phonetic,
-                no:randomnum(12)
+            if(words){
+                var word = {
+                    word:page.currWord.word,
+                    translation:page.currWord.translation,
+                    phonetic:page.currWord.phonetic,
+                    no:randomnum(12)
+                }
+                words.rows.splice(0,0,word)
             }
-            words.rows.splice(0,0,word)
-            $('#wordbooksPadOnAdd').hide()
             ws.send(JSON.stringify({
                 action:8,
                 wordbookNo:row.no,
