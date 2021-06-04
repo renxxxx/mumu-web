@@ -9,7 +9,8 @@
     </script>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <!-- height=device-height, -->
+        <meta name="viewport" content="width=device-width,  initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>幕幕</title>
         <meta name="x5-fullscreen" content="true">
         <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
@@ -320,7 +321,7 @@
             </div>
             
             
-            <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #d8d8d8;display:none;box-shadow: 0px 0px 10px 0px black;">
+            <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #d8d8d8;display:none;box-shadow: 0px 0px 15px 0px rgb(159 159 159);">
                 <div style="height:30px;width:100%;font-size:0;">
                     <span id="chatroombtn" 
                         style="display:inline-block;height:30px;background-color: #d7d7d7;width:50%;cursor: pointer;
@@ -370,7 +371,7 @@
                 </div>
             </div>
             <div id="searchpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
-                    box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;padding:10px 5px;">
+                    box-shadow: 0px -1px 15px 0px rgb(159 159 159);font-size:0;display:none;box-sizing: border-box;padding:10px 5px;">
                 <span class="searchtag" style="font-size:16px;display:inline-block;min-width:50px;max-width:100px;height:25px;line-height: 25px;cursor: pointer;background-color: #ffd257;text-align: center;
                         border-radius: 3px;color:#626262;margin:0 10px 5px 0;padding:0 8px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
                     机场
@@ -391,7 +392,7 @@
             </div>
 
             <div id="wordbookpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
-                    box-shadow: 0px -1px 3px 0px black;font-size:0;display:none;box-sizing: border-box;">
+                    box-shadow: rgb(159 159 159) 0px -1px 15px 0px;font-size:0;display:none;box-sizing: border-box;">
                 <div style="position:absolute;top:0;height:35px;width:100%;">
                     <span id="favorsBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
                         text-align: center;">
@@ -409,31 +410,31 @@
                 
                 <div id="favorsPad" style="position:absolute;bottom:0;top:35px;width:100%;display:none;">
                     <div class="scrollbar1 words" style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
-                        <div class="word0 wrap" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
-                            <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                        <div class="word0 wrap" style="height:23px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
+                            <span class="word ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                            <span class="phonetic ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                            <span class="translation ellipsis" style="height:23px;line-height:23px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                            <span class="ellipsis removeBtn" style="height:23px;line-height:23px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
                                 box-sizing: border-box;">
                                 -
                             </span>
                         </div>
-                        <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;cursor: pointer;">
                             点击加载更多
                         </div>
-                        <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             已到底
                         </div>
-                        <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             暂无数据
                         </div>
-                        <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             加载中
                         </div>
                     </div>
@@ -452,31 +453,31 @@
 
                 <div id="historyWordsPad" style="position:absolute;bottom:0;top:35px;width:100%;display:none;">
                     <div class="scrollbar1 words" style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
-                        <div class="word0 wrap" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
-                            <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                        <div class="word0 wrap" style="height:23px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
+                            <span class="word ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                            <span class="phonetic ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                            <span class="translation ellipsis" style="height:23px;line-height:23px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
                                 box-sizing: border-box;">
                             </span>
-                            <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                            <span class="ellipsis removeBtn" style="height:23px;line-height:23px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
                                 box-sizing: border-box;">
                                 -
                             </span>
                         </div>
-                        <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;cursor: pointer;">
                             点击加载更多
                         </div>
-                        <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             已到底
                         </div>
-                        <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             暂无数据
                         </div>
-                        <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                             加载中
                         </div>
                     </div>
@@ -494,48 +495,60 @@
 
 
                 <div id="wordbooksPad" style="position:absolute;bottom:0;top:35px;width:100%;">
-                    <span style="width:99px;display:inline-block;position:absolute;top:0;bottom:0;left:0;border-right:1px solid #929292;">
-                        <div class="wordbooks scrollbar1" style="padding-bottom: 200px;position:absolute;bottom:36px;width:100%;top:0;overflow: auto;">
-                            <div class="ellipsis row0 row" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-bottom:1px solid #929292;
+                    <span style="width:90px;display:inline-block;position:absolute;top:0;bottom:0;left:0;border-right:1px solid rgb(111, 111, 111);">
+                        <div class="wordbooks noscrollbar" style="padding-bottom: 200px;position:absolute;bottom:36px;width:100%;top:0;overflow: auto;">
+                            <div class="ellipsis row0 row" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-bottom:1px solid rgb(111, 111, 111);
                             text-align: center;height:35px;line-height:35px;cursor: pointer;display:none;">
                             </div>
+                            <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;cursor: pointer;">
+                                点击加载更多
+                            </div>
+                            <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
+                                已到底
+                            </div>
+                            <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
+                                暂无数据
+                            </div>
+                            <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
+                                加载中
+                            </div>
                         </div>
-                        <div class="ellipsis createRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-top:1px dashed #929292;
-                            text-align: center;height:35px;line-height:35px;cursor: pointer;position:absolute;bottom:0;">
+                        <div class="ellipsis createRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:20px;color:#ffffff;border-top:1px dashed rgb(111, 111, 111);
+                            text-align: center;height:35px;line-height:35px;cursor: pointer;position:absolute;bottom:0;background-color: rgb(111, 111, 111);">
                             +
                         </div>
-                        <div class="ellipsis editRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:15px;color:#ffffff;border-top:1px solid #929292;
-                            text-align: center;height:35px;line-height:35px;cursor: pointer;display:none;position:absolute;bottom:0;">
-                            EDIT
+                        <div class="ellipsis editRowBtn" style="width:100%;box-sizing: border-box;padding:0 3px;font-size:25px;color:#ffffff;border-top:1px solid rgb(111, 111, 111);
+                            text-align: center;height:35px;line-height:35px;cursor: pointer;display:none;position:absolute;bottom:0;background-color: rgb(111, 111, 111);">
+                            ···
                         </div>
                     </span>
-                    <span class="words" style="width:calc(100% - 100px);display:inline-block;position:absolute;top:0;bottom:0;left:100px;padding-bottom:35px;">
+                    <span class="words" style="width:calc(100% - 91px);display:inline-block;position:absolute;top:0;bottom:0;left:91px;padding-bottom:35px;">
                         <div class="pad scrollbar1"  style="width:100%;position:absolute;top:0;bottom:35px;overflow: auto;">
-                            <div class="row0 row" style="height:27px;width:100%;cursor: pointer;display:none;padding: 2px 0;">
-                                <span class="word ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
+                            <div class="row0 row" style="height:23px;width:100%;cursor: pointer;display:none;">
+                                <span class="word ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 3px;
                                     box-sizing: border-box;">
                                 </span>
-                                <span class="phonetic ellipsis" style="height:27px;line-height:27px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
+                                <span class="phonetic ellipsis" style="height:23px;line-height:23px;width:33.33333%;font-size:15px;display:inline-block;color:#ffffff;padding:0 2px 0 2px;
                                     box-sizing: border-box;">
                                 </span>
-                                <span class="translation ellipsis" style="height:27px;line-height:27px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
+                                <span class="translation ellipsis" style="height:23px;line-height:23px;width:calc(33.33333% - 20px);font-size:15px;display:inline-block;color:#ffffff;padding:0 3px 0 2px;
                                     box-sizing: border-box;">
                                 </span>
-                                <span class="ellipsis removeBtn" style="height:27px;line-height:27px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
+                                <span class="ellipsis removeBtn" style="height:23px;line-height:23px;width:20px;font-size:20px;display:inline-block;color:#929292;text-align: center;
                                     box-sizing: border-box;">
                                     -
                                 </span>
                             </div>
-                            <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                            <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;cursor: pointer;">
                                 点击加载更多
                             </div>
-                            <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                            <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                                 已到底
                             </div>
-                            <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                            <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                                 暂无数据
                             </div>
-                            <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                            <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                                 加载中
                             </div>
                         </div>
@@ -559,32 +572,31 @@
                 <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
             </div>
 
-
-            <div id="wordbookDetailPad" style="width:80%;min-height:300px;max-height:500px;position:absolute;top:10%;left:50%;transform: translateX(-50%);
-                display:none;background-color: #ffffff;">
-                <div style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;line-height:35px;border-bottom:1px solid #9f9f9f;font-size:15px;">
-                    单词本
-                </div>
-                <div class="namePad" style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;">
-                    <span class="ellipsis name" style="width:70px;height:35px;line-height:35px;font-size:15px;display:inline-block;">
-                        名称
-                    </span>
-                    <span class="ellipsis value" style="width:calc(100% - 110px);height:35px;line-height:35px;font-size:15px;display:inline-block;">
-                    </span>
-                    <span class="ellipsis editBtn" style="width:40px;height:35px;line-height:35px;font-size: 11px;display:inline-block;text-align: center;cursor: pointer;">
-                        修改
-                    </span>
-                </div>
-                <div class="deleteBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:35px;
-                    cursor: pointer;">
-                    删 除
-                </div>
-                <div class="closeBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:0;
-                    cursor: pointer;">
-                    关 闭
+            <div id="wordbookDetailPad" style="width:100%;position:absolute;top:0;bottom:0;background-color: rgba(0, 0, 0, 0.5);display:none;">
+                <div style="width:80%;min-height:300px;max-height:500px;position:absolute;top:10%;left:50%;transform: translateX(-50%);background-color: #ffffff;">
+                    <div style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;line-height:35px;border-bottom:1px solid #e6e6e6;font-size:15px;text-align: center;">
+                        单词本
+                    </div>
+                    <div class="namePad" style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;">
+                        <span class="ellipsis name" style="width:70px;height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                            名称
+                        </span>
+                        <span class="ellipsis value" style="width:calc(100% - 110px);height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                        </span>
+                        <span class="ellipsis editBtn" style="width:40px;height:35px;line-height:35px;font-size: 11px;display:inline-block;text-align: center;cursor: pointer;">
+                            修改
+                        </span>
+                    </div>
+                    <div class="deleteBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:36px;
+                        cursor: pointer;">
+                        删 除
+                    </div>
+                    <div class="closeBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:0;
+                        cursor: pointer;">
+                        关 闭
+                    </div>
                 </div>
             </div>
-
 
 
             <div id="wordbooksPadOnAdd" style="width:80%;min-height:240px;max-height:500px;position:absolute;top:10%;left:50%;transform: translateX(-50%);
@@ -595,10 +607,10 @@
                 </div>
                 <div class="currRowPad" style="width:100%;height:40px;display:none;">
                     <div class="currRow" style="width:100%;height:40px;cursor:pointer;">
-                        <span class="ellipsis name" style="width:calc(100% - 35px);box-sizing: border-box;padding:0 0 0 5px;height:40px;line-height:40px;font-size:15px;
+                        <span class="ellipsis name" style="width:calc(100% - 40px);box-sizing: border-box;padding:0 0 0 5px;height:40px;line-height:40px;font-size:15px;
                             display:inline-block;">
                         </span>
-                        <span class="ellipsis" style="width: 35px;box-sizing: border-box;padding:0 5px 0 0;height:40px;line-height:40px;font-size:15px;
+                        <span class="ellipsis" style="width: 40px;box-sizing: border-box;padding:0 5px 0 0;height:40px;line-height:40px;font-size:15px;
                             display:inline-block;text-align: center;">
                             当前
                         </span>
@@ -612,13 +624,13 @@
                     <div class="loadmore someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
                         点击加载更多
                     </div>
-                    <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                    <div class="loadend someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;">
                         已到底
                     </div>
-                    <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                    <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;">
                         暂无数据
                     </div>
-                    <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                    <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#b5b5b5;display:none;">
                         加载中
                     </div>
                 </div>

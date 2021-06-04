@@ -4,6 +4,8 @@
     }
     window.page=page
     page.translateajaxs=[]
+    page.wordbookWordsAjaxs=[]
+    
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
     page.currVideos=[]
@@ -38,6 +40,10 @@
     }
     page.currWord=null
     page.wordBooksWordsMap={}
+    page.removeWordsControl={
+        favor:null,
+        history:null,
+    }
 
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
@@ -1906,24 +1912,45 @@
             })
     })
 
-    
+  
+  
+
     $('#wordbookpad').bind('mousedown touchstart',function(e){
-        if(e.type == 'touchstart'){
+        this.touchstartTime = new Date().getTime();
+        if(e.type=='touchstart'){
             var touch = e.targetTouches[0];
+            this.touchstartX = touch.pageX;
             this.touchstartY = touch.pageY;
-        }else if(e.type == 'mousedown'){
+        }else if(e.type=='mousedown'){
+            this.touchstartX = e.pageX;
             this.touchstartY = e.pageY;
         }
     }).bind('mousemove touchmove',function(e){
-        if(e.type == 'touchmove'){
+        if(e.type=='touchmove'){
             var touch = e.targetTouches[0];
+            this.touchendX = touch.pageX;
             this.touchendY = touch.pageY;
-        }else if(e.type == 'mousemove'){
+        }else if(e.type=='mousemove'){
+            this.touchendX = e.pageX;
             this.touchendY = e.pageY;
         }
-        
+
+        var parentEle=null;
+        while(true){
+            if(!parentEle)
+                parentEle=$(e.target);
+            else
+                parentEle = $(parentEle).parent()
+
+            if(parentEle.scrollTop()>0){
+                break;
+            }
+            if(parentEle.length==0)
+                break
+        }
+        this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.touchendY-this.touchstartY>50){
+        if(this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
             $('#wordbookpad').slideUp(100)
             $('#gearframe1').show()
             $('#prevnextpad').show()
@@ -1931,9 +1958,6 @@
         this.touchstartY=null
         this.touchendY=null
     })
-     
-  
-
 
 
 
@@ -2569,7 +2593,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
 
 
     $('#wordbooksPad .createRowBtn').click(function(){
-        common.prompt({
+        common.promptLine({
             message:'请输入单词本名称',
             parent:$('#index'),
             confirm:function(v){
@@ -2592,6 +2616,15 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                                 ele[0].data=row
                                 ele.show();
                                 $('#wordbooksPad .wordbooks .row0').before(ele)
+
+
+                                var ele1 = $('#wordbooksPadOnAdd .row0').clone(true);
+                                ele1.removeClass('row0')
+                                ele1.addClass('row'+row.no)
+                                ele1.text(row.name)
+                                $('#wordbooksPadOnAdd .row0').before(ele1)
+                                ele1.show()
+                                ele1[0].data=element
                             }else{
                                 common.alert(res.msg)
                             }
@@ -2603,6 +2636,8 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     })
     $('#wordbooksPad .wordbooks .row0').click(function(e){
         var row = page.wordbooks.selected=this.data;
+        $('#wordbooksPad .wordbooks .row').css('background-color','unset')
+        $(this).css('background-color','rgb(111, 111, 111)')
         $('#wordbooksPad .createRowBtn').hide()
         $('#wordbooksPad .editRowBtn').show()
         chooseWordbook(row.no)
@@ -2622,6 +2657,9 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             }
             page.wordBooksWordsMap['no'+wordbookNo]=words
         }
+        $(`#wordbooksPad .words .pad .someload`).hide()
+        $(`#wordbooksPad .words .pad .loadmore`).show()
+        $('#wordbooksPad .words .pad').show()
         $('#wordbooksPad .words .pad .row').not('.row0').remove()
         if(words.rows.length==0)
             loadMoreWordbookWords(wordbookNo);
@@ -2664,38 +2702,43 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         var words = page.wordBooksWordsMap['no'+wordbookNo];
         var rstart = words.rows.length+1
         var rcount = words.rcount
-        $.ajax({
-            url: '/mumu/wordbook-words?',
-            data: {
-                wordbookNo:wordbookNo,
-                rstart:rstart,
-                rcount:rcount,
-            },
-            beforeSend:()=>{
-                $(`#wordbooksPad .words .pad .someload`).hide()
-                $(`#wordbooksPad .words .pad .loading`).show()
-            },
-            success:function(res){
-                if(res.code==0){
-                    if(rstart==1 && res.data.rows.length==0){
-                        $(`#wordbooksPad .words .pad .someload`).hide()
-                        $(`#wordbooksPad .words .pad .loadnodata`).show()
-                    }else if(res.data.rows.length <rcount){
-                        $(`#wordbooksPad .words .pad .someload`).hide()
-                        $(`#wordbooksPad .words .pad .loadend`).show()
-                    }else{
-                        $(`#wordbooksPad .words .pad .someload`).hide()
-                        $(`#wordbooksPad .words .pad .loadmore`).show()
+        for (const ajax of page.wordbookWordsAjaxs) {
+            ajax.abort()
+        }
+        page.wordbookWordsAjaxs.push(
+            $.ajax({
+                url: '/mumu/wordbook-words?',
+                data: {
+                    wordbookNo:wordbookNo,
+                    rstart:rstart,
+                    rcount:rcount,
+                },
+                beforeSend:()=>{
+                    $(`#wordbooksPad .words .pad .someload`).hide()
+                    $(`#wordbooksPad .words .pad .loading`).show()
+                },
+                success:function(res){
+                    if(res.code==0){
+                        if(rstart==1 && res.data.rows.length==0){
+                            $(`#wordbooksPad .words .pad .someload`).hide()
+                            $(`#wordbooksPad .words .pad .loadnodata`).show()
+                        }else if(res.data.rows.length <rcount){
+                            $(`#wordbooksPad .words .pad .someload`).hide()
+                            $(`#wordbooksPad .words .pad .loadend`).show()
+                        }else{
+                            $(`#wordbooksPad .words .pad .someload`).hide()
+                            $(`#wordbooksPad .words .pad .loadmore`).show()
+                        }
+                        if(res.data.rows.length>0){
+                            words.currRows=res.data.rows
+                            words.rows.push(...res.data.rows)
+                            renderWordbookWords(res.data.rows)
+                        }
+                        
                     }
-                    if(res.data.rows.length>0){
-                        words.currRows=res.data.rows
-                        words.rows.push(...res.data.rows)
-                        renderWordbookWords(res.data.rows)
-                    }
-                    
                 }
-            }
-        })
+            })
+        )
     }
 
     // function chooseWordbook(wordbookNo){
@@ -2745,12 +2788,42 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(){
         var ele = $(this).parents('.row');
         var row =ele[0].data;
-        ws.send(JSON.stringify({
-            action:9,
-            wordbookNo:page.wordbooks.selected.no,
-            word:row.word
-        }))
-        ele.remove()
+        var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
+        if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
+            common.promptLine({
+                message:'输入 delete 以确认移除, 1分钟内不会再次提示.',
+                manualClose:1,
+                cancel:function(v,promptEle){
+                    promptEle.remove()
+                },
+                confirm:function(v,promptEle){
+                    if(v == 'delete'){
+                        ws.send(JSON.stringify({
+                            action:9,
+                            wordbookNo:page.wordbooks.selected.no,
+                            word:row.word
+                        }))
+                        ele.remove()
+
+                        if(!s)
+                            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
+                        promptEle.remove()
+                    }else{
+                        common.alert('输入错误')
+                    }
+                    
+                }
+            })
+        }else{
+            ws.send(JSON.stringify({
+                action:9,
+                wordbookNo:page.wordbooks.selected.no,
+                word:row.word
+            }))
+            ele.remove()
+        }
+        
+        
     })
 
     function addWordbookWord(wordbookNo){
@@ -2797,7 +2870,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     })
     $('#wordbookDetailPad .deleteBtn').click(function(e){
         var row = page.wordbooks.selected;
-        common.prompt({
+        common.promptLine({
             message:'请输入 '+row.name+' 以确认删除.',
             confirm:function(v){
                 if(v){
@@ -2808,6 +2881,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                                 no:row.no,
                                 name:row.name,
                             },
+                            async:false,
                             success: function(res) {
                                if(res.code==0){
                                     $('#wordbookDetailPad').hide()
@@ -2830,7 +2904,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     
     $('#wordbookDetailPad .namePad .editBtn').click(function(e){
         var row = page.wordbooks.selected;
-        common.prompt({
+        common.promptLine({
             message:'请输入新名称',
             value:row.name,
             confirm:function(v){
@@ -2869,17 +2943,36 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         }
         
     })
+
+    $(`#wordbooksPad .wordbooks .loadmore`).click(function(){
+        loadMoreWordbooks()
+    })
     function loadMoreWordbooks(){
         var rstart = page.wordbooks.rows.length+1;
+        var rcount = page.wordbooks.rcount;
         $.ajax({
             url: '/mumu/wordbooks?',
             data: {
                 rstart:rstart,
-                rcount:page.wordbooks.rcount,
+                rcount:rcount,
+            },
+            beforeSend:()=>{
+                $(`#wordbooksPad .wordbooks .someload`).hide()
+                $(`#wordbooksPad .wordbooks .loading`).show()
             },
             success: function(res) {
                 page.wordbooks.rows.push(...res.data.rows)
                 page.wordbooks.currRows = res.data.rows
+                if(rstart==1 && res.data.rows.length==0){
+                    $(`#wordbooksPad .wordbooks .someload`).hide()
+                    $(`#wordbooksPad .wordbooks .loadnodata`).show()
+                }else if(res.data.rows.length <rcount){
+                    $(`#wordbooksPad .wordbooks .someload`).hide()
+                    $(`#wordbooksPad .wordbooks .loadend`).show()
+                }else{
+                    $(`#wordbooksPad .wordbooks .someload`).hide()
+                    $(`#wordbooksPad .wordbooks .loadmore`).show()
+                }
                 $(res.data.rows).each((inx,row)=>{
                     var ele = $('#wordbooksPad .wordbooks .row0').clone(true)
                     ele.removeClass('row0')
@@ -3193,7 +3286,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     $('#wordbooksPadOnAdd .currRow,#wordbooksPadOnAdd .row0').click(function(){
         var row = this.data
         $('#wordbooksPadOnAdd').hide()
-        if(row.no == page.wordbooks.selected.no){
+        if(page.wordbooks.selected && row.no == page.wordbooks.selected.no){
             addWordbookWord(row.no)
         }else{
             var words = page.wordBooksWordsMap['no'+row.no];
