@@ -78,9 +78,11 @@
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
+            <div id="videoName" class="ellipsis" style="height:30px;background-color: #000000;font-size:13px;text-align: center;width:100%;color:#929292;
+                line-height:30px;">
+            </div>
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;">
-                
                 <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
                     style="background: #000000;display: block;position: relative;top:-1000px;object-fit:cover;">
                 </video>
@@ -149,7 +151,7 @@
                     </span>
                     <span id="addToWordbookBtn" style="width:50%;font-size:14px;text-align: center;border-left: 1px solid #3c3c3c;margin-left:-1px;
                                 cursor: pointer;height:30px;line-height:30px;display:inline-block;">
-                        单词本
+                        加入单词本
                     </span>
                 </div>
                 
@@ -170,7 +172,11 @@
                         </div>
                     </div>
                 </div>
-                <div id="wordsframe_cancel" style="text-align: center;font-size:16px;position:absolute;top:100px;left:0;right:0;">点击取消</div>
+                <div id="wordsframe_cancel" style="position:absolute;top:30px;left:0;right:0;bottom:0;">
+                    <div style="text-align: center;font-size:16px;width:100%;position: absolute;top:50%;transform: translateY(-50%);">
+                        点击取消
+                    </div>
+                </div>
             </div>
             <div style="width:100%;margin-top:5px;min-height:84px;margin-bottom: 5px;">
                 <div id="zh_subtitles" class="unselectable" 

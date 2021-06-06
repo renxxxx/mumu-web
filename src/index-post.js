@@ -294,7 +294,8 @@
         videoNo=videop.no
         genShareData()
         $('#zh_subtitles').html('')
-        $('#titleinback').text(video.name)
+        $('#titleinback').text(video.reference)
+        $('#videoName').text(video.name)
         $('#titleinbackpad').show()
         $('#video').attr("poster", video.cover)
         
@@ -428,7 +429,6 @@
         
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
-                debugger
                 //log.debug("search all ")
                 en.current = item
                 en.currentIndex = inx
@@ -598,6 +598,7 @@
         $('.dialogTitle #kw').html('');
         $('#summtrans').hide()
         $('#wordsframe').hide()
+        $('#videoshasow').hide()
         $('#word-in').val('')
         $('#video').css('top','0px')
     }
@@ -914,7 +915,7 @@
             //$('#videoshasow').css('height',$('#video').css('height'))
         }
     }
-
+    
     function enSubtitlesShow(){
         var thisEle = this;
         $("#zh_subtitles").css("opacity")
@@ -1326,6 +1327,16 @@
         }
     }
 
+    function toSearch(){
+        $('#words .word').remove()
+        $('#summtrans').hide()
+        $('#wordsframe').show()
+        $('#word-in').focus()
+        $('#word-in').trigger("input")
+        pauseVideo();
+        doshadow()
+    }
+
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{
             $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
@@ -1345,7 +1356,7 @@
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
                 title: video.name, // 分享标题
-                desc: '幕幕 - 短视频练英语\n'+(video.chname||' '), // 分享描述
+                desc: '幕幕 - 短视频练英语\n'+(video.reference||' '), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1369,7 +1380,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: video.name, // 分享标题
-            desc: '幕幕 - 短视频练英语\n'+(video.chname||' '), // 分享描述
+            desc: '幕幕 - 短视频练英语\n'+(video.reference||' '), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1395,6 +1406,26 @@
             return ss;
         ss = ss.replace(sss[1],`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;margin:0 5px;color: bisque;">${sss[1]}</span>`)
         return ss;
+    }
+    function lightkeytrans1(ss){
+        if(!ss)
+            return ss
+        var sss=ss.replace(/(\w+)/g,`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;margin:0 3px 0 0;color: bisque;">$1</span>`)
+        sss= sss.replace(/<span.+?>(vi|adj|vt|pron|n|v|num|adv|art|conj|prep|abbr|int)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(vi)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(adj)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(vt)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(porn)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(n)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(v)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(num)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(adv)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(art)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(conj)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(prep)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(abbr)<\/span>/,'$1')
+        // sss= sss.replace(/<span.+?>(int)<\/span>/,'$1')
+        return sss;
     }
 
     $('#video').bind('play',function(){
@@ -1772,7 +1803,7 @@
     })
     $('#searchbtn').bind('click',function(event){
         log.info('#searchbtn.click')
-        search()
+        toSearch()
     })
 
     doSubtitlesStatus()
@@ -1834,15 +1865,15 @@
             }
         }
     }
-    $('#word-in').bind('blur',function(){
-        if(this.value == ''){
-            setTimeout(function(){
-                $('#wordsframe').hide()
-                $('#video').css('top',0)
-                recoverManual()
-            },100)
-        }
-    })
+    // $('#word-in').bind('blur',function(){
+    //     if(this.value == ''){
+    //         setTimeout(function(){
+    //             $('#wordsframe').hide()
+    //             $('#video').css('top',0)
+    //             recoverManual()
+    //         },100)
+    //     }
+    // })
 
     $('#word-in').bind('focus',function(){
         this.select()
@@ -1960,7 +1991,7 @@
 
 
     $('#wordbookpadBtn').click(function(){
-        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15))+'px')
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15+30))+'px')
         $('#wordbookpad').slideDown(100)
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
@@ -1969,7 +2000,7 @@
     })
 
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+30))+'px')
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+30+30))+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
@@ -2023,7 +2054,7 @@
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15+30))+'px')
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#chatpad').slideDown(100,function(){
@@ -2484,7 +2515,12 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             // $('#lastmsg').text(msg)
         }
     })
-
+$('#wordsframe_cancel').click(function(){
+    recoverManual()
+    $('#wordsframe').hide()
+    $('#videoshasow').hide()
+    $('#video').css('top',0);
+})
     
     
 
@@ -2519,7 +2555,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             }else if(data.action == 10){
                 if(page.currWordText==data.word){
                     page.currWord=data
-                    $('#summrest').hide()
+                    //$('#summrest').hide()
                     pauseVideo()
                     doshadow()
 
@@ -2539,11 +2575,12 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                     }else{
                         $('#summtrans-speak').hide()
                     }
-                    $('#summtrans-vv').html('').scrollTop(0)
+                    $('#summtrans-vv').scrollTop(0)
+                    $('#summtrans-vv').html('')
                     if(page.currWord.explains){
                         $(page.currWord.explains).each(function(index,item){
                             hasTranslate=true
-                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
                     }
                     if(page.currWord.wfs){
