@@ -1976,7 +1976,7 @@
         }
         this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>150){
             $('#wordbookpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
@@ -2388,7 +2388,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         }
         this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>50){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>150){
             $('#chatpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
