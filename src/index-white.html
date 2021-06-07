@@ -75,17 +75,17 @@
 
         </style>
     </head>
-    <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #272727;" >
+    <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
         <div id="logo" class="unselectable" style="max-width:800px;height:100%;position:relative;background-color: #ffffff;font-size:0;margin: auto;" >
             <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
         </div>
         
-        <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #000000;font-size:0;display: none;" >
+        <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;display: none;" >
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
-            <div id="videoName" class="ellipsis" style="height:30px;background-color: #000000;font-size:13px;text-align: center;width:100%;color:#cccccc;
-                line-height:30px;font-weight: 900;">
+            <div id="videoName" class="ellipsis" style="height:30px;background-color: #000000;font-size:13px;text-align: center;width:100%;color:#929292;
+                line-height:30px;">
             </div>
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;">
@@ -115,7 +115,7 @@
 
             <div id="summtrans" 
                 style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
-                    top: 0;color: #ffffff;display:none;border-bottom:1px solid #404040;">
+                    top: 0;color: #ffffff;display:none;">
                 <div style="width:calc(100% - 111px);display:inline-block;position: absolute;vertical-align: middle;border-right: 1px solid #3c3c3c;
                         top:0;bottom:30px;">
                     <div id="summtrans-word" class="unselectable"
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="position:absolute;bottom:0;width:100%;border-top: 1px solid #3c3c3c;height:30px;background-color: #4c4c4c;">
+                <div style="position:absolute;bottom:0;width:100%;border-top: 1px solid #3c3c3c;height:30px;">
                     <span id="favor" style="width:50%;font-size:14px;text-align: center;
                                 cursor: pointer;height:30px;line-height:30px;display:inline-block;">
                         收 藏
@@ -165,7 +165,7 @@
 
             <div id="wordsframe" 
                 style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
-                    top: 0;color: #ffffff;padding:5px 5px;display:none;border-bottom:1px solid #404040;">
+                    top: 0;color: #ffffff;padding:5px 5px;display:none;">
                 <form onsubmit="return false" action="javascript:return true">
                     <input id="word-in" autocomplete="off" type="text"
                         style="font-size: 16px;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
@@ -186,10 +186,10 @@
             </div>
             <div style="width:100%;margin-top:5px;min-height:84px;margin-bottom: 5px;">
                 <div id="zh_subtitles" class="unselectable" 
-                    style="line-height: 30px;width: 100%;text-align: center;background-color: #000000;font-size: 18px;" >
+                    style="line-height: 30px;width: 100%;text-align: center;background-color: #ffffff;font-size: 18px;" >
                 </div>
-                <div id="chDialog" class="chDialog unselectable" style="width:100%;height:20px;font-size:12px;color:#dadada;text-align: center;padding:0 5px;overflow: hidden;
-                            word-break: break-all;box-sizing: border-box;line-height: 20px;letter-spacing: 0.5px;background-color: #000000;">
+                <div id="chDialog" class="chDialog unselectable" style="width:100%;height:20px;font-size:12px;color:#9b9b9b;text-align: center;padding:0 5px;overflow: hidden;
+                            word-break: break-all;box-sizing: border-box;line-height: 20px;letter-spacing: 0.5px;">
                 </div>
             </div>
             
@@ -209,19 +209,16 @@
                 </button>
             </div> -->
             <div id="prevnextpad" style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;margin-bottom: 10px;">    
-                <span id="prevline" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 37.5%;
-                        border-width:1px 0 1px 0;border-color: #827e7e;font-size: 12px;border-style:solid;background-color: #000000;color:#bfbbbb;">
+                <span id="prevline" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 37.5%;background: white;border-width:1px 0 1px 0;border-color: #827e7e;font-size: 12px;border-style:solid;background-color: #ffffff;">
                     上一句
                 </span>
                 <span id="currline" class="unselectable" style="display:none;text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 33.3333333333%;background: white;border-width:1px 1px 1px 1px;border-color: #827e7e;font-size: 12px;border-style: solid;background-color: #ffffff;">
                     本句
                 </span>
-                <span id="loopLine" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 25%;
-                        border-width:1px 1px 1px 1px;border-color: #827e7e;font-size: 12px;border-style: solid;background-color: #000000;">
-                    <svg style="vertical-align: text-bottom;" t="1621522652200" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2691" width="15" height="15"><path d="M73.617261 633.231387a24.319042 24.319042 0 0 1-24.38304-24.319043V304.476331c0-90.236447 73.341112-158.329766 170.553285-158.329766H901.744654a24.319042 24.319042 0 0 1 0 48.702083H219.787506c-70.589221 0-121.787205 46.078186-121.787205 109.627683v304.372016a24.319042 24.319042 0 0 1-24.38304 24.38304zM804.212494 876.805796H98.000301a24.319042 24.319042 0 1 1 0-48.76608h706.212193c63.805488 0 121.787205-63.74149 121.787205-133.946726V414.104015a24.319042 24.319042 0 1 1 48.702082 0v280.052973c0 97.340167-79.612865 182.648808-170.489287 182.648808z" fill="#bfbbbb" p-id="2692"></path><path d="M804.212494 340.954895a24.319042 24.319042 0 0 1-17.215322-41.598362l120.251265-120.251265a11.967529 11.967529 0 0 0 3.583859-8.63966 12.159521 12.159521 0 0 0-3.583859-8.703657L786.997172 41.510686c-9.471627-9.471627-9.471627-24.959017 0-34.430645s24.959017-9.471627 34.430644 0l120.251265 120.251265c11.583544 11.519546 17.791299 26.814944 17.7913 43.134302a60.349624 60.349624 0 0 1-17.7913 43.070304l-120.251265 120.251265a23.551073 23.551073 0 0 1-17.215322 7.167718zM219.787506 1022.97604a24.12705 24.12705 0 0 1-17.27932-7.231715l-120.251265-120.251265a60.925601 60.925601 0 0 1 0-86.204606l120.251265-120.251265a24.447037 24.447037 0 0 1 34.494642 34.558639l-120.187268 120.187268a12.159521 12.159521 0 0 0 0 17.343317l120.187268 120.251265a24.191047 24.191047 0 0 1 0 34.366647 24.319042 24.319042 0 0 1-17.215322 7.231715z" fill="#bfbbbb" p-id="2693"></path></svg>
+                <span id="loopLine" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 25%;background: white;border-width:1px 1px 1px 1px;border-color: #827e7e;font-size: 12px;border-style: solid;background-color: #ffffff;">
+                    <svg style="vertical-align: text-bottom;" t="1621522652200" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2691" width="15" height="15"><path d="M73.617261 633.231387a24.319042 24.319042 0 0 1-24.38304-24.319043V304.476331c0-90.236447 73.341112-158.329766 170.553285-158.329766H901.744654a24.319042 24.319042 0 0 1 0 48.702083H219.787506c-70.589221 0-121.787205 46.078186-121.787205 109.627683v304.372016a24.319042 24.319042 0 0 1-24.38304 24.38304zM804.212494 876.805796H98.000301a24.319042 24.319042 0 1 1 0-48.76608h706.212193c63.805488 0 121.787205-63.74149 121.787205-133.946726V414.104015a24.319042 24.319042 0 1 1 48.702082 0v280.052973c0 97.340167-79.612865 182.648808-170.489287 182.648808z" fill="#4D4D4D" p-id="2692"></path><path d="M804.212494 340.954895a24.319042 24.319042 0 0 1-17.215322-41.598362l120.251265-120.251265a11.967529 11.967529 0 0 0 3.583859-8.63966 12.159521 12.159521 0 0 0-3.583859-8.703657L786.997172 41.510686c-9.471627-9.471627-9.471627-24.959017 0-34.430645s24.959017-9.471627 34.430644 0l120.251265 120.251265c11.583544 11.519546 17.791299 26.814944 17.7913 43.134302a60.349624 60.349624 0 0 1-17.7913 43.070304l-120.251265 120.251265a23.551073 23.551073 0 0 1-17.215322 7.167718zM219.787506 1022.97604a24.12705 24.12705 0 0 1-17.27932-7.231715l-120.251265-120.251265a60.925601 60.925601 0 0 1 0-86.204606l120.251265-120.251265a24.447037 24.447037 0 0 1 34.494642 34.558639l-120.187268 120.187268a12.159521 12.159521 0 0 0 0 17.343317l120.187268 120.251265a24.191047 24.191047 0 0 1 0 34.366647 24.319042 24.319042 0 0 1-17.215322 7.231715z" fill="#4D4D4D" p-id="2693"></path></svg>
                 </span>
-                <span id="nextline" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 37.5%;
-                        border-width:1px 0 1px 0;border-color:#827e7e;font-size: 12px;border-style:solid;background-color: #000000;color:#bfbbbb;">
+                <span id="nextline" class="unselectable" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 37.5%;background: white;border-width:1px 0 1px 0;border-color:#827e7e;font-size: 12px;border-style:solid;background-color: #ffffff;">
                     下一句
                 </span>
             </div>
@@ -238,7 +235,7 @@
             <div id="controlpad" style="justify-content: space-around;display: flex;height: 35px;align-items: center;position:relative;">
                 <span id="loopVideoBtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
-                        border: 1px solid #676767;background-color: #000000;border-radius: 3px;">
+                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     循环
                 </span>
                 <!-- <span id="unloopVideoBtn" class="unselectable" 
@@ -248,18 +245,18 @@
                 </span> -->
                 <span id="searchbtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
-                        border: 1px solid #676767;background-color: #000000;border-radius: 3px;">
+                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     查词
                 </span>
                 <span id="startFn1"  class="startFn unselectable"
-                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: #3e3e3e;border: 1px solid #676767;
+                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: #d8d8d8;border: 1px solid #bfbbbb;
                         font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
-                    <svg style="width: 15px;height: 15px;vertical-align: middle;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#bfbbbb" p-id="2560"></path></svg>
+                    <svg style="width: 15px;height: 15px;vertical-align: middle;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#ffffff" p-id="2560"></path></svg>
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
                 </span>
                 <span id="stopFn1" class="stopFn unselectable" 
-                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: #000000;border: 1px solid #676767;color:#bfbbbb;
+                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
                         font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
                     <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
                     <svg style="width: 15px;height: 15px;vertical-align: middle;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
@@ -267,12 +264,12 @@
                 </span>
                 <span id="wordbookpadBtn" class="unselectable" 
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
-                        border: 1px solid #676767;background-color: #000000;border-radius: 3px;position:relative;">
+                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;position:relative;">
                     单词本
                 </span>
                 <span id="subtitlesBtn" class="unselectable"
                     style="font-size: 14px;cursor:pointer;padding: 0px;width: 13%;height: 33px;color: #bfbbbb;text-align: center;line-height: 33px;
-                        border: 1px solid #676767;background-color: #000000;border-radius: 3px;">
+                        border: 1px solid #bfbbbb;background-color: #ffffff;border-radius: 3px;">
                     字幕
                 </span>
             </div>
@@ -297,15 +294,15 @@
             
             
             <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:106px;
-                    background-color: #000000;box-sizing: border-box;padding: 0 5px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;">
-                <span id="titleinback" style="font-size:12px;color:#f7f7f7;"></span>
+                    background-color: #ffffff;box-sizing: border-box;padding: 0 5px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;">
+                <span id="titleinback" style="font-size:12px;color:#bfbbbb;"></span>
             </div>
-            <div id="searchpadbtn" style="position:absolute;bottom:78px;width:100%;background-color: #000000;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
-                                    font-size:0px;box-sizing: border-box;border-top:1px solid rgb(64, 64, 64);">
-                <span id="searchtext" style="font-size: 13px;color:#f7f7f7;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
+            <div id="searchpadbtn" style="position:absolute;bottom:78px;width:100%;background-color: #ffffff;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
+                                    font-size:0px;box-sizing: border-box;border-top:1px solid #efefef;">
+                <span id="searchtext" style="font-size: 13px;color:#bfbbbb;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
                     搜索
                 </span>
-                <svg style="position:absolute;right:2px;top:4px;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="20" height="20"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#ffffff" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#ffffff" p-id="3667"></path></svg>            
+                <svg style="position:absolute;right:2px;top:4px;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="20" height="20"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#3D3942" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#3D3942" p-id="3667"></path></svg>            
             </div>
             <div id="chatminpad" style="position:absolute;bottom:50px;width:100%;background-color: #d8d8d8;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
                                     font-size:0px;box-sizing: border-box;">
@@ -408,7 +405,7 @@
                 </div>
             </div>
 
-            <div id="wordbookpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.9);bottom:0px;
+            <div id="wordbookpad" style="position:absolute;width:100%;background-color: hsla(0, 0%, 0%, 0.87);bottom:0px;
                     box-shadow: rgb(159 159 159) 0px -1px 15px 0px;font-size:0;display:none;box-sizing: border-box;">
                 <div style="position:absolute;top:0;height:35px;width:100%;">
                     <span id="favorsBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;

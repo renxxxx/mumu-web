@@ -568,14 +568,14 @@
             }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="border-bottom:2px solid #ffffff;;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-size:bo" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                var sp = $('<span style="border-bottom:2px solid #000000;color:#ffffff;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-sizing: border-box;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
                 sp.bind('mouseout',function(){
                     if(isPc()){
-                        $(this).css('border-bottom','2px solid #ffffff')
+                        $(this).css('border-bottom','2px solid #000000')
                     }
                 }).bind('mouseover',function(){
                     if(isPc()){
-                        $(this).css('border-bottom','2px solid black')
+                        $(this).css('border-bottom','2px solid #ffffff')
                     }
                 })
                 $("#zh_subtitles").append(sp)
@@ -631,19 +631,19 @@
     function troggleLoopLine(){
         if(loopLine){
             loopLine=0
-            $('#loopLine').css('background-color',"#ffffff")
+            $('#loopLine').css('background-color',"#000000")
         }else{
             loopLine=1
-            $('#loopLine').css('background-color',"#ffcc79")
+            $('#loopLine').css('background-color',"#3e3e3e")
         }
     }
     function closeLoopLine(){
         loopLine=0
-        $('#loopLine').css('background-color',"#ffffff")
+        $('#loopLine').css('background-color',"#000000")
     }
     function openLoopLine(){
         loopLine=1
-        $('#loopLine').css('background-color',"#ffcc79")
+        $('#loopLine').css('background-color',"#6f6f6f")
     }
 
     function currline(){
@@ -876,7 +876,7 @@
         },10)
         currwordno=0
         translationtext = '';
-        $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+        $('#zh_subtitles span').css({"background": "transparent","color": "#ffffff"})
         $('.startFn').css({'display':'none'})
         $('.stopFn').css({'display':'inline'})
         $('.dialog').css({'display' : 'none'})
@@ -2038,10 +2038,10 @@
     $('#loopVideoBtn').click(function(){
         if($('#video').attr('loop')){
             $('#video').attr('loop',false)
-            $(this).css('background-color','#ffffff')
+            $(this).css('background-color','#000000')
         }else{
             $('#video').attr('loop','loop')
-            $(this).css('background-color','#e6e6e6')
+            $(this).css('background-color','#3e3e3e')
         }
         // $('#unloopVideoBtn').show()
         // $('#loopVideoBtn').hide()
@@ -2111,8 +2111,8 @@
                 page.spans =[]
                 page.firstRangeWordInx=index
                 page.lastRangeWordInx=index
-                $('#zh_subtitles .font').css('background-color','#ffffff')
-                $('#zh_subtitles .font.span'+index).css('background-color','rgb(210, 203, 203)')
+                $('#zh_subtitles .font').css('background-color','#000000')
+                $('#zh_subtitles .font.span'+index).css('background-color','#828282')
             }
     }).bind('mousemove touchmove',function(e){
         var currTarget = null;
@@ -2125,7 +2125,7 @@
         if($(currTarget).hasClass('font')){
             if(!page.spansIs)
                 return
-            $('#zh_subtitles .font').css('background-color','#ffffff')
+            $('#zh_subtitles .font').css('background-color','#000000')
             var index = parseInt($(currTarget).attr('index'));
             if(page.spans[page.spans.length-1] != index){
                 page.spans.push(index)
@@ -2140,7 +2140,7 @@
             page.firstRangeWordInx=first
             page.lastRangeWordInx=last
             for (var inx = first; inx <= last; inx++) {
-                $('#zh_subtitles .font.span'+inx).css('background-color','rgb(210, 203, 203)')
+                $('#zh_subtitles .font.span'+inx).css('background-color','#828282')
             }
         }
     }).bind('mouseup touchend',function(e){
