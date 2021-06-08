@@ -209,7 +209,7 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
   value=value==null||value==undefined?'':value
   var id="ff"+randomnum(10);
   var ele = 
-  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(0 0 0 / 61%);">
+  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(0,0,0,0.6);">
     <div style='font-size:0;width:80%;max-height:300px;background-color:#ffffff;border-radius:3px;
         position:absolute;top:15%;left:50%;transform:translateX(-50%);border:1px solid #d4d4d4;'>
       <div style='width:100%;min-height:35px;max-height:100px;line-height:23px;padding:6px 3px;font-size:15px;border-bottom:1px solid #d4d4d4;border-radius:3px 3px 0 0;box-sizing:border-box;
@@ -223,7 +223,7 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
           取消
         </span>
         <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
-          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
+          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;background-color: #cecece;">
           确认
         </span>
       </div>
@@ -277,7 +277,7 @@ common.promptLine=function(params,_value,_placeholder,_confirm,_cancel,_parent){
   value=value==null||value==undefined?'':value
   var id="ff"+randomnum(10);
   var ele = 
-  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(0 0 0 / 61%);">
+  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(0,0,0,0.6);">
     <div style='font-size:0;width:80%;max-height:300px;background-color:#ffffff;border-radius:3px;
         position:absolute;top:15%;left:50%;transform:translateX(-50%);border:1px solid #d4d4d4;'>
       <div style='width:100%;min-height:35px;max-height:100px;line-height:23px;padding:6px 3px;font-size:15px;border-bottom:1px solid #d4d4d4;border-radius:3px 3px 0 0;box-sizing:border-box;
@@ -291,7 +291,7 @@ common.promptLine=function(params,_value,_placeholder,_confirm,_cancel,_parent){
           取消
         </span>
         <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
-          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
+          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;background-color: #cecece;">
           确认
         </span>
       </div>
@@ -335,7 +335,7 @@ common.alert=function(params,_confirm,_parent){
   message=message==null||message==undefined?'请确认':message
   var id="ff"+randomnum(10);
   var ele = 
-  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(0 0 0 / 61%);">
+  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(0,0,0,0.6);">
     <div style='font-size:0;width:80%;max-height:300px;background-color:#ffffff;border-radius:3px;
         position:absolute;top:15%;left:50%;transform:translateX(-50%);border:1px solid #d4d4d4;'>
       <div style='width:100%;max-height:265px;min-height:80px;line-height:23px;padding:6px 3px;font-size:16px;
@@ -344,7 +344,7 @@ common.alert=function(params,_confirm,_parent){
       </div>
       <div style="height:35px;width:100%;border-radius:0 0 3px 3px;">
         <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:100%;text-align:center;
-          border-top:1px solid #d4d4d4;border-radius:0 0 3px 3px;cursor:pointer;">
+          border-top:1px solid #d4d4d4;border-radius:0 0 3px 3px;cursor:pointer;background-color: #cecece;">
           确认
         </span>
       </div>
@@ -380,7 +380,7 @@ common.confirm=function(params,_confirm,_cancel,_parent){
   message=message==null||message==undefined?'请确认':message
   var id="ff"+randomnum(10);
   var ele = 
-  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(0 0 0 / 61%);">
+  $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(0,0,0,0.6);">
     <div style='font-size:0;width:80%;max-height:300px;background-color:#ffffff;border-radius:3px;
         position:absolute;top:15%;left:50%;transform:translateX(-50%);border:1px solid #d4d4d4;'>
       <div style='width:100%;max-height:265px;min-height:80px;line-height:23px;padding:6px 3px;font-size:15px;
@@ -393,7 +393,7 @@ common.confirm=function(params,_confirm,_cancel,_parent){
           取消
         </span>
         <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;border-left:1px solid #d4d4d4;
-          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;">
+          border-top:1px solid #d4d4d4;margin-left:-1px;border-radius:0 0 3px 0;cursor:pointer;background-color: #cecece;">
           确认
         </span>
       </div>

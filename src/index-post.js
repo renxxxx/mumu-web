@@ -1976,7 +1976,7 @@
         }
         this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>150){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>100){
             $('#wordbookpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
@@ -2388,7 +2388,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         }
         this.scrollEle = parentEle;
     }).bind('mouseup touchend',function(e){
-        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>150){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>100){
             $('#chatpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
@@ -2935,7 +2935,7 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad .words .translation').css('visibility','hidden')
     })
 
-    $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(){
+    $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(e){
         var ele = $(this).parents('.row');
         var row =ele[0].data;
         var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
@@ -2970,6 +2970,7 @@ $('#wordsframe_cancel').click(function(){
             page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
             ele.remove()
         }
+        e.stopPropagation()
     })
 
     function addWordbookWord(wordbookNo){
