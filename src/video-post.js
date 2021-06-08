@@ -110,7 +110,7 @@
                 guide()
                 $.ajax({
                     url: video.captionUrl,
-                    
+                    type:'get',
                     async: true,
                     success: function(res) {
                         getEnSubtitles(res);
@@ -574,6 +574,11 @@
                         $('#summtrans-speak').hide()
                     }
                     $('#summtrans-vv').html('').scrollTop(0)
+                    if(res.data.explains){
+                        $(res.data.explains).each(function(index,item){
+                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                        })
+                    }
                     if(res.data.translations){
                         $(res.data.translations).each(function(index,item){
                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
