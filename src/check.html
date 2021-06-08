@@ -102,7 +102,7 @@
     <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
         <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
             <div id="videobox" style="overflow:hidden;position:relative;">
-                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
+                <video  x5-playsinline playsinline controls360=no controls webkit-playsinline width="100%" id="video" poster autoplay preload
                     onplay="videoPlay()" onpause="videoPause()"
                     style="background: #000000;display: block;position: relative;object-fit:cover;">
                 </video>
@@ -140,6 +140,8 @@
             </div>
 
             <input id="file" type='file' style="display:block;margin:auto;margin-top:50px;border: 1px solid #c7c7c7;cursor: pointer;" multiple/>
+            <div id="name" style="font-size:16px;text-align: center;width:100%;height:40px;">
+            </div>
         </div>
     </body>
    
@@ -164,6 +166,14 @@
         $('#file').click(function(){
             this.value=''
         }).change(function(){
+            if(this.files.length>2){
+                alert('只能选择两个文件,MP4和SRT');
+                return false;
+            }
+            if(this.files.length<2){
+                alert('必须选择两个文件,MP4和SRT');
+                return false;
+            }
             var file1 = this.files[0]
             var file2 = this.files[1]
             var mp4 = null
@@ -185,15 +195,23 @@
                 alert('请选择mp4和srt文件')
                 return
             }
+            if(mp4.name.replace('.mp4','')!=srt.name.replace('.srt','')){
+                alert('请选择名称相同的MP4和SRT文件')
+                return
+            }
+            var fileName = mp4.name.substring(0,mp4.name.indexOf('.'))
+            $('#name').text(fileName)
             var reader = new FileReader();
             reader.readAsText(srt);
 
             reader.onload = function(){
                 getEnSubtitles(this.result)
+
+                var URL = window.URL || window.webkitURL
+                $('#video')[0].src = URL.createObjectURL(mp4)
             };
 
-            var URL = window.URL || window.webkitURL
-            $('#video')[0].src = URL.createObjectURL(mp4)
+            
         });
         
         function getUrlParam(name)
@@ -319,7 +337,8 @@
                             enValue:''
                         })
         }
-        if(en.currentIndex>=0){
+        if(!en.currentIndex){
+            en.currentIndex=0
             en.current=en.subtitlesList[en.currentIndex]
             setline(en.current)
         }else{
