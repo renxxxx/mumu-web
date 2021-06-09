@@ -1980,6 +1980,7 @@
             $('#wordbookpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
+            $('#subtitlePad').show()
         }
         this.touchstartY=null
         this.touchendY=null
@@ -1991,10 +1992,11 @@
 
 
     $('#wordbookpadBtn').click(function(){
-        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15+30))+'px')
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+55))+'px')
         $('#wordbookpad').slideDown(100)
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
+        $('#subtitlePad').hide()
         if(page.wordbooks.rows.length==0)
             loadMoreWordbooks()
     })
@@ -2054,9 +2056,10 @@
     $('#chatminpad').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+90+$('#controlpad').height()+15+30))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+55))+'px')
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
+        $('#subtitlePad').hide()
         $('#chatpad').slideDown(100,function(){
         })
     })
@@ -2392,6 +2395,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
             $('#chatpad').slideUp(100)
             //$('#gearframe1').show()
             $('#prevnextpad').show()
+            $('#subtitlePad').show()
         }
         this.touchstartY=null
         this.touchendY=null
