@@ -568,10 +568,10 @@
             }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="border-bottom:2px solid #000000;color:#ffffff;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-sizing: border-box;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                var sp = $('<span style="border-bottom:2px solid #272727;color:#ffffff;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-sizing: border-box;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
                 sp.bind('mouseout',function(){
                     if(isPc()){
-                        $(this).css('border-bottom','2px solid #000000')
+                        $(this).css('border-bottom','2px solid #272727')
                     }
                 }).bind('mouseover',function(){
                     if(isPc()){
@@ -631,7 +631,7 @@
     function troggleLoopLine(){
         if(loopLine){
             loopLine=0
-            $('#loopLine').css('background-color',"#000000")
+            $('#loopLine').css('background-color',"unset")
         }else{
             loopLine=1
             $('#loopLine').css('background-color',"#3e3e3e")
@@ -639,7 +639,7 @@
     }
     function closeLoopLine(){
         loopLine=0
-        $('#loopLine').css('background-color',"#000000")
+        $('#loopLine').css('background-color',"unset")
     }
     function openLoopLine(){
         loopLine=1
@@ -2041,7 +2041,7 @@
     $('#loopVideoBtn').click(function(){
         if($('#video').attr('loop')){
             $('#video').attr('loop',false)
-            $(this).css('background-color','#000000')
+            $(this).css('background-color','unset')
         }else{
             $('#video').attr('loop','loop')
             $(this).css('background-color','#3e3e3e')
@@ -2115,7 +2115,7 @@
                 page.spans =[]
                 page.firstRangeWordInx=index
                 page.lastRangeWordInx=index
-                $('#zh_subtitles .font').css('background-color','#000000')
+                $('#zh_subtitles .font').css('background-color','unset')
                 $('#zh_subtitles .font.span'+index).css('background-color','#828282')
             }
     }).bind('mousemove touchmove',function(e){
@@ -2129,7 +2129,7 @@
         if($(currTarget).hasClass('font')){
             if(!page.spansIs)
                 return
-            $('#zh_subtitles .font').css('background-color','#000000')
+            $('#zh_subtitles .font').css('background-color','unset')
             var index = parseInt($(currTarget).attr('index'));
             if(page.spans[page.spans.length-1] != index){
                 page.spans.push(index)
