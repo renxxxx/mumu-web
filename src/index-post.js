@@ -2584,18 +2584,18 @@ $('#wordsframe_cancel').click(function(){
                         })
                     }
                     if(page.currWord.wfs){
-                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans(page.currWord.wfs)}</div>`)
+                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans1(page.currWord.wfs)}</div>`)
                     }
                     if(page.currWord.webs){
                         $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
                         $(page.currWord.webs).each(function(index,item){
                             hasTranslate=true
-                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
                     }
                         if(!hasTranslate && page.currWord.translations){
                             $(page.currWord.translations).each(function(index,item){
-                                $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                                $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                             })
                         }
                     
