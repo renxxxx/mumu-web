@@ -162,7 +162,7 @@
         page.dovideoshadow=1
         pauseVideo();
         loadRelatedWords(this.innerText)
-        translatee1(this.innerText);
+        translatee(this.innerText);
         $('.historyword').css('background-color',"#ffffff")
         $(this).css('background-color',"#e7e7e7")
     })
@@ -471,7 +471,7 @@
     // function searchFn(_value){
     //     if(_value.keyCode == 13){
     //         let kw = $('.searchClass').val();
-    //         translatee1(kw);
+    //         translatee(kw);
     //         hideSearchFn()
     //     }
     // }
@@ -727,7 +727,7 @@
     }
     function translatee(_data,addHistory){
         //log.debug(_data+3)
-        $('#summrest').hide()
+        //$('#summrest').hide()
         page.dovideoshadow=1
         pauseVideo()
         doshadow()
@@ -774,7 +774,8 @@
                     }else{
                         $('#summtrans-speak').hide()
                     }
-                    $('#summtrans-vv').html('').scrollTop(0)
+                    $('#summtrans-vv').scrollTop(0)
+                    $('#summtrans-vv').html('')
                     if(res.data.explains){
                         $(res.data.explains).each(function(index,item){
                             hasTranslate=true
@@ -1261,7 +1262,7 @@
         if(currwordno>0){
             $('#wordsframe').hide()
             var word = en.currentwords[currwordno-1];
-            translatee1(word,1)
+            translatee(word,1)
         }
     }
 
@@ -1310,7 +1311,7 @@
         if(document.activeElement == $('#word-in')[0]){
             $('#wordsframe').hide()
             loadRelatedWords(word)
-            translatee1(word,1)
+            translatee(word,1)
             if(!$('#word-in').val()){
                 $('#summtrans').hide()
                 $('#wordsframe').hide()
@@ -1492,7 +1493,7 @@
         $('#word-in').val('')
         $('#words .word').remove()
         loadRelatedWords(this.item.word)
-        translatee1(this.item.word,1)
+        translatee(this.item.word,1)
     })
 
     $('#word-in').bind('input',function(){
@@ -2080,10 +2081,10 @@
         var transele = $(e.target).hasClass('translatable')?e.target:$(e.target).parents('.translatable')[0]
         if(transele){
             if(transele.transfrom){
-                translatee1(transele.transfrom,1)
+                translatee(transele.transfrom,1)
             }
             else if(transele.innerText){
-                translatee1(transele.innerText,1)
+                translatee(transele.innerText,1)
             }
             
         }
@@ -2166,7 +2167,7 @@
                     page.dovideoshadow=1
                     pauseVideo()
                     loadRelatedWords(word)
-                    translatee1(word,1)
+                    translatee(word,1)
                     page.spansIs=0
                     page.spans =[]
                 }
@@ -2605,7 +2606,7 @@ $('#wordsframe_cancel').click(function(){
                     
                     
                     $(`.lightkeytrans`).bind('click',function(){
-                        translatee1(this.innerText,1)
+                        translatee(this.innerText,1)
                     })
                     $('#wordsframe').hide()
                     $('#summrest').show()
@@ -2676,7 +2677,7 @@ $('#wordsframe_cancel').click(function(){
             $('#relatedWordsPad .relatedWord').remove()
             $('#fromRelatedWord').text(word)
             $.ajax({
-                url:'/mumu/related-words',
+                url:'/mumu/words1',
                 data:{
                     kw:word,
                     rstart:1,
@@ -2706,10 +2707,10 @@ $('#wordsframe_cancel').click(function(){
     }
 
     $('#relatedWord0').click(function(){
-        translatee1(this.innerText,1);
+        translatee(this.innerText,1);
     })
     $('#fromRelatedWordPad').click(function(){
-        translatee1($('#fromRelatedWord').text(),1);
+        translatee($('#fromRelatedWord').text(),1);
     })
     
 
@@ -2922,7 +2923,7 @@ $('#wordsframe_cancel').click(function(){
     // }
     $(`#wordbooksPad .words .pad .row0`).click(function(){
         var row = this.data;
-        translatee1(row.word)
+        translatee(row.word)
         loadRelatedWords(row.word)
     })
 
@@ -3229,7 +3230,7 @@ $('#wordsframe_cancel').click(function(){
     }
     $('#favorsPad .word0').click(function(e){
         var row = this.data
-        translatee1(row.word)
+        translatee(row.word)
         loadRelatedWords(row.word)
     })
     $('#favorsPad .word0 .removeBtn').click(function(e){
@@ -3354,7 +3355,7 @@ $('#wordsframe_cancel').click(function(){
     })
     $('#historyWordsPad .word0').click(function(e){
         var row = this.data
-        translatee1(row.word)
+        translatee(row.word)
         loadRelatedWords(row.word)
     })
 
