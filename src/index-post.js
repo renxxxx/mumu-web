@@ -217,13 +217,12 @@
         videosIndex++;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
-        localStorage.setItem(config.project+'-videosIndex',videosIndex)
-        getvideodone(video)
 
         if(videos[videosIndex+1])
             $('#video1').attr('poster',videos[videosIndex+1].cover);
         if(videos[videosIndex-1])
             $('#video2').attr('poster',videos[videosIndex-1].cover);
+        getvideodone(video)
     }
 
     function goPrevVideo(){
@@ -236,7 +235,11 @@
         videosIndex--;
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
-        localStorage.setItem(config.project+'-videosIndex',videosIndex)
+
+        if(videos[videosIndex+1])
+            $('#video1').attr('poster',videos[videosIndex+1].cover);
+        if(videos[videosIndex-1])
+            $('#video2').attr('poster',videos[videosIndex-1].cover);
         getvideodone(video)
     }
 
