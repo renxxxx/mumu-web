@@ -172,7 +172,7 @@
     function goNextVideo(){
         pauseVideo()
         closeLoopLine()
-        if(!videos[videosIndex+1]){
+        if(!videos[videosIndex+1] || !videos[videosIndex+2]){
             $.ajax({
                 url: '/mumu/explore-videos?',
                 
@@ -236,10 +236,16 @@
         videoNo = videos[videosIndex].no
         video = videos[videosIndex]
 
-        if(videos[videosIndex+1])
+        if(videos[videosIndex+1]){
             $('#video1').attr('poster',videos[videosIndex+1].cover);
-        if(videos[videosIndex-1])
+        }else{
+            $('#video1').attr('poster','');
+        }
+        if(videos[videosIndex-1]){
             $('#video2').attr('poster',videos[videosIndex-1].cover);
+        }else{
+            $('#video2').attr('poster','');
+        }
         getvideodone(video)
     }
 

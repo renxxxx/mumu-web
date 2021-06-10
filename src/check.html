@@ -282,25 +282,31 @@
         let _fileString = [];
         _fileString = _result.split(/[(\r\n)\r\n]+/);
         _fileString.forEach((item,inx) => {
-            let startValue = false
-            if(!item){
-                _fileString.splice(inx,1);
-            }
-            let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
-            let regExp = new RegExp(reg);
-            if(regExp.test(item)){
-                var ss = _fileString[inx+2]
-                var st = _fileString[inx+1]
-                if(ss.indexOf('{\\pos')>=0 || st.indexOf('{\\pos')>=0){
-                    return;
+            try{
+                let startValue = false
+                if(!item){
+                    _fileString.splice(inx,1);
                 }
-                en.subtitlesList.push({
-                    startTime : timeCycle(item.split(' --> ')[0].replace(',','.')),
-                    endTime : timeCycle(item.split(' --> ')[1].replace(',','.')),
-                    chValue: st,
-                    enValue: ss,
-                })
+                let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
+                let regExp = new RegExp(reg);
+                if(regExp.test(item)){
+                    var ss = _fileString[inx+2]
+                    var st = _fileString[inx+1]
+                    if(ss.indexOf('{\\pos')>=0 || st.indexOf('{\\pos')>=0){
+                        return;
+                    }
+                    en.subtitlesList.push({
+                        startTime : timeCycle(item.split(' --> ')[0].replace(',','.')),
+                        endTime : timeCycle(item.split(' --> ')[1].replace(',','.')),
+                        chValue: st,
+                        enValue: ss,
+                    })
+                }
+            }catch(e){
+                alert(item)
+                throw e
             }
+            
         });
         var iii = null
         for (let inx = 0; inx < en.subtitlesList.length; inx++) {
