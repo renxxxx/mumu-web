@@ -44,7 +44,9 @@
         favor:null,
         history:null,
     }
-
+    page.loopVideoCountCache=null
+    page.loopVideoCount=null
+    
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
           url:'/mumu/login-refresh',
@@ -90,6 +92,8 @@
     var video;
     var videoNo;
     var videos =[]
+    var videoNos =[]
+    var videosMap ={}
     var videosIndex =-1
     if(videoNoC){
         $.ajax({
@@ -99,8 +103,7 @@
             data: 'videoNo='+videoNoC,
             async: false,
             success: function(res) {
-                video = videoC = res.data.video
-
+                videoC = res.data.video
             }
         })
     }
@@ -111,19 +114,17 @@
     
 
 
-    $.ajax({
-        url: '/mumu/explore-videos?',
+    // $.ajax({
+    //     url: '/mumu/explore-videos?',
         
-        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+page.rstart,
-        async: false,
-        success: function(res) {
-            videos.push(...res.data.videos)
-            localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
-            page.currVideos=res.data.videos
-            if(videoC)
-                videos.unshift(videoC)
-        }
-    })
+    //     data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+page.rstart,
+    //     async: false,
+    //     success: function(res) {
+    //         videos.push(...res.data.videos)
+    //         localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
+    //         page.currVideos=res.data.videos
+    //     }
+    // })
     
 
 
@@ -182,26 +183,31 @@
                         videos.push(...res.data.videos)
                         page.rstart=page.rstart+page.currVideos.length
                         page.currVideos=res.data.videos
-                        localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                     }else{
                         page.seed = Math.ceil(Math.random()*100);
                         $.ajax({
                             url: '/mumu/explore-videos?',
                             
                             data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
-                            async: true,
+                            async: false,
                             success: function(res) {
                                 page.currVideos=res.data.videos
-                                videos=[]
-                                videosIndex=-1
-                                page.rstart=1
                                 videos.push(...res.data.videos)
-                                localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
-                                goNextVideo()
+                                page.rstart=1
                             }
                         })
                     }
                 }
+            })
+
+            if(videoC){
+                videos.unshift(videoC)
+                page.currVideos.unshift(videoC)
+                videoC=null
+            }
+            page.currVideos.forEach(function(item,inx){
+                videosMap['no'+item.no]
+                videoNos.push(item.no)
             })
         }
         
@@ -634,7 +640,7 @@
             $('#loopLine').css('background-color',"unset")
         }else{
             loopLine=1
-            $('#loopLine').css('background-color',"#3e3e3e")
+            $('#loopLine').css('background-color',"#5a5a5a")
         }
     }
     function closeLoopLine(){
@@ -1896,22 +1902,30 @@
         searchtag=''
         $('#searchtext').text('搜索').css('color','#bfbbbb')
         $('#searchpad').slideUp(100)
-        
-        $.ajax({
-            url: '/mumu/explore-videos?',
+        page.seed = Math.ceil(Math.random()*100);
+        videos=[]
+        page.currVideos=[]
+        videoNos=[]
+        videosMap={}
+        videosIndex=-1
+        page.rstart=1
+        goNextVideo()
+        // $.ajax({
+        //     url: '/mumu/explore-videos?',
             
-            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
-            async: true,
-            success: function(res) {
-                page.currVideos=res.data.videos
-                videos=[]
-                videosIndex=-1
-                page.rstart=1
-                videos.push(...res.data.videos)
-                localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
-                goNextVideo()
-            }
-        })
+        //     data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
+        //     async: true,
+        //     success: function(res) {
+        //         page.currVideos=res.data.videos
+        //         videos=[]
+        //         videoNos=[]
+        //         videosMap={}
+        //         videosIndex=-1
+        //         page.rstart=1
+        //         videos.push(...res.data.videos)
+        //         goNextVideo()
+        //     }
+        // })
     })
 
     $('.searchtag').click(function(){
@@ -1926,11 +1940,12 @@
                 async: true,
                 success: function(res) {
                     videos=[]
+                    videoNos=[]
+                    videosMap={}
                     videosIndex=-1
                     page.currVideos=res.data.videos
                     page.rstart=1
                     videos.push(...res.data.videos)
-                    localStorage.setItem(config.project+'-videos',JSON.stringify(videos))
                     goNextVideo()
                 }
             })
@@ -2038,13 +2053,27 @@
         this.touchend=null
     })
 
+
+    // var choseloopVideoCountPad=`
+    //     <div id="choseloopVideoCountPad" style="background-color:rgba(0,0,0,0.9);position:absolute;top:0;left:0;right:0;bottom:0;display:none;">
+    //         <div style="background-color:rgba(255,255,255);width:80%;position:absolute;top:30%;left:50%;transform:translateX(-50%);height:200px;">
+    //             <div>1</div>
+    //             <div>5</div>
+    //             <div>10</div>
+    //             <div>3</div>
+    //         </div>
+    //     </div>
+    // `
+    //$(choseloopVideoCountPad).appendTo($(document.body))
     $('#loopVideoBtn').click(function(){
         if($('#video').attr('loop')){
             $('#video').attr('loop',false)
             $(this).css('background-color','unset')
         }else{
             $('#video').attr('loop','loop')
-            $(this).css('background-color','#3e3e3e')
+            $(this).css('background-color','#5a5a5a')
+
+           // $('#choseloopVideoCountPad').show()
         }
         // $('#unloopVideoBtn').show()
         // $('#loopVideoBtn').hide()
