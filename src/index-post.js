@@ -46,7 +46,7 @@
     }
     page.loopVideoCountCache=null
     page.loopVideoCount=null
-    
+    page.onlyLookUserNo=null
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
           url:'/mumu/login-refresh',
@@ -176,7 +176,8 @@
             $.ajax({
                 url: '/mumu/explore-videos?',
                 
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+(page.rstart+page.currVideos.length),
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+(page.rstart+page.currVideos.length)
+                        +"&userNo="+(page.onlyLookUserNo||' '),
                 async: false,
                 success: function(res) {
                     if(res.data.videos.length>0){
@@ -188,7 +189,7 @@
                         $.ajax({
                             url: '/mumu/explore-videos?',
                             
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
                             async: false,
                             success: function(res) {
                                 page.currVideos=res.data.videos
@@ -313,7 +314,15 @@
         $('#videoName').text(video.name)
         $('#titleinbackpad').show()
         $('#video').attr("poster", video.cover)
-        
+        $('#headimg').attr('src',video.headimg)
+
+        if(video.userNo){
+            $('#headimg').show()
+            $('#onlyLookHim').show()
+        }else{
+            $('#headimg').hide()
+            $('#onlyLookHim').hide()
+        }
         // if(video.height && video.width){
         //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
         //     $('#video').css('height',videoheight)
@@ -1945,7 +1954,7 @@
         $.ajax({
                 url: '/mumu/explore-videos?',
                 
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
+                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
                 async: true,
                 success: function(res) {
                     videos=[]
@@ -3543,5 +3552,13 @@ $('#wordsframe_cancel').click(function(){
             }
         })
     }
+
+    $('#onlyLookHim').click(function(){
+        if(page.onlyLookUserNo)
+            page.onlyLookUserNo=null
+        else
+            page.onlyLookUserNo=video.userNo
+        videos.splice(videosIndex,videos.length-1)
+    })
 })()
 
