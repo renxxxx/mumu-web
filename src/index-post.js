@@ -3554,10 +3554,14 @@ $('#wordsframe_cancel').click(function(){
     }
 
     $('#onlyLookHim').click(function(){
-        if(page.onlyLookUserNo)
+        if(page.onlyLookUserNo){
             page.onlyLookUserNo=null
-        else
+            $(this).css('background-color','unset');
+        }
+        else {
             page.onlyLookUserNo=video.userNo
+            $(this).css('background-color','rgb(90, 90, 90)');
+        }
         videos.splice(videosIndex,videos.length-1)
     })
 })()
