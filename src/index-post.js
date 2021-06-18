@@ -47,6 +47,18 @@
     page.loopVideoCountCache=null
     page.loopVideoCount=null
     page.onlyLookUserNo=null
+    page.onlyLookHimVideos={
+        rows:[],
+        rcount:10,
+        currRows:[],
+    }
+    page.trueVideos = {
+        rows:[],
+        rcount:10,
+        currRows:[],
+        map:{},
+        noes:[]
+    }
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
           url:'/mumu/login-refresh',
@@ -168,82 +180,125 @@
         $(this).css('background-color',"#e7e7e7")
     })
     
+
+    function getMoreOnlyLookHimVideos(){
+        var obj = {}
+        obj.shortvideo=1
+        obj.kw=searchKw
+        obj.pageSize=10
+        
+        obj.userNo=page.onlyLookUserNo
+        obj.rstart=1
+        obj.sort='orderNoInUser'
+        obj.order='asc'
+        if(page.onlyLookHimVideos.rows.length > 0){
+            obj.split='orderNoInUser'
+            obj.splitv='>'+page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].orderNoInUser
+        }
+        $.ajax({
+            url: '/mumu/explore-videos',
+            data: obj,
+            async: false,
+            success: function(res) {
+                if(res.data.videos.length>0){
+                    page.onlyLookHimVideos.rows.push(...res.data.videos)
+                    page.onlyLookHimVideos.currRows=res.data.videos
+                    page.trueVideos.rows.push(...res.data.videos)
+                    page.trueVideos.currRows=res.data.videos
+                }else{
+                    page.onlyLookHimVideos.rows=[]
+                    page.onlyLookHimVideos.currRows=[]
+                    getMoreOnlyLookHimVideos()
+                }
+            }
+        })
+    }
+    function getMoreVideos(){
+        $.ajax({
+            url: '/mumu/explore-videos?',
+            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+(page.rstart+page.currVideos.length)
+                    +"&userNo="+(page.onlyLookUserNo||' '),
+            async: false,
+            success: function(res) {
+                if(res.data.videos.length>0){
+                    videos.push(...res.data.videos)
+                    page.rstart=page.rstart+page.currVideos.length
+                    page.currVideos=res.data.videos
+                    page.trueVideos.rows.push(...res.data.videos)
+                    page.trueVideos.currRows=res.data.videos
+                }else{
+                    page.seed = Math.ceil(Math.random()*100);
+                    $.ajax({
+                        url: '/mumu/explore-videos?',
+                        
+                        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
+                        async: false,
+                        success: function(res) {
+                            page.currVideos=res.data.videos
+                            videos.push(...res.data.videos)
+                            page.trueVideos.rows.push(...res.data.videos)
+                            page.trueVideos.currRows=res.data.videos
+                            page.rstart=1
+                        }
+                    })
+                }
+            }
+        })
+    }
     goNextVideo()
     function goNextVideo(){
         pauseVideo()
         closeLoopLine()
-        if(!videos[videosIndex+1] || !videos[videosIndex+2]){
-            $.ajax({
-                url: '/mumu/explore-videos?',
-                
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart="+(page.rstart+page.currVideos.length)
-                        +"&userNo="+(page.onlyLookUserNo||' '),
-                async: false,
-                success: function(res) {
-                    if(res.data.videos.length>0){
-                        videos.push(...res.data.videos)
-                        page.rstart=page.rstart+page.currVideos.length
-                        page.currVideos=res.data.videos
-                    }else{
-                        page.seed = Math.ceil(Math.random()*100);
-                        $.ajax({
-                            url: '/mumu/explore-videos?',
-                            
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
-                            async: false,
-                            success: function(res) {
-                                page.currVideos=res.data.videos
-                                videos.push(...res.data.videos)
-                                page.rstart=1
-                            }
-                        })
-                    }
-                }
-            })
+        if(!page.trueVideos.rows[videosIndex+1]){
+            if(page.onlyLookUserNo){
+                getMoreOnlyLookHimVideos()
+            }else{
+                getMoreVideos()
+            }
 
             if(videoC){
-                videos.unshift(videoC)
-                page.currVideos.unshift(videoC)
+                page.trueVideos.rows.unshift(videoC)
+                page.trueVideos.currRows.unshift(videoC)
                 videoC=null
             }
-            page.currVideos.forEach(function(item,inx){
-                videosMap['no'+item.no]
-                videoNos.push(item.no)
+            page.trueVideos.currRows.forEach(function(item,inx){
+                page.trueVideos.map['no'+item.no]
+                page.trueVideos.noes.push(item.no)
             })
         }
         
-        if(!videos[videosIndex+1]){
+        if(!page.trueVideos.rows[videosIndex+1]){
             return;
         }
         videosIndex++;
-        videoNo = videos[videosIndex].no
-        video = videos[videosIndex]
+        videoNo = page.trueVideos.rows[videosIndex].no
+        video = page.trueVideos.rows[videosIndex]
 
-        if(videos[videosIndex+1])
-            $('#video1').attr('poster',videos[videosIndex+1].cover);
-        if(videos[videosIndex-1])
-            $('#video2').attr('poster',videos[videosIndex-1].cover);
+        if(page.trueVideos.rows[videosIndex+1])
+            $('#video1').attr('poster',page.trueVideos.rows[videosIndex+1].cover);
+        if(page.trueVideos.rows[videosIndex-1])
+            $('#video2').attr('poster',page.trueVideos.rows[videosIndex-1].cover);
         getvideodone(video)
     }
 
     function goPrevVideo(){
         pauseVideo()
         closeLoopLine()
-        if(!videos[videosIndex-1]){
+        if(!page.trueVideos.rows[videosIndex-1]){
             location.replace('./index.html')
             return;
         }
         videosIndex--;
-        videoNo = videos[videosIndex].no
-        video = videos[videosIndex]
+        videoNo = page.trueVideos.rows[videosIndex].no
+        video = page.trueVideos.rows[videosIndex]
 
-        if(videos[videosIndex+1]){
-            $('#video1').attr('poster',videos[videosIndex+1].cover);
+        if(page.trueVideos.rows[videosIndex+1]){
+            $('#video1').attr('poster',page.trueVideos.rows[videosIndex+1].cover);
         }else{
             $('#video1').attr('poster','');
         }
-        if(videos[videosIndex-1]){
-            $('#video2').attr('poster',videos[videosIndex-1].cover);
+        if(page.trueVideos.rows[videosIndex-1]){
+            $('#video2').attr('poster',page.trueVideos.rows[videosIndex-1].cover);
         }else{
             $('#video2').attr('poster','');
         }
@@ -310,25 +365,28 @@
         videoNo=videop.no
         genShareData()
         $('#zh_subtitles').html('')
-        $('#titleinback').text(video.reference)
-        $('#videoName').text(video.name)
-        $('#titleinbackpad').show()
+        var ss = video.chreference||video.seriesChname;
+        if(ss != video.chname){
+            if(ss){
+                ss=ss+'\n'
+            }else{
+                ss=''
+            }
+        }else{
+            ss=''
+        }
+        $('#videoName').text(ss+video.chname)
         $('#video').attr("poster", video.cover)
-        $('#headimg').attr('src',video.headimg)
-
         if(video.userNo){
-            $('#headimg').show()
-            $('#onlyLookHim').show()
+            $('#headimg').attr('src',video.headimg)
+            $('#headimg').css('display','inline-block')
+            $('#onlyLookHim').css('display','inline-block')
+            $('#chatminpad').css('width','calc(100% - 105px)')
         }else{
             $('#headimg').hide()
             $('#onlyLookHim').hide()
+            $('#chatminpad').css('width','100%')
         }
-        // if(video.height && video.width){
-        //     var videoheight = parseInt($('#video').css('width').replace('px',''))*(video.height/video.width);
-        //     $('#video').css('height',videoheight)
-        //     $('#summtrans').css('height',$('#video').css('height'))
-        //     $('#wordsframe').css('height',$('#video').css('height'))
-        // }
         jumpedcaption=null
         en.currentIndex=0
         
@@ -1380,8 +1438,8 @@
         var shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
-                title: video.name, // 分享标题
-                desc: '幕幕 - 短视频练英语\n'+(video.reference||' '), // 分享描述
+                title: video.chname, // 分享标题
+                desc: '幕幕 - 短视频练英语\n'+(video.reference||video.seriesChname||' '), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1390,7 +1448,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: video.name + '\n幕幕 - 短视频练英语', // 分享标题
+                title: video.chname + '\n幕幕 - 短视频练英语', // 分享标题
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1404,8 +1462,8 @@
     function genShareData(){
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
-            title: video.name, // 分享标题
-            desc: '幕幕 - 短视频练英语\n'+(video.reference||' '), // 分享描述
+            title: video.chname, // 分享标题
+            desc: '幕幕 - 短视频练英语\n'+(video.reference||video.seriesChname||' '), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1414,7 +1472,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: video.name + '\n幕幕 - 短视频练英语', // 分享标题
+            title: video.chname + '\n幕幕 - 短视频练英语', // 分享标题
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1901,7 +1959,7 @@
     // })
 
     $('#word-in').bind('focus',function(){
-        this.select()
+        //this.select()
         if(this.value==''){
             $('#wordsframe_cancel').show()
         }else{
@@ -1928,45 +1986,19 @@
         videosIndex=-1
         page.rstart=1
         goNextVideo()
-        // $.ajax({
-        //     url: '/mumu/explore-videos?',
-            
-        //     data: 'shortvideo=1&kw='+searchKw+'&pageSize='+5+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1",
-        //     async: true,
-        //     success: function(res) {
-        //         page.currVideos=res.data.videos
-        //         videos=[]
-        //         videoNos=[]
-        //         videosMap={}
-        //         videosIndex=-1
-        //         page.rstart=1
-        //         videos.push(...res.data.videos)
-        //         goNextVideo()
-        //     }
-        // })
     })
 
     $('.searchtag').click(function(){
         searchtag=this.innerText
         $('#searchtext').text("#"+this.innerText+"#").css('color','#6f6f6f')
         $('#searchpad').slideUp(100)
-
-        $.ajax({
-                url: '/mumu/explore-videos?',
-                
-                data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&tag="+searchtag+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
-                async: true,
-                success: function(res) {
-                    videos=[]
-                    videoNos=[]
-                    videosMap={}
-                    videosIndex=-1
-                    page.currVideos=res.data.videos
-                    page.rstart=1
-                    videos.push(...res.data.videos)
-                    goNextVideo()
-                }
-            })
+        videos=[]
+        videoNos=[]
+        videosMap={}
+        videosIndex=-1
+        page.currVideos=res.data.videos
+        page.rstart=1
+        goNextVideo()
     })
 
   
@@ -3552,8 +3584,10 @@ $('#wordsframe_cancel').click(function(){
             }
         })
     }
-
+    
     $('#onlyLookHim').click(function(){
+        page.onlyLookHimVideos.rows=[]
+        page.onlyLookHimVideos.currRows=[]
         if(page.onlyLookUserNo){
             page.onlyLookUserNo=null
             $(this).css('background-color','unset');
@@ -3561,8 +3595,11 @@ $('#wordsframe_cancel').click(function(){
         else {
             page.onlyLookUserNo=video.userNo
             $(this).css('background-color','rgb(90, 90, 90)');
+            page.onlyLookHimVideos.rows.push(video)
+            page.onlyLookHimVideos.currRows.push(video)
         }
-        videos.splice(videosIndex,videos.length-1)
+        page.trueVideos.rows.splice(videosIndex+1,videos.length-1)
+        page.trueVideos.currRows=[]
     })
 })()
 

@@ -11,7 +11,13 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+.lines2 {
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 .unselectable {
     -moz-user-select:none;/*火狐*/
     -webkit-user-select:none;/*webkit浏览器*/

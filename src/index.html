@@ -89,8 +89,11 @@
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
-            <div id="videoName" class="ellipsis" style="height:30px;font-size:13px;text-align: center;width:100%;color:#cccccc;
-                line-height:30px;font-weight: 900;">
+            <div style="height:55px;width:100%;color:#cccccc;line-height:40px;font-size: 14px;padding:5px;box-sizing: border-box;">
+                <span id="videoName" class="lines2" style="display:-webkit-inline-box;max-height:40px;min-height:20px;line-height:20px;font-size:14px;
+                    text-align: center;width:100%;white-space: break-spaces;font-weight: 900;vertical-align: middle;word-break: break-word;">
+
+                </span>
             </div>
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;">
@@ -300,18 +303,13 @@
             
 
 
-            <img id="headimg" draggable="false" style="position:absolute;width:45px;height:45px;bottom:150px;right:10px;cursor: pointer;border:1px solid #9c9c9c;
-                box-sizing: border-box;border-radius: 3px;"/>
-            <div id="onlyLookHim" style="position:absolute;width:45px;height:30px;bottom:121px;right:10px;font-size: 13px;color: #ffffff;text-align: center;
-                padding:5px 0;box-sizing: border-box;cursor: pointer;border:1px solid #9c9c9c;border-radius: 3px;color: rgb(191, 187, 187);">
-                只看Ta
-            </div>
             
             
-            <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:78px;
+            
+            <!-- <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:20px;line-height:20px;position: absolute;right:0;bottom:78px;
                     box-sizing: border-box;padding: 0 5px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;background-color: #272727;">
                 <span id="titleinback" style="font-size:12px;color:#f5f5f5;"></span>
-            </div>
+            </div> -->
             <div id="searchpadbtn" style="position:absolute;bottom:78px;width:100%;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
                                     font-size:0px;box-sizing: border-box;border-top:1px solid rgb(64, 64, 64);display:none;">
                 <span id="searchtext" style="font-size: 13px;color:#f7f7f7;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
@@ -319,13 +317,36 @@
                 </span>
                 <svg style="position:absolute;right:2px;top:4px;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="20" height="20"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#ffffff" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#ffffff" p-id="3667"></path></svg>            
             </div>
+            <div style="position:absolute;bottom:55px;width:100%;height:40px;font-size:0px;box-sizing: border-box;background-color: #272727;">
+                <img id="headimg" draggable="false" style="width:40px;height:40px;cursor: pointer;border:1px solid #9c9c9c;
+                    box-sizing: border-box;border-radius: 2px 0 0 2px;display:inline-block;vertical-align: middle;margin-left:5px;"/>
+                <div id="onlyLookHim" style="width:50px;height:40px;font-size: 13px;color: #ffffff;text-align: center;display:inline-block;vertical-align: middle;
+                    box-sizing: border-box;cursor: pointer;border:1px solid #9c9c9c;border-radius:0 2px 2px 0;color: rgb(191, 187, 187);
+                    margin-left: -1px;line-height: 40px;margin-right:5px;">
+                    只看Ta
+                </div>
+                <div id="chatminpad" style="display:inline-block;height:40px;width:calc(100% - 105px);vertical-align: middle;box-sizing: border-box;">
+                    <svg style="vertical-align: middle;margin-left:5px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
+                    <span id="lastmsg" style="font-size: 13px;color:#f5f5f5;overflow:hidden;display:inline-block;word-break: break-word;margin-left:5px;
+                        width:calc(100% - 28px);max-height:40px;line-height:20px;box-sizing: border-box;padding-right:5px;vertical-align: middle;">
+                        123123
+                    </span>
+                </div>
+            </div>
+
+            <!-- <img id="headimg" draggable="false" style="position:absolute;width:45px;height:45px;bottom:150px;right:10px;cursor: pointer;border:1px solid #9c9c9c;
+                box-sizing: border-box;border-radius: 3px;"/>
+            <div id="onlyLookHim" style="position:absolute;width:45px;height:30px;bottom:121px;right:10px;font-size: 13px;color: #ffffff;text-align: center;
+                padding:5px 0;box-sizing: border-box;cursor: pointer;border:1px solid #9c9c9c;border-radius: 3px;color: rgb(191, 187, 187);">
+                只看Ta
+            </div>
             <div id="chatminpad" style="position:absolute;bottom:50px;width:100%;height:28px;line-height:28px;cursor: pointer;padding:0 17px 0 5px;
                                     font-size:0px;box-sizing: border-box;border-top: 1px solid #525252;background-color: #272727;">
                 <span id="lastmsg" style="font-size: 13px;color:#f5f5f5;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
                     
                 </span>
                 <svg style="position:absolute;right:2px;top:4px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
-            </div>
+            </div> -->
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
                 <span class="unselectable" 
                     style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#ffffff;font-weight:900;"
