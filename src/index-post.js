@@ -3747,7 +3747,10 @@ $('#wordsframe_cancel').click(function(){
     $('#rollShowWordsPad .next').click(function(e){
         wordsRoll(page.rollInx+1)
     })
-
+    $('#rollShowWordsPad .restart').click(function(e){
+        wordsRoll(1)
+    })
+    
     $('#rollShowWordsPad .stop').click(function(e){
         clearTimeout(page.rollWordsInterval)
         clearTimeout(page.readRollWordTimeout)
@@ -3769,7 +3772,7 @@ $('#wordsframe_cancel').click(function(){
         $('#rollShowWordsPad .start').show()
         page.rollIsSound=0
         page.auto=0
-        page.rollInx=1
+        page.rollInx=!page.rollInx?1:page.rollInx
         wordsRoll(page.rollInx)
     })
 
@@ -3781,7 +3784,7 @@ $('#wordsframe_cancel').click(function(){
         rollInx=!rollInx?1:rollInx
         wordsRoll(rollInx);
     }
-    page._mp3 = new Audio()
+    page._mp3 = document.createElement('video')
     function wordsRoll(rollInx){
         page._mp3.pause()
         clearTimeout(page.rollWordsInterval)
@@ -3813,7 +3816,7 @@ $('#wordsframe_cancel').click(function(){
                             if(count > 0){
                                 page.readRollWordTimeout=setTimeout(function(){
                                     page._mp3.play()
-                                },1500)
+                                },1000)
                                 count--;
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
@@ -3826,7 +3829,7 @@ $('#wordsframe_cancel').click(function(){
                         }
                     }
                     page._mp3.play()
-                },1500)
+                },1000)
             }
         }
 
