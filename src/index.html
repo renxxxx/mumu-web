@@ -189,10 +189,17 @@
                     top: 0;color: #ffffff;display:none;border-bottom:1px solid #827e7e;">
                 <div style="width:calc(100% - 111px);display:inline-block;position: absolute;vertical-align: middle;border-right: 1px solid #3c3c3c;
                         top:0;bottom:30px;">
-                    <div id="summtrans-word" class="unselectable"
-                        style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;
-                            line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;padding:0 5px;">
+                    <div style="height: 24px;">
+                        <span id="summtrans-word" class="unselectable"
+                            style="cursor: pointer;font-weight: 900;font-size:18px;letter-spacing: 0.5px;height: 24px;display:inline-block;
+                                line-height: 24px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;padding:0 5px;width:calc(100% - 34px);">
+                        </span>
+                        <img id="goExtendSearchBtn" class="unselectable" draggable="false" src="./img/baidu.jpg"
+                            style="height: 20px;display:inline-block;width:20px;padding:2px;opacity: 0.8;cursor: pointer;">
+                        </img>
                     </div>
+                    
+                    
                     <div id="summrest">
                         <div style="height: 20px;line-height: 20px;padding:0 5px;">
                             <span id="summtrans-phonetic" class="unselectable" style="display:none;font-size:14px;vertical-align: middle;letter-spacing: 0.5px;margin:0 5px 0 0;"></span>
@@ -204,11 +211,11 @@
                     </div>
                 </div>
                 <div style="width:110px;display:inline-block;vertical-align: middle;position: absolute;top:0;bottom:31px;left:calc(100% - 110px);">
-                    <div id="fromRelatedWordPad" style="height:25px;width:100%;box-sizing: border-box;border-bottom: 1px solid #3c3c3c;padding:2px 3px;cursor: pointer;">
-                        <span id="fromRelatedWord" class="ellipsis" style="font-size:15px;line-height:21px;height:21px;display:inline-block;
+                    <div id="fromRelatedWordPad" style="height:25px;width:100%;box-sizing: border-box;border-bottom: 1px solid #3c3c3c;padding:2px 3px;">
+                        <!-- <span id="fromRelatedWord" class="ellipsis" style="font-size:15px;line-height:21px;height:21px;display:inline-block;
                             width:76px;vertical-align: middle;letter-spacing: 0.5px;">
                             
-                        </span>
+                        </span> -->
                         <span style="font-size:12px;line-height:20px;display:inline-block;width:28px;vertical-align: middle;">
                             相关
                         </span>
@@ -493,8 +500,9 @@
                         收藏夹
                     </span>
                     <span id="wordbooksBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;display:inline-block;cursor: pointer;color:#ffffff;
-                        text-align: center;">
+                        text-align: center;position: relative;">
                         单词本
+                        <img id="startRollBtn" src="./img/start.svg" style="position: absolute;right:0;width:15px;padding:10px 3px;"/>
                     </span>
                     <span id="historyWordsBtn" style="height:35px;line-height:35px;width:33.33333%;font-size:15px;background-color: #9f9f9f;display:inline-block;cursor: pointer;
                         text-align: center;">
@@ -601,12 +609,13 @@
                                 已到底
                             </div>
                             <div class="loadnodata someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
-                                暂无数据
+                                无单词本
                             </div>
                             <div class="loading someload" style="width:100%;font-size:12px;height:40px;line-height: 40px;text-align: center;color:#929292;display:none;">
                                 加载中
                             </div>
-                            <div onclick="$('#wordbooksPad .wordbooks').click()" style="width:100%;font-size:12px;height:40px;text-align: center;color:#929292;margin-top:30px;">
+                            <div id="clickToShowCreateWordbookBtn" onclick="$('#wordbooksPad .wordbooks').click()" style="
+                                width:100%;font-size:12px;height:40px;text-align: center;color:#929292;margin-top:30px;display:none;">
                                 点击空白处新建单词本
                             </div>
                         </div>
@@ -733,6 +742,27 @@
                 </div>
                 <div class="closeBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
                     关 闭
+                </div>
+            </div>
+
+            <div id="extendSearchPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">
+                <iframe id="extendSearchFrame"  style="width:100%;height:80%;position:absolute;top:0;box-sizing: border-box;border: none;"></iframe>
+            </div>
+
+            <div id="rollShowWordsPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">
+                <div style="width:100%;height:70%;position:absolute;top:50%;transform: translateY(-50%);background-color: rgba(255, 255, 255);border-top:1px solid #ffffff;">
+                    <div class="word ellipsis" style="font-size: 50px;text-align: center;font-weight: 900;margin-top:50px;">
+                    </div>
+                    <div class="phonetic ellipsis" style="font-size: 20px;text-align: center;margin-top:20px;">
+                    </div>
+                    <div class="translation ellipsis" style="font-size: 20px;text-align: center;margin-top:100px;">
+                    </div>
+                    <div style="height:35px;justify-content: space-around;display: flex;align-items: center;position: absolute;bottom:30px;width:100%;">
+                        <button class="prev" style="width:25%;height:50px;">上一个</button>
+                        <button class="stop" style="width:25%;height:50px;display:none;">暂停</button>
+                        <button class="start" style="width:25%;height:50px;">开始</button>
+                        <button class="next" style="width:25%;height:50px;">下一个</button>
+                    </div>
                 </div>
             </div>
         </div>

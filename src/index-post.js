@@ -1,3 +1,4 @@
+
 (function(){
     var page = {
         manual:1,
@@ -74,7 +75,7 @@
     var videoC = null
     var video;
     var videoNo;
-
+    page.rollInx = 0;
     page.exploreVideos={
         rows:[],
         currRows:[],
@@ -875,6 +876,7 @@
             for (const ajax of page.translateajaxs) {
                 ajax.abort()
             }
+            page.currWordText=_data
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
                 
@@ -901,22 +903,22 @@
                     if(res.data.explains){
                         $(res.data.explains).each(function(index,item){
                             hasTranslate=true
-                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
                     }
                     if(res.data.wfs){
-                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans(res.data.wfs)}</div>`)
+                        $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans1(res.data.wfs)}</div>`)
                     }
                     if(res.data.webs){
                         $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
                         $(res.data.webs).each(function(index,item){
                             hasTranslate=true
-                            $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
                     }
                      if(!hasTranslate && res.data.translations){
                          $(res.data.translations).each(function(index,item){
-                             $('#summtrans-vv').append(`<div>${lightkeytrans(item)}</div>`)
+                             $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                          })
                      }
                     
@@ -966,9 +968,6 @@
         clearTimeout(window.timeoutdo1)
     }
 
-    function restorePlayStatus(){
-        
-    }
 
     function videoPlay(){
         //log.debug("onplay: "+ ++runstep)
@@ -1598,6 +1597,7 @@
         $('#wordsframe').show()
         $('#word-in').val(this.innerText).focus()
         $('#word-in').trigger('input')
+        
     })
 
     $('#summtrans-speak').bind('click',function(){
@@ -2017,6 +2017,8 @@
         searchKw=''
         searchtag=''
         $('#searchpad').slideUp(100)
+        if(page.onlyLookUserNo)
+            $('#onlyLookHim').click()
         page.seed = Math.ceil(Math.random()*100);
         page.exploreVideos.rows=[]
         page.exploreVideos.currRows=[]
@@ -2041,6 +2043,8 @@
     $('.searchtag').click(function(){
         searchtag=$(this).attr('data')
         $('#searchpad').slideUp(100)
+        if(page.onlyLookUserNo)
+            $('#onlyLookHim').click()
         page.exploreVideos.rows=[]
         page.exploreVideos.currRows=[]
         page.exploreVideos.inx=0
@@ -2123,6 +2127,8 @@
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#subtitlePad').hide()
+        pauseVideo()
+        
         if(page.wordbooks.rows.length==0)
             loadMoreWordbooks()
     })
@@ -2885,9 +2891,7 @@ $('#wordsframe_cancel').click(function(){
     $('#relatedWord0').click(function(){
         translatee(this.innerText,1);
     })
-    $('#fromRelatedWordPad').click(function(){
-        translatee($('#fromRelatedWord').text(),1);
-    })
+    
     
 
 
@@ -3155,19 +3159,27 @@ $('#wordsframe_cancel').click(function(){
     })
 
     function addWordbookWord(wordbookNo){
-        var ele = createWordbookWord(wordbookNo)
-        $(`#wordbooksPad .words .pad `).prepend(ele)
-        ws.send(JSON.stringify({
-            action:8,
-            wordbookNo:wordbookNo,
-            word:page.currWord.word
-        }))
+        common.promptLine({
+            message:'请输入释义, 可为空.',
+            confirm:function(v){
+                if(v!=null){
+                    var ele = createWordbookWord(wordbookNo,v)
+                    $(`#wordbooksPad .words .pad `).prepend(ele)
+                    ws.send(JSON.stringify({
+                        action:8,
+                        wordbookNo:wordbookNo,
+                        word:page.currWord.word,
+                        translation:v
+                    }))
+                }
+            }
+        })
     }
 
-    function createWordbookWord(wordbookNo){
+    function createWordbookWord(wordbookNo,tranclation){
         var word = {
             word:page.currWord.word,
-            translation:page.currWord.translation,
+            translation:tranclation,
             phonetic:page.currWord.phonetic,
             no:randomnum(12)
         }
@@ -3324,6 +3336,13 @@ $('#wordsframe_cancel').click(function(){
 
                 if(rstart==1){
                     $('#wordbooksPad .wordbooks .row').not('.row0').first().click()
+                }
+
+                
+                if(page.wordbooks.rows.length==0){
+                    $('#clickToShowCreateWordbookBtn').hide()
+                }else{
+                    $('#clickToShowCreateWordbookBtn').show()
                 }
             }
         })
@@ -3555,6 +3574,7 @@ $('#wordsframe_cancel').click(function(){
         $('#favorsPad').show()
         $('#historyWordsPad').hide()
         $('#wordbooksPad').hide()
+        $('#startRollBtn').hide()
 
         if(page.favoredWords.rows.length==0)
             loadMoreFavoredWords()
@@ -3569,19 +3589,24 @@ $('#wordsframe_cancel').click(function(){
         $('#favorsPad').hide()
         $('#historyWordsPad').show()
         $('#wordbooksPad').hide()
+        $('#startRollBtn').hide()
 
         if(page.historyWords.rows.length==0)
             loadMoreHistoryWords()
     })
 
-    $('#wordbooksBtn').click(function(){
-        $('#favorsBtn').css('background-color','#9f9f9f').css('color','#000000')
-        $('#historyWordsBtn').css('background-color','#9f9f9f').css('color','#000000')
-        $('#wordbooksBtn').css('background-color','unset').css('color','#ffffff')
+    $('#wordbooksBtn').click(function(e){
+        if(this==e.target){
+            $('#favorsBtn').css('background-color','#9f9f9f').css('color','#000000')
+            $('#historyWordsBtn').css('background-color','#9f9f9f').css('color','#000000')
+            $('#wordbooksBtn').css('background-color','unset').css('color','#ffffff')
 
-        $('#favorsPad').hide()
-        $('#historyWordsPad').hide()
-        $('#wordbooksPad').show()
+            $('#favorsPad').hide()
+            $('#historyWordsPad').hide()
+            $('#wordbooksPad').show()
+
+            $('#startRollBtn').show()
+        }
     })
 
 
@@ -3703,5 +3728,104 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
         page.trueVideos.currRows=[]
     })
+
+    
+    $('#rollShowWordsPad').click(function(e){
+        if(this==e.target){
+            $('#rollShowWordsPad').hide()
+            clearInterval(page.rollWordsInterval)
+            clearTimeout(page.readRollWordTimeout)
+        }
+    })
+
+    $('#rollShowWordsPad .prev').click(function(e){
+        clearInterval(page.rollWordsInterval)
+        clearTimeout(page.readRollWordTimeout)
+        var rollInx = page.rollInx-1
+        if(rollInx==0)
+            rollInx=1
+        wordsRoll(rollInx);
+        clearInterval(page.rollWordsInterval)
+        page.rollWordsInterval = setInterval(function(){
+            wordsRoll(page.rollInx+1)
+        },6500)
+    })
+
+    $('#rollShowWordsPad .stop').click(function(e){
+        clearInterval(page.rollWordsInterval)
+        clearTimeout(page.readRollWordTimeout)
+        $('#rollShowWordsPad .stop').hide()
+        $('#rollShowWordsPad .start').show()
+    })
+
+    $('#rollShowWordsPad .start').click(function(e){
+        $('#rollShowWordsPad .stop').show()
+        $('#rollShowWordsPad .start').hide()
+        startWordsRoll(!page.rollInx?1:page.rollInx)
+    })
+
+    $('#startRollBtn').click(function(){
+        $('#rollShowWordsPad').show()
+        $('#rollShowWordsPad .start').click()
+    })
+
+    function startWordsRoll(rollInx){
+        wordsRoll(rollInx);
+        clearInterval(page.rollWordsInterval)
+        page.rollWordsInterval = setInterval(function(){
+            wordsRoll(page.rollInx+1)
+        },6500)
+    }
+
+    function wordsRoll(rollInx){
+        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        var word = words.rows[rollInx]
+        if(word == null){
+            clearInterval(page.rollWordsInterval)
+            clearTimeout(page.readRollWordTimeout)
+            loadMoreWordbookWords(page.wordbooks.selected.no)
+        }
+        word = words.rows[rollInx]
+        if(word == null){
+            page.rollInx=0
+            $('#startRollBtn').click()
+            return;
+        }
+
+        $('#rollShowWordsPad .word').text(word.word)
+        $('#rollShowWordsPad .phonetic').text(word.phonetic?('/'+word.phonetic+'/'):' ')
+        $('#rollShowWordsPad .translation').text(word.translation||' ')
+
+        page.readRollWordTimeout=setTimeout(function(){
+            var count = 2;
+            let _mp3 = new Audio(word.speakUrl);
+            _mp3.onpause=function(){
+                if(_mp3.currentTime==_mp3.duration){
+                    if(count > 0){
+                        page.readRollWordTimeout=setTimeout(function(){
+                            _mp3.play()
+                        },1500)
+                        count--;
+                    }else{
+                        clearTimeout(page.readRollWordTimeout)
+                        page.rollInx=rollInx
+                    }
+                }
+            }
+            _mp3.play()
+        },1500)
+        
+    }
+    $('#extendSearchPad').click(function(e){
+        if(this==e.target){
+            $('#extendSearchPad').hide()
+            $('#extendSearchFrame').attr('src','https://m.baidu.com')
+        }
+    })
+    $('#goExtendSearchBtn').click(function(e){
+        $('#extendSearchPad').show()
+        $('#extendSearchFrame').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
+    })
+    
 })()
 
