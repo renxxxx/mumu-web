@@ -123,13 +123,12 @@
     
     if(videoNoC){
         $.ajax({
-            url: '/mumu/video?',
-            
+            url: '/mumu/watch-video-history?',
             ajaxCache:true,
             data: 'videoNo='+videoNoC,
             async: false,
             success: function(res) {
-                videoC = res.data.video
+                videoC = res.data.row
             }
         })
     }
@@ -214,30 +213,26 @@
     }
     function getMoreVideos(){
         $.ajax({
-            url: '/mumu/explore-videos?',
-            data: 'shortvideo=1&kw='+searchtag+'&pageSize='+10+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
-                    +"&userNo="+(page.onlyLookUserNo||' '),
+            url: '/mumu/watch-video-historys?',
+            data: 'shortvideo=1&kw='+searchKw+'&rcount='+10+"&tag="+searchtag+"&rstart=1"+"&split=createTime&splitv="+
+                page.exploreVideos.rows[page.exploreVideos.rows.length-1].createTime,
             async: false,
             success: function(res) {
-                if(res.data.videos.length>0){
-                    page.exploreVideos.rows.push(...res.data.videos)
-                    page.exploreVideos.currRows=res.data.videos
-                    page.exploreVideos.rstart=page.exploreVideos.rows.length+1
-                    page.trueVideos.rows.push(...res.data.videos)
-                    page.trueVideos.currRows=res.data.videos
+                if(res.data.rows.length>0){
+                    page.exploreVideos.rows.push(...res.data.rows)
+                    page.exploreVideos.currRows=res.data.rows
+                    page.trueVideos.rows.push(...res.data.rows)
+                    page.trueVideos.currRows=res.data.rows
                 }else{
-                    page.seed = Math.ceil(Math.random()*100);
                     $.ajax({
-                        url: '/mumu/explore-videos?',
-                        
-                        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
+                        url: '/mumu/watch-video-historys?',
+                        data: 'shortvideo=1&kw='+searchKw+'&rcount='+10+"&tag="+searchtag+"&rstart=1",
                         async: false,
                         success: function(res) {
-                            page.exploreVideos.rows.push(...res.data.videos)
-                            page.exploreVideos.currRows=res.data.videos
-                            page.trueVideos.rows.push(...res.data.videos)
-                            page.trueVideos.currRows=res.data.videos
-                            page.exploreVideos.rstart=1
+                            page.exploreVideos.rows.push(...res.data.rows)
+                            page.exploreVideos.currRows=res.data.rows
+                            page.trueVideos.rows.push(...res.data.rows)
+                            page.trueVideos.currRows=res.data.rows
                         }
                     })
                 }
@@ -268,6 +263,7 @@
                 getMoreVideos()
             }
 
+            
             page.trueVideos.currRows.forEach(function(item,inx){
                 page.trueVideos.map['no'+item.no]
                 page.trueVideos.noes.push(item.no)
@@ -293,7 +289,12 @@
         }
 
         
-        
+        if(page.onlyLookUserNo){
+            page.onlyLookHimVideos.inx++
+        }else{
+            page.exploreVideos.inx++
+        }
+
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
 
@@ -308,7 +309,7 @@
     function goPrevVideo(){
         pauseVideo()
         closeLoopLine()
-        if(!page.trueVideos.rows[page.trueVideos.inx-1-1]){
+        if(!page.trueVideos.rows[page.trueVideos.inx-1]){
             location.replace('./index.html')
             return;
         }
@@ -318,6 +319,7 @@
         }else{
             page.exploreVideos.inx--
         }
+
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
 
@@ -421,7 +423,6 @@
             $('#headimg').css('display','inline-block')
             $('#onlyLookHim').css('display','inline-block')
             $('#chatminpad').css('width','calc(100% - 105px)')
-            $('#videoNickname').text(video.nickname)
         }else{
             $('#headimg').hide()
             $('#onlyLookHim').hide()
@@ -2016,48 +2017,28 @@
     $('#searchclear').click(function(){
         searchKw=''
         searchtag=''
+        $('#searchtext').text('搜索').css('color','#bfbbbb')
         $('#searchpad').slideUp(100)
         page.seed = Math.ceil(Math.random()*100);
-        page.exploreVideos.rows=[]
-        page.exploreVideos.currRows=[]
-        page.exploreVideos.inx=0
-        page.exploreVideos.rstart=0
-
-        page.onlyLookHimVideos.rows=[]
-        page.onlyLookHimVideos.currRows=[]
-        page.onlyLookHimVideos.inx=0
-        page.onlyLookHimVideos.rstart=0
-
-        page.trueVideos.rows=[]
-        page.trueVideos.currRows=[]
-        page.trueVideos.noes=[]
-        page.trueVideos.map={}
-        page.trueVideos.inx=0
-        page.trueVideos.rstart=0
-        closeLoopVideos()
+        videos=[]
+        page.currVideos=[]
+        videoNos=[]
+        videosMap={}
+        videosIndex=-1
+        page.rstart=1
         goNextVideo()
     })
 
     $('.searchtag').click(function(){
-        searchtag=$(this).attr('data')
+        searchtag=this.innerText
+        $('#searchtext').text("#"+this.innerText+"#").css('color','#6f6f6f')
         $('#searchpad').slideUp(100)
-        page.exploreVideos.rows=[]
-        page.exploreVideos.currRows=[]
-        page.exploreVideos.inx=0
-        page.exploreVideos.rstart=0
-
-        page.onlyLookHimVideos.rows=[]
-        page.onlyLookHimVideos.currRows=[]
-        page.onlyLookHimVideos.inx=0
-        page.onlyLookHimVideos.rstart=0
-
-        page.trueVideos.rows=[]
-        page.trueVideos.currRows=[]
-        page.trueVideos.noes=[]
-        page.trueVideos.map={}
-        page.trueVideos.inx=0
-        page.trueVideos.rstart=0
-        closeLoopVideos()
+        videos=[]
+        videoNos=[]
+        videosMap={}
+        videosIndex=-1
+        page.currVideos=res.data.videos
+        page.rstart=1
         goNextVideo()
     })
 
@@ -2128,7 +2109,7 @@
     })
 
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($('#video').height()+55)+'px')
+        $('#searchpad').css('height',($(window).height()-($('#video').height()+64+30+30))+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
@@ -2141,7 +2122,7 @@
             e.preventDefault()
         }
     }).bind('touchend',function(e){
-        if(this.touchstart-this.touchend>50){
+        if(this.touchend-this.touchstart>50){
             $('#searchpad').slideUp(100)
         }
         this.touchstart=null
@@ -3702,6 +3683,8 @@ $('#wordsframe_cancel').click(function(){
         }
         page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
         page.trueVideos.currRows=[]
+
+        
     })
 })()
 
