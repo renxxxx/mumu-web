@@ -3047,6 +3047,7 @@ $('#wordsframe_cancel').click(function(){
                     wordbookNo:wordbookNo,
                     rstart:rstart,
                     rcount:rcount,
+                    async:false,
                 },
                 beforeSend:()=>{
                     $(`#wordbooksPad .words .pad .someload`).hide()
@@ -3733,87 +3734,102 @@ $('#wordsframe_cancel').click(function(){
     $('#rollShowWordsPad').click(function(e){
         if(this==e.target){
             $('#rollShowWordsPad').hide()
-            clearInterval(page.rollWordsInterval)
+            page._mp3.pause()
+            clearTimeout(page.rollWordsInterval)
             clearTimeout(page.readRollWordTimeout)
+            
         }
     })
 
     $('#rollShowWordsPad .prev').click(function(e){
-        clearInterval(page.rollWordsInterval)
-        clearTimeout(page.readRollWordTimeout)
-        var rollInx = page.rollInx-1
-        if(rollInx==0)
-            rollInx=1
-        wordsRoll(rollInx);
-        clearInterval(page.rollWordsInterval)
-        page.rollWordsInterval = setInterval(function(){
-            wordsRoll(page.rollInx+1)
-        },6500)
+        wordsRoll(page.rollInx-1)
+    })
+    $('#rollShowWordsPad .next').click(function(e){
+        wordsRoll(page.rollInx+1)
     })
 
     $('#rollShowWordsPad .stop').click(function(e){
-        clearInterval(page.rollWordsInterval)
+        clearTimeout(page.rollWordsInterval)
         clearTimeout(page.readRollWordTimeout)
         $('#rollShowWordsPad .stop').hide()
         $('#rollShowWordsPad .start').show()
+        page.rollIsSound=0
+        page.auto=0
     })
 
     $('#rollShowWordsPad .start').click(function(e){
-        $('#rollShowWordsPad .stop').show()
-        $('#rollShowWordsPad .start').hide()
-        startWordsRoll(!page.rollInx?1:page.rollInx)
+        page.rollIsSound=1
+        page.auto=1
+        startWordsRoll(page.rollInx)
     })
 
     $('#startRollBtn').click(function(){
         $('#rollShowWordsPad').show()
-        $('#rollShowWordsPad .start').click()
+        $('#rollShowWordsPad .stop').hide()
+        $('#rollShowWordsPad .start').show()
+        page.rollIsSound=0
+        page.auto=0
+        page.rollInx=1
+        wordsRoll(page.rollInx)
     })
 
     function startWordsRoll(rollInx){
+        $('#rollShowWordsPad .stop').show()
+        $('#rollShowWordsPad .start').hide()
+        page.rollIsSound=1
+        page.auto=1
+        rollInx=!rollInx?1:rollInx
         wordsRoll(rollInx);
-        clearInterval(page.rollWordsInterval)
-        page.rollWordsInterval = setInterval(function(){
-            wordsRoll(page.rollInx+1)
-        },6500)
     }
-
+    page._mp3 = new Audio()
     function wordsRoll(rollInx){
+        page._mp3.pause()
+        clearTimeout(page.rollWordsInterval)
+        clearTimeout(page.readRollWordTimeout)
         var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
-        var word = words.rows[rollInx]
+        var word = words.rows[rollInx-1]
         if(word == null){
-            clearInterval(page.rollWordsInterval)
-            clearTimeout(page.readRollWordTimeout)
             loadMoreWordbookWords(page.wordbooks.selected.no)
         }
-        word = words.rows[rollInx]
+        word = words.rows[rollInx-1]
         if(word == null){
-            page.rollInx=0
-            $('#startRollBtn').click()
+            page.rollInx=1
+            wordsRoll(page.rollInx)
             return;
         }
-
+        page.rollInx=rollInx
         $('#rollShowWordsPad .word').text(word.word)
+        $('#rollShowWordsPad .inx').text(rollInx)
         $('#rollShowWordsPad .phonetic').text(word.phonetic?('/'+word.phonetic+'/'):' ')
         $('#rollShowWordsPad .translation').text(word.translation||' ')
 
-        page.readRollWordTimeout=setTimeout(function(){
-            var count = 2;
-            let _mp3 = new Audio(word.speakUrl);
-            _mp3.onpause=function(){
-                if(_mp3.currentTime==_mp3.duration){
-                    if(count > 0){
-                        page.readRollWordTimeout=setTimeout(function(){
-                            _mp3.play()
-                        },1500)
-                        count--;
-                    }else{
-                        clearTimeout(page.readRollWordTimeout)
-                        page.rollInx=rollInx
+        if(page.auto){
+            if(page.rollIsSound){
+                page.readRollWordTimeout=setTimeout(function(){
+                    var count = 2;
+                    page._mp3.src=word.speakUrl;
+                    page._mp3.onpause=function(){
+                        if(page._mp3.currentTime==page._mp3.duration){
+                            if(count > 0){
+                                page.readRollWordTimeout=setTimeout(function(){
+                                    page._mp3.play()
+                                },1500)
+                                count--;
+                            }else{
+                                clearTimeout(page.readRollWordTimeout)
+
+                                clearTimeout(page.rollWordsInterval)
+                                page.rollWordsInterval = setTimeout(function(){
+                                    wordsRoll(page.rollInx+1)
+                                },2000)
+                            }
+                        }
                     }
-                }
+                    page._mp3.play()
+                },1500)
             }
-            _mp3.play()
-        },1500)
+        }
+
         
     }
     $('#extendSearchPad').click(function(e){
