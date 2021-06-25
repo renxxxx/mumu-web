@@ -75,7 +75,8 @@
     var videoC = null
     var video;
     var videoNo;
-    page.rollInx = 0;
+    var rollInxCache = parseInt(localStorage.getItem(config.project+'-rollInx'))
+    page.rollInx = rollInxCache? rollInxCache : 0;
     page.exploreVideos={
         rows:[],
         currRows:[],
@@ -253,7 +254,7 @@
     function goNextVideo(){
         pauseVideo()
         closeLoopLine()
-        if(!page.trueVideos.rows[page.trueVideos.inx+1-1]){
+        if(!page.trueVideos.rows[page.trueVideos.inx+1-1] || !page.trueVideos.rows[page.trueVideos.inx+2-1]){
             if(videoC){
                 page.trueVideos.rows.unshift(videoC)
                 page.trueVideos.currRows.unshift(videoC)
@@ -405,8 +406,8 @@
 
         genShareData()
         $('#zh_subtitles').html('')
-        var ss = video.chreference||video.seriesChname;
-        if(ss != video.chname){
+        var ss =ttb(video.chreference)||ttb(video.seriesChname);
+        if(ss != ttb(video.chname)){
             if(ss){
                 ss=ss+'\n'
             }else{
@@ -415,7 +416,7 @@
         }else{
             ss=''
         }
-        $('#videoName').text(ss+video.chname)
+        $('#videoName').text(ss+ttb(video.chname))
         $('#video').attr("poster", video.cover)
         if(video.userNo){
             $('#headimg').attr('src',video.headimg)
@@ -1477,8 +1478,8 @@
         var shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
-                title: video.chname, // 分享标题
-                desc: '幕幕 - 短视频练英语\n'+(video.reference||video.seriesChname||' '), // 分享描述
+                title: ttb(video.chname), // 分享标题
+                desc: '幕幕 - 短视频练英语\n'+(ttb(video.reference)||ttb(video.seriesChname)), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1487,7 +1488,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: video.chname + '\n幕幕 - 短视频练英语', // 分享标题
+                title: ttb(video.chname) + '\n幕幕 - 短视频练英语', // 分享标题
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1501,8 +1502,8 @@
     function genShareData(){
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
-            title: video.chname, // 分享标题
-            desc: '幕幕 - 短视频练英语\n'+(video.reference||video.seriesChname||' '), // 分享描述
+            title: ttb(video.chname), // 分享标题
+            desc: '幕幕 - 短视频练英语\n'+(ttb(video.reference)||ttb(video.seriesChname)), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1511,7 +1512,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: video.chname + '\n幕幕 - 短视频练英语', // 分享标题
+            title: ttb(video.chname) + '\n幕幕 - 短视频练英语', // 分享标题
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -2952,14 +2953,13 @@ $('#wordsframe_cancel').click(function(){
                                 ele.show();
                                 $('#wordbooksPad .wordbooks .row0').before(ele)
 
-
                                 var ele1 = $('#wordbooksPadOnAdd .row0').clone(true);
                                 ele1.removeClass('row0')
                                 ele1.addClass('row'+row.no)
                                 ele1.text(row.name)
                                 $('#wordbooksPadOnAdd .row0').before(ele1)
                                 ele1.show()
-                                ele1[0].data=element
+                                ele1[0].data=row
                             }else{
                                 common.alert(res.msg)
                             }
@@ -2970,11 +2970,13 @@ $('#wordsframe_cancel').click(function(){
         })
     })
     $('#wordbooksPad .wordbooks .row0').click(function(e){
+        $('#startRollBtn').hide()
         var row = page.wordbooks.selected=this.data;
         $('#wordbooksPad .wordbooks .row').css('background-color','unset')
         $(this).css('background-color','rgb(111, 111, 111)')
         $('#wordbooksPad .createRowBtn').hide()
         $('#wordbooksPad .editRowBtn').show()
+        $('#clickToShowCreateWordbookBtn').show()
         chooseWordbook(row.no)
     })
     
@@ -2982,6 +2984,11 @@ $('#wordsframe_cancel').click(function(){
         loadMoreWordbookWords(page.wordbooks.selected.no)
     })
     function chooseWordbook(wordbookNo){
+        
+        for (const ajax of page.wordbookWordsAjaxs) {
+            ajax.abort()
+        }
+
         var words = page.wordBooksWordsMap['no'+wordbookNo];
         if(!words){
             words={
@@ -3010,7 +3017,9 @@ $('#wordsframe_cancel').click(function(){
                 $(`#wordbooksPad .words .pad .loadmore`).show()
             }
             renderWordbookWords(words.rows)
+            $('#startRollBtn').show()
         }
+        
     }
 
     function renderWordbookWords(rows){
@@ -3047,7 +3056,6 @@ $('#wordsframe_cancel').click(function(){
                     wordbookNo:wordbookNo,
                     rstart:rstart,
                     rcount:rcount,
-                    async:false,
                 },
                 beforeSend:()=>{
                     $(`#wordbooksPad .words .pad .someload`).hide()
@@ -3070,7 +3078,11 @@ $('#wordsframe_cancel').click(function(){
                             words.rows.push(...res.data.rows)
                             renderWordbookWords(res.data.rows)
                         }
-                        
+                        if(words.rows.length>0){
+                            $('#startRollBtn').show()
+                        }else{
+                            $('#startRollBtn').hide()
+                        }
                     }
                 }
             })
@@ -3106,6 +3118,8 @@ $('#wordsframe_cancel').click(function(){
         var row = this.data;
         translatee(row.word)
         loadRelatedWords(row.word)
+        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        page.rollInx = words.rows.indexOf(row)+1
     })
 
     $('#wordbooksPad .words  .coverTargetTextBtn').click(function(){
@@ -3127,7 +3141,7 @@ $('#wordsframe_cancel').click(function(){
         var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
         if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
             common.promptLine({
-                message:'输入 delete 以确认移除, 1分钟内不会再次提示.',
+                message:'将删除'+row.word+', 请输入delete以确认移除, 1分钟内不会再次提示.',
                 manualClose:1,
                 cancel:function(v,promptEle){
                     promptEle.remove()
@@ -3164,8 +3178,11 @@ $('#wordsframe_cancel').click(function(){
             message:'请输入释义, 可为空.',
             confirm:function(v){
                 if(v!=null){
-                    var ele = createWordbookWord(wordbookNo,v)
-                    $(`#wordbooksPad .words .pad `).prepend(ele)
+                    if(page.wordbooks.selected && wordbookNo == page.wordbooks.selected.no){
+                        $('#startRollBtn').show()
+                        var ele = createWordbookWord(wordbookNo,v)
+                        $(`#wordbooksPad .words .pad `).prepend(ele)
+                    }
                     ws.send(JSON.stringify({
                         action:8,
                         wordbookNo:wordbookNo,
@@ -3281,6 +3298,8 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad .createRowBtn').show()
             $('#wordbooksPad .editRowBtn').hide()
             $('#wordbooksPad .words .pad').hide()
+            $('#wordbooksPad .wordbooks .row').css('background-color','unset')
+            $('#clickToShowCreateWordbookBtn').hide()
         }
         
     })
@@ -3640,25 +3659,8 @@ $('#wordsframe_cancel').click(function(){
     $('#wordbooksPadOnAdd .currRow,#wordbooksPadOnAdd .row0').click(function(){
         var row = this.data
         $('#wordbooksPadOnAdd').hide()
-        if(page.wordbooks.selected && row.no == page.wordbooks.selected.no){
-            addWordbookWord(row.no)
-        }else{
-            var words = page.wordBooksWordsMap['no'+row.no];
-            if(words){
-                var word = {
-                    word:page.currWord.word,
-                    translation:page.currWord.translation,
-                    phonetic:page.currWord.phonetic,
-                    no:randomnum(12)
-                }
-                words.rows.splice(0,0,word)
-            }
-            ws.send(JSON.stringify({
-                action:8,
-                wordbookNo:row.no,
-                word:page.currWord.word
-            }))
-        }
+        addWordbookWord(row.no)
+        
     })
 
     $('#wordbooksPadOnAdd .loadmore').click(function(){
@@ -3735,6 +3737,7 @@ $('#wordsframe_cancel').click(function(){
         if(this==e.target){
             $('#rollShowWordsPad').hide()
             page._mp3.pause()
+            page.lettersound.pause()
             clearTimeout(page.rollWordsInterval)
             clearTimeout(page.readRollWordTimeout)
             
@@ -3752,6 +3755,8 @@ $('#wordsframe_cancel').click(function(){
     })
     
     $('#rollShowWordsPad .stop').click(function(e){
+        page._mp3.pause()
+        page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
         clearTimeout(page.readRollWordTimeout)
         $('#rollShowWordsPad .stop').hide()
@@ -3785,22 +3790,27 @@ $('#wordsframe_cancel').click(function(){
         wordsRoll(rollInx);
     }
     page._mp3 = document.createElement('video')
+    page.lettersound = document.createElement('video')
     function wordsRoll(rollInx){
         page._mp3.pause()
+        page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
         clearTimeout(page.readRollWordTimeout)
         var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        if(words.rows.length==0)
+            return;
         var word = words.rows[rollInx-1]
-        if(word == null){
+        if(!word){
             loadMoreWordbookWords(page.wordbooks.selected.no)
         }
         word = words.rows[rollInx-1]
-        if(word == null){
+        if(!word){
             page.rollInx=1
             wordsRoll(page.rollInx)
             return;
         }
         page.rollInx=rollInx
+        localStorage.setItem(config.project+'-rollInx',page.rollInx)
         $('#rollShowWordsPad .word').text(word.word)
         $('#rollShowWordsPad .inx').text(rollInx)
         $('#rollShowWordsPad .phonetic').text(word.phonetic?('/'+word.phonetic+'/'):' ')
@@ -3808,9 +3818,42 @@ $('#wordsframe_cancel').click(function(){
 
         if(page.auto){
             if(page.rollIsSound){
-                page.readRollWordTimeout=setTimeout(function(){
+                if(word.word.split(' ').length==1 || word.word.split('-').length==2){
+                    var letters = word.word.split('')
+                    var letterInx = 1
+                    page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
+                    page.lettersound.play()
+
+                    page.lettersound.onpause=function(){
+                        letterInx++;
+                        if(page.lettersound.currentTime==page.lettersound.duration){
+                            if(letters[letterInx-1]){
+                                if(/[a-zA-Z]/.test(letters[letterInx-1])){
+                                    page.lettersound.muted=false
+                                    page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
+                                }else{
+                                    page.lettersound.muted=true
+                                    page.lettersound.src="/file/mumu/lettersounds/a.mp3"
+                                }
+                                page.lettersound.play()
+                            }else{
+                                readWord(word)
+                            }
+                        }
+                    }
+                }else{
+                    readWord(word)
+                }
+                
+                function readWord(word){
                     var count = 2;
-                    page._mp3.src=word.speakUrl;
+                    if(word.speakUrl){
+                        page._mp3.muted=false
+                        page._mp3.src=word.speakUrl;
+                    }else {
+                        page._mp3.muted=true
+                        page._mp3.src="/file/mumu/lettersounds/a.mp3"
+                    }
                     page._mp3.onpause=function(){
                         if(page._mp3.currentTime==page._mp3.duration){
                             if(count > 0){
@@ -3824,12 +3867,13 @@ $('#wordsframe_cancel').click(function(){
                                 clearTimeout(page.rollWordsInterval)
                                 page.rollWordsInterval = setTimeout(function(){
                                     wordsRoll(page.rollInx+1)
-                                },2000)
+                                },1000)
                             }
                         }
                     }
                     page._mp3.play()
-                },1000)
+                }
+                
             }
         }
 
