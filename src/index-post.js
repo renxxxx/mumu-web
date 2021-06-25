@@ -68,6 +68,7 @@
         rows:[],
         inx:0,
     }
+    page.closeView=0
     var loopLine=0
     var pausebeforech = null;
     var historywords=[]
@@ -342,7 +343,11 @@
         },1000)
     }
     function guide(){
-        $('#video').attr("src",video.url)
+        if(page.closeView)
+            $('#video').attr("src",video.audio16k||audio||video.url)
+        else
+            $('#video').attr("src",video.url)
+
         var translateed = localStorage.getItem(config.project+'-translateed')
         if(!translateed){
             $('#hintssec').text(3)
@@ -373,7 +378,10 @@
         }
     }
     function guide1(){
-        $('#video').attr("src",video.url)
+        if(page.closeView)
+            $('#video').attr("src",video.audio16k||video.audio||video.url)
+        else
+            $('#video').attr("src",video.url)
         $('#video').css('top','0')
         $('#video').attr('autoplay',true)
         playVideo()
@@ -3890,5 +3898,15 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchFrame').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
     })
     
+    $('#closeViewBtn').click(function(){
+        if(page.closeView){
+            page.closeView=0
+            $('#closeViewBtn').attr('src','./img/openeye.png')
+        }else{
+            page.closeView=1
+            $('#closeViewBtn').attr('src','./img/closeeye.png')
+        }
+        guide1()
+    })
 })()
 
