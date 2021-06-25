@@ -78,6 +78,7 @@
     var videoNo;
     var rollInxCache = parseInt(localStorage.getItem(config.project+'-rollInx'))
     page.rollInx = rollInxCache? rollInxCache : 0;
+    page.words1ajaxs=[]
     page.exploreVideos={
         rows:[],
         currRows:[],
@@ -89,12 +90,14 @@
     if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
         $.ajax({
           url:'/mumu/login-refresh',
-          async:true,
+          async:false,
           success:function(res){
             if(res.code==0){
               pagePre.login=res.data
               localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
               localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+            }else if(res.code==20){
+                login()
             }
           }
         })
@@ -132,7 +135,11 @@
             data: 'videoNo='+videoNoC,
             async: false,
             success: function(res) {
-                videoC = res.data.video
+                if(res.code==0){
+                    videoC = res.data.video
+                }else if(res.code==20){
+                    login()
+                }
             }
         })
     }
@@ -202,15 +209,19 @@
             data: obj,
             async: false,
             success: function(res) {
-                if(res.data.videos.length>0){
-                    page.onlyLookHimVideos.rows.push(...res.data.videos)
-                    page.onlyLookHimVideos.currRows=res.data.videos
-                    page.trueVideos.rows.push(...res.data.videos)
-                    page.trueVideos.currRows=res.data.videos
-                }else{
-                    page.onlyLookHimVideos.rows=[]
-                    page.onlyLookHimVideos.currRows=[]
-                    getMoreOnlyLookHimVideos()
+                if(res.code==0){
+                    if(res.data.videos.length>0){
+                        page.onlyLookHimVideos.rows.push(...res.data.videos)
+                        page.onlyLookHimVideos.currRows=res.data.videos
+                        page.trueVideos.rows.push(...res.data.videos)
+                        page.trueVideos.currRows=res.data.videos
+                    }else{
+                        page.onlyLookHimVideos.rows=[]
+                        page.onlyLookHimVideos.currRows=[]
+                        getMoreOnlyLookHimVideos()
+                    }
+                }else if(res.code==20){
+                    login()
                 }
             }
         })
@@ -222,28 +233,33 @@
                     +"&userNo="+(page.onlyLookUserNo||' '),
             async: false,
             success: function(res) {
-                if(res.data.videos.length>0){
-                    page.exploreVideos.rows.push(...res.data.videos)
-                    page.exploreVideos.currRows=res.data.videos
-                    page.exploreVideos.rstart=page.exploreVideos.rows.length+1
-                    page.trueVideos.rows.push(...res.data.videos)
-                    page.trueVideos.currRows=res.data.videos
-                }else{
-                    page.seed = Math.ceil(Math.random()*100);
-                    $.ajax({
-                        url: '/mumu/explore-videos?',
-                        
-                        data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
-                        async: false,
-                        success: function(res) {
-                            page.exploreVideos.rows.push(...res.data.videos)
-                            page.exploreVideos.currRows=res.data.videos
-                            page.trueVideos.rows.push(...res.data.videos)
-                            page.trueVideos.currRows=res.data.videos
-                            page.exploreVideos.rstart=1
-                        }
-                    })
+                if(res.code==0){
+                    if(res.data.videos.length>0){
+                        page.exploreVideos.rows.push(...res.data.videos)
+                        page.exploreVideos.currRows=res.data.videos
+                        page.exploreVideos.rstart=page.exploreVideos.rows.length+1
+                        page.trueVideos.rows.push(...res.data.videos)
+                        page.trueVideos.currRows=res.data.videos
+                    }else{
+                        page.seed = Math.ceil(Math.random()*100);
+                        $.ajax({
+                            url: '/mumu/explore-videos?',
+                            
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
+                            async: false,
+                            success: function(res) {
+                                page.exploreVideos.rows.push(...res.data.videos)
+                                page.exploreVideos.currRows=res.data.videos
+                                page.trueVideos.rows.push(...res.data.videos)
+                                page.trueVideos.currRows=res.data.videos
+                                page.exploreVideos.rstart=1
+                            }
+                        })
+                    }
+                }else if(res.code==20){
+                    login()
                 }
+
             }
         })
     }
@@ -352,11 +368,11 @@
         if(!translateed){
             $('#hintssec').text(3)
             pauseVideo()
-            $('#video').css('top','-1000px')
+            $('#videobox').css('top','-1000px')
             $('#hints').show()
             setTimeout(function(){
                 $('#hints').fadeOut(1000,function(){
-                    $('#video').css('top','0')
+                    $('#videobox').css('top','0')
                     playVideo()
                     //setTimeout(function(){$('#video')[0].muted=false},500)
                 });
@@ -371,7 +387,7 @@
             },1000)
             
         }else{
-            $('#video').css('top','0')
+            $('#videobox').css('top','0')
             $('#video').attr('autoplay',true)
             playVideo()
             //setTimeout(function(){$('#video')[0].muted=false},500)
@@ -382,7 +398,7 @@
             $('#video').attr("src",video.audio16k||video.audio||video.url)
         else
             $('#video').attr("src",video.url)
-        $('#video').css('top','0')
+        $('#videobox').css('top','0')
         $('#video').attr('autoplay',true)
         playVideo()
     }
@@ -732,7 +748,7 @@
         $('#wordsframe').hide()
         $('#videoshasow').hide()
         $('#word-in').val('')
-        $('#video').css('top','0px')
+        $('#videobox').css('top','0px')
     }
     function prevline(){
         ////let _this = this;
@@ -885,6 +901,9 @@
             for (const ajax of page.translateajaxs) {
                 ajax.abort()
             }
+            for (const ajax of page.words1ajaxs) {
+                ajax.abort()
+            }
             page.currWordText=_data
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
@@ -897,6 +916,8 @@
                     var hasTranslate = false;
                     clearTimeout(window.aaa)
                     page.currWord=res.data
+                    res.data.speakUrl=res.data.pronounceUs?res.data.pronounceUs:res.data.pronounceUk?res.data.pronounceUk:res.data.speakUrl;
+                    res.data.phonetic=res.data.phoneticUs?res.data.phoneticUs:res.data.phoneticUk?res.data.phoneticUk:res.data.phonetic;
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
                     }else{
@@ -940,7 +961,7 @@
                     $('#summtrans-vv').show()
                     $('#summtrans-value').show()
                     $('#summtrans').show()
-                    $('#video').css('top','-1000px')
+                    $('#videobox').css('top','-1000px')
 
                     var totaltranslatesno = localStorage.getItem(config.project+"-totaltranslatesno")
                     totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
@@ -1000,7 +1021,7 @@
         $('#summtrans-phonetic').text('').hide('')
         $('#summtrans-speak').attr('play-src','').hide('')
         
-        $('#video').css('top','0px')
+        $('#videobox').css('top','0px')
         clearInterval(en.monitor)
         en.monitor = setInterval(function(){
             monitor(videoele.currentTime*1000)
@@ -1042,7 +1063,7 @@
                 $('#videoshasowimg').css('background-color',"#000000")
             $('#videoshasow').show()
             //log.debug(`$('#videoshasow').show()`)
-            $('#video').css('top','-1000px')
+            $('#videobox').css('top','-1000px')
             //$('#videoshasow').css('height',$('#video').css('height'))
         }
     }
@@ -1297,7 +1318,7 @@
                 $('#wordsframe').hide()
                 $('#word-in').val('')
                 $('#words .word').remove()
-                $('#video').css('top',0)
+                $('#videobox').css('top',0)
                 break;
     　　　　 case '32'://space
                 if(document.activeElement == $('#word-in')[0])
@@ -1445,7 +1466,7 @@
             if(!$('#word-in').val()){
                 $('#summtrans').hide()
                 $('#wordsframe').hide()
-                $('#video').css('top',0)
+                $('#videobox').css('top',0)
             }
         } else {
             $('#words .word').remove()
@@ -1642,7 +1663,7 @@
             $('#words .word').remove()
         },1000)
         if(value){
-            $.ajax({
+            page.words1ajaxs.push($.ajax({
                 url:'/mumu/words1',
                 data:{
                     kw:value,
@@ -1670,7 +1691,7 @@
                         })
                     }
                 }
-            })
+            }))
         }else{
             $('#words .word').remove();
         }
@@ -2001,7 +2022,7 @@
     //     if(this.value == ''){
     //         setTimeout(function(){
     //             $('#wordsframe').hide()
-    //             $('#video').css('top',0)
+    //             $('#videobox').css('top',0)
     //             recoverManual()
     //         },100)
     //     }
@@ -2713,7 +2734,7 @@ $('#wordsframe_cancel').click(function(){
     recoverManual()
     $('#wordsframe').hide()
     $('#videoshasow').hide()
-    $('#video').css('top',0);
+    $('#videobox').css('top',0);
 })
     
     
@@ -2802,7 +2823,7 @@ $('#wordsframe_cancel').click(function(){
                     $('#summtrans-vv').show()
                     $('#summtrans-value').show()
                     $('#summtrans').show()
-                    $('#video').css('top','-1000px')
+                    $('#videobox').css('top','-1000px')
                     $('#summtrans-speak').click()
 
                     if(data.addHistory){
@@ -3036,6 +3057,8 @@ $('#wordsframe_cancel').click(function(){
             ele.removeClass('row0')
             ele.addClass('row'+element.no)
             ele.find('.word').text(element.word)
+            element.speakUrl=element.pronounceUs?element.pronounceUs:element.pronounceUk?element.pronounceUk:element.speakUrl;
+            element.phonetic=element.phoneticUs?element.phoneticUs:element.phoneticUk?element.phoneticUk:element.phonetic;
             if(element.phonetic){
                 ele.find('.phonetic').text('/'+element.phonetic+'/');
             }else{
@@ -3633,7 +3656,6 @@ $('#wordsframe_cancel').click(function(){
             $('#historyWordsPad').hide()
             $('#wordbooksPad').show()
 
-            $('#startRollBtn').show()
         }
     })
 
@@ -3826,33 +3848,33 @@ $('#wordsframe_cancel').click(function(){
 
         if(page.auto){
             if(page.rollIsSound){
-                if(word.word.split(' ').length==1 || word.word.split('-').length==2){
-                    var letters = word.word.split('')
-                    var letterInx = 1
-                    page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
-                    page.lettersound.play()
+                // if(word.word.split(' ').length==1 || word.word.split('-').length==2){
+                //     var letters = word.word.split('')
+                //     var letterInx = 1
+                //     page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
+                //     page.lettersound.play()
 
-                    page.lettersound.onpause=function(){
-                        letterInx++;
-                        if(page.lettersound.currentTime==page.lettersound.duration){
-                            if(letters[letterInx-1]){
-                                if(/[a-zA-Z]/.test(letters[letterInx-1])){
-                                    page.lettersound.muted=false
-                                    page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
-                                }else{
-                                    page.lettersound.muted=true
-                                    page.lettersound.src="/file/mumu/lettersounds/a.mp3"
-                                }
-                                page.lettersound.play()
-                            }else{
-                                readWord(word)
-                            }
-                        }
-                    }
-                }else{
-                    readWord(word)
-                }
-                
+                //     page.lettersound.onpause=function(){
+                //         letterInx++;
+                //         if(page.lettersound.currentTime==page.lettersound.duration){
+                //             if(letters[letterInx-1]){
+                //                 if(/[a-zA-Z]/.test(letters[letterInx-1])){
+                //                     page.lettersound.muted=false
+                //                     page.lettersound.src="/file/mumu/lettersounds/"+letters[letterInx-1].toLowerCase()+".mp3"
+                //                 }else{
+                //                     page.lettersound.muted=true
+                //                     page.lettersound.src="/file/mumu/lettersounds/a.mp3"
+                //                 }
+                //                 page.lettersound.play()
+                //             }else{
+                //                 readWord(word)
+                //             }
+                //         }
+                //     }
+                // }else{
+                //     readWord(word)
+                // }
+                readWord(word)
                 function readWord(word){
                     var count = 2;
                     if(word.speakUrl){
@@ -3871,10 +3893,29 @@ $('#wordsframe_cancel').click(function(){
                                 count--;
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
-
                                 clearTimeout(page.rollWordsInterval)
+                                if(!word.translationSpeak){
+                                    $.ajax({
+                                        url:'/mumu/get-wordbook-word-translation-voice',
+                                        async:false,
+                                        data:{
+                                            wordbookWordNo:word.no,
+                                            translation:word.translation
+                                        },
+                                        success:function(res){
+                                            word.translationSpeak=res.data.url
+                                        }
+                                    })
+                                }
+
                                 page.rollWordsInterval = setTimeout(function(){
-                                    wordsRoll(page.rollInx+1)
+                                    page._mp3.onpause=function(){
+                                        page.rollWordsInterval = setTimeout(function(){
+                                            wordsRoll(page.rollInx+1)
+                                        },2000)
+                                    }
+                                    page._mp3.src=word.translationSpeak
+                                    page._mp3.play()
                                 },1000)
                             }
                         }
