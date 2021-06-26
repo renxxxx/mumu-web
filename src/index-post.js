@@ -2018,18 +2018,15 @@
             }
         }
     }
-    // $('#word-in').bind('blur',function(){
-    //     if(this.value == ''){
-    //         setTimeout(function(){
-    //             $('#wordsframe').hide()
-    //             $('#videobox').css('top',0)
-    //             recoverManual()
-    //         },100)
-    //     }
-    // })
-
+   
     $('#word-in').bind('focus',function(){
         this.select()
+        for (const ajax of page.translateajaxs) {
+            ajax.abort()
+        }
+        for (const ajax of page.words1ajaxs) {
+            ajax.abort()
+        }
         if(this.value==''){
             $('#wordsframe_cancel').show()
         }else{
@@ -2910,7 +2907,14 @@ $('#wordsframe_cancel').click(function(){
                                 word:iterator,
                             })
                         }
-                        res.data.words.unshift(...subwords)
+                        if(subwords.length>1 || (subwords.length==1 && res.data.words[0].word!=subwords[0].word))
+                            res.data.words.unshift(...subwords)
+                        if(subwords.length>1)
+                            res.data.words.unshift({
+                                id:word,
+                                word:word,
+                            })
+
                         $(res.data.words).each((inx,item)=>{
                             var ele = $('#relatedWord0').clone(true)
                             ele[0].data=item
@@ -3393,7 +3397,7 @@ $('#wordsframe_cancel').click(function(){
                         words={
                             rows:[],
                             currRows:[],
-                            rcount:50,
+                            rcount:200,
                             selected:null,
                         }
                         page.wordBooksWordsMap['no'+row.no]=words
@@ -3777,15 +3781,18 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.currRows=[]
     })
 
+    function closeRollShowWordsPad(){
+        $('#rollShowWordsPad').hide()
+        page._mp3.pause()
+        page.lettersound.pause()
+        clearTimeout(page.rollWordsInterval)
+        clearTimeout(page.readRollWordTimeout)
+        page.rollOpen=0
+    }
     
     $('#rollShowWordsPad').click(function(e){
         if(this==e.target){
-            $('#rollShowWordsPad').hide()
-            page._mp3.pause()
-            page.lettersound.pause()
-            clearTimeout(page.rollWordsInterval)
-            clearTimeout(page.readRollWordTimeout)
-            
+            closeRollShowWordsPad()
         }
     })
 
@@ -3817,6 +3824,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $('#startRollBtn').click(function(){
+        page.rollOpen=1
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
         $('#rollShowWordsPad .start').show()
@@ -3825,6 +3833,13 @@ $('#wordsframe_cancel').click(function(){
         page.auto=0
         page.rollInx=!page.rollInx?1:page.rollInx
         wordsRoll(page.rollInx)
+    })
+
+    $('#rollShowWordsPad .word').click(function(){
+        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        var word = words.rows[page.rollInx-1]
+        translatee(word.word)
+        closeRollShowWordsPad()
     })
 
     function startWordsRoll(rollInx){
@@ -3838,6 +3853,11 @@ $('#wordsframe_cancel').click(function(){
     page._mp3 = document.createElement('video')
     page.lettersound = document.createElement('video')
     function wordsRoll(rollInx){
+        if(!page.rollOpen){
+            closeRollShowWordsPad()
+            return;
+        }
+        
         page._mp3.pause()
         page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
@@ -3932,7 +3952,7 @@ $('#wordsframe_cancel').click(function(){
                             if(count > 0){
                                 page.readRollWordTimeout=setTimeout(function(){
                                     page._mp3.play()
-                                },500)
+                                },150)
                                 count--;
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
@@ -3959,7 +3979,7 @@ $('#wordsframe_cancel').click(function(){
                                     }
                                     page._mp3.src=word.translationSpeak
                                     page._mp3.play()
-                                },500)
+                                },150)
                             }
                         }
                     }
@@ -3992,5 +4012,7 @@ $('#wordsframe_cancel').click(function(){
         }
         guide1()
     })
+
+   
 })()
 
