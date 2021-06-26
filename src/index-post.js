@@ -916,8 +916,8 @@
                     var hasTranslate = false;
                     clearTimeout(window.aaa)
                     page.currWord=res.data
-                    res.data.speakUrl=res.data.pronounceUs?res.data.pronounceUs:res.data.pronounceUk?res.data.pronounceUk:res.data.speakUrl;
-                    res.data.phonetic=res.data.phoneticUs?res.data.phoneticUs:res.data.phoneticUk?res.data.phoneticUk:res.data.phonetic;
+                    res.data.speakUrl=res.data.usSpeech?res.data.usSpeech:res.data.ukSpeech?res.data.ukSpeech:res.data.speakUrl;
+                    res.data.phonetic=res.data.usPhonetic?res.data.usPhonetic:res.data.ukPhonetic?res.data.ukPhonetic:res.data.phonetic;
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
                     }else{
@@ -2029,7 +2029,7 @@
     // })
 
     $('#word-in').bind('focus',function(){
-        //this.select()
+        this.select()
         if(this.value==''){
             $('#wordsframe_cancel').show()
         }else{
@@ -2902,6 +2902,15 @@ $('#wordsframe_cancel').click(function(){
                 },
                 success:function(res){
                     if(res.data.words){
+                        var subs = word.replace(/(\s|-|,|\.)+/g,' ').split(' ')
+                        var subwords = []
+                        for (iterator of subs) {
+                            subwords.push({
+                                id:iterator,
+                                word:iterator,
+                            })
+                        }
+                        res.data.words.unshift(...subwords)
                         $(res.data.words).each((inx,item)=>{
                             var ele = $('#relatedWord0').clone(true)
                             ele[0].data=item
@@ -3057,8 +3066,8 @@ $('#wordsframe_cancel').click(function(){
             ele.removeClass('row0')
             ele.addClass('row'+element.no)
             ele.find('.word').text(element.word)
-            element.speakUrl=element.pronounceUs?element.pronounceUs:element.pronounceUk?element.pronounceUk:element.speakUrl;
-            element.phonetic=element.phoneticUs?element.phoneticUs:element.phoneticUk?element.phoneticUk:element.phonetic;
+            element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
+            element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
             if(element.phonetic){
                 ele.find('.phonetic').text('/'+element.phonetic+'/');
             }else{
@@ -3172,7 +3181,7 @@ $('#wordsframe_cancel').click(function(){
         var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
         if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
             common.promptLine({
-                message:'将删除'+row.word+', 请输入delete以确认移除, 1分钟内不会再次提示.',
+                message:'将删除<span style=color:red;font-size:15px>'+row.word+'</span>, 请输入delete以确认移除, 1分钟内不会再次提示.',
                 manualClose:1,
                 cancel:function(v,promptEle){
                     promptEle.remove()
@@ -3193,13 +3202,19 @@ $('#wordsframe_cancel').click(function(){
                 }
             })
         }else{
-            ws.send(JSON.stringify({
-                action:9,
-                wordbookNo:page.wordbooks.selected.no,
-                word:row.word
-            }))
-            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
-            ele.remove()
+            common.confirm({
+                message:'将删除'+row.word+'.',
+                manualClose:1,
+                confirm:function(v,promptEle){
+                    ws.send(JSON.stringify({
+                        action:9,
+                        wordbookNo:page.wordbooks.selected.no,
+                        word:row.word
+                    }))
+                    page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
+                    ele.remove()
+                }
+            })
         }
         e.stopPropagation()
     })
@@ -3805,6 +3820,7 @@ $('#wordsframe_cancel').click(function(){
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
         $('#rollShowWordsPad .start').show()
+        pauseVideo()
         page.rollIsSound=0
         page.auto=0
         page.rollInx=!page.rollInx?1:page.rollInx
@@ -3830,6 +3846,7 @@ $('#wordsframe_cancel').click(function(){
         if(words.rows.length==0)
             return;
         var word = words.rows[rollInx-1]
+        
         if(!word){
             loadMoreWordbookWords(page.wordbooks.selected.no)
         }
@@ -3839,6 +3856,31 @@ $('#wordsframe_cancel').click(function(){
             wordsRoll(page.rollInx)
             return;
         }
+
+      
+
+
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        if(!word.speakUrl)
+            $.ajax({
+                url: '/mumu/translate?from='+video.language+'&to=2&q='+word.word,
+                ajaxCache:{
+                    timeout: 1
+                },
+                async: false,
+                success: function(res) {
+                    if(res.code==0){
+                        word.speakUrl=res.data.speakUrl
+                        word.usSpeech=res.data.usSpeech
+                        word.ukSpeech=res.data.ukSpeech
+                        word.usPhonetic=res.data.usPhonetic
+                        word.ukPhonetic=res.data.ukPhonetic
+                    }
+                }
+            })
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        word.phonetic=word.usPhonetic?word.usPhonetic:word.ukPhonetic?word.ukPhonetic:word.phonetic;
+
         page.rollInx=rollInx
         localStorage.setItem(config.project+'-rollInx',page.rollInx)
         $('#rollShowWordsPad .word').text(word.word)
@@ -3876,7 +3918,8 @@ $('#wordsframe_cancel').click(function(){
                 // }
                 readWord(word)
                 function readWord(word){
-                    var count = 2;
+                    var count = 1;
+                    
                     if(word.speakUrl){
                         page._mp3.muted=false
                         page._mp3.src=word.speakUrl;
@@ -3889,7 +3932,7 @@ $('#wordsframe_cancel').click(function(){
                             if(count > 0){
                                 page.readRollWordTimeout=setTimeout(function(){
                                     page._mp3.play()
-                                },1000)
+                                },500)
                                 count--;
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
@@ -3912,11 +3955,11 @@ $('#wordsframe_cancel').click(function(){
                                     page._mp3.onpause=function(){
                                         page.rollWordsInterval = setTimeout(function(){
                                             wordsRoll(page.rollInx+1)
-                                        },2000)
+                                        },1000)
                                     }
                                     page._mp3.src=word.translationSpeak
                                     page._mp3.play()
-                                },1000)
+                                },500)
                             }
                         }
                     }
