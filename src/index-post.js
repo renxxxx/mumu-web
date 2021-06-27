@@ -431,16 +431,11 @@
         genShareData()
         $('#zh_subtitles').html('')
         var ss =ttb(video.chreference)||ttb(video.seriesChname);
+        var sss = ss?('#'+ss+' '):ss
         if(ss != ttb(video.chname)){
-            if(ss){
-                ss=ss+'\n'
-            }else{
-                ss=''
-            }
-        }else{
-            ss=''
+            sss=sss+ttb(video.chname)
         }
-        $('#videoName').text(ss+ttb(video.chname))
+        $('#title').text(sss)
         $('#video').attr("poster", video.cover)
         if(video.userNo){
             $('#headimg').attr('src',video.headimg)
@@ -478,6 +473,10 @@
             localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
         },5000)
 
+        if(!video.chatCount){
+            video.chatCount=parseInt(randomnum(2))
+        }
+        $('#chatCount').text(video.chatCount)
         guide1()
     }
     function restore(){
@@ -2149,7 +2148,7 @@
 
 
     $('#wordbookpadBtn').click(function(){
-        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+77))+'px')
+        $('#wordbookpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+20))+'px')
         $('#wordbookpad').slideDown(100)
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
@@ -2161,7 +2160,7 @@
     })
 
     $('#searchpadbtn').click(function(){
-        $('#searchpad').css('height',($('#video').height()+55)+'px')
+        $('#searchpad').css('height',($('#video').height())+'px')
         $('#searchpad').slideDown(100)
     })
     $('#searchpad').bind('touchstart',function(e){
@@ -2258,10 +2257,10 @@
         $('#chooseLoopVideosCountPad').hide()
     })
 
-    $('#chatminpad').click(function(){
+    $('#chatminpad,#goChatBtn').click(function(){
         //$('#chatpad').css('height',(geteletop($('#controlpad')[0])-45)+'px')
         page.preChatPaused=$('#video')[0].paused
-        $('#chatpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+77))+'px')
+        $('#chatpad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+20))+'px')
         //$('#gearframe1').hide()
         $('#prevnextpad').hide()
         $('#subtitlePad').hide()
@@ -2907,7 +2906,7 @@ $('#wordsframe_cancel').click(function(){
                                 word:iterator,
                             })
                         }
-                        if(subwords.length>1 || (subwords.length==1 && res.data.words[0].word!=subwords[0].word))
+                        if(subwords.length>1 || (subwords.length==1 && (res.data.words.length==0 || res.data.words[0].word!=subwords[0].word)))
                             res.data.words.unshift(...subwords)
                         if(subwords.length>1)
                             res.data.words.unshift({
@@ -3350,6 +3349,7 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad .words .pad').hide()
             $('#wordbooksPad .wordbooks .row').css('background-color','unset')
             $('#clickToShowCreateWordbookBtn').hide()
+            $('#startRollBtn').hide()
         }
         
     })
@@ -3675,6 +3675,15 @@ $('#wordsframe_cancel').click(function(){
             $('#historyWordsPad').hide()
             $('#wordbooksPad').show()
 
+            if(page.wordbooks.selected){
+                var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+                if(words.rows.length>0){
+                    $('#startRollBtn').show()
+                }
+            }else{
+                $('#startRollBtn').hide()
+            }
+            
         }
     })
 
@@ -3839,6 +3848,7 @@ $('#wordsframe_cancel').click(function(){
         var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
         var word = words.rows[page.rollInx-1]
         translatee(word.word)
+        loadRelatedWords(word.word)
         closeRollShowWordsPad()
     })
 
@@ -3938,7 +3948,7 @@ $('#wordsframe_cancel').click(function(){
                 // }
                 readWord(word)
                 function readWord(word){
-                    var count = 1;
+                    var count = 0;
                     
                     if(word.speakUrl){
                         page._mp3.muted=false
@@ -3952,7 +3962,7 @@ $('#wordsframe_cancel').click(function(){
                             if(count > 0){
                                 page.readRollWordTimeout=setTimeout(function(){
                                     page._mp3.play()
-                                },150)
+                                },100)
                                 count--;
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
@@ -3979,7 +3989,7 @@ $('#wordsframe_cancel').click(function(){
                                     }
                                     page._mp3.src=word.translationSpeak
                                     page._mp3.play()
-                                },150)
+                                },100)
                             }
                         }
                     }

@@ -39,7 +39,7 @@
                     height:350px;
                 }
                 #summtrans,#wordsframe,#hints,#videoshasow {
-                    height:380px;
+                    height:350px;
                 }
             }
             @media screen and (max-width: 700px) {
@@ -47,7 +47,7 @@
                     height:250px;
                 }
                 #summtrans,#wordsframe,#hints,#videoshasow {
-                    height:280px;
+                    height:250px;
                 }
             }
 
@@ -90,13 +90,13 @@
                 <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <div class="noscrollbar" style="width:100%;height:calc(100% - 111px);overflow: auto;">
-            <div style="height:55px;width:100%;color:#cccccc;line-height:40px;font-size: 14px;padding:5px;box-sizing: border-box;position: relative;">
+            <!-- <div style="height:55px;width:100%;color:#cccccc;line-height:40px;font-size: 14px;padding:5px;box-sizing: border-box;position: relative;">
                 <span id="videoName" class="lines2" style="display:-webkit-inline-box;max-height:40px;min-height:20px;line-height:20px;font-size:14px;
                     text-align: center;width:100%;white-space: break-spaces;font-weight: 900;vertical-align: middle;word-break: break-word;">
 
                 </span>
                 <svg id="searchpadbtn" style="position:absolute;right:2px;top:50%;transform:translateY(-50%)" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="25" height="25"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>            
-            </div>
+            </div> -->
             
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;top:-1000px;">
@@ -109,11 +109,12 @@
                 <video x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video1" poster
                     style="display: block;position: absolute;top:0;left:100%;;object-fit:cover;background-color: #000000;">
                 </video>
+                <svg id="searchpadbtn" style="position:absolute;right:0;top:0;opacity: 0.8;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="25" height="25"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>            
                 <img id="closeViewBtn" style="width:25px;height:25px;position:absolute;right:0;bottom:0;cursor: pointer;opacity: 0.2;" 
                     draggable="false" src="./img/openeye.png"/>
             </div>
             
-            <div id="chooseLoopVideosCountPad" style="width:100%;height:75px;position:absolute;top:230px;background-color: #f5f5f5;display:none;">
+            <div id="chooseLoopVideosCountPad" style="width:100%;height:75px;position:absolute;top:175px;background-color: #f5f5f5;display:none;">
                 <div style="text-align: center;height:30px;line-height: 30px;">
                     <span style="font-size:16px;">循环几个?</span>
                     <span class="restSecond" style="font-size:16px;margin-left:5px;color:#9b9b9b;"></span>
@@ -396,12 +397,21 @@
                     margin-left: -1px;line-height: 40px;margin-right:5px;">
                     只看Ta
                 </div>
-                <div id="chatminpad" style="display:inline-block;height:40px;width:calc(100% - 105px);vertical-align: middle;box-sizing: border-box;">
+                <!-- <div id="chatminpad" style="display:inline-block;height:40px;width:calc(100% - 105px);vertical-align: middle;box-sizing: border-box;">
                     <svg style="vertical-align: middle;margin-left:5px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
                     <span id="lastmsg" style="font-size: 13px;color:#b5b5b5;overflow:hidden;display:inline-block;word-break: break-word;margin-left:5px;
                         width:calc(100% - 28px);max-height:40px;line-height:20px;box-sizing: border-box;padding-right:5px;vertical-align: middle;">
                     </span>
+                </div> -->
+                <div id="title" class="lines2" style="display:-webkit-inline-box;;height:40px;width:calc(100% - 134px);vertical-align: middle;box-sizing: border-box;
+                    font-size: 12px;color:#b5b5b5;overflow:hidden;word-break: break-word;
+                    line-height:20px;padding: 0 5px;">
                 </div>
+                <span style="display:inline-block;width:35px;height:40px;vertical-align: middle;text-align: center;">
+                    <img id="goChatBtn" src="./img/chat1.png" style="width:25px;height:25px;display:block;margin:0 5px;" />
+                    <div id="chatCount" class="ellipsis" style="width:35px;height:15px;line-height:15px;display:block;font-size:12px;color:#b5b5b5;">
+                    0</div>
+                </span>
                 <div id="videoNickname" class="ellipsis" style="font-size:12px;color: #9c9c9c;padding:0 5px;height: 20px;line-height: 20px;margin-top:3px;">
                 </div>
             </div>
@@ -453,7 +463,7 @@
                     <span id="chatprivatebtn" 
                         style="display:inline-block;height:30px;background-color: #737373;width:50%;cursor: pointer;
                             font-size:14px;text-align: center;line-height:30px;">
-                        私聊
+                        评论
                     </span>
                 </div>
                 
@@ -489,7 +499,35 @@
                     </div>
                 </div>
                 <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;display:none;font-size:0;">
-                    <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
+                    <div style="height:30px;width:100%;">
+                        <form onsubmit="return false" action="javascript:return true">
+                            <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
+                                style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
+                                    background-color: #eaeaea;padding:0 3px;" />
+                        </form>
+                    </div>
+                    <div class="chatmsgspad" class="scrollable noscrollbar" 
+                        style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;
+                            position:absolute;bottom:0;top:30px;font-size:0;padding-top: 5px;">
+                        <div class="chatmsgtemple" 
+                            style="font-size:0;width:100%;height:35px;display:none;margin-bottom:5px;position: relative;">
+                            <span class="name" 
+                                style="vertical-align: middle;height:20px;display:inline-block;font-size:13px;line-height:20px;width:55px;
+                                    overflow: hidden;text-align: right;color:#4a4a4a;">
+                            </span>
+                            <span style="vertical-align: middle;height:20px;display:inline-block;font-size:13px;line-height:20px;margin-left: 2px;color:#4a4a4a;">
+                                :
+                            </span>
+                            <span class="msg translatable" 
+                                style="top: 0;vertical-align: middle;display:inline-block;font-size:13px;line-height:20px;position: absolute;left:65px;
+                                    right:0px;height:20px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                            </span>
+                            <span class="looking" 
+                                style="top: 20px;vertical-align: middle;display:inline-block;font-size:12px;line-height:15px;position: absolute;left:65px;
+                                    right:0px;height:15px;overflow: hidden;color:#9a9a9a;text-overflow: ellipsis;white-space: nowrap;">
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
