@@ -97,6 +97,7 @@
               pagePre.login=res.data
               localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
               localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+              $.post('/mumu/restore-template-wordbooks')
             }else if(res.code==20){
                 login()
             }
@@ -3191,68 +3192,77 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(e){
-        var ele = $(this).parents('.row');
-        var row =ele[0].data;
-        var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
-        if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
-            common.promptLine({
-                message:'将删除<span style=color:red;font-size:15px>'+row.word+'</span>, 请输入delete以确认移除, 1分钟内不会再次提示.',
-                manualClose:1,
-                cancel:function(v,promptEle){
-                    promptEle.remove()
-                },
-                confirm:function(v,promptEle){
-                    if(v && v.toLowerCase().trim() == 'delete'){
+        if(page.wordbooks.selected.templateNo){
+            common.alert('不可编辑系统单词本')
+        }else{
+            var ele = $(this).parents('.row');
+            var row =ele[0].data;
+            var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
+            if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
+                common.promptLine({
+                    message:'将删除<span style=color:red;font-size:15px>'+row.word+'</span>, 请输入delete以确认移除, 1分钟内不会再次提示.',
+                    manualClose:1,
+                    cancel:function(v,promptEle){
+                        promptEle.remove()
+                    },
+                    confirm:function(v,promptEle){
+                        if(v && v.toLowerCase().trim() == 'delete'){
+                            ws.send(JSON.stringify({
+                                action:9,
+                                wordbookNo:page.wordbooks.selected.no,
+                                word:row.word
+                            }))
+                            ele.remove()
+                            promptEle.remove()
+                            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
+                        }else{
+                            common.alert('输入错误')
+                        }
+                    }
+                })
+            }else{
+                common.confirm({
+                    message:'将删除'+row.word+'.',
+                    manualClose:1,
+                    confirm:function(v,promptEle){
                         ws.send(JSON.stringify({
                             action:9,
                             wordbookNo:page.wordbooks.selected.no,
                             word:row.word
                         }))
-                        ele.remove()
-                        promptEle.remove()
                         page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
-                    }else{
-                        common.alert('输入错误')
+                        ele.remove()
                     }
-                }
-            })
-        }else{
-            common.confirm({
-                message:'将删除'+row.word+'.',
-                manualClose:1,
-                confirm:function(v,promptEle){
-                    ws.send(JSON.stringify({
-                        action:9,
-                        wordbookNo:page.wordbooks.selected.no,
-                        word:row.word
-                    }))
-                    page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
-                    ele.remove()
-                }
-            })
+                })
+            }
+            e.stopPropagation()
         }
-        e.stopPropagation()
     })
 
     function addWordbookWord(wordbookNo){
-        common.promptLine({
-            message:'请输入释义, 可为空.',
-            confirm:function(v){
-                if(v!=null){
-                    if(page.wordbooks.selected && wordbookNo == page.wordbooks.selected.no){
-                        $('#startRollBtn').show()
-                        var ele = createWordbookWord(wordbookNo,v)
-                        $(`#wordbooksPad .words .pad `).prepend(ele)
+        
+        if(page.wordbooks.selected.templateNo){
+            common.alert('不可编辑系统单词本')
+        }else{
+            common.promptLine({
+                message:'请输入释义, 可为空.',
+                confirm:function(v){
+                    if(v!=null){
+                        if(page.wordbooks.selected && wordbookNo == page.wordbooks.selected.no){
+                            $('#startRollBtn').show()
+                            var ele = createWordbookWord(wordbookNo,v)
+                            $(`#wordbooksPad .words .pad `).prepend(ele)
+                        }
+                        ws.send(JSON.stringify({
+                            action:8,
+                            wordbookNo:wordbookNo,
+                            word:page.currWord.word,
+                            translation:v
+                        }))
                     }
-                    ws.send(JSON.stringify({
-                        action:8,
-                        wordbookNo:wordbookNo,
-                        word:page.currWord.word,
-                        translation:v
-                    }))
                 }
-            }
-        })
+            })
+        }
     }
 
     function createWordbookWord(wordbookNo,tranclation){

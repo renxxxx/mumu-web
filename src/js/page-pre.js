@@ -70,6 +70,7 @@ if(!pagePre.login || !pagePre.loginTime){
         pagePre.login=res.data
         localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
         localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+        $.post('/mumu/restore-template-wordbooks')
       }else{
         login()
       }
@@ -99,6 +100,7 @@ function login(){
                 localStorage.setItem(config.project+'-login',JSON.stringify(res.data))
                 localStorage.setItem(config.project+'-loginTime',new Date().getTime())
                 pagePre.login=res.data
+                $.post('/mumu/restore-template-wordbooks')
               }
             }
           })
