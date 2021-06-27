@@ -13,6 +13,7 @@
     //log.debugon=0
     var searchKw='' 
     var searchtag=''
+    page.shortWordText=null;
     page.favoredWords={
         rows:[],
         rstart:1,
@@ -878,7 +879,7 @@
         page.dovideoshadow=1
         pauseVideo()
         doshadow()
-        
+        page.shortWordText=''
         _data=pureWord(_data)
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
@@ -890,11 +891,15 @@
                 $('#summtrans-phonetic').hide();
                 $('#summtrans-speak').hide();
                 $('#summtrans-value').hide();
+                $('#favor').text('')
+                $('#addToWordbookBtn').text('')
             },500)
             if(_data==null || _data==undefined || !_data.toString().trim()){
                 $('#summtrans-phonetic').hide();
                 $('#summtrans-speak').hide();
                 $('#summtrans-value').hide();
+                $('#favor').text('')
+                $('#addToWordbookBtn').text('')
                 return;
             }
             for (const ajax of page.translateajaxs) {
@@ -917,6 +922,8 @@
                     page.currWord=res.data
                     res.data.speakUrl=res.data.usSpeech?res.data.usSpeech:res.data.ukSpeech?res.data.ukSpeech:res.data.speakUrl;
                     res.data.phonetic=res.data.usPhonetic?res.data.usPhonetic:res.data.ukPhonetic?res.data.ukPhonetic:res.data.phonetic;
+                    $('#favor').text('收 藏')
+                    $('#addToWordbookBtn').text('加入单词本')
                     if(res.data.phonetic){
                         $('#summtrans-phonetic').text('/'+res.data.phonetic+'/').show()
                     }else{
@@ -927,8 +934,8 @@
                     }else{
                         $('#summtrans-speak').hide()
                     }
-                    $('#summtrans-vv').scrollTop(0)
                     $('#summtrans-vv').html('')
+                    $('#summtrans-vv').scrollTop(0)
                     if(res.data.explains){
                         $(res.data.explains).each(function(index,item){
                             hasTranslate=true
@@ -961,7 +968,7 @@
                     $('#summtrans-value').show()
                     $('#summtrans').show()
                     $('#videobox').css('top','-1000px')
-
+                    $('#summtrans-vv').scrollTop(0)
                     var totaltranslatesno = localStorage.getItem(config.project+"-totaltranslatesno")
                     totaltranslatesno = totaltranslatesno?totaltranslatesno:0;
                     totaltranslatesno++;
@@ -2878,11 +2885,12 @@ $('#wordsframe_cancel').click(function(){
     statisticsexps()
 
 
-    function loadRelatedWords(word){
-        word=pureWord(word)
+    function loadRelatedWords(srcword,short){
+        srcword=pureWord(srcword)
+        short=pureWord(short)
+        var word =short?short:srcword
         clearTimeout(page.sssss)
         page.sssss=setTimeout(function(){
-            $('#relatedWordsPad .relatedWord').remove()
             $('#fromRelatedWord').text(word)
             $.ajax({
                 url:'/mumu/words1',
@@ -2898,7 +2906,8 @@ $('#wordsframe_cancel').click(function(){
                 },
                 success:function(res){
                     if(res.data.words){
-                        var subs = word.replace(/(\s|-|,|\.)+/g,' ').split(' ')
+                        $('#relatedWordsPad .relatedWord').remove()
+                        var subs = srcword.replace(/(\s|-|,|\.)+/g,' ').split(' ')
                         var subwords = []
                         for (iterator of subs) {
                             subwords.push({
@@ -2910,8 +2919,8 @@ $('#wordsframe_cancel').click(function(){
                             res.data.words.unshift(...subwords)
                         if(subwords.length>1)
                             res.data.words.unshift({
-                                id:word,
-                                word:word,
+                                id:srcword,
+                                word:srcword,
                             })
 
                         $(res.data.words).each((inx,item)=>{
@@ -2932,6 +2941,9 @@ $('#wordsframe_cancel').click(function(){
 
     $('#relatedWord0').click(function(){
         translatee(this.innerText,1);
+        if(this.innerText==page.currWordText){
+            loadRelatedWords(page.currWordText)
+        }
     })
     
     
@@ -4022,7 +4034,15 @@ $('#wordsframe_cancel').click(function(){
         }
         guide1()
     })
-
+    
+    $('#toShortRelatedWordsBtn').click(function(){
+        page.shortWordText=page.shortWordText?page.shortWordText:page.currWordText;
+        page.shortWordText=page.shortWordText.substr(0,page.shortWordText.length-1)
+        if(!page.shortWordText){
+            page.shortWordText=page.currWordText
+        }
+        loadRelatedWords(page.currWordText,page.shortWordText)
+    })
    
 })()
 
