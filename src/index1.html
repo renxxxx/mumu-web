@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <script>
+        navigator.sendBeacon("/mumu/page-in");
+        setInterval(function(){
+            navigator.sendBeacon("/mumu/page-on");
+        },60000)
+
+    </script>
+    <head>
+        <meta charset="utf-8">
+        <!-- height=device-height, -->
+        <meta name="viewport" content="width=device-width,  initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>幕幕</title>
+        <meta name="x5-fullscreen" content="true">
+        <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+        <link rel="stylesheet" type="text/css" href="./css/page.css" />
+        <link rel="apple-touch-startup-image" href="./favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" href="./favicon.ico" />
+        <link rel="apple-touch-icon" href="./favicon.ico" />
+        <link rel="shortcut icon" href="./favicon.ico" >
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
+        <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="./js/jquery-ajax-cache.min.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
+        <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script> 
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script> 
+        <script src="./config.js" type="application/javascript"></script>
+        <script src="./js/common.js" type="application/javascript"></script>
+        <script src="./js/log.js" type="application/javascript"></script>    
+        <script src="./js/page-pre.js" type="application/javascript"></script>
+        <script>
+            
+        </script>
+        <style>
+            @media screen and (min-width: 700px) {
+                html {
+                    font-size:62.5%;
+                }
+                #video,#video1,#video2,#videobox {
+                    height:37.0rem;
+                }
+                #summtrans,#wordsframe,#hints,#videoshasow {
+                    height:37.0rem;
+                }
+            }
+            @media screen and (max-width: 700px) {
+                html {
+                    font-size:62.5%;
+                }
+                #video,#video1,#video2,#videobox {
+                    height:27.0rem;
+                }
+                #summtrans,#wordsframe,#hints,#videoshasow {
+                    height:27.0rem;
+                }
+            }
+
+            .scrollbar::-webkit-scrollbar{
+                width:.3rem;
+            }
+            .scrollbar::-webkit-scrollbar-track{
+                background-color:#e7e7e7;
+            }
+            .scrollbar::-webkit-scrollbar-thumb{
+                background-color:#9f9f9f;
+                cursor: pointer;
+            }
+            .scrollbar::-webkit-scrollbar-thumb:hover {
+                background-color:#a3a3a3;
+            }
+            .scrollbar::-webkit-scrollbar-thumb:active {
+                background-color:#d4d4d4;
+            }
+
+            #cnzz_stat_icon_1279792021 a:link,a:visited {
+                color:#4e4e4e
+            }
+
+
+        </style>
+    </head>
+    <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #191919;" >
+        <div id="logo" class="unselectable" style="max-width:80.0rem;height:100%;position:relative;background-color: #ffffff;font-size:0;margin: auto;" >
+            <div style="position:absolute;top:30%;width:100%;height:10.0rem;">
+                <div style="font-size:5.0rem;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
+                <div style="font-size:2.3rem;width:100%;text-align: center;color:#e1e1e1;font-weight: 100;margin-top: -.5rem;">
+                    创造语言环境
+                </div>
+            </div>
+        </div>
+        
+        <div id="index" style="max-width:80.0rem;height:100%;margin: auto;position:relative;background-color: #272727;font-size:0;display: none;" >
+            <div id="loading" style="width:100%;height:.5rem;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
+                <img draggable="false"  src="./img/loading.gif" style="height:100%;width:100%;vertical-align: top;"/>
+            </div>
+            <div class="noscrollbar" style="width:100%;height:calc(100% - 13.4rem);overflow: auto;">
+            <!-- <div style="height:5.5rem;width:100%;color:#cccccc;line-height:4.0rem;font-size: 1.4rem;padding:.5rem;box-sizing: border-box;position: relative;">
+                <span id="videoName" class="lines2" style="display:-webkit-inline-box;max-height:4.0rem;min-height:2.0rem;line-height:2.0rem;font-size:1.4rem;
+                    text-align: center;width:100%;white-space: break-spaces;font-weight: 900;vertical-align: middle;word-break: break-word;">
+
+                </span>
+                <svg id="searchpadbtn" style="position:absolute;right:.2rem;top:50%;transform:translateY(-50%)" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="25" height="25"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>            
+            </div> -->
+            
+            <!-- 视频块 -->
+            <div id="videobox" style="overflow:hidden;position:relative;top:-100.0rem;">
+                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
+                    style="display: block;position: absolute;top:0;object-fit:cover;background-color: #000000;">
+                </video>
+                <video x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video2" poster
+                    style="display: block;position: absolute;top:0;left:-100%;;object-fit:cover;background-color: #000000;">
+                </video>
+                <video x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video1" poster
+                    style="display: block;position: absolute;top:0;left:100%;;object-fit:cover;background-color: #000000;">
+                </video>
+                <svg id="searchpadbtn" style="position:absolute;right:0;top:0;opacity: 0.8;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="25" height="25"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>            
+                <img id="closeViewBtn" style="width:2.5rem;height:2.5rem;position:absolute;right:0;bottom:0;cursor: pointer;opacity: 0.2;" 
+                    draggable="false" src="./img/openeye.png"/>
+            </div>
+            
+            <div id="chooseLoopVideosCountPad" style="width:100%;height:7.5rem;position:absolute;top:19.5rem;background-color: #f5f5f5;display:none;">
+                <div style="text-align: center;height:3.0rem;line-height: 3.0rem;">
+                    <span style="font-size:1.6rem;">循环几个?</span>
+                    <span class="restSecond" style="font-size:1.6rem;margin-left:.5rem;color:#9b9b9b;"></span>
+                </div>
+                <div style="height:3.0rem;justify-content: space-around;align-items: center;display: flex;margin-top:.5rem;">
+                    <span class="count1 count" data="1" style="display:inline-block;font-size:1.6rem;width:25%;border:.1rem solid #9b9b9b;border-radius: .3rem;text-align: center;height:3.0rem;
+                        line-height:3.0rem;box-sizing: border-box;vertical-align: middle;cursor: pointer;">
+                        1
+                    </span>
+                    <span class="count5 count" data="3" style="display:inline-block;font-size:1.6rem;width:25%;border:.1rem solid #9b9b9b;border-radius: .3rem;text-align: center;height:3.0rem;
+                        line-height:3.0rem;box-sizing: border-box;vertical-align: middle;cursor: pointer;">
+                        3
+                    </span>
+                    <span class="count10 count" data="6" style="display:inline-block;font-size:1.6rem;width:25%;border:.1rem solid #9b9b9b;border-radius: .3rem;text-align: center;height:3.0rem;
+                        line-height:3.0rem;box-sizing: border-box;vertical-align: middle;cursor: pointer;">
+                        6
+                    </span>
+                </div>
+            </div>
+            
+            <div id="searchpad" style="position:absolute;width:100%;background-color: rgba(0, 0, 0, 0.87);top:.0rem;
+                    font-size:0;display:none;box-sizing: border-box;padding:1.0rem .5rem;">
+                <span class="searchtag" data="每日一句" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    每日一句
+                </span>
+                <span class="searchtag" data="影视" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    影视
+                </span>
+                <span class="searchtag" data="生活" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    生活
+                </span>
+                <span class="searchtag" data="叙述" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    叙述
+                </span>
+                <span class="searchtag" data="单词" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    单词
+                </span>
+                <span class="searchtag" data="语法" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    语法
+                </span>
+                <span class="searchtag" data="音乐" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    音乐
+                </span>
+                <span class="searchtag" data="儿歌" style="font-size:1.6rem;display:inline-block;min-width:5.0rem;max-width:10.0rem;height:2.5rem;line-height: 2.5rem;cursor: pointer;background-color: #ffd257;text-align: center;
+                        border-radius: .3rem;color:#626262;margin:0 1.0rem .5rem 0;padding:0 .8rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    儿歌
+                </span>
+
+                <div id="searchclear" style="cursor: pointer;position:absolute;width:15.0rem;height:2.5rem;line-height: 2.5rem;font-size:1.4rem;background-color: #fefefe;
+                        transform: translateX(-50%);text-align: center;border-radius: .3rem;bottom:5.0rem;left:50%;">
+                    重 置
+                </div>
+            </div>
+
+            <div id="videoshasow" style="position:absolute;top:0;width:100%;display:none;background-color: #000000;">
+                <img id="videoshasowimg" style="position:absolute;top:0;" />
+                <div id="videoshadoww" style="position:absolute;top:0;width:100%;height:100%;opacity: 0.8;background-color: #000000;"></div>
+            </div>
+            <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: .1rem solid rgba(255, 255, 255, 0.048);
+                                position:absolute;top:0;">
+                <div style="font-size:2.2rem;font-weight: 900;margin-top:5.4rem;color:#00aeff;">划触字幕</div>
+                <div style="font-size:2.2rem;font-weight: 900;margin-top:1.0rem;color:#00aeff;">查词和词组</div>
+                <div id="hintssec" style="font-size:1.8rem;font-weight: 900;margin-top:1.0rem;color:#00aeff;">3</div>
+            </div>
+
+            <div id="summtrans" 
+                style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
+                    top: 0;color: #ffffff;display:none;border-bottom:.1rem solid #827e7e;">
+                <div style="width:calc(100% - 11.1rem);display:inline-block;position: absolute;vertical-align: middle;border-right: .1rem solid #3c3c3c;
+                        top:0;bottom:3.0rem;">
+                    <div style="height: 2.4rem;">
+                        <span id="summtrans-word" class="unselectable"
+                            style="cursor: pointer;font-weight: 900;font-size:1.8rem;letter-spacing: 0..5rem;height: 2.4rem;display:inline-block;
+                                line-height: 2.4rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;padding:0 .5rem;width:calc(100% - 3.4rem);">
+                        </span>
+                        <img id="goExtendSearchBtn" class="unselectable" draggable="false" src="./img/baidu.jpg"
+                            style="height: 2.0rem;display:inline-block;width:2.0rem;padding:.2rem;opacity: 0.8;cursor: pointer;">
+                        </img>
+                    </div>
+                    
+                    
+                    <div id="summrest">
+                        <div style="height: 2.0rem;line-height: 2.0rem;padding:0 .5rem;">
+                            <span id="summtrans-phonetic" class="unselectable" style="display:none;font-size:1.4rem;vertical-align: middle;letter-spacing: 0..5rem;margin:0 .5rem 0 0;"></span>
+                            <svg id="summtrans-speak" play-url="" style="display:none;vertical-align: middle;cursor:pointer;width: 1.5rem;height: 1.5rem;object-fit: cover;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1615275211468" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="2221" width="200" height="200"><defs><style type="text/css"/></defs><path d="M534.002 120.373c-9.072 0-18.606 3.172-26.314 9.534L280.869 325.875H121.643c-34.475 0-62.154 27.679-62.154 61.702l-0.452 268.551c0 34.023 28.131 62.145 62.606 62.145h161.494l223.648 176.016c8.159 6.805 17.241 9.517 26.313 9.517 21.761 0 41.73-16.782 41.73-41.271l0.904-700.873c0.462-24.508-19.951-41.289-41.73-41.289z m-20.873 699.968L321.244 669.276c-10.889-8.612-24.498-13.148-38.107-13.148H120.73l0.913-268.108 159.226-0.442c14.973 0 29.034-5.458 40.375-14.974L514.04 206.121l-0.911 614.22zM696.409 308.633c-14.07-9.516-33.58-5.44-42.652 8.63-9.517 14.052-5.44 33.562 8.629 42.635 48.075 32.215 77.119 85.288 77.119 141.992 0 54.879-27.219 106.605-72.582 138.803-14.07 9.994-17.242 29.044-7.266 43.096 5.901 8.63 15.417 13.166 25.41 13.166 6.344 0 12.688-1.824 17.686-5.9 61.702-44 98.436-114.775 98.436-189.625-0.001-77.118-39.002-149.241-104.78-192.797z" fill="#ff0000" p-id="2222"/><path d="M827.503 195.684c-12.705-11.341-32.215-10.438-43.557 2.268-11.34 12.705-10.419 32.198 2.269 43.539 74.407 66.699 117.043 161.502 117.043 260.399 0 96.629-39.003 186.435-109.777 253.134-12.244 11.784-13.148 31.294-1.364 43.539 5.9 6.361 14.07 9.533 22.682 9.533 7.708 0 15.435-2.729 21.318-8.63C919.135 720.541 964.96 614.839 964.96 501.43c0.442-115.678-49.458-227.263-137.457-305.746z" fill="#ff0000" p-id="2223"/></svg>
+                        </div>
+                        <div id="summtrans-value"  style="font-size:1.3rem;position:absolute;top:4.5rem;bottom:0;left:0;right:0;padding:.5rem 0 .5rem .5rem;">
+                            <div id="summtrans-vv" class="scrollbar1 unselectable scrollable" style="width:100%;height:100%;overflow: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:11.0rem;display:inline-block;vertical-align: middle;position: absolute;top:0;bottom:3.1rem;left:calc(100% - 11.0rem);">
+                    <div id="fromRelatedWordPad" style="height:2.5rem;width:100%;box-sizing: border-box;border-bottom: .1rem solid #3c3c3c;padding:.2rem .3rem;">
+                        <!-- <span id="fromRelatedWord" class="ellipsis" style="font-size:1.5rem;line-height:2.1rem;height:2.1rem;display:inline-block;
+                            width:7.6rem;vertical-align: middle;letter-spacing: 0..5rem;">
+                            
+                        </span> -->
+                        <span style="font-size:1.2rem;line-height:2.0rem;display:inline-block;width:2.8rem;vertical-align: middle;">
+                            相关
+                        </span>
+                    </div>
+                    <div style="width:100%;box-sizing: border-box;position:absolute;top:2.5rem;bottom:0;">
+                        <div id="relatedWordsPad" class="scrollbar1" style="width:100%;box-sizing: border-box;position:absolute;top:.0rem;bottom:2.5rem;overflow: auto;overflow-x: hidden;">
+                            <div id="relatedWord0" class="ellipsis" style="height:2.5rem;line-height:2.1rem;width:100%;font-size:1.5rem;padding:.2rem .3rem;box-sizing: border-box;
+                                border-bottom: .1rem dashed  #3c3c3c;cursor: pointer;letter-spacing: 0..5rem;display:none;">
+                            </div>
+                        </div>
+                        <div id="toShortRelatedWordsBtn" style="width:100%;line-height:2.4rem;height:2.4rem;position: absolute;bottom:0;border-top:.1rem solid #3c3c3c;font-size: 1.3rem;text-align: center;
+                            cursor: pointer;color:#9e9e9e;">
+                            ←
+                        </div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:0;width:100%;height:3.0rem;background-color: #4c4c4c;border-top:.1rem solid #5f5f5f;">
+                    <span id="favor" style="width:50%;font-size:1.4rem;text-align: center;
+                                cursor: pointer;height:3.0rem;line-height:3.0rem;display:inline-block;vertical-align: middle;">
+                        收 藏
+                    </span>
+                    <span id="addToWordbookBtn" style="width:50%;font-size:1.4rem;text-align: center;border-left: .1rem solid rgb(130, 126, 126);margin-left:-.1rem;
+                                cursor: pointer;height:3.0rem;line-height:3.0rem;display:inline-block;vertical-align: middle;">
+                        加入单词本
+                    </span>
+                </div>
+                
+            </div> 
+
+            <div id="wordsframe" 
+                style="box-sizing: border-box;font-size:0;width:100%;position:absolute;
+                    top: 0;color: #ffffff;padding:.5rem .5rem;display:none;border-bottom:.1rem solid #827e7e;">
+                <form onsubmit="return false" action="javascript:return true">
+                    <input id="word-in" autocomplete="off" type="text"
+                        style="font-size: 1.6rem;font-weight: 900;display: block;width:100%;box-sizing: border-box;border: none;
+                            background-color: #eaeaea;border-radius: .1rem;line-height: 2.5rem;height: 2.5rem;padding:0 .3rem;"/>
+                </form>
+                <div id="wordss" style="font-size:1.4rem;position:absolute;top:3.0rem;bottom:0;left:0;right:0;padding:.5rem .5rem .5rem .8rem;">
+                    <div id="words"  class="scrollbar1" style="width:100%;height:100%;overflow: auto;">
+                        <div id="wordtempl" class="unselectable" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
+                            width:100%;display:none;cursor: pointer;line-height: 2.0rem;" >
+                        </div>
+                    </div>
+                </div>
+                <div id="wordsframe_cancel" style="position:absolute;top:3.0rem;left:0;right:0;bottom:0;">
+                    <div style="text-align: center;font-size:1.6rem;width:100%;position: absolute;top:50%;transform: translateY(-50%);">
+                        点击取消
+                    </div>
+                </div>
+            </div>
+            <div id="subtitlePad" style="width:100%;margin-top:.5rem;min-height:8.4rem;">
+                <div id="zh_subtitles" class="unselectable" 
+                    style="line-height: 3.0rem;width: 100%;text-align: center;font-size: 1.8rem;" >
+                </div>
+                <div id="chDialog" class="chDialog unselectable" style="width:100%;height:2.0rem;font-size:1.2rem;color:#dadada;text-align: center;padding:0 .5rem;overflow: hidden;
+                            word-break: break-all;box-sizing: border-box;line-height: 2.0rem;letter-spacing: 0..5rem;">
+                </div>
+            </div>
+            
+            
+            
+            
+            <!-- <div id="startstoppad" style="box-sizing: border-box;text-align: center;display:none;">
+                <button id="startFn"  class="startFn unselectable"
+                    style="cursor:pointer;text-align: center;line-height: 4.0rem;padding: .0rem;background: white;border: .1rem solid #827e7e;
+                        font-size: 1.4rem;padding: .0rem;width: 100%;height: 4.0rem;border-style:solid none solid none;">
+                    <svg style="width: 1.5rem;height: 1.5rem;vertical-align: text-bottom;" t="1615253689101" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2165" width="200" height="200"><path d="M803.84 492.032 213.056 135.04C195.392 124.288 174.208 124.288 156.352 134.976 138.624 145.728 128 164.928 128 186.368l0 714.176c0 21.44 10.624 40.704 28.352 51.392C165.248 957.312 174.976 960 184.704 960c9.728 0 19.52-2.688 28.352-8.064l590.72-356.992c17.728-10.752 28.288-30.016 28.288-51.456C832.128 521.984 821.568 502.72 803.84 492.032zM189.568 891.712 187.136 193.792l578.624 349.696L189.568 891.712z" p-id="2166"></path></svg>
+                </button>
+                <button id="stopFn" class="stopFn unselectable" 
+                    style="cursor:pointer;text-align: center;line-height: 4.0rem;padding: .0rem;display: none;background: white;border: .1rem solid #827e7e;
+                        font-size: 1.5rem;padding: .0rem;width: 100%;height: 4.0rem;border-style:solid none solid none;">
+                    ||
+                </button>
+            </div> -->
+            <div id="prevnextpad" style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: .0rem auto;margin-top: .5rem;">    
+                <span id="prevline" class="unselectable" style="text-align: center;line-height: 3.8rem;cursor:pointer;height: 3.8rem;width: 37.5%;
+                        border-width:.1rem 0 .1rem 0;border-color: #827e7e;font-size: 1.2rem;border-style:solid;color:#bfbbbb;">
+                    上一句
+                </span>
+                <span id="currline" class="unselectable" style="display:none;text-align: center;line-height: 3.8rem;cursor:pointer;height: 3.8rem;width: 33.3333333333%;border-width:.1rem .1rem .1rem .1rem;border-color: #827e7e;font-size: 1.2rem;border-style: solid;">
+                    本句
+                </span>
+                <span id="loopLine" class="unselectable" style="text-align: center;line-height: 3.8rem;cursor:pointer;height: 3.8rem;width: 25%;
+                        border-width:.1rem .1rem .1rem .1rem;border-color: #827e7e;font-size: 1.2rem;border-style: solid;">
+                    <svg style="vertical-align: text-bottom;" t="1621522652200" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2691" width="15" height="15"><path d="M73.617261 633.231387a24.319042 24.319042 0 0 1-24.38304-24.319043V304.476331c0-90.236447 73.341112-158.329766 170.553285-158.329766H901.744654a24.319042 24.319042 0 0 1 0 48.702083H219.787506c-70.589221 0-121.787205 46.078186-121.787205 109.627683v304.372016a24.319042 24.319042 0 0 1-24.38304 24.38304zM804.212494 876.805796H98.000301a24.319042 24.319042 0 1 1 0-48.76608h706.212193c63.805488 0 121.787205-63.74149 121.787205-133.946726V414.104015a24.319042 24.319042 0 1 1 48.702082 0v280.052973c0 97.340167-79.612865 182.648808-170.489287 182.648808z" fill="#bfbbbb" p-id="2692"></path><path d="M804.212494 340.954895a24.319042 24.319042 0 0 1-17.215322-41.598362l120.251265-120.251265a11.967529 11.967529 0 0 0 3.583859-8.63966 12.159521 12.159521 0 0 0-3.583859-8.703657L786.997172 41.510686c-9.471627-9.471627-9.471627-24.959017 0-34.430645s24.959017-9.471627 34.430644 0l120.251265 120.251265c11.583544 11.519546 17.791299 26.814944 17.7913 43.134302a60.349624 60.349624 0 0 1-17.7913 43.070304l-120.251265 120.251265a23.551073 23.551073 0 0 1-17.215322 7.167718zM219.787506 1022.97604a24.12705 24.12705 0 0 1-17.27932-7.231715l-120.251265-120.251265a60.925601 60.925601 0 0 1 0-86.204606l120.251265-120.251265a24.447037 24.447037 0 0 1 34.494642 34.558639l-120.187268 120.187268a12.159521 12.159521 0 0 0 0 17.343317l120.187268 120.251265a24.191047 24.191047 0 0 1 0 34.366647 24.319042 24.319042 0 0 1-17.215322 7.231715z" fill="#bfbbbb" p-id="2693"></path></svg>
+                </span>
+                <span id="nextline" class="unselectable" style="text-align: center;line-height: 3.8rem;cursor:pointer;height: 3.8rem;width: 37.5%;
+                        border-width:.1rem 0 .1rem 0;border-color:#827e7e;font-size: 1.2rem;border-style:solid;color:#bfbbbb;">
+                    下一句
+                </span>
+            </div>
+            <div id="gearframe1" style="position: relative;background-color: #ffffff;margin-bottom:1.0rem;display:none;">
+                <div id="gearframe" class="unselectable" style="position: relative;height:4.6rem;overflow: hidden;border-width: 0 0 .1rem 0; border-color: #827e7e;border-style: solid;background-color: #ffffff;">
+                    <div id="gear" class="unselectable" 
+                        style="height:0;border-width:2.3rem 0;border-style:dashed;border-color: #d8d8d8;width:500.0rem;
+                            position: absolute;left:-250.0rem;cursor: pointer;background-color: #ffffff;">
+                    </div>
+                </div>
+                <img id="finger" src="./img/finger.svg" style="position:absolute;left:50%;transform: translateX(-50%);top:45%;width:3.1rem;"/>
+            </div>
+            <!-- 字幕控制显示组件块 -->
+            <div id="controlpad" style="justify-content: space-around;display: flex;height: 3.5rem;align-items: center;position:relative;margin-top:1.0rem;">
+                <span id="loopVideoBtn" class="unselectable ellipsis" 
+                    style="font-size: 1.4rem;cursor:pointer;padding: .0rem;width: 13%;height: 3.3rem;color: #bfbbbb;text-align: center;line-height: 3.3rem;
+                        border: .1rem solid #676767;border-radius: .3rem;">
+                    循环
+                </span>
+                <span id="searchbtn" class="unselectable ellipsis" 
+                    style="font-size: 1.4rem;cursor:pointer;padding: .0rem;width: 13%;height: 3.3rem;color: #bfbbbb;text-align: center;line-height: 3.3rem;
+                        border: .1rem solid #676767;border-radius: .3rem;">
+                    查词
+                </span>
+                <span id="startFn1"  class="startFn unselectable"
+                    style="cursor:pointer;text-align: center;line-height: 3.3rem;padding: .0rem;background: #5a5a5a;border: .1rem solid #676767;
+                        font-size: .0rem;padding: .0rem;width: 24%;height: 3.3rem;border-radius: .3rem;">
+                    <span class="diandu" style="font-size:1.2rem;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
+                    <svg style="width: 1.5rem;height: 1.5rem;vertical-align: middle;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#bfbbbb" p-id="2560"></path></svg>
+                    <span class="diandu" style="font-size:1.2rem;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
+                </span>
+                <span id="stopFn1" class="stopFn unselectable" 
+                    style="cursor:pointer;text-align: center;line-height: 3.3rem;padding: .0rem;display: none;border: .1rem solid #676767;color:#bfbbbb;
+                        font-size: .0rem;padding: .0rem;width: 24%;height: 3.3rem;border-radius: .3rem;">
+                    <span class="diandu" style="font-size:1.2rem;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
+                    <svg style="width: 1.5rem;height: 1.5rem;vertical-align: middle;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
+                    <span class="diandu" style="font-size:1.2rem;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
+                </span>
+                <span id="wordbookpadBtn" class="unselectable ellipsis" 
+                    style="font-size: 1.4rem;cursor:pointer;padding: .0rem;width: 13%;height: 3.3rem;color: #bfbbbb;text-align: center;line-height: 3.3rem;
+                        border: .1rem solid #676767;border-radius: .3rem;position:relative;">
+                    单词本
+                </span>
+                <span id="subtitlesBtn" class="unselectable ellipsis"
+                    style="font-size: 1.4rem;cursor:pointer;padding: .0rem;width: 13%;height: 3.3rem;color: #bfbbbb;text-align: center;line-height: 3.3rem;
+                        border: .1rem solid #676767;border-radius: .3rem;">
+                    字幕
+                </span>
+            </div>
+
+            
+                
+            </div>
+            <!-- <div  id="historywordspad" class="scrollbar" style="display:none;padding: .3rem .5rem;font-size:0;word-break: break-all;white-space: normal;margin-top: 1.5rem;height: 10.0rem;overflow: auto;position: relative;">
+                <span id="historyword_template" class="unselectable historyword" style="padding: .2rem .3rem;border-radius: .2rem;font-size:1.5rem;display:none;margin-right:.8rem;cursor: pointer;margin-bottom:.5rem;color:#9f9f9f;">
+                </span>
+            </div> -->
+            
+            <!-- 循环字幕功能块 -->
+            <!-- <div style="justify-content: center;display: flex;height: 3.0rem;line-height: 3.0rem;margin: 1.0rem .0rem 1.0rem .0rem;">
+                <button style="height: 3.0rem;line-height: 3.5rem;background: transparent;border: none;padding: .0rem;box-sizing: border-box;font-size: 1.8rem;">◁</button>
+                <div style="width: 3.0rem;cursor: pointer;position: relative;margin: .0rem 1.7rem;height: 3.0rem;line-height: 3.0rem;text-align: center;">
+                    <span style="position: absolute;left: 1.1rem;font-size: 1.2rem;top: .2rem;">1</span>
+                    <svg style="width: 2.0rem;height: 2.0rem;vertical-align: middle;"  t="1614827035996" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2125" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M73.216 631.296c13.312 0 24.064-10.752 24.064-24.064V308.736c0-62.464 51.2-107.52 121.856-107.52h672.256l-104.448 102.4c-4.608 4.608-7.168 10.752-7.168 16.896 0 13.312 10.752 24.064 24.576 23.552 6.656 0 12.8-2.56 17.408-7.168l120.32-117.76c11.264-11.264 17.92-26.624 17.92-42.496 0-15.872-6.144-31.232-17.92-42.496l-120.32-117.76c-9.728-9.216-25.088-9.216-34.304 0-9.728 9.216-9.728 24.576 0 33.792l104.96 102.4H219.648c-97.28 0-170.496 66.56-170.496 155.136v298.496c0 14.848 10.752 25.088 24.064 25.088z m877.568-238.592c-13.312 0-24.576 10.752-24.576 24.064V691.2c0 68.608-57.856 131.584-121.856 131.584H132.096l104.448-102.4c8.192-9.216 8.192-23.04 0-32.256-9.216-9.728-24.576-10.752-34.304-2.048L81.92 803.84c-23.552 23.552-23.552 61.44 0 84.48l120.32 117.76c4.608 4.608 10.752 7.168 17.408 7.168 6.656 0 12.8-2.56 17.408-7.168 9.216-9.216 9.216-24.576 0-33.792l-104.448-102.4h672.256c91.136 0 170.496-83.456 170.496-179.2V416.256c0-12.8-11.264-23.552-24.576-23.552z" fill="#000000" p-id="2126"></path></svg>
+                </div>
+                <button style="height: 3.0rem;line-height: 3.5rem;background: transparent;border: none;padding: .0rem;box-sizing: border-box;font-size: 1.8rem;">▷</button>
+            </div> -->
+            <!-- 中文字幕弹窗块 -->
+            
+            
+
+
+            
+            
+            
+            <!-- <div id="titleinbackpad" class="unselectable" style="font-size:0;width:100%;height:2.0rem;line-height:2.0rem;position: absolute;right:0;bottom:7.8rem;
+                    box-sizing: border-box;padding: 0 .5rem;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:none;background-color: #272727;">
+                <span id="titleinback" style="font-size:1.2rem;color:#f5f5f5;"></span>
+            </div> -->
+            <!-- <div id="searchpadbtn" style="position:absolute;bottom:7.8rem;width:100%;height:2.8rem;line-height:2.8rem;cursor: pointer;padding:0 1.7rem 0 .5rem;
+                                    font-size:.0rem;box-sizing: border-box;border-top:.1rem solid rgb(64, 64, 64);display:none;">
+                <span id="searchtext" style="font-size: 1.3rem;color:#f7f7f7;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
+                    搜索
+                </span>
+                <svg style="position:absolute;right:.2rem;top:.4rem;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="20" height="20"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#ffffff" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#ffffff" p-id="3667"></path></svg>            
+            </div> -->
+            <div style="position:absolute;bottom:5.1rem;width:100%;height:8.3rem;font-size:.0rem;box-sizing: border-box;background-color: #272727;padding:1.0rem 0;">
+                <img id="headimg" draggable="false" style="width:3.8rem;height:3.8rem;cursor: pointer;border:.1rem solid #9c9c9c;
+                    border-radius: .2rem 0 0 .2rem;display:inline-block;vertical-align: middle;margin-left:.5rem;"/>
+                <div id="onlyLookHim" style="width:5.0rem;height:4.0rem;font-size: 1.3rem;color: #ffffff;text-align: center;display:inline-block;vertical-align: middle;
+                    box-sizing: border-box;cursor: pointer;border:.1rem solid #9c9c9c;border-radius:0 .2rem .2rem 0;color: rgb(191, 187, 187);
+                    margin-left: -.1rem;line-height: 4.0rem;margin-right:.5rem;">
+                    只看Ta
+                </div>
+                <!-- <div id="chatminpad" style="display:inline-block;height:4.0rem;width:calc(100% - 10.5rem);vertical-align: middle;box-sizing: border-box;">
+                    <svg style="vertical-align: middle;margin-left:.5rem;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
+                    <span id="lastmsg" style="font-size: 1.3rem;color:#b5b5b5;overflow:hidden;display:inline-block;word-break: break-word;margin-left:.5rem;
+                        width:calc(100% - 2.8rem);max-height:4.0rem;line-height:2.0rem;box-sizing: border-box;padding-right:.5rem;vertical-align: middle;">
+                    </span>
+                </div> -->
+                <div id="title" class="lines2" style="display:-webkit-inline-box;;height:4.0rem;width:calc(100% - 13.4rem);vertical-align: middle;box-sizing: border-box;
+                    font-size: 1.2rem;color:#b5b5b5;overflow:hidden;word-break: break-word;
+                    line-height:2.0rem;padding: 0 .5rem;">
+                </div>
+                <span style="display:inline-block;width:3.5rem;height:4.0rem;vertical-align: middle;text-align: center;">
+                    <img id="goChatBtn" src="./img/chat1.png" style="width:2.5rem;height:2.5rem;display:block;margin:0 .5rem;" />
+                    <div id="chatCount" class="ellipsis" style="width:3.5rem;height:1.5rem;line-height:1.5rem;display:block;font-size:1.2rem;color:#b5b5b5;">
+                    0</div>
+                </span>
+                <div id="videoNickname" class="ellipsis" style="font-size:1.2rem;color: #9c9c9c;padding:0 .5rem;height: 2.0rem;line-height: 2.0rem;margin-top:.3rem;">
+                </div>
+            </div>
+
+            <!-- <img id="headimg" draggable="false" style="position:absolute;width:4.5rem;height:4.5rem;bottom:15.0rem;right:1.0rem;cursor: pointer;border:.1rem solid #9c9c9c;
+                box-sizing: border-box;border-radius: .3rem;"/>
+            <div id="onlyLookHim" style="position:absolute;width:4.5rem;height:3.0rem;bottom:12.1rem;right:1.0rem;font-size: 1.3rem;color: #ffffff;text-align: center;
+                padding:.5rem 0;box-sizing: border-box;cursor: pointer;border:.1rem solid #9c9c9c;border-radius: .3rem;color: rgb(191, 187, 187);">
+                只看Ta
+            </div>
+            <div id="chatminpad" style="position:absolute;bottom:5.0rem;width:100%;height:2.8rem;line-height:2.8rem;cursor: pointer;padding:0 1.7rem 0 .5rem;
+                                    font-size:.0rem;box-sizing: border-box;border-top: .1rem solid #525252;background-color: #272727;">
+                <span id="lastmsg" style="font-size: 1.3rem;color:#f5f5f5;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:inline-block;width:100%;">
+                    
+                </span>
+                <svg style="position:absolute;right:.2rem;top:.4rem;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
+            </div> -->
+            <div style="font-size:0;height:5.0rem;position: absolute;bottom:0;width:100%;border-top: .1rem solid #525252;background-color: #272727;">
+                <span class="unselectable" 
+                    style="font-size:1.8rem;display: inline-block;width:25%;height:5.0rem;line-height:5.0rem;cursor: pointer;text-align: center;vertical-align: middle;color:#ffffff;font-weight:900;"
+                    onclick="$('#video')[0].pause();location.replace('index.html');">
+                    发现
+                </span>
+                <span class="unselectable" 
+                    style="font-size:1.6rem;display: inline-block;width:25%;height:5.0rem;line-height:5.0rem;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+                    onclick="$('#video')[0].pause();location.replace('list.html');">
+                    资源
+                </span>
+                <span class="unselectable" 
+                    style="font-size:1.6rem;display: inline-block;width:25%;height:5.0rem;line-height:5.0rem;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+                    onclick="$('#video')[0].pause();location.replace('history.html');">
+                    看过
+                </span>
+                <span class="unselectable" 
+                    style="font-size:1.6rem;display: inline-block;width:25%;height:5.0rem;line-height:5.0rem;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+                    onclick="$('#video')[0].pause();location.replace('my.html');">
+                    我的
+                </span>
+            </div>
+            
+            
+            <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #d8d8d8;display:none;">
+                <div style="height:3.0rem;width:100%;font-size:0;">
+                    <span id="chatroombtn" 
+                        style="display:inline-block;height:3.0rem;background-color: #d7d7d7;width:50%;cursor: pointer;
+                            font-size:1.4rem;text-align: center;line-height:3.0rem;">
+                        聊天室
+                    </span>
+                    <span id="chatprivatebtn" 
+                        style="display:inline-block;height:3.0rem;background-color: #737373;width:50%;cursor: pointer;
+                            font-size:1.4rem;text-align: center;line-height:3.0rem;">
+                        评论
+                    </span>
+                </div>
+                
+                <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:3.0rem;">
+                    <div style="height:3.0rem;width:100%;">
+                        <form onsubmit="return false" action="javascript:return true">
+                            <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
+                                style="width:100%;box-sizing: border-box;height:3.0rem;display:inline-block;border: none;
+                                    background-color: #eaeaea;padding:0 .3rem;" />
+                        </form>
+                    </div>
+                    <div id="chatmsgspad" class="scrollable noscrollbar" 
+                        style="width:100%;overflow: auto;box-sizing: border-box;padding:.0rem .3rem .3rem .3rem;
+                            position:absolute;bottom:0;top:3.0rem;font-size:0;padding-top: .5rem;">
+                        <div id="chatmsgtemple" 
+                            style="font-size:0;width:100%;height:3.5rem;display:none;margin-bottom:.5rem;position: relative;">
+                            <span class="name" 
+                                style="vertical-align: middle;height:2.0rem;display:inline-block;font-size:1.3rem;line-height:2.0rem;width:5.5rem;
+                                    overflow: hidden;text-align: right;color:#4a4a4a;">
+                            </span>
+                            <span style="vertical-align: middle;height:2.0rem;display:inline-block;font-size:1.3rem;line-height:2.0rem;margin-left: .2rem;color:#4a4a4a;">
+                                :
+                            </span>
+                            <span class="msg translatable" 
+                                style="top: 0;vertical-align: middle;display:inline-block;font-size:1.3rem;line-height:2.0rem;position: absolute;left:6.5rem;
+                                    right:.0rem;height:2.0rem;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                            </span>
+                            <span class="looking" 
+                                style="top: 2.0rem;vertical-align: middle;display:inline-block;font-size:1.2rem;line-height:1.5rem;position: absolute;left:6.5rem;
+                                    right:.0rem;height:1.5rem;overflow: hidden;color:#9a9a9a;text-overflow: ellipsis;white-space: nowrap;">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:3.0rem;display:none;font-size:0;">
+                    <span style="font-size:1.6rem;margin-top:3.0rem;" class="translatable">coming soon</span>
+                </div>
+            </div>
+            
+
+            <div id="wordbookpad" style="position:absolute;width:100%;background-color: rgba(0, 0, 0, 0.9);bottom:.0rem;
+                    font-size:0;display:none;box-sizing: border-box;">
+                <div style="position:absolute;top:0;height:3.5rem;width:100%;">
+                    <span id="favorsBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                        text-align: center;">
+                        收藏夹
+                    </span>
+                    <span id="wordbooksBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;cursor: pointer;color:#ffffff;
+                        text-align: center;position: relative;">
+                        单词本
+                        <img id="startRollBtn" src="./img/start.svg" style="position: absolute;right:0;width:1.5rem;padding:1.0rem .3rem;display:none;"/>
+                    </span>
+                    <span id="historyWordsBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                        text-align: center;">
+                        历史
+                    </span>
+                </div>
+                
+                <div id="favorsPad" style="position:absolute;bottom:0;top:3.5rem;width:100%;display:none;">
+                    <div class="scrollbar1 words" style="width:100%;position:absolute;top:0;bottom:3.5rem;overflow: auto;">
+                        <div class="word0 wrap" style="height:2.5rem;width:100%;cursor: pointer;display:none;padding: .2rem 0;">
+                            <span class="word ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .3rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="phonetic ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .2rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="translation ellipsis" style="height:2.5rem;line-height:2.5rem;width:calc(33.33333% - 2.0rem);font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .3rem 0 .2rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="ellipsis removeBtn" style="height:2.5rem;line-height:2.5rem;width:2.0rem;font-size:2.0rem;display:inline-block;color:#929292;text-align: center;
+                                box-sizing: border-box;">
+                                -
+                            </span>
+                        </div>
+                        <div class="loadmore someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;cursor: pointer;">
+                            点击加载更多
+                        </div>
+                        <div class="loadend someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            已到底
+                        </div>
+                        <div class="loadnodata someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            暂无数据
+                        </div>
+                        <div class="loading someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            加载中
+                        </div>
+                    </div>
+                    <div style="position:absolute;bottom:0;height:3.5rem;width:100%;">
+                        <span class="coverTargetTextBtn" style="height:3.5rem;line-height:3.5rem;width:66.66666%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                        <span class="coverMainTextBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                    </div>
+                </div>
+
+
+                <div id="historyWordsPad" style="position:absolute;bottom:0;top:3.5rem;width:100%;display:none;">
+                    <div class="scrollbar1 words" style="width:100%;position:absolute;top:0;bottom:3.5rem;overflow: auto;">
+                        <div class="word0 wrap" style="height:2.5rem;width:100%;cursor: pointer;display:none;padding: .2rem 0;">
+                            <span class="word ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .3rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="phonetic ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .2rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="translation ellipsis" style="height:2.5rem;line-height:2.5rem;width:calc(33.33333% - 2.0rem);font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .3rem 0 .2rem;
+                                box-sizing: border-box;">
+                            </span>
+                            <span class="ellipsis removeBtn" style="height:2.5rem;line-height:2.5rem;width:2.0rem;font-size:2.0rem;display:inline-block;color:#929292;text-align: center;
+                                box-sizing: border-box;">
+                                -
+                            </span>
+                        </div>
+                        <div class="loadmore someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;cursor: pointer;">
+                            点击加载更多
+                        </div>
+                        <div class="loadend someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            已到底
+                        </div>
+                        <div class="loadnodata someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            暂无数据
+                        </div>
+                        <div class="loading someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                            加载中
+                        </div>
+                    </div>
+                    <div style="position:absolute;bottom:0;height:3.5rem;width:100%;">
+                        <span class="coverTargetTextBtn"  style="height:3.5rem;line-height:3.5rem;width:66.66666%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                        <span  class="coverMainTextBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                            text-align: center;">
+                            遮盖
+                        </span>
+                    </div>
+                </div>
+
+
+                <div id="wordbooksPad" style="position:absolute;bottom:0;top:3.5rem;width:100%;">
+                    <span style="width:9.0rem;display:inline-block;position:absolute;top:0;bottom:0;left:0;border-right:.1rem solid rgb(111, 111, 111);">
+                        <div class="wordbooks noscrollbar" style="padding-bottom: 20.0rem;position:absolute;bottom:3.6rem;width:100%;top:0;overflow: auto;">
+                            <div class="ellipsis row0 row" style="width:100%;box-sizing: border-box;padding:0 .3rem;font-size:1.5rem;color:#ffffff;border-bottom:.1rem solid rgb(111, 111, 111);
+                            text-align: center;height:3.5rem;line-height:3.5rem;cursor: pointer;display:none;">
+                            </div>
+                            <div class="loadmore someload" style="width:100%;font-size:1.2rem;height:2.5rem;line-height: 2.5rem;text-align: center;color:#929292;display:none;cursor: pointer;">
+                                点击加载更多
+                            </div>
+                            <div class="loadend someload" style="width:100%;font-size:1.2rem;height:2.5rem;line-height: 2.5rem;text-align: center;color:#929292;display:none;">
+                                已到底
+                            </div>
+                            <div class="loadnodata someload" style="width:100%;font-size:1.2rem;height:2.5rem;line-height: 2.5rem;text-align: center;color:#929292;display:none;">
+                                无单词本
+                            </div>
+                            <div class="loading someload" style="width:100%;font-size:1.2rem;height:2.5rem;line-height: 2.5rem;text-align: center;color:#929292;display:none;">
+                                加载中
+                            </div>
+                            <div id="clickToShowCreateWordbookBtn" onclick="$('#wordbooksPad .wordbooks').click()" style="
+                                width:100%;font-size:1.2rem;height:3.4rem;text-align: center;color:rgb(105 105 105);;margin-top:3.0rem;display:none;">
+                                点击空白处<br/>新建单词本
+                            </div>
+                        </div>
+                        <div class="ellipsis createRowBtn" style="width:100%;box-sizing: border-box;padding:0 .3rem;font-size:2.0rem;color:#ffffff;border-top:.1rem dashed rgb(111, 111, 111);
+                            text-align: center;height:3.5rem;line-height:3.5rem;cursor: pointer;position:absolute;bottom:0;background-color: rgb(111, 111, 111);">
+                            +
+                        </div>
+                        <div class="ellipsis editRowBtn" style="width:100%;box-sizing: border-box;padding:0 .3rem;font-size:2.5rem;color:#ffffff;border-top:.1rem solid rgb(111, 111, 111);
+                            text-align: center;height:3.5rem;line-height:3.5rem;cursor: pointer;display:none;position:absolute;bottom:0;background-color: rgb(111, 111, 111);">
+                            ···
+                        </div>
+                    </span>
+                    <span class="words" style="width:calc(100% - 9.1rem);display:inline-block;position:absolute;top:0;bottom:0;left:9.1rem;padding-bottom:3.5rem;">
+                        <div class="pad scrollbar1"  style="width:100%;position:absolute;top:0;bottom:3.5rem;overflow: auto;">
+                            <div class="row0 row" style="height:2.5rem;width:100%;cursor: pointer;display:none;">
+                                <span class="word ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .3rem;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="phonetic ellipsis" style="height:2.5rem;line-height:2.5rem;width:33.33333%;font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .2rem 0 .2rem;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="translation ellipsis" style="height:2.5rem;line-height:2.5rem;width:calc(33.33333% - 2.0rem);font-size:1.5rem;display:inline-block;color:#ffffff;padding:0 .3rem 0 .2rem;
+                                    box-sizing: border-box;">
+                                </span>
+                                <span class="ellipsis removeBtn" style="height:2.5rem;line-height:2.5rem;width:2.0rem;font-size:2.0rem;display:inline-block;color:#929292;text-align: center;
+                                    box-sizing: border-box;">
+                                    -
+                                </span>
+                            </div>
+                            <div class="loadmore someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;cursor: pointer;">
+                                点击加载更多
+                            </div>
+                            <div class="loadend someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                                已到底
+                            </div>
+                            <div class="loadnodata someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                                暂无数据
+                            </div>
+                            <div class="loading someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#929292;display:none;">
+                                加载中
+                            </div>
+                        </div>
+                        <div style="position:absolute;bottom:0;height:3.5rem;width:100%;">
+                            <span class="coverTargetTextBtn"  style="height:3.5rem;line-height:3.5rem;width:66.66666%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                                text-align: center;">
+                                遮盖
+                            </span>
+                            <span  class="coverMainTextBtn" style="height:3.5rem;line-height:3.5rem;width:33.33333%;font-size:1.5rem;background-color: #9f9f9f;display:inline-block;cursor: pointer;
+                                text-align: center;">
+                                遮盖
+                            </span>
+                        </div>
+                    </span>
+                </div>
+
+                
+            </div>
+
+            <div class="unselectable" draggable=false style="display:none;">
+                <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+            </div>
+
+            <div id="wordbookDetailPad" style="width:100%;position:absolute;top:0;bottom:0;background-color: rgba(0, 0, 0, 0.5);display:none;">
+                <div style="width:80%;min-height:30.0rem;max-height:50.0rem;position:absolute;top:10%;left:50%;transform: translateX(-50%);background-color: #ffffff;">
+                    <div style="width:100%;box-sizing: border-box;padding:0 .5rem;height:3.5rem;line-height:3.5rem;border-bottom:.1rem solid #e6e6e6;font-size:1.5rem;text-align: center;">
+                        单词本
+                    </div>
+                    <div class="namePad" style="width:100%;box-sizing: border-box;padding:0 .5rem;height:3.5rem;">
+                        <span class="ellipsis name" style="width:7.0rem;height:3.5rem;line-height:3.5rem;font-size:1.5rem;display:inline-block;">
+                            名称
+                        </span>
+                        <span class="ellipsis value" style="width:calc(100% - 11.0rem);height:3.5rem;line-height:3.5rem;font-size:1.5rem;display:inline-block;">
+                        </span>
+                        <span class="ellipsis editBtn" style="width:4.0rem;height:3.5rem;line-height:3.5rem;font-size: 1.1rem;display:inline-block;text-align: center;cursor: pointer;">
+                            修改
+                        </span>
+                    </div>
+                    <div class="deleteBtn" style="width:100%;text-align: center;height:3.5rem;line-height:3.5rem;font-size:1.5rem;background-color: #adadad;position:absolute;bottom:3.6rem;
+                        cursor: pointer;">
+                        删 除
+                    </div>
+                    <div class="closeBtn" style="width:100%;text-align: center;height:3.5rem;line-height:3.5rem;font-size:1.5rem;background-color: #adadad;position:absolute;bottom:0;
+                        cursor: pointer;">
+                        关 闭
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="wordbooksPadOnAdd" style="width:80%;min-height:24.0rem;max-height:50.0rem;position:absolute;top:10%;left:50%;transform: translateX(-50%);
+                    display:none;background-color: #ffffff;border-top:.1rem solid #ffffff;">
+                <div class="ellipsis" style="width:100%;box-sizing: border-box;padding:0 .5rem;height:3.0rem;line-height:3.0rem;font-size:1.5rem;color:#8c8c8c;text-align: center;
+                        border-bottom: .1rem solid #f1f1f1;">
+                    添加到单词本
+                </div>
+                <div class="currRowPad" style="width:100%;height:4.0rem;display:none;">
+                    <div class="currRow" style="width:100%;height:4.0rem;cursor:pointer;">
+                        <span class="ellipsis name" style="width:calc(100% - 4.0rem);box-sizing: border-box;padding:0 0 0 .5rem;height:4.0rem;line-height:4.0rem;font-size:1.5rem;
+                            display:inline-block;">
+                        </span>
+                        <span class="ellipsis" style="width: 4.0rem;box-sizing: border-box;padding:0 .5rem 0 0;height:4.0rem;line-height:4.0rem;font-size:1.5rem;
+                            display:inline-block;text-align: center;">
+                            当前
+                        </span>
+                    </div>
+                    <div style="border-top:.1rem solid #cecece;margin:auto;margin: 0 .5rem;"></div>
+                </div>
+                <div class="scrollbar1" style="width:100%;min-height:21.5rem;max-height:41.5rem;overflow: auto;">
+                    <div class="ellipsis row0 row" style="cursor:pointer;height:4.0rem;line-height:4.0rem;font-size:1.5rem;display:inline-block;margin:0 .5rem;
+                            box-sizing: border-box;display:none;border-bottom: .1rem solid #e8e8e8;">
+                    </div>
+                    <div class="loadmore someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#b5b5b5;display:none;cursor: pointer;">
+                        点击加载更多
+                    </div>
+                    <div class="loadend someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#b5b5b5;display:none;">
+                        已到底
+                    </div>
+                    <div class="loadnodata someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#b5b5b5;display:none;">
+                        暂无数据
+                    </div>
+                    <div class="loading someload" style="width:100%;font-size:1.2rem;height:4.0rem;line-height: 4.0rem;text-align: center;color:#b5b5b5;display:none;">
+                        加载中
+                    </div>
+                </div>
+                <div class="closeBtn" style="width:100%;text-align: center;height:3.5rem;line-height:3.5rem;font-size:1.5rem;background-color: #adadad;cursor: pointer;">
+                    关 闭
+                </div>
+            </div>
+
+            <div id="extendSearchPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">
+                <iframe id="extendSearchFrame"  style="width:100%;height:80%;position:absolute;top:0;box-sizing: border-box;border: none;"></iframe>
+            </div>
+
+            <div id="rollShowWordsPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">
+                <div style="width:100%;height:80%;position:absolute;background-color: rgba(255, 255, 255);border-top:.1rem solid #ffffff;bottom:0;">
+                    <div class="word lines2" style="font-size: 5.0rem;text-align: center;font-weight: 900;margin-top:5.0rem;display: -webkit-inline-box;width: 100%;">
+                    </div>
+                    <div class="phonetic ellipsis" style="font-size: 2.5rem;text-align: center;margin-top:2.0rem;height:2.5rem;line-height:2.5rem;">
+                    </div>
+                    <div style="position:absolute;height:6.0rem;width:100%;bottom:11.0rem;">
+                        <div class="translation ellipsis" style="font-size: 2.0rem;text-align: center;height:2.5rem;line-height:2.5rem;">
+                        </div>
+                        <div class="inx ellipsis" style="font-size: 2.0rem;text-align: center;margin-top:1.0rem;height:2.5rem;line-height:2.5rem;">
+                        </div>
+                    </div>
+                    <div style="height:5.0rem;justify-content: space-around;display: flex;align-items: center;position: absolute;bottom:4.5rem;width:100%;">
+                        <button class="prev" style="width:25%;height:5.0rem;cursor: pointer;">上一个</button>
+                        <button class="stop" style="width:25%;height:5.0rem;display:none;cursor: pointer;">暂停</button>
+                        <button class="start" style="width:25%;height:5.0rem;cursor: pointer;">开始</button>
+                        <button class="next" style="width:25%;height:5.0rem;cursor: pointer;">下一个</button>
+                    </div>
+                    <div style="width:100%;height:1.5rem;text-align: center;position:absolute;bottom:2.5rem;">
+                        <span class="restart" style="font-size:1.2rem;cursor: pointer;color: #8e8e8e;text-decoration: underline;">重新开始</span>
+                    </div>
+                    <div style="width:100%;font-size: 1.2rem;color: #8e8e8e;text-align: center;height:1.5rem;line-height:1.5rem;position:absolute;bottom:.5rem;">
+                        多听, 多看, 多用
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+   
+    <script>
+        if(config.debug)
+            document.write(`<script src="./index-post.js" type="application/javascript"><\/script>`)
+        else
+            document.write(`<script src="./index-post.min.js" type="application/javascript"><\/script>`)
+    </script>
+    <script src="./js/page-post.js" type="application/javascript"></script>
+</html>
