@@ -7,6 +7,8 @@
     page.translateajaxs=[]
     page.wordbookWordsAjaxs=[]
     
+    var onlyLookHimParam = getUrlParam('olh')
+
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
     page.currVideos=[]
@@ -222,6 +224,7 @@
                         page.onlyLookHimVideos.currRows=[]
                         getMoreOnlyLookHimVideos()
                     }
+                    $('#video1').attr('poster',null);
                 }else if(res.code==20){
                     login()
                 }
@@ -258,6 +261,7 @@
                             }
                         })
                     }
+                    $('#video1').attr('poster',null);
                 }else if(res.code==20){
                     login()
                 }
@@ -3789,28 +3793,67 @@ $('#wordsframe_cancel').click(function(){
         })
     }
     
+    if(onlyLookHimParam){
+        openOnlyLookHim()
+    }
     $('#onlyLookHim').click(function(){
+        if(page.onlyLookUserNo){
+            closeOnlyLookHim()
+        }else {
+            openOnlyLookHim()
+        }
+    })
+    // $('#onlyLookHim').click(function(){
+    //     if(!page.onlyLookUserNo){
+    //         page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
+    //         page.exploreVideos.currRows=[]
+    //     }
+
+    //     page.onlyLookHimVideos.rows=[]
+    //     page.onlyLookHimVideos.currRows=[]
+    //     if(page.onlyLookUserNo){
+    //         page.onlyLookUserNo=null
+    //         $(this).css('background-color','unset');
+    //     }
+    //     else {
+    //         page.onlyLookUserNo=video.userNo
+    //         $(this).css('background-color','rgb(90, 90, 90)');
+    //         page.onlyLookHimVideos.rows.push(video)
+    //         page.onlyLookHimVideos.currRows.push(video)
+    //     }
+    //     page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
+    //     page.trueVideos.currRows=[]
+    // })
+    function openOnlyLookHim(){
+        $('#video1').attr('poster',null);
         if(!page.onlyLookUserNo){
             page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
             page.exploreVideos.currRows=[]
         }
-
         page.onlyLookHimVideos.rows=[]
         page.onlyLookHimVideos.currRows=[]
-        if(page.onlyLookUserNo){
-            page.onlyLookUserNo=null
-            $(this).css('background-color','unset');
-        }
-        else {
-            page.onlyLookUserNo=video.userNo
-            $(this).css('background-color','rgb(90, 90, 90)');
-            page.onlyLookHimVideos.rows.push(video)
-            page.onlyLookHimVideos.currRows.push(video)
-        }
+        page.onlyLookUserNo=video.userNo
+        $('#onlyLookHim').css('background-color','rgb(90, 90, 90)');
+        page.onlyLookHimVideos.rows.push(video)
+        page.onlyLookHimVideos.currRows.push(video)
+
         page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
         page.trueVideos.currRows=[]
-    })
+    }
+    function closeOnlyLookHim(){
+        $('#video1').attr('poster',null);
+        if(!page.onlyLookUserNo){
+            page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
+            page.exploreVideos.currRows=[]
+        }
+        page.onlyLookHimVideos.rows=[]
+        page.onlyLookHimVideos.currRows=[]
+        page.onlyLookUserNo=null
+        $('#onlyLookHim').css('background-color','unset');
 
+        page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
+        page.trueVideos.currRows=[]
+    }
     function closeRollShowWordsPad(){
         $('#rollShowWordsPad').hide()
         page._mp3.pause()
