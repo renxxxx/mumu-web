@@ -1069,6 +1069,7 @@
         $('.yibiao').html('')
         $('.fanyi').html('')
         $('#videoshasow').hide()
+
     }
     page.dovideoshadow=0
     function videoPause(){
@@ -2583,6 +2584,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 var left = parseInt($('#video1').css('left').replace('px',''));
                 left=left-20;
                 if(left<0){
+                    $('#video1').css('left','0')
                     clearInterval(page.vvvv)
                     closeLoopVideos();
                     goNextVideo()
@@ -2596,6 +2598,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 var left = parseInt($('#video2').css('left').replace('px',''));
                 left=left+20;
                 if(left>0){
+                    $('#video2').css('left','0')
                     clearInterval(page.vvvv)
                     closeLoopVideos();
                     goPrevVideo()
