@@ -411,8 +411,10 @@
         if(page.closeView){
             $('#video').attr("src",video.audio16k||video.audio||video.url)
             $('#video').attr("poster",video.cover)
-        }else
+        }else{
             $('#video').attr("src",video.url)
+            $('#video').attr("poster",null)
+        }
         $('#videobox').css('top','0')
         $('#video').attr('autoplay',true)
         playVideo()
@@ -1036,7 +1038,8 @@
         for (const ajax of page.translateajaxs) {
             ajax.abort()
         }
-        
+        $('#video1').css('left','100%')
+        $('#video2').css('left','-100%')
         $('.historyword').css('background-color',"#ffffff")
         page.dovideoshadow=0
         // clearTimeout(page.timeout11)
@@ -2581,7 +2584,6 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 left=left-20;
                 if(left<0){
                     clearInterval(page.vvvv)
-                    $('#video1').css('left','100%')
                     closeLoopVideos();
                     goNextVideo()
                 }else{
@@ -2595,7 +2597,6 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 left=left+20;
                 if(left>0){
                     clearInterval(page.vvvv)
-                    $('#video2').css('left','-100%')
                     closeLoopVideos();
                     goPrevVideo()
                 }else{
