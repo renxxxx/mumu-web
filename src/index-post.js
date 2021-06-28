@@ -2584,28 +2584,30 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
                 var left = parseInt($('#video1').css('left').replace('px',''));
                 left=left-20;
                 if(left<0){
-                    $('#video1').css('left','0')
                     clearInterval(page.vvvv)
+                    pauseVideo()
+                    $('#video1').css('left','0')
                     closeLoopVideos();
                     goNextVideo()
                 }else{
                     $('#video1').css('left',left+'px')
                 }
-            },1)
+            },2)
         }else if(this.touchstartX-this.touchendX<-100){
             clearInterval(page.vvvv)
             page.vvvv=setInterval(function(){
                 var left = parseInt($('#video2').css('left').replace('px',''));
                 left=left+20;
                 if(left>0){
-                    $('#video2').css('left','0')
                     clearInterval(page.vvvv)
+                    pauseVideo()
+                    $('#video2').css('left','0')
                     closeLoopVideos();
                     goPrevVideo()
                 }else{
                     $('#video2').css('left',left+'px')
                 }
-            },1)
+            },2)
         }else{
             $('#video1').css('left','100%')
             $('#video2').css('left','-100%')
