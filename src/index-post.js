@@ -408,9 +408,10 @@
         }
     }
     function guide1(){
-        if(page.closeView)
+        if(page.closeView){
             $('#video').attr("src",video.audio16k||video.audio||video.url)
-        else
+            $('#video').attr("poster",video.cover)
+        }else
             $('#video').attr("src",video.url)
         $('#videobox').css('top','0')
         $('#video').attr('autoplay',true)
