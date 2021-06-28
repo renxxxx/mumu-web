@@ -318,11 +318,14 @@
         }
 
         
-        $('#cacheVideo').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
-        $('#cacheVideo')[0].play();
-        setTimeout(function(){
-            $('#cacheVideo')[0].pause()
-        },3000)
+        if(page.trueVideos.rows[page.trueVideos.inx+1-1]){
+            $('#cacheVideo').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
+            $('#cacheVideo')[0].play();
+            setTimeout(function(){
+                $('#cacheVideo')[0].pause()
+            },3000)
+        }
+        
 
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
