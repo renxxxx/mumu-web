@@ -1541,7 +1541,7 @@
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
                 title: ttb(video.chname), // 分享标题
-                desc: '幕幕 - 短视频练英语\n'+(ttb(video.reference)||ttb(video.seriesChname)), // 分享描述
+                desc: '幕幕 - 短视频练英语\n'+ttb(video.nickname), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1565,7 +1565,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: ttb(video.chname), // 分享标题
-            desc: '幕幕 - 短视频练英语\n'+(ttb(video.reference)||ttb(video.seriesChname)), // 分享描述
+            desc: '幕幕 - 短视频练英语\n'+ttb(video.nickname), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
