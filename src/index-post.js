@@ -441,6 +441,15 @@
         if(ss != ttb(video.chname)){
             sss=sss+ttb(video.chname)
         }
+        if(video.seriesNo){
+            $('#inSeriesPad').css('display','inline-block')
+            $('#inSeriesPad .no').text(video.orderNoInSeries)
+            $('#title').css('width','calc(100% - 169px)')
+        }else{
+            $('#inSeriesPad').hide()
+            $('#inSeriesPad .no').text('')
+            $('#title').css('width','calc(100% - 134px)')
+        }
         $('#title').text(sss)
         $('#video').attr("poster", video.cover)
         if(video.userNo){
