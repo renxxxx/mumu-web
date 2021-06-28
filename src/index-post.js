@@ -3239,23 +3239,22 @@ $('#wordsframe_cancel').click(function(){
         }
     })
 
-    function addWordbookWord(wordbookNo){
-        
-        if(page.wordbooks.selected.templateNo){
+    function addWordbookWord(wordbook){
+        if(wordbook.templateNo){
             common.alert('不可编辑系统单词本')
         }else{
             common.promptLine({
                 message:'请输入释义, 可为空.',
                 confirm:function(v){
                     if(v!=null){
-                        if(page.wordbooks.selected && wordbookNo == page.wordbooks.selected.no){
+                        if(page.wordbooks.selected && wordbook.no == page.wordbooks.selected.no){
                             $('#startRollBtn').show()
-                            var ele = createWordbookWord(wordbookNo,v)
+                            var ele = createWordbookWord(wordbook.no,v)
                             $(`#wordbooksPad .words .pad `).prepend(ele)
                         }
                         ws.send(JSON.stringify({
                             action:8,
-                            wordbookNo:wordbookNo,
+                            wordbookNo:wordbook.no,
                             word:page.currWord.word,
                             translation:v
                         }))
@@ -3739,7 +3738,7 @@ $('#wordsframe_cancel').click(function(){
     $('#wordbooksPadOnAdd .currRow,#wordbooksPadOnAdd .row0').click(function(){
         var row = this.data
         $('#wordbooksPadOnAdd').hide()
-        addWordbookWord(row.no)
+        addWordbookWord(row)
         
     })
 
@@ -3989,16 +3988,16 @@ $('#wordsframe_cancel').click(function(){
                             }else{
                                 clearTimeout(page.readRollWordTimeout)
                                 clearTimeout(page.rollWordsInterval)
-                                if(!word.translationSpeak){
+                                if(!word.translationVoice){
                                     $.ajax({
-                                        url:'/mumu/get-wordbook-word-translation-voice',
+                                        url:'/mumu/get-read',
                                         async:false,
                                         data:{
-                                            wordbookWordNo:word.no,
-                                            translation:word.translation
+                                            text:word.translation,
+                                            lang:'zh'
                                         },
                                         success:function(res){
-                                            word.translationSpeak=res.data.url
+                                            word.translationVoice=res.data.voice
                                         }
                                     })
                                 }
@@ -4009,7 +4008,7 @@ $('#wordsframe_cancel').click(function(){
                                             wordsRoll(page.rollInx+1)
                                         },1000)
                                     }
-                                    page._mp3.src=word.translationSpeak
+                                    page._mp3.src=word.translationVoice
                                     page._mp3.play()
                                 },100)
                             }
