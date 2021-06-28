@@ -262,6 +262,7 @@
                             videoele.find('.progress').hide()
                         videoele.css('display','block')
                         videoele.attr('href',`./index.html?videoNo=${item.no}&olh=1`)
+                        videoele[0].data=item
                         $('.videoList').append(videoele)
 
                         if(activeindex == inx){
@@ -273,7 +274,9 @@
             })
         }
    
-
+        $('#videotemplate').click(function(){
+            localStorage.setItem('video-'+this.data.no,JSON.stringify(this.data))
+        })
         function niceduration(mills){
             if(!mills || mills=='0')
                 return ''

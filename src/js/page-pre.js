@@ -61,7 +61,7 @@ try{
 
 }
 
-if(!pagePre.login || !pagePre.loginTime){
+if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
   $.ajax({
     url:'/mumu/login-refresh',
     async:false,
@@ -77,7 +77,6 @@ if(!pagePre.login || !pagePre.loginTime){
     }
   })
 }
-
 
 function login(){
   if(is_weixn()){

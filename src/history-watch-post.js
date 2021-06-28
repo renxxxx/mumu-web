@@ -122,15 +122,17 @@
     },false);
     
     if(videoNoC){
-        $.ajax({
-            url: '/mumu/watch-video-history?',
-            ajaxCache:true,
-            data: 'videoNo='+videoNoC,
-            async: false,
-            success: function(res) {
-                videoC = res.data.row
-            }
-        })
+        var videoC = JSON.parse(localStorage.getItem('video-'+videoNoC))
+        if(!videoC)
+            $.ajax({
+                url: '/mumu/watch-video-history?',
+                ajaxCache:true,
+                data: 'videoNo='+videoNoC,
+                async: false,
+                success: function(res) {
+                    videoC = res.data.row
+                }
+            })
     }
 
    

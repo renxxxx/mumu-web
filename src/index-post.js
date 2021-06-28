@@ -90,22 +90,22 @@
         rstart:0,
     }
 
-    if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
-        $.ajax({
-          url:'/mumu/login-refresh',
-          async:false,
-          success:function(res){
-            if(res.code==0){
-              pagePre.login=res.data
-              localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
-              localStorage.setItem(config.project+'-loginTime',new Date().getTime())
-              $.post('/mumu/restore-template-wordbooks')
-            }else if(res.code==20){
-                login()
-            }
-          }
-        })
-      }
+    // if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
+    //     $.ajax({
+    //       url:'/mumu/login-refresh',
+    //       async:false,
+    //       success:function(res){
+    //         if(res.code==0){
+    //           pagePre.login=res.data
+    //           localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
+    //           localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+    //           $.post('/mumu/restore-template-wordbooks')
+    //         }else if(res.code==20){
+    //             login()
+    //         }
+    //       }
+    //     })
+    //   }
 
     setTimeout(function(){
         $('#logo').hide()
@@ -132,20 +132,22 @@
     },false);
     
     if(videoNoC){
-        $.ajax({
-            url: '/mumu/video?',
-            
-            ajaxCache:true,
-            data: 'videoNo='+videoNoC,
-            async: false,
-            success: function(res) {
-                if(res.code==0){
-                    videoC = res.data.video
-                }else if(res.code==20){
-                    login()
+        var videoC = JSON.parse(localStorage.getItem('video-'+videoNoC))
+        if(!videoC)
+            $.ajax({
+                url: '/mumu/video?',
+                
+                ajaxCache:true,
+                data: 'videoNo='+videoNoC,
+                async: false,
+                success: function(res) {
+                    if(res.code==0){
+                        videoC = res.data.video
+                    }else if(res.code==20){
+                        login()
+                    }
                 }
-            }
-        })
+            })
     }
 
    
@@ -224,7 +226,7 @@
                         page.onlyLookHimVideos.currRows=[]
                         getMoreOnlyLookHimVideos()
                     }
-                    $('#video1').attr('src',null);
+                    $('#video1').attr('src','./img/black.png');
                 }else if(res.code==20){
                     login()
                 }
@@ -232,9 +234,10 @@
         })
     }
     function getMoreVideos(){
+        var rcount = 10
         $.ajax({
             url: '/mumu/explore-videos?',
-            data: 'shortvideo=1&kw='+searchtag+'&pageSize='+10+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
+            data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
                     +"&userNo="+(page.onlyLookUserNo||' '),
             async: false,
             success: function(res) {
@@ -250,7 +253,7 @@
                         $.ajax({
                             url: '/mumu/explore-videos?',
                             
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+10+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
                             async: false,
                             success: function(res) {
                                 page.exploreVideos.rows.push(...res.data.videos)
@@ -261,7 +264,7 @@
                             }
                         })
                     }
-                    $('#video1').attr('src',null);
+                    $('#video1').attr('src','./img/black.png');
                 }else if(res.code==20){
                     login()
                 }
@@ -362,7 +365,7 @@
         if(page.trueVideos.rows[page.trueVideos.inx-1-1]){
             $('#video2').attr('src',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
         }else{
-            $('#video2').attr('src','');
+            $('#video2').attr('src','./img/black.png');
         }
         getvideodone(video)
     }
@@ -741,10 +744,10 @@
             }
             var vv = _v[i].split('\\n');
             if(vv[0]){
-                var sp = $('<span style="border-bottom:2px solid #272727;color:#ffffff;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-sizing: border-box;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                var sp = $('<span style="height: 30px;color:#ffffff;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-sizing: border-box;" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
                 sp.bind('mouseout',function(){
                     if(isPc()){
-                        $(this).css('border-bottom','2px solid #272727')
+                        $(this).css('border-bottom','none')
                     }
                 }).bind('mouseover',function(){
                     if(isPc()){
@@ -901,6 +904,8 @@
     function translatee(_data,addHistory){
         //log.debug(_data+3)
         //$('#summrest').hide()
+        $('#favor').text('')
+        $('#addToWordbookBtn').text('')
         page.dovideoshadow=1
         pauseVideo()
         doshadow()
@@ -3007,37 +3012,37 @@ $('#wordsframe_cancel').click(function(){
     
     
 
-
-    $.ajax({
-        url: '/mumu/chatroom-msgs?',
-        data: 'rcount='+300,
-        async: true,
-        success: function(res) {
-            $(res.data.rows).each((inx,item)=>{
-                if(item.nickname!=null){
-                    item.nickname = item.nickname.substr(0, 1) + '...' +item.nickname.substr(3)
-                }
-
-                if(inx==0){
-                    $('#lastmsg').text((item.nickname||"网友").substr(0,6)+" : "+item.text)
+        $.ajax({
+            url: '/mumu/chatroom-msgs?',
+            data: 'rcount='+300,
+            async: true,
+            success: function(res) {
+                $(res.data.rows).each((inx,item)=>{
+                    if(item.nickname!=null){
+                        item.nickname = item.nickname.substr(0, 1) + '...' +item.nickname.substr(3)
+                    }
+    
+                    if(inx==0){
+                        $('#lastmsg').text((item.nickname||"网友").substr(0,6)+" : "+item.text)
+                        $('#chatminpad').show()
+                    }
+                    var ele = $('#chatmsgtemple').clone(true)
+                    ele.attr('id','chatmsg'+item.msgNo)
+                    if(item.userNo==$.cookie('token'))
+                        ele.css('color','green')
+                    ele.find('.name').text(item.nickname||"网友")
+                    ele.find('.msg').text(item.text);
+                    ele.find('.looking').text(item.looking);
+                    ele.show();
+                    $('#chatmsgspad').append(ele)
+                })
+                if(res.data.rows.length==0){
+                    $('#lastmsg').text("聊天室")
                     $('#chatminpad').show()
                 }
-                var ele = $('#chatmsgtemple').clone(true)
-                ele.attr('id','chatmsg'+item.msgNo)
-                if(item.userNo==$.cookie('token'))
-                    ele.css('color','green')
-                ele.find('.name').text(item.nickname||"网友")
-                ele.find('.msg').text(item.text);
-                ele.find('.looking').text(item.looking);
-                ele.show();
-                $('#chatmsgspad').append(ele)
-            })
-            if(res.data.rows.length==0){
-                $('#lastmsg').text("聊天室")
-                $('#chatminpad').show()
             }
-        }
-    })
+        })
+    
 
 
     $('#wordbooksPad .createRowBtn').click(function(){
@@ -3879,7 +3884,7 @@ $('#wordsframe_cancel').click(function(){
     //     page.trueVideos.currRows=[]
     // })
     function openOnlyLookHim(){
-        $('#video1').attr('src',null);
+        $('#video1').attr('src','./img/black.png');
         if(!page.onlyLookUserNo){
             page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
             page.exploreVideos.currRows=[]
@@ -3895,7 +3900,7 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.currRows=[]
     }
     function closeOnlyLookHim(){
-        $('#video1').attr('src',null);
+        $('#video1').attr('src','./img/black.png');
         if(!page.onlyLookUserNo){
             page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
             page.exploreVideos.currRows=[]
@@ -4088,26 +4093,30 @@ $('#wordsframe_cancel').click(function(){
                                 if(!word.translationVoice){
                                     $.ajax({
                                         url:'/mumu/get-read',
-                                        async:false,
                                         data:{
                                             text:word.translation,
                                             lang:'zh'
                                         },
                                         success:function(res){
                                             word.translationVoice=res.data.voice
+                                            fff()
                                         }
                                     })
+                                }else{
+                                    fff()
                                 }
 
-                                page.rollWordsInterval = setTimeout(function(){
-                                    page._mp3.onpause=function(){
-                                        page.rollWordsInterval = setTimeout(function(){
-                                            wordsRoll(page.rollInx+1)
-                                        },1000)
-                                    }
-                                    page._mp3.src=word.translationVoice
-                                    page._mp3.play()
-                                },100)
+                                function fff(){
+                                    page.rollWordsInterval = setTimeout(function(){
+                                        page._mp3.onpause=function(){
+                                            page.rollWordsInterval = setTimeout(function(){
+                                                wordsRoll(page.rollInx+1)
+                                            },1000)
+                                        }
+                                        page._mp3.src=word.translationVoice
+                                        page._mp3.play()
+                                    },100)
+                                }
                             }
                         }
                     }
@@ -4155,5 +4164,7 @@ $('#wordsframe_cancel').click(function(){
         loadRelatedWords(page.currWordText,page.shortWordText)
     })
    
+
+    $('#video').bind('contextmenu',function() { return false; });
 })()
 

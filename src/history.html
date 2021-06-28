@@ -241,6 +241,7 @@
                             videoele.find('.progress').hide()
                         videoele.css('display','block')
                         videoele.attr('href',`./history-watch.html?videoNo=${item.videoNo}`)
+                        videoele[0].data=item
                         $('.videoList').append(videoele)
 
                         if(activeindex == inx){
@@ -251,6 +252,9 @@
             })
         }
    
+        $('#videotemplate').click(function(){
+            localStorage.setItem('video-'+this.data.videoNo,JSON.stringify(this.data))
+        })
 
         function niceduration(mills){
             if(!mills || mills=='0')
