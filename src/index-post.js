@@ -224,7 +224,7 @@
                         page.onlyLookHimVideos.currRows=[]
                         getMoreOnlyLookHimVideos()
                     }
-                    $('#video1').attr('poster',null);
+                    $('#video1').attr('src',null);
                 }else if(res.code==20){
                     login()
                 }
@@ -261,7 +261,7 @@
                             }
                         })
                     }
-                    $('#video1').attr('poster',null);
+                    $('#video1').attr('src',null);
                 }else if(res.code==20){
                     login()
                 }
@@ -318,14 +318,19 @@
         }
 
         
-        
+        $('#cacheVideo').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
+        $('#cacheVideo')[0].play();
+        setTimeout(function(){
+            $('#cacheVideo')[0].pause()
+        },3000)
+
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
 
         if(page.trueVideos.rows[page.trueVideos.inx+1-1])
-            $('#video1').attr('poster',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
+            $('#video1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
         if(page.trueVideos.rows[page.trueVideos.inx-1-1])
-            $('#video2').attr('poster',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
+            $('#video2').attr('src',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
         getvideodone(video)
 
     }
@@ -347,14 +352,14 @@
         video = page.trueVideos.rows[page.trueVideos.inx-1]
 
         if(page.trueVideos.rows[page.trueVideos.inx+1-1]){
-            $('#video1').attr('poster',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
+            $('#video1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
         }else{
-            $('#video1').attr('poster','');
+            $('#video1').attr('src','');
         }
         if(page.trueVideos.rows[page.trueVideos.inx-1-1]){
-            $('#video2').attr('poster',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
+            $('#video2').attr('src',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
         }else{
-            $('#video2').attr('poster','');
+            $('#video2').attr('src','');
         }
         getvideodone(video)
     }
@@ -451,7 +456,7 @@
             $('#title').css('width','calc(100% - 134px)')
         }
         $('#title').text(sss)
-        $('#video').attr("poster", video.cover)
+        //$('#video').attr("poster", video.cover)
         if(video.userNo){
             $('#headimg').attr('src',video.headimg)
             $('#headimg').css('display','inline-block')
@@ -2526,8 +2531,10 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     }
 
     if(this.touchstartX && this.touchstartY && this.touchendX && this.touchendY){
-        $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
-        $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
+        if(Math.abs(this.touchstartX - touchendX) / Math.abs(this.touchstartY - touchendY) > 1 ){
+            $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
+            $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+touchendX-this.touchendX)+'px')
+        }
     }
 
     if(e.type=='touchmove'){
@@ -2560,17 +2567,45 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
   }).unbind('touchend mouseup').bind('touchend mouseup',function(e){
     this.touchendtime = new Date().getTime();
     
-    $('#video1').css('left','100%')
-    $('#video2').css('left','-100%')
+    
+    
     if(this.touchendtime-this.touchstartTime < 500 && this.touchstartX && this.touchstartY && this.touchendX && this.touchendY){
         if(this.touchstartX-this.touchendX>100){
-            closeLoopVideos();
-            goNextVideo()
+            clearInterval(page.vvvv)
+            page.vvvv=setInterval(function(){
+                var left = parseInt($('#video1').css('left').replace('px',''));
+                left=left-20;
+                if(left<0){
+                    clearInterval(page.vvvv)
+                    $('#video1').css('left','100%')
+                    closeLoopVideos();
+                    goNextVideo()
+                }else{
+                    $('#video1').css('left',left+'px')
+                }
+            },1)
         }else if(this.touchstartX-this.touchendX<-100){
-            closeLoopVideos();
-            goPrevVideo()
+            clearInterval(page.vvvv)
+            page.vvvv=setInterval(function(){
+                var left = parseInt($('#video2').css('left').replace('px',''));
+                left=left+20;
+                if(left>0){
+                    clearInterval(page.vvvv)
+                    $('#video2').css('left','-100%')
+                    closeLoopVideos();
+                    goPrevVideo()
+                }else{
+                    $('#video2').css('left',left+'px')
+                }
+            },1)
+        }else{
+            $('#video1').css('left','100%')
+            $('#video2').css('left','-100%')
         }
         
+    }else{
+        $('#video1').css('left','100%')
+        $('#video2').css('left','-100%')
     }
 
     this.touchstartTime=null
@@ -3834,7 +3869,7 @@ $('#wordsframe_cancel').click(function(){
     //     page.trueVideos.currRows=[]
     // })
     function openOnlyLookHim(){
-        $('#video1').attr('poster',null);
+        $('#video1').attr('src',null);
         if(!page.onlyLookUserNo){
             page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
             page.exploreVideos.currRows=[]
@@ -3850,7 +3885,7 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.currRows=[]
     }
     function closeOnlyLookHim(){
-        $('#video1').attr('poster',null);
+        $('#video1').attr('src',null);
         if(!page.onlyLookUserNo){
             page.exploreVideos.rows.splice(page.exploreVideos.inx+1-1,page.exploreVideos.rows.length-1)
             page.exploreVideos.currRows=[]
