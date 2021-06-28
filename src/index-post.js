@@ -4050,6 +4050,11 @@ $('#wordsframe_cancel').click(function(){
         if(!page.shortWordText){
             page.shortWordText=page.currWordText
         }
+        $('#relatedWordsPad').children(":first").html(`
+            <span style="font-size:15px;float:left;">${page.shortWordText}</span>
+            <span style="font-size:15px;color:#828282;float:left;">${page.currWordText.substr(page.shortWordText.length,page.currWordText.length-page.shortWordText.length)}</span>
+        `)
+
         loadRelatedWords(page.currWordText,page.shortWordText)
     })
    
