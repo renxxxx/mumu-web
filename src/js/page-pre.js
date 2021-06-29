@@ -2,13 +2,13 @@ log.debugon=config.debug
 var pagePre={}
 window.pagePre=pagePre
 
-var vConsole = new VConsole({
-  onReady:function(){
-      $('#__vconsole .vc-switch').text('v').addClass('unselectable')
-      if(!config.debug)
-        vConsole.hideSwitch();
-  }
-});
+if(config.debug){
+  var vConsole = new VConsole({
+    onReady:function(){
+        $('#__vconsole .vc-switch').text('v').addClass('unselectable')
+    }
+  });
+}
 
 if(config.debug==0)
     noDebuger()
@@ -70,7 +70,9 @@ if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.login
         pagePre.login=res.data
         localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
         localStorage.setItem(config.project+'-loginTime',new Date().getTime())
-        $.post('/mumu/restore-template-wordbooks')
+        setTimeout(function(){
+          $.post('/mumu/restore-template-wordbooks')
+        },2000)
       }else{
         login()
       }
@@ -99,7 +101,10 @@ function login(){
                 localStorage.setItem(config.project+'-login',JSON.stringify(res.data))
                 localStorage.setItem(config.project+'-loginTime',new Date().getTime())
                 pagePre.login=res.data
-                $.post('/mumu/restore-template-wordbooks')
+                setTimeout(function(){
+                  $.post('/mumu/restore-template-wordbooks')
+                },2000)
+                
               }
             }
           })

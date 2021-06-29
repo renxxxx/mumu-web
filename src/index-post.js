@@ -300,6 +300,7 @@
                 page.trueVideos.map['no'+item.no]
                 page.trueVideos.noes.push(item.no)
             })
+            
         }
         
         if(!page.trueVideos.rows[page.trueVideos.inx+1-1]){
@@ -321,22 +322,53 @@
         }
 
         
-        if(page.trueVideos.rows[page.trueVideos.inx+1-1]){
-            $('#cacheVideo').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
-            $('#cacheVideo')[0].play();
-            setTimeout(function(){
-                $('#cacheVideo')[0].pause()
-            },3000)
-        }
+        // if(page.trueVideos.rows[page.trueVideos.inx+1-1]){
+        //     $('#cacheVideo1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
+        //     $('#cacheVideo1')[0].currentTime=0
+        //     $('#cacheVideo1')[0].play();
+        //     setTimeout(function(){
+        //         $('#cacheVideo1')[0].pause()
+        //     },5000)
+        // }
+        // if(page.trueVideos.rows[page.trueVideos.inx+2-1]){
+        //     $('#cacheVideo2').attr('src',page.trueVideos.rows[page.trueVideos.inx+2-1].url)
+        //     $('#cacheVideo2')[0].currentTime=0
+        //     $('#cacheVideo2')[0].play();
+        //     setTimeout(function(){
+        //         $('#cacheVideo2')[0].pause()
+        //     },5000)
+        // }
+        // if(page.trueVideos.rows[page.trueVideos.inx+3-1]){
+        //     $('#cacheVideo3').attr('src',page.trueVideos.rows[page.trueVideos.inx+3-1].url)
+        //     $('#cacheVideo3')[0].currentTime=0
+        //     $('#cacheVideo3')[0].play();
+        //     setTimeout(function(){
+        //         $('#cacheVideo3')[0].pause()
+        //     },5000)
+        // }
+        // if(page.trueVideos.rows[page.trueVideos.inx+4-1]){
+        //     $('#cacheVideo4').attr('src',page.trueVideos.rows[page.trueVideos.inx+4-1].url)
+        //     $('#cacheVideo4')[0].currentTime=0
+        //     $('#cacheVideo4')[0].play();
+        //     setTimeout(function(){
+        //         $('#cacheVideo4')[0].pause()
+        //     },5000)
+        // }
+        // if(page.trueVideos.rows[page.trueVideos.inx+5-1]){
+        //     $('#cacheVideo5').attr('src',page.trueVideos.rows[page.trueVideos.inx+5-1].url)
+        //     $('#cacheVideo5')[0].currentTime=0
+        //     $('#cacheVideo5')[0].play();
+        //     setTimeout(function(){
+        //         $('#cacheVideo5')[0].pause()
+        //     },5000)
+        // }
+        
         
 
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
 
-        if(page.trueVideos.rows[page.trueVideos.inx+1-1])
-            $('#video1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
-        if(page.trueVideos.rows[page.trueVideos.inx-1-1])
-            $('#video2').attr('src',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
+       
         getvideodone(video)
 
     }
@@ -412,15 +444,18 @@
     }
     function guide1(){
         if(page.closeView){
-            $('#video').attr("src",video.audio16k||video.audio||video.url)
             $('#video').attr("poster",video.cover)
+            $('#video').attr("src",video.audio16k||video.audio||video.url)
         }else{
-            $('#video').attr("src",video.url)
             $('#video').attr("poster",null)
+            $('#video').attr("poster",video.cover)
+            $('#video').attr("src",video.url)
         }
         $('#videobox').css('top','0')
         $('#video').attr('autoplay',true)
         playVideo()
+
+        
     }
     //showallhistorywords()
     // function getVideo(videoNo){
@@ -438,7 +473,7 @@
     function getvideodone(videop){
         video=videop;
         videoNo=videop.no
-
+        page.videoNo=videoNo
         clearTimeout(page.ssj)
         page.ssj= setTimeout(function(){
             ws.send(JSON.stringify({
@@ -488,19 +523,19 @@
                 getEnSubtitles(res);
             }
         })
-        clearTimeout(page.addHistoryTimeout)
-        page.addHistoryTimeout=setTimeout(function(){
-            var historyvideos = JSON.parse(localStorage.getItem(config.project+'-historyvideos'))
-            if(!historyvideos)
-                historyvideos=[]
-            for(var i = 0; i < historyvideos.length; i++){
-                if(historyvideos[i].no==video.no){  
-                    historyvideos.splice(i,1) 
-                }  
-            }  
-            historyvideos.unshift(video)
-            localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
-        },5000)
+        //clearTimeout(page.addHistoryTimeout)
+        // page.addHistoryTimeout=setTimeout(function(){
+        //     var historyvideos = JSON.parse(localStorage.getItem(config.project+'-historyvideos'))
+        //     if(!historyvideos)
+        //         historyvideos=[]
+        //     for(var i = 0; i < historyvideos.length; i++){
+        //         if(historyvideos[i].no==video.no){  
+        //             historyvideos.splice(i,1) 
+        //         }  
+        //     }  
+        //     historyvideos.unshift(video)
+        //     localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
+        // },5000)
 
         if(!video.chatCount){
             video.chatCount=parseInt(randomnum(2))
@@ -1045,6 +1080,12 @@
         }
         $('#video1').css('left','100%')
         $('#video2').css('left','-100%')
+
+        if(page.trueVideos.rows[page.trueVideos.inx+1-1])
+            $('#video1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].cover);
+        if(page.trueVideos.rows[page.trueVideos.inx-1-1])
+            $('#video2').attr('src',page.trueVideos.rows[page.trueVideos.inx-1-1].cover);
+
         $('.historyword').css('background-color',"#ffffff")
         page.dovideoshadow=0
         // clearTimeout(page.timeout11)
@@ -2575,13 +2616,8 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     if(parentEle.length==0 && this.touchstartY<this.touchendY){
         e.preventDefault()
     }
-
-    
   }).unbind('touchend mouseup').bind('touchend mouseup',function(e){
     this.touchendtime = new Date().getTime();
-    
-    
-    
     if(this.touchendtime-this.touchstartTime < 500 && this.touchstartX && this.touchstartY && this.touchendX && this.touchendY){
         if(this.touchstartX-this.touchendX>100){
             clearInterval(page.vvvv)
