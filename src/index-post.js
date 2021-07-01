@@ -305,8 +305,9 @@
         }
 
         
-
+        log.info(page.trueVideos.rows.length+" "+page.trueVideos.inx)
         if(page.trueVideos.rows.length==0 || page.trueVideos.rows.length == page.trueVideos.inx){
+            log.info("sync")
             if(page.onlyLookUserNo){
                 getMoreOnlyLookHimVideos(false)
             }else{
@@ -320,6 +321,7 @@
         }
         
         if(!page.trueVideos.rows[page.trueVideos.inx+4-1] ){
+            log.info("async")
             if(page.onlyLookUserNo){
                 getMoreOnlyLookHimVideos(true)
             }else{
