@@ -168,10 +168,9 @@
             $('#logo').hide()
         },500)
         $('#videotemplate').click(function(){
-            log.info(1)
             localStorage.setItem(config.project+'-video-'+this.data.no,JSON.stringify(this.data))
         })
-        
+
         var videoList = [];
         (function(win){
             win.start()
