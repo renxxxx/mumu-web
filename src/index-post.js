@@ -8,6 +8,7 @@
     page.wordbookWordsAjaxs=[]
     
     var onlyLookHimParam = getUrlParam('olh')
+    var userNo = getUrlParam('userNo')
 
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
@@ -3891,6 +3892,7 @@ $('#wordsframe_cancel').click(function(){
     if(onlyLookHimParam){
         openOnlyLookHim()
     }
+    
     $('#onlyLookHim').click(function(){
         if(page.onlyLookUserNo){
             closeOnlyLookHim()

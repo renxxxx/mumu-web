@@ -11,17 +11,19 @@
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
+        <script crossorigin="anonymous" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" src="https://lib.baomitu.com/FileSaver.js/latest/FileSaver.min.js"></script>
+        <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jszip/3.5.0/jszip.min.js" type="application/javascript"></script>
         <script>
             
         </script>
         <style>
             @media screen and (min-width: 700px) {
-                #video,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
+                #video,#videosrc,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
                     height:350px;
                 }
             }
             @media screen and (max-width: 700px) {
-                #video,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
+                #video,#videosrc,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
                     height:220px;
                 }
             }
@@ -70,11 +72,11 @@
             }
 
             .selectable {
-                -moz-user-select:auto;/*火狐*/
-                -webkit-user-select:auto;/*webkit浏览器*/
-                -ms-user-select:auto;/*IE10*/
-                -khtml-user-select:auto;/*早期浏览器*/
-                user-select:auto;
+                -moz-user-select:text;/*火狐*/
+                -webkit-user-select:text;/*webkit浏览器*/
+                -ms-user-select:text;/*IE10*/
+                -khtml-user-select:text;/*早期浏览器*/
+                user-select:text;
             }
 
             .noscrollbar::-webkit-scrollbar{
@@ -102,17 +104,20 @@
     <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
         <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
             <div id="videobox" style="overflow:hidden;position:relative;">
-                <video  x5-playsinline playsinline controls360=no controls webkit-playsinline width="100%" id="video" poster autoplay preload
+                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="50%" id="video" poster autoplay preload
                     onplay="videoPlay()" onpause="videoPause()"
-                    style="background: #000000;display: block;position: relative;object-fit:cover;">
+                    style="background: #000000;display: block;position: relative;object-fit:contain;float: left;">
+                </video>
+                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="50%" id="videosrc" muted poster autoplay preload
+                    style="background: #000000;display: block;position: relative;object-fit:contain;float: left;">
                 </video>
             </div>
             
             <div style="width:100%;margin-top:5px;min-height:84px;margin-bottom: 5px;">
-                <div id="zh_subtitles" class="unselectable" 
+                <div id="zh_subtitles" class="selectable" 
                     style="line-height: 30px;width: 100%;text-align: center;background-color: #ffffff;font-size: 18px;" >
                 </div>
-                <div id="chDialog" class="chDialog unselectable" style="width:100%;height:20px;font-size:12px;color:#9b9b9b;text-align: center;padding:0 5px;overflow: hidden;
+                <div id="chDialog" class="chDialog selectable" style="width:100%;height:20px;font-size:12px;color:#9b9b9b;text-align: center;padding:0 5px;overflow: hidden;
                             word-break: break-all;box-sizing: border-box;line-height: 20px;letter-spacing: 0.5px;">
                 </div>
             </div>
@@ -139,14 +144,32 @@
                 </span>
             </div>
 
-            <input id="file" type='file' style="display:block;margin:auto;margin-top:50px;border: 1px solid #c7c7c7;cursor: pointer;" multiple/>
-            <div id="name" style="font-size:16px;text-align: center;width:100%;height:40px;">
+            <input id="file" type='file' style="display:block;margin:auto;margin-top:15px;border: 1px solid #c7c7c7;cursor: pointer;width:24%;" multiple/>
+            <div id="name" class="selectable" style="font-size:16px;text-align: center;width:100%;margin-top:10px;height:20px;">
+            </div>
+            <div id="name1" class="selectable" style="font-size:16px;text-align: center;width:100%;margin-top:10px;height:20px;">
+            </div>
+            <div id="name2" class="selectable" style="font-size:16px;text-align: center;width:100%;margin-top:10px;height:20px;">
+            </div>
+            <div style="height:40px;font-size:0;text-align: center;margin-top:20px;">
+                <input id="vv" placeholder="请输入视频链接" style="width:calc(100% - 200px);height:40px;line-height:40px;padding:0 3px;box-sizing: border-box;font-size:16px;vertical-align: middle;" />
+                <button id="cc" style="height:40px;width:100px;box-sizing: border-box;vertical-align: middle;cursor: pointer;">查看</button>
+            </div>
+            <div id="aa" style="margin-top:20px;min-height:100px;">
+                <div id="a1" class=" selectable" style="text-align: center;font-size: 22px;padding:0 50px;">
+                </div>
+                <div id="a4" class=" selectable" style="text-align: center;font-size: 22px;padding:0 50px;margin-top:10px;">
+                </div>
+                <img id="a2" draggable="false" style="width:60px;height:60px;border-radius: 50%;display: block;margin:auto;margin-top:10px;display:none;"/>
+                <div id="a3" class=" selectable" style="font-size: 22px;text-align: center;margin-top:15px;padding:0 50px;">
+                </div>
             </div>
         </div>
     </body>
    
     <script>
         var page={}
+        page.ajaxes = []
         var en = {
             subtitles : '',
             monitor : '',
@@ -159,48 +182,104 @@
         var no = getUrlParam('no')
         $('#startFn1').click(function(){
             $('#video')[0].play()
+            $('#videosrc')[0].play()
         })
         $('#stopFn1').click(function(){
             $('#video')[0].pause()
+            $('#videosrc')[0].pause()
         })
+        function clearVideo(){
+            clearInterval(en.monitor)
+            $('#file').val('')
+            $('#video')[0].src = ''
+            $('#videosrc')[0].src = ''
+            $('#name').text('')
+            $('#name1').text('')
+            $('#name2').text('')
+            $('#chDialog').text('')
+            $("#zh_subtitles").html('')
+        }
         $('#file').click(function(){
-            this.value=''
+            clearVideo()
+            clearInfo()
+            $('#vv').val('')
         }).change(function(){
-            if(this.files.length>2){
-                alert('只能选择两个文件,MP4和SRT');
-                return false;
-            }
-            if(this.files.length<2){
-                alert('必须选择两个文件,MP4和SRT');
-                return false;
-            }
             var file1 = this.files[0]
             var file2 = this.files[1]
+            var file3 = this.files[2]
+            var file4 = this.files[3]
             var mp4 = null
             var srt = null
-            if(file1.name.indexOf('.srt')>=0){
+            var info = null
+            var srcmp4 = null
+            if(file1 && file1.name=='video.srt'){
                 srt = file1;
             }
-            if(file1.name.indexOf('.mp4')>=0){
+            if(file1 && file1.name=='video.mp4'){
                 mp4 = file1;
             }
-            if(file2.name.indexOf('.srt')>=0){
+            if(file1 && file1.name=='info.json'){
+                info = file1;
+            }
+            if(file1 && file1.name=='video-src.mp4'){
+                srcmp4 = file1;
+            }
+            if(file2 && file2.name=='video.srt'){
                 srt = file2;
             }
-            if(file2.name.indexOf('.mp4')>=0){
+            if(file2 && file2.name=='video.mp4'){
                 mp4 = file2;
             }
-            if(mp4 == null || srt==null)
+            if(file2 && file2.name=='info.json'){
+                info = file2;
+            }
+            if(file2 && file2.name=='video-src.mp4'){
+                srcmp4 = file2;
+            }
+            if(file3 && file3.name=='video.srt'){
+                srt = file3;
+            }
+            if(file3 && file3.name=='video.mp4'){
+                mp4 = file3;
+            }
+            if(file3 && file3.name=='info.json'){
+                info = file3;
+            }
+            if(file3 && file3.name=='video-src.mp4'){
+                srcmp4 = file3;
+            }
+            if(file4 && file4.name=='video.srt'){
+                srt = file4;
+            }
+            if(file4 && file4.name=='video.mp4'){
+                mp4 = file4;
+            }
+            if(file4 && file4.name=='info.json'){
+                info = file4;
+            }
+            if(file4 && file4.name=='video-src.mp4'){
+                srcmp4 = file4;
+            }
+            if(mp4 == null)
             {
-                alert('请选择mp4和srt文件')
+                alert('缺少video.mp4')
                 return
             }
-            if(mp4.name.replace('.mp4','')!=srt.name.replace('.srt','')){
-                alert('请选择名称相同的MP4和SRT文件')
+            if(srt == null)
+            {
+                alert('缺少video.srt')
                 return
             }
-            var fileName = mp4.name.substring(0,mp4.name.indexOf('.'))
-            $('#name').text(fileName)
+            if(info == null)
+            {
+                alert('缺少info.json')
+                return
+            }
+            if(srcmp4 == null)
+            {
+                alert('缺少video-src.mp4')
+                return
+            }
             var reader = new FileReader();
             reader.readAsText(srt);
 
@@ -209,8 +288,19 @@
 
                 var URL = window.URL || window.webkitURL
                 $('#video')[0].src = URL.createObjectURL(mp4)
+                $('#videosrc')[0].src = URL.createObjectURL(srcmp4)
             };
 
+            var reader1 = new FileReader();
+            reader1.readAsText(info);
+
+            reader1.onload = function(){
+                var o = JSON.parse(this.result)
+                $('#name').text(o.vt)
+                $('#name1').text(o.vn)
+                $('#name2').text(o.n)
+                
+            };
             
         });
         
@@ -405,6 +495,7 @@
                     jumpedcaption = prev
                     lastCurrentTime = prev.startTime/1000
                     $('#video')[0].currentTime = prev.startTime/1000
+                    $('#videosrc')[0].currentTime = prev.startTime/1000
                     setline(prev)
                     currwordno=0
                     
@@ -425,6 +516,7 @@
                 en.currentIndex =inx   
                 en.current= curr
                 $('#video')[0].currentTime = curr.startTime/1000
+                $('#videosrc')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
                 setline(curr)
@@ -447,6 +539,7 @@
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
+                $('#videosrc')[0].currentTime = next.startTime/1000
                 setline(next)
                 currwordno=0
                 
@@ -484,5 +577,69 @@
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
     }
+
+    function clearInfo(){
+        $('#a1').text('')
+        $('#a2').attr('src','')
+        $('#a3').text('')
+        $('#a4').text('')
+    }
+
+  
+
+    $('#cc').click(function(){
+        clearVideo()
+        clearInfo()
+
+        for (const ajax of page.ajaxes) {
+            ajax.abort()
+        }
+        if(!$('#vv').val())
+            return;
+        page.ajaxes.push(
+           $.ajax({
+                url:'/mumu/fff',
+                type:'post',
+                data:{
+                    w:$('#vv').val()
+                },
+                success:function(res){
+                    if(res.code ==0){
+                        if(res.data.e){
+                            $('#a1').css('color','red');
+                            $('#a1').text('已存在');
+                        }else{
+                            if(res.data.videoNo){
+                                $('#a1').css('color','#000000');
+                                $('#a1').text(res.data.vt)
+                                $('#a2').attr('src',res.data.h)
+                                $('#a3').text(res.data.n)
+                                $('#a4').text(res.data.vn)
+
+                                var zip = new JSZip();
+                                zip.file("info.json", JSON.stringify(res.data,null,'\t'));
+                                //zip.file("smile.gif", imgData, {base64: true});
+                                // $.get("url/to.file.txt") // jQuery v3 returns promises
+                                // .then(function (content) {
+                                //     zip.file("file.txt", content);
+                                // })
+                                zip.generateAsync({type:"blob"})
+                                .then(function(content) {
+                                    // see FileSaver.js
+                                    saveAs(content, res.data.vn+".zip");
+                                });
+                            }else{
+                                $('#a1').css('color','red');
+                                $('#a1').text('错误');
+                            }
+                        }
+                    }else{
+                        $('#a1').css('color','red');
+                        $('#a1').text(res.msg?res.msg : "错误");
+                    }
+                }
+            })
+        )
+    })
     </script>
 </html>
