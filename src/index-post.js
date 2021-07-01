@@ -76,7 +76,7 @@
     var loopLine=0
     var pausebeforech = null;
     var historywords=[]
-    var videoNoC = window.location.search.substring(1).split("&")[0].split("=")[1];
+    var videoNoC = getUrlParam(videoNo);
     var videoC = null
     var video;
     var videoNo;
@@ -133,7 +133,7 @@
     },false);
     
     if(videoNoC){
-        var videoC = JSON.parse(localStorage.getItem('video-'+videoNoC))
+        var videoC = JSON.parse(localStorage.getItem(config.project+'-video-'+videoNoC))
         if(!videoC)
             $.ajax({
                 url: '/mumu/video?',
@@ -3279,10 +3279,16 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $('#wordbooksPad .words  .coverTargetTextBtn').click(function(){
-        if($('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility')=='hidden')
-            $('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility','visible')
+        if($('#wordbooksPad .words .word').css('visibility')=='hidden')
+            $('#wordbooksPad .words .word').css('visibility','visible')
         else
-            $('#wordbooksPad .words .word,#wordbooksPad .words .phonetic').css('visibility','hidden')
+            $('#wordbooksPad .words .word').css('visibility','hidden')
+    })
+    $('#wordbooksPad .words  .coverPhoneticTextBtn').click(function(){
+        if($('#wordbooksPad .words .phonetic').css('visibility')=='hidden')
+            $('#wordbooksPad .words .phonetic').css('visibility','visible')
+        else
+            $('#wordbooksPad .words .phonetic').css('visibility','hidden')
     })
     $('#wordbooksPad .words .coverMainTextBtn').click(function(){
         if($('#wordbooksPad .words .translation').css('visibility')=='hidden')
@@ -3622,24 +3628,67 @@ $('#wordsframe_cancel').click(function(){
     $('#favorsPad .word0 .removeBtn').click(function(e){
         var wrap = $(this).parents('.wrap')
         var row = wrap[0].data
-        ws.send(JSON.stringify(
-            {
-                action:5,
-                word:row.word
-            }
-        ))
-        wrap.remove()
-        page.favoredWords.rows.splice(page.favoredWords.rows.indexOf(row),4)
-        page.favoredWords.currRows.splice(page.favoredWords.currRows.indexOf(row),4)
+        var ele = $(this).parents('.row');
+        var s = page.removeWordsControl['favor']
+        if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
+            common.promptLine({
+                message:'将删除<span style=color:red;font-size:15px>'+row.word+'</span>, 请输入delete以确认移除, 1分钟内不会再次提示.',
+                manualClose:1,
+                cancel:function(v,promptEle){
+                    promptEle.remove()
+                },
+                confirm:function(v,promptEle){
+                    if(v && v.toLowerCase().trim() == 'delete'){
+                        ws.send(JSON.stringify(
+                            {
+                                action:5,
+                                word:row.word
+                            }
+                        ))
+                        wrap.remove()
+                        page.favoredWords.rows.splice(page.favoredWords.rows.indexOf(row),4)
+                        page.favoredWords.currRows.splice(page.favoredWords.currRows.indexOf(row),4)
+                        page.removeWordsControl['favor']=new Date().getTime()
+                        promptEle.remove()
+                    }else{
+                        common.alert('输入错误')
+                    }
+                }
+            })
+        }else{
+            common.confirm({
+                message:'将删除'+row.word+'.',
+                manualClose:1,
+                confirm:function(v,promptEle){
+                    ws.send(JSON.stringify(
+                        {
+                            action:5,
+                            word:row.word
+                        }
+                    ))
+                    wrap.remove()
+                    page.favoredWords.rows.splice(page.favoredWords.rows.indexOf(row),4)
+                    page.favoredWords.currRows.splice(page.favoredWords.currRows.indexOf(row),4)
+                    page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
+                }
+            })
+        }
         e.stopPropagation()
     })
     
     $('#favorsPad .coverTargetTextBtn').click(function(){
-        if($('#favorsPad .word,#favorsPad .phonetic').css('visibility')=='hidden')
-            $('#favorsPad .word,#favorsPad .phonetic').css('visibility','visible')
+        if($('#favorsPad .word').css('visibility')=='hidden')
+            $('#favorsPad .word').css('visibility','visible')
         else
-            $('#favorsPad .word,#favorsPad .phonetic').css('visibility','hidden')
+            $('#favorsPad .word').css('visibility','hidden')
     })
+    $('#favorsPad .coverPhoneticTextBtn').click(function(){
+        if($('#favorsPad .phonetic').css('visibility')=='hidden')
+            $('#favorsPad .phonetic').css('visibility','visible')
+        else
+            $('#favorsPad .phonetic').css('visibility','hidden')
+    })
+    
     $('#favorsPad .coverMainTextBtn').click(function(){
         if($('#favorsPad .translation').css('visibility')=='hidden')
             $('#favorsPad .translation').css('visibility','visible')
@@ -3746,11 +3795,18 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $('#historyWordsPad .coverTargetTextBtn').click(function(){
-        if($('#historyWordsPad .word,#historyWordsPad .phonetic').css('visibility')=='hidden')
-            $('#historyWordsPad .word,#historyWordsPad .phonetic').css('visibility','visible')
+        if($('#historyWordsPad .word').css('visibility')=='hidden')
+            $('#historyWordsPad .word').css('visibility','visible')
         else
-            $('#historyWordsPad .word,#historyWordsPad .phonetic').css('visibility','hidden')
+            $('#historyWordsPad .word').css('visibility','hidden')
     })
+    $('#historyWordsPad .coverPhoneticTextBtn').click(function(){
+        if($('#historyWordsPad .phonetic').css('visibility')=='hidden')
+            $('#historyWordsPad .phonetic').css('visibility','visible')
+        else
+            $('#historyWordsPad .phonetic').css('visibility','hidden')
+    })
+    
     $('#historyWordsPad .coverMainTextBtn').click(function(){
         if($('#historyWordsPad .translation').css('visibility')=='hidden')
             $('#historyWordsPad .translation').css('visibility','visible')
@@ -3892,7 +3948,7 @@ $('#wordsframe_cancel').click(function(){
     if(onlyLookHimParam){
         openOnlyLookHim()
     }
-    
+
     $('#onlyLookHim').click(function(){
         if(page.onlyLookUserNo){
             closeOnlyLookHim()
@@ -3952,12 +4008,16 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.currRows=[]
     }
     function closeRollShowWordsPad(){
-        $('#rollShowWordsPad').hide()
-        page._mp3.pause()
-        page.lettersound.pause()
-        clearTimeout(page.rollWordsInterval)
-        clearTimeout(page.readRollWordTimeout)
-        page.rollOpen=0
+        if(page.rollIsSound){
+            common.alert('请先暂停')
+        }else{
+            $('#rollShowWordsPad').hide()
+            page._mp3.pause()
+            page.lettersound.pause()
+            clearTimeout(page.rollWordsInterval)
+            clearTimeout(page.readRollWordTimeout)
+            page.rollOpen=0
+        }
     }
     
     $('#rollShowWordsPad').click(function(e){

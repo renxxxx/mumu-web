@@ -103,7 +103,7 @@
             <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
                 <a id="videotemplate" draggable="false" style="display:block;float:left;width:45%;height:155px;padding:0;margin-left:3.33%;margin-top:10px;
                         font-size:0;position:relative;cursor: pointer;display:none;text-decoration: blink;color:#000000;">
-                    <div style="width:100%;height:109px;background-color: #dddddd;">
+                    <div style="width:100%;height:109px;background-color: #dddddd;border: 1px solid #efefef;border-bottom:none;">
                         <img class="cover" draggable="false" src="" style="width:100%;height:106px;object-fit: cover;"/>
                     </div>
                     <progress class="progress" style="width:100%;height:5px;position:absolute;top:105px;"></progress>
@@ -204,7 +204,7 @@
             $.ajax({
 
                 url: '/mumu/watch-video-historys?',
-                ajaxCache: false,
+                ajaxCache: true,
                 data: {
                     kw:'',
                     rstart:page.historys.rows.length+1,

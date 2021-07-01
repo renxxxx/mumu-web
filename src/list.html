@@ -275,7 +275,7 @@
         }
    
         $('#videotemplate').click(function(){
-            localStorage.setItem('video-'+this.data.no,JSON.stringify(this.data))
+            localStorage.setItem(config.project+'-video-'+this.data.no,JSON.stringify(this.data))
         })
         function niceduration(mills){
             if(!mills || mills=='0')
