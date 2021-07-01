@@ -204,7 +204,9 @@
             $.ajax({
 
                 url: '/mumu/watch-video-historys?',
-                ajaxCache: true,
+                ajaxCache:{
+                    timeout: 10
+                },
                 data: {
                     kw:'',
                     rstart:page.historys.rows.length+1,

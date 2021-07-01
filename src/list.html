@@ -167,13 +167,19 @@
         setTimeout(function(){
             $('#logo').hide()
         },500)
-
+        $('#videotemplate').click(function(){
+            log.info(1)
+            localStorage.setItem(config.project+'-video-'+this.data.no,JSON.stringify(this.data))
+        })
+        
         var videoList = [];
         (function(win){
             win.start()
         })(window)
 
+       
         function start(){
+            
             getVideoList()
             // $.ajax({
             //     url: '/mumu/showedboardmsg?',
@@ -221,6 +227,8 @@
             $(ele).find('.cover').attr('src',item.cover)
         }
 
+        
+
         function getVideoList(){
             let _this = this;
             $.ajax({
@@ -261,7 +269,7 @@
                         else
                             videoele.find('.progress').hide()
                         videoele.css('display','block')
-                        videoele.attr('href',`./index.html?videoNo=${item.no}&olh=1`)
+                        videoele.attr('href',`./index.html?videoNo=${item.no}`)
                         videoele[0].data=item
                         $('.videoList').append(videoele)
 
@@ -273,10 +281,8 @@
                 }
             })
         }
-   
-        $('#videotemplate').click(function(){
-            localStorage.setItem(config.project+'-video-'+this.data.no,JSON.stringify(this.data))
-        })
+        
+        
         function niceduration(mills){
             if(!mills || mills=='0')
                 return ''

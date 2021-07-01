@@ -76,7 +76,7 @@
     var loopLine=0
     var pausebeforech = null;
     var historywords=[]
-    var videoNoC = getUrlParam(videoNo);
+    var videoNoC = getUrlParam("videoNo");
     var videoC = null
     var video;
     var videoNo;
@@ -184,8 +184,6 @@
         setline(currentCaption);
 
     
-
-    
     $('#historyword_template').bind('click',function(event){
         log.info('$(#historyword_template).click '+$(this).attr('data'))
         page.dovideoshadow=1
@@ -197,7 +195,7 @@
     })
     
 
-    function getMoreOnlyLookHimVideos(){
+    function getMoreOnlyLookHimVideos(async){
         var obj = {}
         obj.shortvideo=1
         obj.kw=searchKw
@@ -214,7 +212,7 @@
         $.ajax({
             url: '/mumu/explore-videos',
             data: obj,
-            async: false,
+            async: async,
             success: function(res) {
                 if(res.code==0){
                     if(res.data.videos.length>0){
@@ -225,7 +223,7 @@
                     }else{
                         page.onlyLookHimVideos.rows=[]
                         page.onlyLookHimVideos.currRows=[]
-                        getMoreOnlyLookHimVideos()
+                        getMoreOnlyLookHimVideos(async)
                     }
                     $('#video1').attr('src','./img/black.png');
                 }else if(res.code==20){
@@ -234,13 +232,14 @@
             }
         })
     }
-    function getMoreVideos(){
+
+    function getMoreVideos(async){
         var rcount = 10
         $.ajax({
             url: '/mumu/explore-videos?',
             data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
                     +"&userNo="+(page.onlyLookUserNo||' '),
-            async: false,
+            async: async,
             success: function(res) {
                 if(res.code==0){
                     if(res.data.videos.length>0){
@@ -255,7 +254,7 @@
                             url: '/mumu/explore-videos?',
                             
                             data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
-                            async: false,
+                            async: async,
                             success: function(res) {
                                 page.exploreVideos.rows.push(...res.data.videos)
                                 page.exploreVideos.currRows=res.data.videos
@@ -274,36 +273,65 @@
         })
     }
 
-
-
+ 
 
     goNextVideo()
     function goNextVideo(){
+        if(ws && video){
+            var watchStartTime=0;
+            var watchEndTime=$('#video')[0].currentTime;
+            if(watchEndTime-watchStartTime>1){
+                ws.send(JSON.stringify({
+                    action:12,
+                    videoNo:video.no,
+                    duration:$('#video')[0].duration,
+                    watchStartTime:watchStartTime,
+                    watchEndTime:watchEndTime,
+                    width:$('#video')[0].videoWidth,
+                    height:$('#video')[0].videoHeight,
+                }))
+            }
+        }
         pauseVideo()
         closeLoopLine()
-        if(!page.trueVideos.rows[page.trueVideos.inx+1-1] || !page.trueVideos.rows[page.trueVideos.inx+2-1]){
-            if(videoC){
-                page.trueVideos.rows.unshift(videoC)
-                page.trueVideos.currRows.unshift(videoC)
 
-                page.exploreVideos.rows.unshift(videoC)
-                page.exploreVideos.currRows.unshift(videoC)
-                videoC=null
-            }
+        if(videoC){
+            page.trueVideos.rows.unshift(videoC)
+            page.trueVideos.currRows.unshift(videoC)
 
+            page.exploreVideos.rows.unshift(videoC)
+            page.exploreVideos.currRows.unshift(videoC)
+            videoC=null
+        }
+
+        
+
+        if(page.trueVideos.rows.length==0 || page.trueVideos.rows.length == page.trueVideos.inx){
             if(page.onlyLookUserNo){
-                getMoreOnlyLookHimVideos()
+                getMoreOnlyLookHimVideos(false)
             }else{
-                getMoreVideos()
+                getMoreVideos(false)
             }
 
             page.trueVideos.currRows.forEach(function(item,inx){
                 page.trueVideos.map['no'+item.no]
                 page.trueVideos.noes.push(item.no)
             })
-            
         }
         
+        if(!page.trueVideos.rows[page.trueVideos.inx+4-1] ){
+            if(page.onlyLookUserNo){
+                getMoreOnlyLookHimVideos(true)
+            }else{
+                getMoreVideos(true)
+            }
+
+            page.trueVideos.currRows.forEach(function(item,inx){
+                page.trueVideos.map['no'+item.no]
+                page.trueVideos.noes.push(item.no)
+            })
+        }
+
         if(!page.trueVideos.rows[page.trueVideos.inx+1-1]){
             return;
         }
@@ -321,49 +349,6 @@
         }else{
             page.trueVideos.inx++;
         }
-
-        
-        // if(page.trueVideos.rows[page.trueVideos.inx+1-1]){
-        //     $('#cacheVideo1').attr('src',page.trueVideos.rows[page.trueVideos.inx+1-1].url)
-        //     $('#cacheVideo1')[0].currentTime=0
-        //     $('#cacheVideo1')[0].play();
-        //     setTimeout(function(){
-        //         $('#cacheVideo1')[0].pause()
-        //     },5000)
-        // }
-        // if(page.trueVideos.rows[page.trueVideos.inx+2-1]){
-        //     $('#cacheVideo2').attr('src',page.trueVideos.rows[page.trueVideos.inx+2-1].url)
-        //     $('#cacheVideo2')[0].currentTime=0
-        //     $('#cacheVideo2')[0].play();
-        //     setTimeout(function(){
-        //         $('#cacheVideo2')[0].pause()
-        //     },5000)
-        // }
-        // if(page.trueVideos.rows[page.trueVideos.inx+3-1]){
-        //     $('#cacheVideo3').attr('src',page.trueVideos.rows[page.trueVideos.inx+3-1].url)
-        //     $('#cacheVideo3')[0].currentTime=0
-        //     $('#cacheVideo3')[0].play();
-        //     setTimeout(function(){
-        //         $('#cacheVideo3')[0].pause()
-        //     },5000)
-        // }
-        // if(page.trueVideos.rows[page.trueVideos.inx+4-1]){
-        //     $('#cacheVideo4').attr('src',page.trueVideos.rows[page.trueVideos.inx+4-1].url)
-        //     $('#cacheVideo4')[0].currentTime=0
-        //     $('#cacheVideo4')[0].play();
-        //     setTimeout(function(){
-        //         $('#cacheVideo4')[0].pause()
-        //     },5000)
-        // }
-        // if(page.trueVideos.rows[page.trueVideos.inx+5-1]){
-        //     $('#cacheVideo5').attr('src',page.trueVideos.rows[page.trueVideos.inx+5-1].url)
-        //     $('#cacheVideo5')[0].currentTime=0
-        //     $('#cacheVideo5')[0].play();
-        //     setTimeout(function(){
-        //         $('#cacheVideo5')[0].pause()
-        //     },5000)
-        // }
-        
         
 
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
@@ -475,14 +460,6 @@
         video=videop;
         videoNo=videop.no
         page.videoNo=videoNo
-        clearTimeout(page.ssj)
-        page.ssj= setTimeout(function(){
-            ws.send(JSON.stringify({
-                action:12,
-                videoNo:video.no,
-                duration:video.duration,
-            }))
-        },3000)
 
         genShareData()
         $('#zh_subtitles').html('')
@@ -1045,10 +1022,10 @@
                     var translateed = localStorage.getItem(config.project+'-translateed')
                     translateed =parseInt(translateed?++translateed:1)
                     if(translateed >= 4){
-                        ws.send(JSON.stringify({
-                            action:3,
-                            words:3
-                        }))
+                        // ws.send(JSON.stringify({
+                        //     action:3,
+                        //     words:3
+                        // }))
                         translateed=1
                     }
                     localStorage.setItem(config.project+'-translateed',translateed)
@@ -2966,11 +2943,11 @@ $('#wordsframe_cancel').click(function(){
         totalsecondsno+=5;
         localStorage.setItem(config.project+"-totalsecondsno",totalsecondsno)
 
-        ws.send(JSON.stringify({
-            action:2,
-            videoNo:videoNo,
-            seconds:5
-        }))
+        // ws.send(JSON.stringify({
+        //     action:2,
+        //     videoNo:videoNo,
+        //     seconds:5
+        // }))
 
         
     }, 5000);
@@ -2978,7 +2955,7 @@ $('#wordsframe_cancel').click(function(){
     setInterval(function(){
         if(ws && ws.readyState==1){
             //log.debug("to ws heart check")
-            ws.send("0")
+            ws.send("1")
         }
     },30000)
 
