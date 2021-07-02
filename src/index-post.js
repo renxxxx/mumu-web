@@ -1582,7 +1582,7 @@
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
                 title: ttb(video.chname), // 分享标题
-                desc: '幕幕 - 短视频练英语\n'+ttb(video.nickname), // 分享描述
+                desc: '幕幕 - 短视频学英语\n'+ttb(video.nickname), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1591,7 +1591,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: ttb(video.chname) + '\n幕幕 - 短视频练英语', // 分享标题
+                title: ttb(video.chname) + '\n幕幕 - 短视频学英语', // 分享标题
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1606,7 +1606,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: ttb(video.chname), // 分享标题
-            desc: '幕幕 - 短视频练英语\n'+ttb(video.nickname), // 分享描述
+            desc: '幕幕 - 短视频学英语\n'+ttb(video.nickname), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1615,7 +1615,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: ttb(video.chname) + '\n幕幕 - 短视频练英语', // 分享标题
+            title: ttb(video.chname) + '\n幕幕 - 短视频学英语', // 分享标题
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -2305,6 +2305,8 @@
         },1000)
     }
     function closeLoopVideos(){
+        clearInterval(page.loopVideoChooseInterval)
+        $('#chooseLoopVideosCountPad').hide()
         page.loopVideos.on=0
         $('#loopVideoBtn').css('background-color','unset')
         if(page.loopVideos.count > 1){
@@ -2315,6 +2317,7 @@
     }
 
     $('#chooseLoopVideosCountPad .count').click(function(){
+        clearInterval(page.loopVideoChooseInterval)
         page.loopVideos.inx=1
         page.loopVideos.count = this.attributes.data.value
         $('#chooseLoopVideosCountPad .count').css('background-color','unset')
@@ -2325,7 +2328,6 @@
             $('#loopVideoBtn').css('white-space','break-spaces')
             $('#loopVideoBtn').text('循环\n'+page.loopVideos.inx+'/'+page.loopVideos.count)
         }
-        clearInterval(page.loopVideoChooseInterval)
         $('#loopVideoBtn').css('background-color','#5a5a5a')
         $('#chooseLoopVideosCountPad').hide()
     })
