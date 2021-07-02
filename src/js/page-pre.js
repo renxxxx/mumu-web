@@ -61,7 +61,7 @@ try{
 
 }
 
-if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
+if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 1 * 60 * 60* 1000){
   $.ajax({
     url:'/mumu/login-refresh',
     async:false,

@@ -289,6 +289,7 @@
                     watchEndTime:watchEndTime,
                     width:$('#video')[0].videoWidth,
                     height:$('#video')[0].videoHeight,
+                    difficulty:page.difficulty,
                 }))
             }
         }
@@ -391,10 +392,27 @@
     }
 
     function playend(){
-        setTimeout(function(){
-            goNextVideo()
+        $('#chooseDifficultyPad').fadeIn(300)
+        clearInterval(page.difficultyChooseInterval)
+        var second  = 5;
+        $('#chooseDifficultyPad .restSecond').text(second)
+        page.difficultyChooseInterval = setInterval(function(){
+            $('#chooseDifficultyPad .restSecond').text(--second)
+            if(second== 0){
+                clearInterval(page.difficultyChooseInterval)
+                $('#chooseDifficultyPad').hide()
+                $('#chooseDifficultyPad').fadeOut(300)
+                goNextVideo()
+            }
         },1000)
     }
+
+    $('#chooseDifficultyPad .e').click(function(){
+        clearTimeout(page.difficultyChooseInterval)
+        page.difficulty = $(this).attr('data')
+        $('#chooseDifficultyPad').fadeOut(300)
+        goNextVideo();
+    })
     function guide(){
         if(page.closeView)
             $('#video').attr("src",video.audio16k||audio||video.url)
@@ -956,10 +974,7 @@
             page.currWordText=_data
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
-                
-                ajaxCache:{
-                    timeout: 30 * 24 * 60 * 60
-                },
+                ajaxCache:true,
                 async: true,
                 success: function(res) {
                     var hasTranslate = false;
@@ -1731,9 +1746,7 @@
                     from:video.language,
                     to:2
                 },
-                ajaxCache:{
-                    timeout: 30 * 24 * 60 * 60
-                },
+                ajaxCache:true,
                 success:function(res){
                     if(tag.value==value){
                         clearTimeout(page.ssssaaa)
@@ -2981,9 +2994,7 @@ $('#wordsframe_cancel').click(function(){
                     from:video.language,
                     to:2,
                 },
-                ajaxCache:{
-                    timeout: 30 * 24 * 60 * 60
-                },
+                ajaxCache:true,
                 success:function(res){
                     if(res.data.words){
                         $('#relatedWordsPad .relatedWord').remove()
@@ -3987,16 +3998,12 @@ $('#wordsframe_cancel').click(function(){
         page.trueVideos.currRows=[]
     }
     function closeRollShowWordsPad(){
-        if(page.rollIsSound){
-            common.alert('请先暂停')
-        }else{
-            $('#rollShowWordsPad').hide()
-            page._mp3.pause()
-            page.lettersound.pause()
-            clearTimeout(page.rollWordsInterval)
-            clearTimeout(page.readRollWordTimeout)
-            page.rollOpen=0
-        }
+        $('#rollShowWordsPad').hide()
+        page._mp3.pause()
+        page.lettersound.pause()
+        clearTimeout(page.rollWordsInterval)
+        clearTimeout(page.readRollWordTimeout)
+        page.rollOpen=0
     }
     
     $('#rollShowWordsPad').click(function(e){
@@ -4094,9 +4101,7 @@ $('#wordsframe_cancel').click(function(){
         if(!word.speakUrl)
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+word.word,
-                ajaxCache:{
-                    timeout: 1
-                },
+                ajaxCache:true,
                 async: false,
                 success: function(res) {
                     if(res.code==0){
