@@ -4215,14 +4215,26 @@ $('#wordsframe_cancel').click(function(){
     $('#extendSearchPad').click(function(e){
         if(this==e.target){
             $('#extendSearchPad').hide()
-            $('#extendSearchFrame').attr('src','https://m.baidu.com')
+            $('#extendSearchFrame').attr('src',null).hide()
+            $('#extendSearchFrame1').attr('src',null).hide()
         }
     })
     $('#goExtendSearchBtn').click(function(e){
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
+        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?q='+page.currWordText).show()
     })
-    
+    $('#extendSearchPad .baidu').click(function(e){
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').show()
+        if(!$('#extendSearchFrame1').attr('src')){
+            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
+        }
+    })
+    $('#extendSearchPad .bing').click(function(e){
+        $('#extendSearchFrame').show()
+        $('#extendSearchFrame1').hide()
+    })
+
     $('#closeViewBtn').click(function(){
         if(page.closeView){
             page.closeView=0
