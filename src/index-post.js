@@ -4217,15 +4217,24 @@ $('#wordsframe_cancel').click(function(){
             $('#extendSearchPad').hide()
             $('#extendSearchFrame').attr('src',null).hide()
             $('#extendSearchFrame1').attr('src',null).hide()
+
+            $('#extendSearchPad .bing').css('background-color','unset')
+            $('#extendSearchPad .baidu').css('background-color','unset')
         }
     })
     $('#goExtendSearchBtn').click(function(e){
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?q='+page.currWordText).show()
+        $('#extendSearchFrame1').attr('src',null).hide()
+
+        $('#extendSearchPad .bing').css('background-color','#ffffff')
+        $('#extendSearchPad .baidu').css('background-color','#cacaca')
     })
     $('#extendSearchPad .baidu').click(function(e){
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').show()
+        $('#extendSearchPad .bing').css('background-color','#cacaca')
+        $('#extendSearchPad .baidu').css('background-color','#ffffff')
         if(!$('#extendSearchFrame1').attr('src')){
             $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
         }
@@ -4233,6 +4242,8 @@ $('#wordsframe_cancel').click(function(){
     $('#extendSearchPad .bing').click(function(e){
         $('#extendSearchFrame').show()
         $('#extendSearchFrame1').hide()
+        $('#extendSearchPad .bing').css('background-color','#ffffff')
+        $('#extendSearchPad .baidu').css('background-color','#cacaca')
     })
 
     $('#closeViewBtn').click(function(){
