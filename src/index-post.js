@@ -72,6 +72,13 @@
         rows:[],
         inx:0,
     }
+    page.seriesVideos={
+        seriesNo:null,
+        rcount:100,
+        rows:[],
+        inx:0,
+        map:{},
+    }
     page.closeView=0
     var loopLine=0
     var pausebeforech = null;
@@ -207,7 +214,7 @@
         obj.order='asc'
         if(page.onlyLookHimVideos.rows.length > 0){
             obj.split='orderNoInUser'
-            obj.splitv='>'+page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].orderNoInUser
+            obj.splitv=page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].orderNoInUser
         }
         $.ajax({
             url: '/mumu/explore-videos',
@@ -463,18 +470,7 @@
 
         
     }
-    //showallhistorywords()
-    // function getVideo(videoNo){
-    //     $.ajax({
-    //         url: '/mumu/video?',
-            
-    //         data: 'videoNo='+videoNo,
-    //         async: false,
-    //         success: function(res) {
-    //             getvideodone(res.data.video)
-    //         }
-    //     })
-    // }
+
 
     function getvideodone(videop){
         video=videop;
@@ -520,21 +516,7 @@
             success: function(res) {
                 getEnSubtitles(res);
             }
-        })
-        //clearTimeout(page.addHistoryTimeout)
-        // page.addHistoryTimeout=setTimeout(function(){
-        //     var historyvideos = JSON.parse(localStorage.getItem(config.project+'-historyvideos'))
-        //     if(!historyvideos)
-        //         historyvideos=[]
-        //     for(var i = 0; i < historyvideos.length; i++){
-        //         if(historyvideos[i].no==video.no){  
-        //             historyvideos.splice(i,1) 
-        //         }  
-        //     }  
-        //     historyvideos.unshift(video)
-        //     localStorage.setItem(config.project+'-historyvideos',JSON.stringify(historyvideos))
-        // },5000)
-
+        });
         if(!video.chatCount){
             video.chatCount=parseInt(randomnum(2))
         }
@@ -934,16 +916,19 @@
             }))
         },200)
     }
-    function translatee(_data,addHistory){
+    function translatee(_data,addHistory,only){
         //log.debug(_data+3)
         //$('#summrest').hide()
+        _data=pureWord(_data)
+        if(!only){
+            page.shortWordText='';
+            page.currWordText=_data;
+        }
         $('#favor').text('')
         $('#addToWordbookBtn').text('')
-        page.dovideoshadow=1
-        pauseVideo()
-        doshadow()
-        page.shortWordText=''
-        _data=pureWord(_data)
+        page.dovideoshadow=1;
+        pauseVideo();
+        doshadow();
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
         $('#word-in').val(_data)
@@ -971,7 +956,6 @@
             for (const ajax of page.words1ajaxs) {
                 ajax.abort()
             }
-            page.currWordText=_data
             page.translateajaxs.push($.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+_data,
                 ajaxCache:true,
@@ -1194,180 +1178,12 @@
                 break;
             }
         })
-        return ms
+        return ms;
     }
 
 
-
-    // function touchstartFn(_value){
-    //     //let _this = this,
-    //     _coordinates = {
-    //         clientX : _value.changedTouches[0].clientX,
-    //         clientY : _value.changedTouches[0].clientY,
-    //         pageX : _value.changedTouches[0].pageX,
-    //         pageY : _value.changedTouches[0].pageY
-    //     };
-    //     choooseStart(_coordinates);
-    // }
-    // function touchmoveFn(_value){
-    //     //let _this = this,
-    //     _coordinates = {
-    //         clientX : _value.changedTouches[0].clientX,
-    //         clientY : _value.changedTouches[0].clientY,
-    //         pageX : _value.changedTouches[0].pageX,
-    //         pageY : _value.changedTouches[0].pageY
-    //     };
-    //     choooseMove(_coordinates);
-    // }
-    // function touchendFn(_value){
-    //     //let _this = this,
-    //     _coordinates = {
-    //         clientX : _value.changedTouches[0].clientX,
-    //         clientY : _value.changedTouches[0].clientY,
-    //         pageX : _value.changedTouches[0].pageX,
-    //         pageY : _value.changedTouches[0].pageY
-    //     };
-    //     choooseEnd(_coordinates);
-    // }
-    // function choooseStart(_value){
-    //     //log.debug(_value)
-    //     page.dovideoshadow=1
-    //     pauseVideo()
-    //     console.dir($("#zh_subtitles").height())
-    //     let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
-    //     height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
-
-    //     ////let _this = this;
-    //     chooseDomList = [];
-    //     $('#zh_subtitles span').css({"background": "transparent","color": "black"})
-        
-    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
-    //     if(!$(ele).hasClass('font'))
-    //         return;
-    //     let mx = _value.clientX || _value.pageX
-    //     let my = _value.clientY || _value.pageY
-    //     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left+ 5) && ($("#zh_subtitles").offset().top +5)<my && my<(height - 5)){
-    //         if(ele.className.lastIndexOf('font span ')<0){
-    //             // 匹配是否是上次点击的字段
-    //             // && ele.innerHTML!= translationtext && !chooseDomList.length && translationtext.indexOf(ele.innerHTML)<0
-    //             if(ele.innerHTML!=" "){
-    //                 chooseDomList.push({
-    //                     class:ele.className,
-    //                     value:ele.innerHTML,
-    //                 })
-    //                 $('.'+ele.className.split(' ')[1]).css({
-    //                     'background' : '#d2cbcb',
-    //                     'color' : 'black'
-    //                 })
-    //             }
-    //         }
-    //     }
-    // }
-    // function choooseMove(_value){
-    //     //let _this = this,
-    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
-    //     if(!$(ele).hasClass('font'))
-    //         return;
-    //     let mx = _value.clientX || _value.pageX
-    //     let my = _value.clientY || _value.pageY
-    //     let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left,
-    //     height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top;
-    //     if((width - 5)>mx && mx>($("#zh_subtitles").offset().left + 5) && ($("#zh_subtitles").offset().top + 5)<my && my<(height - 5)){
-    //         if(ele.className.lastIndexOf('font span ')<0){
-    //             let status = true;
-    //             chooseDomList.findIndex(function(_value, inx){
-    //                 if(_value.class == ele.className){
-    //                     status=false
-    //                 }
-    //             })
-    //             if(status && ele.innerHTML!=" "){
-    //                 if(chooseDomList.length){
-    //                     let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
-    //                     let _now = parseInt(ele.className.replace('font span',''));
-    //                     //log.debug(_now-_last)
-    //                     if( _now == (_last+1)){
-    //                         chooseDomList.push({
-    //                             class:ele.className,
-    //                             value:ele.innerHTML,
-    //                         })
-    //                         $('.'+ele.className.split(' ')[1]).css({
-    //                             'background' : '#d2cbcb',
-    //                             'color' : 'black'
-    //                         })
-    //                     }else if(_now > (_last+1)){
-                            
-    //                         for(let i = _last; i < _now; i++){
-    //                             $('.span'+i)
-    //                             chooseDomList.push({
-    //                                 class:$('.span'+i).attr('class'),
-    //                                 value:$('.span'+i).html(),
-    //                             })
-    //                             $('.span'+i).css({  
-    //                                 'background' : '#d2cbcb',
-    //                                 'color' : 'black'
-    //                             })
-    //                         }
-    //                     }else{
-    //                         for(let i = _now; i < _last; i++){
-    //                             $('.span'+i)
-    //                             chooseDomList.push({
-    //                                 class:$('.span'+i).attr('class'),
-    //                                 value:$('.span'+i).html(),
-    //                             })
-    //                             $('.span'+i).css({
-    //                                 'background' : '#d2cbcb',
-    //                                 'color' : 'black'
-    //                             })
-    //                         }
-    //                     }
-    //                 }else{
-    //                     chooseDomList.push({
-    //                         class:ele.className,
-    //                         value:ele.innerHTML,
-    //                     })
-    //                     $('.'+ele.className.split(' ')[1]).css({
-    //                         'background' : '#d2cbcb',
-    //                         'color' : 'black'
-    //                     })
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    // function choooseEnd(_value){
-    //     ////let _this = this;
-    //     ele = document.elementFromPoint(_value.pageX, _value.pageY);
-    //     for(let i=0;i<chooseDomList.length-1;i++){
-    //         for(let j=0;j<chooseDomList.length-i-1;j++){
-    //             if(parseInt(chooseDomList[j].class.replace('font span',''))>parseInt(chooseDomList[j+1].class.replace('font span',''))){
-    //                 let _swap = chooseDomList[j];
-    //                 chooseDomList[j] = chooseDomList[j+1];
-    //                 chooseDomList[j+1] = _swap;
-    //             }
-    //         }
-    //     }
-    //     let _data = ''
-    //     $(chooseDomList).each(function(inx,item){
-    //         if(inx>0){
-    //             _data+=' '+item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
-    //         }else{
-    //             _data=item.value.replace(/^(,|\.|\?|!)+/,'').replace(/(,|\.|\?|!)+$/,'')  
-    //         }
-    //     })
-    //     // 匹配是否是上次点击的字段
-    //     // && translationtext != _data && translationtext.indexOf(_data)<0
-    //     if(_data){
-    //         translationtext = _data;
-    //         translatee(_data)
-    //     }else{
-    //         translationtext = ""
-    //     }
-    //     $('.searchClass').blur();
-    // }
-
-
     var currwordno=0;
-    var keyCodes=[]
+    var keyCodes=[];
     document.onkeydown = function(event){
 　　　　 var e  = event  ||  window.e;
 　　　　 var keyCode = e.keyCode || e.which;
@@ -2163,10 +1979,6 @@
         closeLoopVideos()
         goNextVideo()
     })
-
-  
-  
-
     $('#wordbookpad').bind('mousedown touchstart',function(e){
         this.touchstartTime = new Date().getTime();
         if(e.type=='touchstart'){
@@ -2452,110 +2264,6 @@
             }
     })
 
-    // $('#index').bind('touchstart',function(e){
-    //     this.startTime = new Date().getTime();
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-    //     var touch = e.targetTouches[0];
-    //     this.indextouchstartX = touch.pageX;
-    //     this.indextouchstartY = touch.pageY;
-    // }).bind('touchmove',function(e){
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-    //     var touch = e.targetTouches[0];
-    //     if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-    //         $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
-    //         $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+ touch.pageX-this.indextouchendX)+'px')
-    //     }
-    //     this.indextouchendX = touch.pageX;
-    //     this.indextouchendY = touch.pageY;
-    //     if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
-    //         e.preventDefault()
-    //     }
-    // }).bind('touchend',function(e){
-    //     this.endTime = new Date().getTime();
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-    //     log.debug(this.endTime-this.startTime)
-    //     $('#video1').css('left','100%')
-    //     $('#video2').css('left','-100%')
-    //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-    //         if(this.indextouchstartX-this.indextouchendX>100){
-    //             goNextVideo()
-    //         }else if(this.indextouchstartX-this.indextouchendX<-100){
-    //             goPrevVideo()
-    //         }
-    //     }
-        
-    //     this.indextouchstartX=null
-    //     this.indextouchstartY=null
-    //     this.indextouchendX=null
-    //     this.indextouchendY=null
-    // })
-
-
-    // $('#index').bind('mousedown',function(e){
-    //     this.startTime = new Date().getTime();
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-    //     this.indextouchstartX = e.pageX;
-    //     this.indextouchstartY = e.pageY;
-    // }).bind('mousemove',function(e){
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-        
-        
-    //     if(this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-    //         $('#video1').css('left',(parseInt($('#video1').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
-    //         $('#video2').css('left',(parseInt($('#video2').css('left').replace('px',''))+e.pageX-this.indextouchendX)+'px')
-    //     }
-
-    //     this.indextouchendX = e.pageX;
-    //     this.indextouchendY = e.pageY;
-
-    //     if($(e.target).scrollTop()==0 && this.indextouchstartY<this.indextouchendY){
-    //         e.preventDefault()
-    //     }
-
-        
-    // }).bind('mouseup',function(e){
-    //     this.endTime = new Date().getTime();
-    //     if($(e.target).parents('.scrollable').length>0)
-    //         return;
-    //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
-    //         return;
-
-    //     $('#video1').css('left','100%')
-    //     $('#video2').css('left','-100%')
-    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-    //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
-            
-    //         if(this.indextouchstartX-this.indextouchendX>100){
-    //             goNextVideo()
-    //         }else if(this.indextouchstartX-this.indextouchendX<-100){
-    //             goPrevVideo()
-    //         }
-    //     }
-        
-    //     this.indextouchstartX=null
-    //     this.indextouchstartY=null
-    //     this.indextouchendX=null
-    //     this.indextouchendY=null
-
-       
-    // })
-
     
 $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(e){
     this.touchstartTime = new Date().getTime();
@@ -2710,91 +2418,6 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
         this.touchendY=null
     })
 
-    // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
-    //     var touch = e.targetTouches[0];
-    //     this.touchstart = touch.pageY;
-    //     //log.debug("touchstart "+this.touchstart)
-    // }).bind('touchmove',function(e){
-    //     var touch = e.targetTouches[0];
-    //     this.touchend = touch.pageY;
-    //     if($(this).scrollTop()==0 && this.touchstart<this.touchend){
-    //         e.preventDefault()
-    //     }
-    // }).bind('touchend',function(e){
-    //     //log.debug("touchend "+this.touchend)
-    //     if(this.touchend-this.touchstart>50){
-    //        // $('#gearframe1').show()
-    //         $('#prevnextpad').show()
-    //         $('#chatpad').slideUp(100,function(){
-    //         })
-    //     }
-    //     this.touchstart=null
-    //     this.touchend=null
-    // })
-
-    // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
-    //     //log.debug("mousedown "+ e.pageY)
-    //     this.mousedown = e.pageY;
-    // }).bind('mousemove',function(e){
-    //     this.mouseup = e.pageY;
-    //     if($(this).scrollTop()==0 && this.mousedown<this.mouseup){
-    //         e.preventDefault()
-    //     }
-    // }).bind('mouseup',function(e){
-    //     //log.debug("mouseup "+e.pageY)
-    //     this.mouseup = e.pageY;
-    //     if(this.mouseup-this.mousedown>50){
-    //         //$('#gearframe1').show()
-    //         $('#prevnextpad').show()
-    //         $('#chatpad').slideUp(100,function(){
-    //         })
-    //     }
-    //     this.mousedown=null
-    //     this.mouseup=null
-    // })
-
-    // $('#chatmsgspad').bind('touchstart',function(e){
-    //     var touch = e.targetTouches[0];
-    //     this.touchstart = touch.pageY;
-    //     //log.debug("touchstart "+this.touchstart)
-    // }).bind('touchmove',function(e){
-    //     var touch = e.targetTouches[0];
-    //     this.touchend = touch.pageY;
-    //     if($('#chatmsgspad').scrollTop()==0 && this.touchstart<this.touchend){
-    //         e.preventDefault()
-    //     }
-    // }).bind('touchend',function(e){
-    //     //log.debug("touchend "+this.touchend)
-    //     if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
-    //         //$('#gearframe1').show()
-    //         $('#prevnextpad').show()
-    //         $('#chatpad').slideUp(100,function(){
-    //         })
-    //     }
-    //     this.touchstart=null
-    //     this.touchend=null
-    // })
-
-    // $('#chatmsgspad').bind('mousedown',function(e){
-    //     //log.debug("mousedown "+ e.pageY)
-    //     this.mousedown = e.pageY;
-    // }).bind('mousemove',function(e){
-    //     this.mouseup = e.pageY;
-    //     if($('#chatmsgspad').scrollTop()==0 && this.mousedown<this.mouseup){
-    //         e.preventDefault()
-    //     }
-    // }).bind('mouseup',function(e){
-    //     //log.debug("mouseup "+e.pageY)
-    //     this.mouseup = e.pageY;
-    //     if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
-    //         //$('#gearframe1').show()
-    //         $('#prevnextpad').show()
-    //         $('#chatpad').slideUp(100,function(){
-    //         })
-    //     }
-    //     this.mousedown=null
-    //     this.mouseup=null
-    // })
 
     $('#word-in').keydown(function(){
         var evt = window.event || e;
@@ -3025,6 +2648,13 @@ $('#wordsframe_cancel').click(function(){
                             $('#relatedWord0').before(ele)
                             ele.show();
                         })
+
+                        if(short){
+                            $('#relatedWordsPad').children(":first").html(`
+                                <span style="font-size:15px;float:left;">${page.shortWordText}</span>
+                                <span style="font-size:15px;color:#adadad;float:left;">${page.currWordText.substr(page.shortWordText.length,page.currWordText.length-page.shortWordText.length)}</span>
+                            `)
+                        }
                     }
                 }
             })
@@ -3033,8 +2663,10 @@ $('#wordsframe_cancel').click(function(){
     }
 
     $('#relatedWord0').click(function(){
-        translatee(this.innerText,1);
-        if(this.innerText==page.currWordText){
+        var tt = this.innerText.replace('\n','')
+        translatee(fp__data=tt,fp_addHistory=1,fp_only=1);
+        if(tt==page.currWordText){
+            page.shortWordText=''
             loadRelatedWords(page.currWordText)
         }
     })
@@ -4261,17 +3893,138 @@ $('#wordsframe_cancel').click(function(){
         page.shortWordText=page.shortWordText?page.shortWordText:page.currWordText;
         page.shortWordText=page.shortWordText.substr(0,page.shortWordText.length-1)
         if(!page.shortWordText){
-            page.shortWordText=page.currWordText
+            page.shortWordText=page.currWordText;
         }
-        $('#relatedWordsPad').children(":first").html(`
-            <span style="font-size:15px;float:left;">${page.shortWordText}</span>
-            <span style="font-size:15px;color:#828282;float:left;">${page.currWordText.substr(page.shortWordText.length,page.currWordText.length-page.shortWordText.length)}</span>
-        `)
-
-        loadRelatedWords(page.currWordText,page.shortWordText)
+        loadRelatedWords(page.currWordText,page.shortWordText);
     })
    
 
     $('#video').bind('contextmenu',function() { return false; });
+
+
+
+
+    $('#seriesPad').bind('mousedown touchstart',function(e){
+        this.touchstartTime = new Date().getTime();
+        if(e.type=='touchstart'){
+            var touch = e.targetTouches[0];
+            this.touchstartX = touch.pageX;
+            this.touchstartY = touch.pageY;
+        }else if(e.type=='mousedown'){
+            this.touchstartX = e.pageX;
+            this.touchstartY = e.pageY;
+        }
+    }).bind('mousemove touchmove',function(e){
+        if(e.type=='touchmove'){
+            var touch = e.targetTouches[0];
+            this.touchendX = touch.pageX;
+            this.touchendY = touch.pageY;
+        }else if(e.type=='mousemove'){
+            this.touchendX = e.pageX;
+            this.touchendY = e.pageY;
+        }
+
+        var parentEle=null;
+        while(true){
+            if(!parentEle)
+                parentEle=$(e.target);
+            else
+                parentEle = $(parentEle).parent()
+
+            if(parentEle.scrollTop()>0){
+                break;
+            }
+            if(parentEle.length==0)
+                break
+            if(parentEle == this)
+                break;
+        }
+        this.scrollEle = parentEle;
+    }).bind('mouseup touchend',function(e){
+        if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>100){
+            $('#seriesPad').slideUp(100)
+            //$('#gearframe1').show()
+            $('#prevnextpad').show()
+            $('#subtitlePad').show()
+        }
+        this.touchstartY=null
+        this.touchendY=null
+    })
+
+
+    $('#inSeriesPad').click(function(){
+        $('#seriesPad').css('height',($(window).height()-($('#video').height()+$('#controlpad').height()+20))+'px')
+        $('#seriesPad').slideDown(100)
+        //$('#gearframe1').hide()
+        $('#prevnextpad').hide()
+        $('#subtitlePad').hide()
+
+        if(page.seriesVideos.seriesNo != video.seriesNo){
+            $('#seriesPad .seiresName').text(video.seriesChname)
+            $('#seriesPad .row').not('.trow').remove()
+            page.seriesVideos.seriesNo=video.seriesNo
+            page.seriesVideos.rows=[]
+            loadMoreSeriesVideos();
+        }else{
+            $('#seriesPad .rows').scrollTop()
+            $('#seriesPad .row').find('.name').css('color','#b3b3b3').css('font-weight','unset');
+            $('#seriesPad .row'+video.no).find('.name').css('color','#d8d8d8').css('font-weight','900');
+        }
+    })
+
+    function loadMoreSeriesVideos(){
+        var rstart = page.seriesVideos.rows.length+1;
+        var rcount = page.seriesVideos.rcount;
+        $.ajax({
+            url: '/mumu/series-videos?',
+            data: {
+                kw:'',
+                seriesNo:page.seriesVideos.seriesNo,
+                rstart:rstart,
+                rcount:rcount,
+            },
+            beforeSend:()=>{
+                $(`#seriesPad .someload`).hide()
+                $(`#seriesPad .loading`).show()
+            },
+            success: function(res) {
+                page.seriesVideos.rows.push(...res.data.rows)
+                if(rstart==1 && res.data.rows.length==0){
+                    $(`#seriesPad .someload`).hide()
+                    $(`#seriesPad .loadnodata`).show()
+                }else if(res.data.rows.length <rcount){
+                    $(`#seriesPad .someload`).hide()
+                    $(`#seriesPad .loadend`).show()
+                }else{
+                    $(`#seriesPad .someload`).hide()
+                    $(`#seriesPad .loadmore`).show()
+                }
+                $(res.data.rows).each((inx,row)=>{
+                    var ele = $('#seriesPad .trow').clone(true)
+                    ele.removeClass('trow')
+                    ele.addClass('row'+row.no)
+                    ele.find('.cover').attr('src',row.cover)
+                    ele.find('.name').text(row.chname)
+                    ele[0].data=row
+                    ele.show();
+                    $('#seriesPad .trow').before(ele)
+
+                    page.seriesVideos.map['no'+row.no]=row;
+                })
+                $('#seriesPad .row').find('.name').css('color','#b3b3b3').css('font-weight','unset');
+                $('#seriesPad .row'+video.no).find('.name').css('color','#d8d8d8').css('font-weight','900');
+            }
+        })
+    }
+
+    $('#seriesPad .trow').click(function(){
+        openOnlyLookHim()
+        var row = this.data;
+        page.trueVideos.rows.splice(page.trueVideos.inx,0,row)
+        goNextVideo()
+        $('#seriesPad').slideUp(100)
+        $('#prevnextpad').show()
+        $('#subtitlePad').show()
+    })
 })()
 
