@@ -3613,7 +3613,7 @@ $('#wordsframe_cancel').click(function(){
         $('#onlyLookHim').css('background-color','rgb(90, 90, 90)');
         page.onlyLookHimVideos.rows.push(video)
         page.onlyLookHimVideos.currRows.push(video)
-
+        page.onlyLookHimVideos.inx=1
         page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
         page.trueVideos.currRows=[]
     }
@@ -4021,6 +4021,7 @@ $('#wordsframe_cancel').click(function(){
         openOnlyLookHim()
         var row = this.data;
         page.trueVideos.rows.splice(page.trueVideos.inx,0,row)
+        page.onlyLookHimVideos.rows.splice(page.onlyLookHimVideos.inx,0,row)
         goNextVideo()
         $('#seriesPad').slideUp(100)
         $('#prevnextpad').show()
