@@ -83,7 +83,7 @@ if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.login
 function login(){
   if(is_weixn()){
     var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-    var appId="wx0856c17f2d972911"
+    var appId="wx5a33a2ccb2d91764"
     var state=encodeURIComponent(location.href)
     var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
     location.replace(url)
@@ -104,7 +104,6 @@ function login(){
                 setTimeout(function(){
                   $.post('/mumu/restore-template-wordbooks')
                 },2000)
-                
               }
             }
           })

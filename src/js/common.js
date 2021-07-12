@@ -1,5 +1,5 @@
-var common={}
-window.common=common
+var comm=common={}
+window.common=window.comm=common
 
 function getUrlParam(name)
 {
@@ -187,6 +187,7 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
   var cancel = null
   var value = null
   var parent = null
+  var multiline = null
   if(typeof params == 'string'){
     message = params
     value = _value
@@ -202,6 +203,7 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
     confirm = params.confirm
     cancel = params.cancel
     parent = params.parent
+    multiline = params.multiline
   }
   parent = parent?parent:document.body;
   message=message==null||message==undefined?'请输入':message
@@ -216,7 +218,7 @@ common.prompt=function(params,_value,_placeholder,_confirm,_cancel,_parent){
         border-bottom:1px solid #d4d4d4;' >
         ${message}
       </div>
-      <textarea class="value" style='resize: none;display:block;border:none;height:164px;font-size:15px;width: 100%;box-sizing:border-box;' placeholder=${placeholder}>${value}</textarea>
+      <textarea class="value" style='resize: none;display:block;border:none;height:164px;font-size:15px;width: 100%;box-sizing:border-box;' placeholder=${placeholder} >${value}</textarea>
       <div style="height:35px;width:100%;border-radius:0 0 3px 3px;">
         <span class="cancel" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:50%;text-align:center;
           border-top:1px solid #d4d4d4;border-radius:0 0 0 3px;cursor:pointer;">
@@ -319,33 +321,50 @@ common.promptLine=function(params,_value,_placeholder,_confirm,_cancel,_parent){
 
 common.alert=function(params,_confirm,_parent){
   params=params?params:{}
+  var title = null
   var message = null
+  var button = null
+  var titlecss = null
+  var messagecss = null
+  var messageclass = null
   var confirm = null
   var parent = null
+
   if(typeof params == 'string'){
     message = params
     confirm=_confirm
     parent=_parent
   } else{
-     message = params.message
-     confirm = params.confirm
-     parent = params.parent
+      title = params.title
+      message = params.message
+      titlecss = params.titlecss
+      messagecss = params.messagecss
+      messageclass = params.messageclass
+      titleclass = params.titleclass
+      confirm = params.confirm
+      parent = params.parent
+      button = params.button
   }
   parent = parent?parent:document.body;
   message=message==null||message==undefined?'请确认':message
+  button=button==null||button==undefined?'确认':button
   var id="ff"+randomnum(10);
   var ele = 
   $(`<div id="${id}" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(0,0,0,0.6);">
     <div style='font-size:0;width:80%;max-height:300px;background-color:#ffffff;border-radius:3px;
         position:absolute;top:15%;left:50%;transform:translateX(-50%);border:1px solid #d4d4d4;'>
-      <div style='width:100%;max-height:265px;min-height:80px;line-height:23px;padding:6px 3px;font-size:16px;
-        border-radius:3px 3px 0 0;box-sizing:border-box;text-align:center;' >
+      <div class="${titleclass}" style='width:100%;min-height:35px;line-height:35px;padding:0 3px;font-size:16px;
+        border-radius:3px 3px 0 0;box-sizing:border-box;text-align:center;${title?"":"display:none;"}${titlecss}' >
+        ${title}
+      </div>
+      <div class="${messageclass}" style='width:100%;max-height:265px;min-height:80px;line-height:23px;padding:6px 3px;font-size:16px;
+      ${title?"":"border-radius:3px 3px 0 0;"}box-sizing:border-box;text-align:center;${messagecss}' >
         ${message}
       </div>
       <div style="height:35px;width:100%;border-radius:0 0 3px 3px;">
         <span class="confirm" style="height:35px;line-height:35px;display:inline-block;font-size:15px;width:100%;text-align:center;
           border-top:1px solid #d4d4d4;border-radius:0 0 3px 3px;cursor:pointer;background-color: #cecece;">
-          确认
+          ${button}
         </span>
       </div>
     </div>
@@ -411,4 +430,15 @@ common.confirm=function(params,_confirm,_cancel,_parent){
   })
   $(parent).append(ele)
   return ele;
+}
+
+comm.copy = function(param={text}){
+  var textarea = document.createElement('textarea');
+  textarea.style['position']='absolute'
+  textarea.style['top']='-1000px'
+  document.body.appendChild(textarea)
+  textarea.value=param.text;
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea)
 }

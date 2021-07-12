@@ -1398,7 +1398,7 @@
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
                 title: ttb(video.chname), // 分享标题
-                desc: '幕幕 - 短视频学英语\n'+ttb(video.nickname), // 分享描述
+                desc: '幕幕 - 英语短视频\n'+ttb(video.nickname), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1407,7 +1407,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: ttb(video.chname) + '\n幕幕 - 短视频学英语', // 分享标题
+                title: ttb(video.chname) + '\n幕幕 - 英语短视频', // 分享标题
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1422,7 +1422,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: ttb(video.chname), // 分享标题
-            desc: '幕幕 - 短视频学英语\n'+ttb(video.nickname), // 分享描述
+            desc: '幕幕 - 英语短视频\n'+ttb(video.nickname), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1431,7 +1431,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: ttb(video.chname) + '\n幕幕 - 短视频学英语', // 分享标题
+            title: ttb(video.chname) + '\n幕幕 - 英语短视频', // 分享标题
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -3026,6 +3026,17 @@ $('#wordsframe_cancel').click(function(){
         $('#wordbookDetailPad').show()
         $('#wordbookDetailPad .namePad .value').text(row.name)
     })
+
+    $('#wordbookDetailPad .shareBtn').click(function(e){
+        var row = page.wordbooks.selected;
+        common.confirm({
+            message:'进入分享页后, 在右上角进行分享',
+            confirm:function(){
+                location.href='./wordbook.html?wordbookNo='+row.no+'&templateNo='+row.templateNo
+            }
+        })
+    })
+
     $('#wordbookDetailPad .deleteBtn').click(function(e){
         var row = page.wordbooks.selected;
         common.promptLine({
@@ -3856,7 +3867,7 @@ $('#wordsframe_cancel').click(function(){
     })
     $('#goExtendSearchBtn').click(function(e){
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?q='+page.currWordText).show()
+        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.currWordText).show()
         $('#extendSearchFrame1').attr('src',null).hide()
 
         $('#extendSearchPad .bing').css('background-color','#ffffff')
