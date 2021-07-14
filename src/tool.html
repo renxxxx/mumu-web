@@ -144,7 +144,7 @@
                 </span>
             </div>
 
-            <input id="file" type='file' style="display:block;margin:auto;margin-top:15px;border: 1px solid #c7c7c7;cursor: pointer;width:24%;" multiple/>
+            <input id="file" type='file' style="display:block;margin:auto;margin-top:10px;border: 1px solid #c7c7c7;cursor: pointer;width:24%;" multiple/>
             <div id="name" class="selectable" style="font-size:16px;text-align: center;width:100%;margin-top:10px;height:20px;">
             </div>
             <div id="name1" class="selectable" style="font-size:16px;text-align: center;width:100%;margin-top:10px;height:20px;">
@@ -155,13 +155,14 @@
                 <input id="vv" placeholder="请输入视频链接" style="width:calc(100% - 200px);height:40px;line-height:40px;padding:0 3px;box-sizing: border-box;font-size:16px;vertical-align: middle;" />
                 <button id="cc" style="height:40px;width:100px;box-sizing: border-box;vertical-align: middle;cursor: pointer;">查看</button>
             </div>
-            <div id="aa" style="margin-top:20px;min-height:100px;">
+            <div id="aa" style="margin-top:10px;min-height:100px;">
                 <div id="a1" class=" selectable" style="text-align: center;font-size: 22px;padding:0 50px;">
                 </div>
                 <div id="a4" class=" selectable" style="text-align: center;font-size: 22px;padding:0 50px;margin-top:10px;">
+                    <a target="_blank"></a>
                 </div>
-                <img id="a2" draggable="false" style="width:60px;height:60px;border-radius: 50%;display: block;margin:auto;margin-top:10px;display:none;"/>
-                <div id="a3" class=" selectable" style="font-size: 22px;text-align: center;margin-top:15px;padding:0 50px;">
+                <img id="a2" style="width:60px;height:60px;border-radius: 50%;display: block;margin:auto;margin-top:10px;cursor:pointer;display:none;"/>
+                <div id="a3" class=" selectable" style="font-size: 22px;text-align: center;margin-top:10px;padding:0 50px;">
                 </div>
             </div>
         </div>
@@ -580,9 +581,10 @@
 
     function clearInfo(){
         $('#a1').text('')
-        $('#a2').attr('src','')
+        $('#a2').attr('src','').hide()
         $('#a3').text('')
-        $('#a4').text('')
+        $('#a4 a').text('').attr('href','')
+        $('.download').not('.download0').remove()
     }
 
   
@@ -598,7 +600,7 @@
             return;
         page.ajaxes.push(
            $.ajax({
-                url:'/mumu/fff',
+                url:'/mumu/fff2',
                 type:'post',
                 data:{
                     w:$('#vv').val()
@@ -612,22 +614,11 @@
                             if(res.data.videoNo){
                                 $('#a1').css('color','#000000');
                                 $('#a1').text(res.data.vt)
-                                $('#a2').attr('src',res.data.h)
+                                $('#a2').attr('src',res.data.h).css('display','block')
                                 $('#a3').text(res.data.n)
-                                $('#a4').text(res.data.vn)
+                                $('#a4 a').text(res.data.vn).attr('href',res.data.zip)
 
-                                var zip = new JSZip();
-                                zip.file("info.json", JSON.stringify(res.data,null,'\t'));
-                                //zip.file("smile.gif", imgData, {base64: true});
-                                // $.get("url/to.file.txt") // jQuery v3 returns promises
-                                // .then(function (content) {
-                                //     zip.file("file.txt", content);
-                                // })
-                                zip.generateAsync({type:"blob"})
-                                .then(function(content) {
-                                    // see FileSaver.js
-                                    saveAs(content, res.data.vn+".zip");
-                                });
+                                $(`<a style='display:none;' target=_blanc></a>`).attr('href',res.data.zip).appendTo(document.body)[0].click()
                             }else{
                                 $('#a1').css('color','red');
                                 $('#a1').text('错误');

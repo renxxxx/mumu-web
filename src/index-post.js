@@ -3971,7 +3971,7 @@ $('#wordsframe_cancel').click(function(){
         $('#subtitlePad').hide()
 
         if(page.seriesVideos.seriesNo != video.seriesNo){
-            $('#seriesPad .seiresName').text(video.seriesChname)
+            $('#seriesPad .seiresName').text('专辑: '+video.seriesChname)
             $('#seriesPad .row').not('.trow').remove()
             page.seriesVideos.seriesNo=video.seriesNo
             page.seriesVideos.rows=[]
@@ -4029,7 +4029,6 @@ $('#wordsframe_cancel').click(function(){
     }
 
     $('#seriesPad .trow').click(function(){
-        openOnlyLookHim()
         var row = this.data;
         page.trueVideos.rows.splice(page.trueVideos.inx,0,row)
         page.onlyLookHimVideos.rows.splice(page.onlyLookHimVideos.inx,0,row)
