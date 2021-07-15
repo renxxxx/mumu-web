@@ -104,7 +104,7 @@
                 <a id="videotemplate" draggable="false" style="display:block;float:left;width:45%;height:155px;padding:0;margin-left:3.33%;margin-top:10px;
                         font-size:0;position:relative;cursor: pointer;display:none;text-decoration: blink;color:#000000;">
                     <div style="width:100%;height:109px;background-color: #dddddd;">
-                        <img class="cover" draggable="false" src="" style="width:100%;height:106px;object-fit: cover;"/>
+                        <video class="cover" draggable="false" src="" muted style="width:100%;height:106px;object-fit: cover;"></video>
                     </div>
                     <progress class="progress" style="width:100%;height:5px;position:absolute;top:105px;"></progress>
                     <div class="name ellipsis" style="width:100%;height:20px;background-color: #ffffff;font-size:13px;line-height:20px;
@@ -196,6 +196,18 @@
             // })
         }
 
+
+        function coverin1(item,ele){
+            if(nowvideoele == ele){
+                $(ele).find('.cover')[0].playbackRate=5
+            }else{
+                $(nowvideoele).find('.cover')[0].pause()
+                $(ele).find('.cover').attr('src',item.url)
+                $(ele).find('.cover')[0].playbackRate=5
+                $(ele).find('.cover')[0].play()
+            }
+
+        }
         function coverin(item,ele){
             var screenshots = item.screenshots
             screenshots = screenshots?JSON.parse(screenshots):null;
@@ -220,13 +232,23 @@
             },200)
         }
 
+        function coverout1(item,ele){
+            if(nowvideoele == ele){
+                $(ele).find('.cover')[0].playbackRate=1
+            }else{
+                $(nowvideoele).find('.cover')[0].play()
+                $(ele).find('.cover')[0].pause()
+                $(ele).find('.cover')[0].playbackRate=1
+                $(ele).find('.cover').attr('src',"")
+            }
+        }
         function coverout(item,ele){
             clearTimeout(ele.aaa)
             clearInterval(ele.sss)
             $(ele).find('.cover').attr('src',item.cover)
         }
 
-        
+        var nowvideoele;
 
         function getVideoList(){
             let _this = this;
@@ -237,29 +259,27 @@
                 data: 'kw='+''+'&rstart='+1+'&rcount='+30,
                 async: true,
                 success: function(res) {
-                    var activeindex = Math.round(Math.random()*3);
+                    var activeindex = Math.round(Math.random()*7);
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
                         var durationsec = localStorage.getItem(config.project+'-durationsec-'+item.no)
                         var currentTime = localStorage.getItem(config.project+'-currentTime-'+item.no)
                         var videoele = $('#videotemplate').clone(true)
                         videoele.attr('id','video'+item.no)
-                        videoele.find('.cover').attr('src',item.seriesCover || item.cover)
-
-                        if(!item.seriesNo){
-                            videoele.find('.cover').hover(
-                                function(){
-                                    coverin(item,videoele)
-                                },
-                                function(){
-                                    coverout(item,videoele)
-                                }
-                            ).bind('touchstart',function(){
-                                coverin(item,videoele)
-                            }).bind('touchend',function(){
-                                coverout(item,videoele)
-                            })
-                        }
+                        videoele.find('.cover').attr('poster',item.seriesCover || item.cover)
+                        videoele.find('.cover').attr('src',item.url)
+                        videoele.find('.cover').hover(
+                            function(){
+                                coverin1(item,videoele)
+                            },
+                            function(){
+                                coverout1(item,videoele)
+                            }
+                        ).bind('touchstart',function(){
+                            coverin1(item,videoele)
+                        }).bind('touchend',function(){
+                            coverout1(item,videoele)
+                        })
 
                         videoele.find('.name').text(item.seriesChname || item.chname)
                         videoele.find('.author').text(item.nickname)
@@ -273,7 +293,10 @@
                         $('.videoList').append(videoele)
 
                         if(activeindex == inx){
-                            coverin(item,videoele)
+                            nowvideoele = videoele;
+                            videoele.find('.cover').attr('src',item.url)
+                            videoele.find('.cover')[0].playbackRate=1
+                            videoele.find('.cover')[0].play()
                         }
                     })
                     console.log(_this.videoList)
