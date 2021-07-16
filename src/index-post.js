@@ -1632,7 +1632,7 @@
         page.dddd = setTimeout(function(){
             if(page.diandu){
                 page.diandu=0
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(103, 103, 103)")
             }else{
                 page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
@@ -1659,7 +1659,7 @@
         page.dddd = setTimeout(function(){
             if(page.diandu){
                 page.diandu=0
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(103, 103, 103)")
             }else{
                 page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
@@ -1689,7 +1689,7 @@
         page.dddd = setTimeout(function(){
             if(page.diandu){
                 page.diandu=0
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(103, 103, 103)")
             }else{
                 page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
@@ -1716,7 +1716,7 @@
         page.dddd = setTimeout(function(){
             if(page.diandu){
                 page.diandu=0
-                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(191, 187, 187)")
+                $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(103, 103, 103)")
             }else{
                 page.diandu=1
                 $('#stopFn,#stopFn1,#startFn,#startFn1').css('border-color',"rgb(255 0 0)")
@@ -1992,6 +1992,7 @@
         $('#searchpad').slideUp(100)
         if(page.onlyLookUserNo)
             $('#onlyLookHim').click()
+        page.seed = Math.ceil(Math.random()*100);
         page.exploreVideos.rows=[]
         page.exploreVideos.currRows=[]
         page.exploreVideos.inx=0
