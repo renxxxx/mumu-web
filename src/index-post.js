@@ -2022,6 +2022,7 @@
             //$('#gearframe1').show()
             $('#prevnextpad').show()
             $('#subtitlePad').show()
+            playVideo()
         }
         this.touchstartY=null
         this.touchendY=null
