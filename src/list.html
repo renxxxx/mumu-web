@@ -262,8 +262,6 @@
                     var activeindex = Math.round(Math.random()*7);
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
-                        var durationsec = localStorage.getItem(config.project+'-durationsec-'+item.no)
-                        var currentTime = localStorage.getItem(config.project+'-currentTime-'+item.no)
                         var videoele = $('#videotemplate').clone(true)
                         videoele.attr('id','video'+item.no)
                         videoele.find('.cover').attr('poster',item.seriesCover || item.cover)
@@ -283,12 +281,14 @@
 
                         videoele.find('.name').text(item.seriesChname || item.chname)
                         videoele.find('.author').text(item.nickname)
-                        if(currentTime && durationsec)
-                            videoele.find('.progress').attr('value',currentTime).attr('max',durationsec)
-                        else
+
+                        if(item.history && item.history.watchEndTime && item.history.duration){
+                            videoele.find('.progress').attr('value',item.history.watchEndTime).attr('max',item.history.duration)
+                        }else
                             videoele.find('.progress').hide()
+
                         videoele.css('display','block')
-                        videoele.attr('href',`./index.html?videoNo=${item.no}`)
+                        videoele.attr('href',`./index.html?videoNo=${item.history?item.history.videoNo:item.no}`)
                         videoele[0].data=item
                         $('.videoList').append(videoele)
 

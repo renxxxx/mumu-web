@@ -144,7 +144,6 @@
         if(!videoC)
             $.ajax({
                 url: '/mumu/video?',
-                
                 ajaxCache:true,
                 data: 'videoNo='+videoNoC,
                 async: false,
@@ -210,14 +209,24 @@
         
         obj.userNo=page.onlyLookUserNo
         obj.rstart=1
-        obj.sort='orderNoInUser'
-        obj.order='asc'
+        obj.sort='orderNoInUser,orderNoInSeries'
+        obj.order='desc,asc'
         if(page.onlyLookHimVideos.rows.length > 0){
-            obj.split='orderNoInUser'
-            obj.splitv=page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].orderNoInUser
+            obj.init=0
+            var last = page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1];
+            obj.lastNo=last.no
+            obj.lastCreateTime=last.createTime
+            obj.lastOrderNoInSeries=last.orderNoInSeries
+            obj.lastOrderNoInUser=last.orderNoInUser
+        }else{
+            obj.init=1
+            obj.lastNo=null
+            obj.lastCreateTime=null
+            obj.lastOrderNoInSeries=null
+            obj.lastOrderNoInUser=null
         }
         $.ajax({
-            url: '/mumu/explore-videos',
+            url: '/mumu/explore-user-videos',
             data: obj,
             async: async,
             success: function(res) {
@@ -280,16 +289,12 @@
         })
     }
 
- 
-
-    goNextVideo()
-    function goNextVideo(){
+    function historyrecord(){
         if(ws && video){
             var watchStartTime=0;
             var watchEndTime=$('#video')[0].currentTime;
             if(watchEndTime-watchStartTime>1){
-                ws.send(JSON.stringify({
-                    action:12,
+                video.history={
                     videoNo:video.no,
                     duration:$('#video')[0].duration,
                     watchStartTime:watchStartTime,
@@ -297,9 +302,20 @@
                     width:$('#video')[0].videoWidth,
                     height:$('#video')[0].videoHeight,
                     difficulty:page.difficulty,
+                    seriesNo:video.seriesNo,
+                    orderNoInSeries:video.orderNoInSeries,
+                }
+                ws.send(JSON.stringify({
+                    action:12,
+                    ...video.history
                 }))
             }
         }
+    }
+
+    goNextVideo()
+    function goNextVideo(){
+        historyrecord()
         pauseVideo()
         closeLoopLine()
 
@@ -370,6 +386,7 @@
     }
 
     function goPrevVideo(){
+        historyrecord()
         pauseVideo()
         closeLoopLine()
         if(!page.trueVideos.rows[page.trueVideos.inx-1-1]){
@@ -568,8 +585,6 @@
 
     function monitor(_time){
         $('#loading').hide()
-        localStorage.setItem(config.project+"-durationsec-"+videoNo,$('#video')[0].duration)
-        localStorage.setItem(config.project+"-currentTime-"+videoNo,$('#video')[0].currentTime)
 
         if($('#video')[0].duration-$('#video')[0].currentTime<3){
             if($('#chooseDifficultyPad').is(':hidden')){
@@ -1318,6 +1333,7 @@
 
     window.onbeforeunload=function(){
         //log.debug('onbeforeunload')
+        historyrecord()
         navigator.sendBeacon("/mumu/page-out");
         log.flush()
     }
@@ -3613,6 +3629,9 @@ $('#wordsframe_cancel').click(function(){
     //     page.trueVideos.rows.splice(page.trueVideos.inx+1-1,page.trueVideos.rows.length-1)
     //     page.trueVideos.currRows=[]
     // })
+
+
+
     function openOnlyLookHim(){
         $('#video1').attr('src','./img/black.png');
         if(!page.onlyLookUserNo){
@@ -4042,12 +4061,13 @@ $('#wordsframe_cancel').click(function(){
 
     $('#seriesPad .trow').click(function(){
         var row = this.data;
-        page.trueVideos.rows.splice(page.trueVideos.inx,0,row)
-        page.onlyLookHimVideos.rows.splice(page.onlyLookHimVideos.inx,0,row)
+        page.trueVideos.rows.splice(page.trueVideos.inx,100,row)
+        page.onlyLookHimVideos.rows.splice(page.onlyLookHimVideos.inx,100,row)
         goNextVideo()
         $('#seriesPad').slideUp(100)
         $('#prevnextpad').show()
         $('#subtitlePad').show()
     })
+
 })()
 
