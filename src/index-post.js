@@ -420,7 +420,7 @@
     }
 
     function playend(){
-       goNextVideo()
+       setTimeout(goNextVideo,1000)
     }
 
     $('#chooseDifficultyPad .e').click(function(){
@@ -602,17 +602,17 @@
     function monitor(_time){
         $('#loading').hide()
 
-        if($('#video')[0].duration-$('#video')[0].currentTime<3){
-            if($('#chooseDifficultyPad').is(':hidden')){
-                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
-                $('#chooseDifficultyPad').fadeIn(300)
-            }
-        }else{
-            if(!$('#chooseDifficultyPad').is(':hidden')){
-                $('#chooseDifficultyPad').hide()
-                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
-            }
-        }
+        // if($('#video')[0].duration-$('#video')[0].currentTime<3){
+        //     if($('#chooseDifficultyPad').is(':hidden')){
+        //         $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+        //         $('#chooseDifficultyPad').fadeIn(300)
+        //     }
+        // }else{
+        //     if(!$('#chooseDifficultyPad').is(':hidden')){
+        //         $('#chooseDifficultyPad').hide()
+        //         $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+        //     }
+        // }
 
         if(jumpedcaption){
             if(jumpedcaption.startTime < _time){
@@ -2138,7 +2138,7 @@
         page.loopVideos.on=1
         $('#chooseLoopVideosCountPad').show()
         clearInterval(page.loopVideoChooseInterval)
-        var second  = 3;
+        var second  = 2;
         $('#chooseLoopVideosCountPad .restSecond').text(second)
         $('#chooseLoopVideosCountPad .count'+page.loopVideos.count).css('background-color','#9b9b9b')
         page.loopVideoChooseInterval = setInterval(function(){
@@ -3749,8 +3749,8 @@ $('#wordsframe_cancel').click(function(){
         rollInx=!rollInx?1:rollInx
         wordsRoll(rollInx);
     }
-    page._mp3 = document.createElement('video')
-    page.lettersound = document.createElement('video')
+    page._mp3 = $(`<video x5-playsinline playsinline controls360=no webkit-playsinline ></video>`)[0]
+    page.lettersound = $(`<video x5-playsinline playsinline controls360=no webkit-playsinline ></video>`)[0]
     function wordsRoll(rollInx){
         if(!page.rollOpen){
             closeRollShowWordsPad()
