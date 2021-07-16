@@ -399,27 +399,15 @@
     }
 
     function playend(){
-        $('#chooseDifficultyPad').fadeIn(300)
-        clearInterval(page.difficultyChooseInterval)
-        var second  = 5;
-        $('#chooseDifficultyPad .restSecond').text(second)
-        page.difficultyChooseInterval = setInterval(function(){
-            $('#chooseDifficultyPad .restSecond').text(--second)
-            if(second== 0){
-                clearInterval(page.difficultyChooseInterval)
-                $('#chooseDifficultyPad').hide()
-                $('#chooseDifficultyPad').fadeOut(300)
-                goNextVideo()
-            }
-        },1000)
+       goNextVideo()
     }
 
     $('#chooseDifficultyPad .e').click(function(){
-        clearTimeout(page.difficultyChooseInterval)
         page.difficulty = $(this).attr('data')
-        $('#chooseDifficultyPad').fadeOut(300)
-        goNextVideo();
+        $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+        $(this).css('background-color','#8a8a8a');
     })
+
     function guide(){
         if(page.closeView)
             $('#video').attr("src",video.audio16k||audio||video.url)
@@ -582,6 +570,18 @@
         $('#loading').hide()
         localStorage.setItem(config.project+"-durationsec-"+videoNo,$('#video')[0].duration)
         localStorage.setItem(config.project+"-currentTime-"+videoNo,$('#video')[0].currentTime)
+
+        if($('#video')[0].duration-$('#video')[0].currentTime<3){
+            if($('#chooseDifficultyPad').is(':hidden')){
+                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+                $('#chooseDifficultyPad').fadeIn(300)
+            }
+        }else{
+            if(!$('#chooseDifficultyPad').is(':hidden')){
+                $('#chooseDifficultyPad').hide()
+                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+            }
+        }
 
         if(jumpedcaption){
             if(jumpedcaption.startTime < _time){
@@ -1398,7 +1398,7 @@
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({ 
                 title: ttb(video.chname), // 分享标题
-                desc: '幕幕 - 英语短视频\n'+ttb(video.nickname), // 分享描述
+                desc: ttb(video.nickname), // 分享描述
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1407,7 +1407,7 @@
             })
 
             wx.updateTimelineShareData({ 
-                title: ttb(video.chname) + '\n幕幕 - 英语短视频', // 分享标题
+                title: ttb(video.chname) + '\n'+ttb(video.nickname), // 分享标题
                 link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -1422,7 +1422,7 @@
         shareLink = location.origin+'/mumu?videoNo='+videoNo;
         wx.updateAppMessageShareData({ 
             title: ttb(video.chname), // 分享标题
-            desc: '幕幕 - 英语短视频\n'+ttb(video.nickname), // 分享描述
+            desc: ttb(video.nickname), // 分享描述
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -1431,7 +1431,7 @@
         })
 
         wx.updateTimelineShareData({ 
-            title: ttb(video.chname) + '\n幕幕 - 英语短视频', // 分享标题
+            title: ttb(video.chname) + '\n'+ttb(video.nickname), // 分享标题
             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
             success: function () {
@@ -3030,7 +3030,7 @@ $('#wordsframe_cancel').click(function(){
 
     $('#wordbookDetailPad .shareBtn').click(function(e){
         var row = page.wordbooks.selected;
-        common.confirm({
+        common.alert({
             message:'进入分享页后, 在右上角进行分享',
             confirm:function(){
                 location.href='./wordbook.html?wordbookNo='+row.no+'&templateNo='+row.templateNo
@@ -3901,6 +3901,17 @@ $('#wordsframe_cancel').click(function(){
         guide1()
     })
     
+    $('#changevideoshowtype').click(function(){
+        var s = $('#video').css('object-fit')
+        if(s=='cover'){
+            s='contain'
+        }else if(s=='contain' || !s){
+            s='cover'
+        }
+        $('#video').css('object-fit',s)
+    })
+
+
     $('#toShortRelatedWordsBtn').click(function(){
         page.shortWordText=page.shortWordText?page.shortWordText:page.currWordText;
         page.shortWordText=page.shortWordText.substr(0,page.shortWordText.length-1)

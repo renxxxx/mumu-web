@@ -52,7 +52,7 @@
                             if(element.phonetic){
                                 ele.find('.phonetic').text('/'+element.phonetic+'/');
                             }else{
-                                ele.find('.word').css('width','66.666666%')
+                                ele.find('.word').css('width','70%')
                                 ele.find('.phonetic').hide();
                             }
                             ele.find('.translation').text(element.translation)
@@ -341,8 +341,8 @@
         page.shareLink = location.origin+'/mumu/wordbook.html?wordbookNo='+page.wordbookNo;
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({
-                title: page.wordbook.name+" - 单词本", // 分享标题
-                desc: '幕幕短视频', // 分享描述
+                title: page.wordbook.name, // 分享标题
+                desc: '单词本', // 分享描述
                 link: page.shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -351,7 +351,7 @@
             })
 
             wx.updateTimelineShareData({
-                title: page.wordbook.name+" - 单词本" + '\n幕幕短视频', // 分享标题
+                title: page.wordbook.name + '\n单词本', // 分享标题
                 link: page.shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
