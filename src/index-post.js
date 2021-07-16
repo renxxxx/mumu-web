@@ -315,6 +315,8 @@
 
     goNextVideo()
     function goNextVideo(){
+        restored=0
+        playRestored=0
         historyrecord()
         pauseVideo()
         closeLoopLine()
@@ -386,6 +388,8 @@
     }
 
     function goPrevVideo(){
+        restored=0
+        playRestored=0
         historyrecord()
         pauseVideo()
         closeLoopLine()
@@ -529,28 +533,40 @@
         guide1()
     }
     function restore(){
-        if(!restored){
-            if(lastCurrentTime == 0){
+        if(!restored && video.history){
+            if(video.history.watchEndTime == 0){
                 restored=1;
                 return;
             }
-            if(lastCurrentTime){
-                $('#video')[0].currentTime = lastCurrentTime;
-                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
-                if($('#video')[0].currentTime >= lastCurrentTime){
-                    restored=1;
+            if(video.history.watchEndTime){
+                if(video.duration-video.history.watchEndTime>1){
+                    $('#video')[0].currentTime = video.history.watchEndTime;
+                    if($('#video')[0].currentTime >= video.history.watchEndTime){
+                        $('#video')[0].currentTime = video.history.watchEndTime-2
+                        restored=1;
+                    }else{
+                        $('#video')[0].currentTime = 0
+                        restored=1;
+                    }
                 }
             }
         }
     }
 
+
     function playRestore(){
-        if(!playRestored){
-            if(lastCurrentTime){
-                $('#video')[0].currentTime = lastCurrentTime;
-                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
-                if($('#video')[0].currentTime >= lastCurrentTime)
+        if(!playRestored && video.history){
+            if(video.history.watchEndTime){
+                if(video.duration-video.history.watchEndTime>1){
+                    $('#video')[0].currentTime = video.history.watchEndTime;
+                    if($('#video')[0].currentTime >= video.history.watchEndTime){
+                        $('#video')[0].currentTime = video.history.watchEndTime-2
+                        playRestored=1;
+                    }
+                }else{
+                    $('#video')[0].currentTime = 0
                     playRestored=1;
+                }
             }
         }
     }
