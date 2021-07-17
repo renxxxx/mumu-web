@@ -329,6 +329,7 @@ common.alert=function(params,_confirm,_parent){
   var messageclass = null
   var confirm = null
   var parent = null
+  var titleclass = null
 
   if(typeof params == 'string'){
     message = params

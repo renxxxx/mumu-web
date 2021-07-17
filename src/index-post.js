@@ -299,7 +299,9 @@ $('#video').click(function(){
         })
     }
 
-    function historyrecord(){
+    function historyrecord(paramm){
+        paramm=!paramm?{}:paramm
+        paramm.local;
         if(ws && video){
             var watchStartTime=0;
             var watchEndTime=$('#video')[0].currentTime;
@@ -315,13 +317,17 @@ $('#video').click(function(){
                     seriesNo:video.seriesNo,
                     orderNoInSeries:video.orderNoInSeries,
                 }
-                ws.send(JSON.stringify({
-                    action:12,
-                    ...video.history
-                }))
+                if(!paramm.local){
+                    ws.send(JSON.stringify({
+                        action:12,
+                        ...video.history
+                    }))
+                }
             }
         }
     }
+
+    setTimeout(historyrecord({local=1}),3000)
 
     goNextVideo()
     function goNextVideo(){
@@ -475,6 +481,9 @@ $('#video').click(function(){
         }
     }
     function guide1(){
+        historyrecord()
+        restored=0
+        playRestored=0
         if(page.closeView){
             $('#video').attr("poster",video.cover)
             $('#video').attr("src",video.audio16k||video.audio||video.url)
@@ -2766,6 +2775,7 @@ $('#wordsframe_cancel').click(function(){
                                 var row={
                                     no:res.data.no,
                                     name:v,
+                                    templateNo:res.data.tno
                                 }
                                 var ele = $('#wordbooksPad .wordbooks .row0').clone(true)
                                 ele.removeClass('row0')
@@ -2966,7 +2976,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(e){
-        if(page.wordbooks.selected.templateNo){
+        if(page.wordbooks.selected.templateNo || pagePre.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             var ele = $(this).parents('.row');
@@ -2984,7 +2994,8 @@ $('#wordsframe_cancel').click(function(){
                             ws.send(JSON.stringify({
                                 action:9,
                                 wordbookNo:page.wordbooks.selected.no,
-                                word:row.word
+                                word:row.word,
+                                templateNo:page.wordbooks.selected.templateNo
                             }))
                             ele.remove()
                             promptEle.remove()
@@ -3002,7 +3013,8 @@ $('#wordsframe_cancel').click(function(){
                         ws.send(JSON.stringify({
                             action:9,
                             wordbookNo:page.wordbooks.selected.no,
-                            word:row.word
+                            word:row.word,
+                            templateNo:page.wordbooks.selected.templateNo
                         }))
                         page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
                         ele.remove()
@@ -3014,7 +3026,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     function addWordbookWord(wordbook){
-        if(wordbook.templateNo){
+        if(wordbook.templateNo || pagePre.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             common.promptLine({
@@ -3030,7 +3042,8 @@ $('#wordsframe_cancel').click(function(){
                             action:8,
                             wordbookNo:wordbook.no,
                             word:page.currWord.word,
-                            translation:v
+                            translation:v,
+                            templateNo:wordbook.templateNo
                         }))
                     }
                 }
@@ -3093,6 +3106,7 @@ $('#wordsframe_cancel').click(function(){
                             data: {
                                 no:row.no,
                                 name:row.name,
+                                templateNo:row.templateNo
                             },
                             async:false,
                             success: function(res) {
@@ -3127,6 +3141,7 @@ $('#wordsframe_cancel').click(function(){
                         data: {
                             no:row.no,
                             name:v,
+                            templateNo:row.templateNo
                         },
                         success: function(res) {
                             if(res.code==0){
