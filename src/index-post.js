@@ -248,13 +248,22 @@
             }
         })
     }
+$('#video').click(function(){
+    var s = $('#video').css('object-fit')
+    if(s=='cover'){
+        s='contain'
+    }else if(s=='contain' || !s){
+        s='cover'
+    }
+    $('#video').css('object-fit',s)
+})
 
     function getMoreVideos(async){
         var rcount = 10
         $.ajax({
             url: '/mumu/explore-videos?',
             data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
-                    +"&userNo="+(page.onlyLookUserNo||' '),
+                    +"&userNo="+(page.onlyLookUserNo||' ')+"&mo="+ttb(getUrlParam("mo")),
             async: async,
             success: function(res) {
                 if(res.code==0){
@@ -269,7 +278,8 @@
                         $.ajax({
                             url: '/mumu/explore-videos?',
                             
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' '),
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' ')
+                                +(page.onlyLookUserNo||' ')+"&mo="+ttb(getUrlParam("mo")),
                             async: async,
                             success: function(res) {
                                 page.exploreVideos.rows.push(...res.data.videos)
@@ -381,7 +391,7 @@
 
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
-
+        log.info(videoNo)
        
         getvideodone(video)
 
