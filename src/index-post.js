@@ -8,8 +8,9 @@
     page.wordbookWordsAjaxs=[]
     
     var onlyLookHimParam = getUrlParam('olh')
-    var userNo = getUrlParam('userNo')
-
+    var userNoParam = getUrlParam('userNo')
+    var historyParam = getUrlParam('history')
+    page.rawsubtitles=null;
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
     page.currVideos=[]
@@ -259,6 +260,10 @@ $('#video').click(function(){
 })
 
     function getMoreVideos(async){
+        if(historyParam){
+            getMoreHistoryVideos(async)
+            return;
+        }
         var rcount = 10
         $.ajax({
             url: '/mumu/explore-videos?',
@@ -299,6 +304,51 @@ $('#video').click(function(){
         })
     }
 
+    function getMoreHistoryVideos(async){
+        var obj = {}
+        obj.rcount=10
+        obj.rstart=1
+        if(page.exploreVideos.rows.length > 0){
+            obj.init=0
+            var last = page.exploreVideos.rows[page.exploreVideos.rows.length-1];
+            obj.lastNo=last.no
+            obj.lastHistoryCreateTime=last.historyCreateTime
+            obj.lastOrderNoInSeries=last.orderNoInSeries
+            obj.lastOrderNoInUser=last.orderNoInUser
+        }else{
+            obj.init=1
+            obj.lastNo=null
+            obj.lastHistoryCreateTime=null
+            obj.lastOrderNoInSeries=null
+            obj.lastOrderNoInUser=null
+        }
+
+        $.ajax({
+            url: '/mumu/watch-history-videos?',
+            data: obj,
+            async: async,
+            ajaxCache:{ timeout:5 },
+            success: function(res) {
+                if(res.code==0){
+                    if(res.data.videos.length>0){
+                        page.exploreVideos.rows.push(...res.data.videos)
+                        page.exploreVideos.currRows=res.data.videos
+                        page.exploreVideos.rstart=page.exploreVideos.rows.length+1
+                        page.trueVideos.rows.push(...res.data.videos)
+                        page.trueVideos.currRows=res.data.videos
+                    }else{
+                        page.exploreVideos.rows=[]
+                        page.exploreVideos.currRows=[]
+                        getMoreHistoryVideos(async)
+                    }
+                    $('#video1').attr('src','./img/black.png');
+                }else if(res.code==20){
+                    login()
+                }
+
+            }
+        })
+    }
     function historyrecord(paramm){
         paramm=!paramm?{}:paramm
         paramm.local;
@@ -320,6 +370,7 @@ $('#video').click(function(){
                 if(!paramm.local){
                     ws.send(JSON.stringify({
                         action:12,
+                        notrecord:ttb(historyParam),
                         ...video.history
                     }))
                 }
@@ -722,7 +773,29 @@ $('#video').click(function(){
         let _mp3 = new Audio($(this).attr('playsrc'));
         _mp3.play();
     })
+
+    function getEnSubtitles2(_result){
+        page.rawsubtitles=_result
+        en.subtitlesList=[]
+        let _fileString =  _result.split(/\r\n\d+\r\n/);
+        for (const key in _fileString) {
+            var ffs = _fileString[key].split(/\r\n/);
+            if(ffs[0].search(/^\d+$/)==0){
+                ffs.splice(0,1)
+            }
+            var iii = []
+            for (const key in ffs) {
+                if(!ffs[key].trim()){
+                    iii.shift(key)
+                }
+            }
+            for (const key in iii) {
+                ffs.splice(key,iii[key])
+            }
+        }
+    }
     function getEnSubtitles(_result){
+        page.rawsubtitles=_result
         //log.debug("getEnSubtitles: "+ ++runstep)
         en.subtitlesList=[]
         ////let _this = this;
@@ -3963,6 +4036,7 @@ $('#wordsframe_cancel').click(function(){
     })
     
     $('#changevideoshowtype').click(function(){
+        $('#video')[0].load()
         var s = $('#video').css('object-fit')
         if(s=='cover'){
             s='contain'

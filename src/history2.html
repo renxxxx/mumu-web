@@ -5,7 +5,7 @@
         setInterval(function(){
             navigator.sendBeacon("/mumu/page-on");
         },60000)
-       
+
     </script>
     <head>
         <meta charset="utf-8">
@@ -21,12 +21,10 @@
         <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
         <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
         <script src="./js/jquery-ajax-cache.min.js" type="application/javascript"></script>
-        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
         <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.js" type="application/javascript"></script>
         <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.css" type="text/css" rel="stylesheet" />
-        <script src="./js/common.js" type="application/javascript"></script>
         <script src="./config.js" type="application/javascript"></script>
         <script src="./js/log.js" type="application/javascript"></script>
         <script src="./js/page-pre.js" type="application/javascript"></script>
@@ -105,7 +103,7 @@
             <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
                 <a id="videotemplate" draggable="false" style="display:block;float:left;width:45%;height:155px;padding:0;margin-left:3.33%;margin-top:10px;
                         font-size:0;position:relative;cursor: pointer;display:none;text-decoration: blink;color:#000000;">
-                    <div style="width:100%;height:109px;background-color: #dddddd;">
+                    <div style="width:100%;height:109px;background-color: #dddddd;border: 1px solid #efefef;border-bottom:none;">
                         <video x5-playsinline playsinline controls360=no webkit-playsinline class="cover" draggable="false" src="" muted style="width:100%;height:106px;object-fit: cover;"></video>
                     </div>
                     <progress class="progress" style="width:100%;height:5px;position:absolute;top:105px;"></progress>
@@ -117,86 +115,58 @@
                     </div>
                 </a>
             </ul>
-            
+
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
-                <span class="unselectable" 
+                <span class="unselectable"
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('index.html')">
                     发现
                 </span>
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+                <span class="unselectable"
+                    style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('list.html')">
                     资源
                 </span>
-                <span class="unselectable" 
-                    style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#000000;font-weight:900;"
+                <span class="unselectable"
+                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#000000;font-weight:900;"
                     onclick="location.replace('history.html')">
                     看过
                 </span>
-                <span class="unselectable" 
+                <span class="unselectable"
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="location.replace('my.html')">
                     我的
                 </span>
             </div>
 
-            
+
         </div>
         <div  class="unselectable" style="display: none;">
             <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
         </div>
     </body>
-    
+
     <script>
-        // if(navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(function(position){
-        //         var o = {
-        //             "coords":{}
-        //         }
-        //         o.timestamp=position.timestamp
-        //         o.coords.accuracy=position.coords.accuracy
-        //         o.coords.altitude=position.coords.altitude
-        //         o.coords.altitudeAccuracy=position.coords.altitudeAccuracy
-        //         o.coords.heading=position.coords.heading
-        //         o.coords.latitude=position.coords.latitude
-        //         o.coords.longitude=position.coords.longitude
-        //         o.coords.speed=position.coords.speed
-        //         $.cookie('position', JSON.stringify(o));
-        //     });
-        // }
+
+        page={}
+        window.page=page;
+        page.historys={
+            rows:[],
+            currRows:[],
+            rcount:50,
+            map:{},
+        }
+
+        start()
 
         setTimeout(function(){
             $('#logo').hide()
         },500)
-        $('#videotemplate').click(function(){
-            localStorage.setItem(config.project+'-video-'+this.data.no,JSON.stringify(this.data))
-        })
 
-        var videoList = [];
-        (function(win){
-            win.start()
-        })(window)
 
         function start(){
-
             getVideoList()
-            // $.ajax({
-            //     url: '/mumu/showedboardmsg?',
-            //
-            //     async: true,
-            //     success: function(res) {
-            //         msg=res.data.msg;
-            //         if(msg){
-            //             if(msg.sys)
-            //                 $('#msg').text("系统: "+msg.text)
-            //             else
-            //                 $('#msg').text("网友: "+msg.text)
-            //         }
-            //     }
-            // })
         }
-
 
         function coverin1(item,ele){
             if(nowvideoele == ele){
@@ -214,7 +184,7 @@
             screenshots = screenshots?JSON.parse(screenshots):null;
             if(!screenshots)
                 return;
-                                
+
 
                 ele.aaa = setTimeout(function(){
                 var index = -1
@@ -254,17 +224,27 @@
         function getVideoList(){
             let _this = this;
             $.ajax({
-                url: '/mumu/watch-history-videos?',
-                ajaxCache:{ timeout:5 },
-                data: 'kw='+''+'&rstart='+1+'&rcount='+30,
+                url: '/mumu/watch-video-historys?',
+                ajaxCache:{
+                    timeout: 10
+                },
+                data: {
+                    kw:'',
+                    rstart:page.historys.rows.length+1,
+                    rcount:page.historys.rcount
+                },
                 async: true,
                 success: function(res) {
                     var activeindex = Math.round(Math.random()*7);
-                    $(res.data.videos).each((inx,item)=>{
-                        _this.videoList.push(item)
+                    if(res.data.rows.length>0){
+                        page.historys.rows.push(...res.data.rows)
+                        page.historys.currRows=res.data.rows
+                    }
+                    $(res.data.rows).each((inx,item)=>{
+                        page.historys.map['videoNo'+item.videoNo]=item
                         var videoele = $('#videotemplate').clone(true)
                         videoele.attr('id','video'+item.no)
-                        videoele.find('.cover').attr('poster',item.seriesCover || item.cover)
+                        videoele.find('.cover').attr('poster',item.cover)
                         videoele.find('.cover').attr('src',item.url)
                         videoele.find('.cover').hover(
                             function(){
@@ -278,17 +258,14 @@
                         }).bind('touchend',function(){
                             coverout1(item,videoele)
                         })
-
                         videoele.find('.name').text(item.seriesChname || item.chname)
                         videoele.find('.author').text(item.nickname)
-
-                        if(item.history && item.history.watchEndTime && item.history.duration){
-                            videoele.find('.progress').attr('value',item.history.watchEndTime).attr('max',item.history.duration)
-                        }else
+                        if(item.duration && item.currentTime)
+                            videoele.find('.progress').attr('value',item.currentTime).attr('max',item.duration)
+                        else
                             videoele.find('.progress').hide()
-
                         videoele.css('display','block')
-                        videoele.attr('href',`./index.html?history=1&videoNo=${ttb(item.history?item.history.videoNo:item.no)}`)
+                        videoele.attr('href',`./history-watch.html?videoNo=${item.videoNo}`)
                         videoele[0].data=item
                         $('.videoList').append(videoele)
 
@@ -299,11 +276,13 @@
                             videoele.find('.cover')[0].play()
                         }
                     })
-                    console.log(_this.videoList)
                 }
             })
         }
 
+        $('#videotemplate').click(function(){
+            localStorage.setItem('video-'+this.data.videoNo,JSON.stringify(this.data))
+        })
 
         function niceduration(mills){
             if(!mills || mills=='0')
@@ -352,9 +331,9 @@
                 });
             })
         })
-        
+
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
-            wx.updateAppMessageShareData({ 
+            wx.updateAppMessageShareData({
                 title: '幕幕 - 学英语', // 分享标题
                 desc: 'renx.cc', // 分享描述
                 link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
@@ -364,7 +343,7 @@
                 }
             })
 
-            wx.updateTimelineShareData({ 
+            wx.updateTimelineShareData({
                 title: '幕幕 - 学英语', // 分享标题
                 link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
@@ -375,7 +354,7 @@
         });
 
         }
-        
+
 
 
         $('#index').bind('touchstart mousedown',function(e){
@@ -415,7 +394,7 @@
                 e.preventDefault()
             }
 
-            
+
         }).bind('touchend mouseup',function(e){
             this.touchendtime = new Date().getTime();
 
