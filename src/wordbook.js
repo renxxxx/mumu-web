@@ -338,7 +338,7 @@
                 });
             })
         })
-        page.shareLink = location.origin+'/mumu/wordbook.html?wordbookNo='+page.wordbookNo;
+        page.shareLink = location.origin+'/mumu/wordbook.html?wordbookNo='+page.wordbookNo+'&templateNo='+page.templateNo;
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({
                 title: page.wordbook.name, // 分享标题

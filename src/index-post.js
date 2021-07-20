@@ -205,6 +205,7 @@
     function getMoreOnlyLookHimVideos(async){
         var obj = {}
         obj.shortvideo=1
+        obj.longvideo=1
         obj.kw=searchKw
         obj.pageSize=10
         
@@ -238,9 +239,11 @@
                         page.trueVideos.rows.push(...res.data.videos)
                         page.trueVideos.currRows=res.data.videos
                     }else{
-                        page.onlyLookHimVideos.rows=[]
-                        page.onlyLookHimVideos.currRows=[]
-                        getMoreOnlyLookHimVideos(async)
+                        if(obj.init==0){
+                            page.onlyLookHimVideos.rows=[]
+                            page.onlyLookHimVideos.currRows=[]
+                            getMoreOnlyLookHimVideos(async)
+                        }
                     }
                     $('#video1').attr('src','./img/black.png');
                 }else if(res.code==20){
@@ -287,11 +290,13 @@ $('#video').click(function(){
                                 +(page.onlyLookUserNo||' ')+"&mo="+ttb(getUrlParam("mo")),
                             async: async,
                             success: function(res) {
-                                page.exploreVideos.rows.push(...res.data.videos)
-                                page.exploreVideos.currRows=res.data.videos
-                                page.trueVideos.rows.push(...res.data.videos)
-                                page.trueVideos.currRows=res.data.videos
-                                page.exploreVideos.rstart=1
+                                if(res.data.videos.length>0){
+                                    page.exploreVideos.rows.push(...res.data.videos)
+                                    page.exploreVideos.currRows=res.data.videos
+                                    page.trueVideos.rows.push(...res.data.videos)
+                                    page.trueVideos.currRows=res.data.videos
+                                    page.exploreVideos.rstart=1
+                                }
                             }
                         })
                     }
@@ -378,7 +383,7 @@ $('#video').click(function(){
         }
     }
 
-    setTimeout(historyrecord({local=1}),3000)
+    setTimeout(historyrecord({local:1}),3000)
 
     goNextVideo()
     function goNextVideo(){
@@ -487,7 +492,7 @@ $('#video').click(function(){
     }
 
     function playend(){
-       setTimeout(goNextVideo,1000)
+      page.timeout999= setTimeout(goNextVideo,1000)
     }
 
     $('#chooseDifficultyPad .e').click(function(){
@@ -555,7 +560,7 @@ $('#video').click(function(){
         video=videop;
         videoNo=videop.no
         page.videoNo=videoNo
-
+        clearTimeout(page.timeout999)
         genShareData()
         $('#zh_subtitles').html('')
         var ss =ttb(video.chreference)||ttb(video.seriesChname);
@@ -604,10 +609,6 @@ $('#video').click(function(){
     }
     function restore(){
         if(!restored && video.history){
-            if(video.history.watchEndTime == 0){
-                restored=1;
-                return;
-            }
             if(video.history.watchEndTime){
                 if(video.duration-video.history.watchEndTime>1){
                     $('#video')[0].currentTime = video.history.watchEndTime;
@@ -619,7 +620,11 @@ $('#video').click(function(){
                         restored=1;
                     }
                 }
+            }else{
+                restored=1
             }
+        }else{
+            restored=1
         }
     }
 
@@ -637,7 +642,11 @@ $('#video').click(function(){
                     $('#video')[0].currentTime = 0
                     playRestored=1;
                 }
+            }else{
+                playRestored=1
             }
+        }else{
+            playRestored=1
         }
     }
 
@@ -671,7 +680,7 @@ $('#video').click(function(){
 
     function monitor(_time){
         $('#loading').hide()
-
+        $('#progressbar .slider').css('width',(videoele.currentTime/videoele.duration*100)+'%')
         // if($('#video')[0].duration-$('#video')[0].currentTime<3){
         //     if($('#chooseDifficultyPad').is(':hidden')){
         //         $('#chooseDifficultyPad .e').css('background-color','#ffffff');
@@ -2881,7 +2890,7 @@ $('#wordsframe_cancel').click(function(){
         $(this).css('background-color','rgb(111, 111, 111)')
         $('#wordbooksPad .createRowBtn').hide()
         $('#wordbooksPad .editRowBtn').show()
-        $('#clickToShowCreateWordbookBtn').show()
+        $('#clickToShowCreateWordbookBtn').css('visibility','visible')
         chooseWordbook(row.no)
     })
     
@@ -3049,7 +3058,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(e){
-        if(page.wordbooks.selected.templateNo || pagePre.login.userNo != '100000000000'){
+        if(page.wordbooks.selected.templateNo && pagePre.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             var ele = $(this).parents('.row');
@@ -3099,7 +3108,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     function addWordbookWord(wordbook){
-        if(wordbook.templateNo || pagePre.login.userNo != '100000000000'){
+        if(wordbook.templateNo && pagePre.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             common.promptLine({
@@ -3159,12 +3168,7 @@ $('#wordsframe_cancel').click(function(){
 
     $('#wordbookDetailPad .shareBtn').click(function(e){
         var row = page.wordbooks.selected;
-        common.alert({
-            message:'进入分享页后, 在右上角进行分享',
-            confirm:function(){
-                location.href='./wordbook.html?wordbookNo='+row.no+'&templateNo='+row.templateNo
-            }
-        })
+        location.href='./wordbook.html?wordbookNo='+row.no+'&templateNo='+row.templateNo
     })
 
     $('#wordbookDetailPad .deleteBtn').click(function(e){
@@ -3242,7 +3246,7 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad .editRowBtn').hide()
             $('#wordbooksPad .words .pad').hide()
             $('#wordbooksPad .wordbooks .row').css('background-color','unset')
-            $('#clickToShowCreateWordbookBtn').hide()
+            $('#clickToShowCreateWordbookBtn').css('visibility','hidden')
             $('#startRollBtn').hide()
         }
         
@@ -3304,9 +3308,9 @@ $('#wordsframe_cancel').click(function(){
 
                 
                 if(page.wordbooks.rows.length==0){
-                    $('#clickToShowCreateWordbookBtn').hide()
+                    $('#clickToShowCreateWordbookBtn').css('visibility','hidden')
                 }else{
-                    $('#clickToShowCreateWordbookBtn').show()
+                    $('#clickToShowCreateWordbookBtn').css('visibility','visible')
                 }
             }
         })
@@ -4037,13 +4041,13 @@ $('#wordsframe_cancel').click(function(){
     
     $('#changevideoshowtype').click(function(){
         $('#video')[0].load()
-        var s = $('#video').css('object-fit')
-        if(s=='cover'){
-            s='contain'
-        }else if(s=='contain' || !s){
-            s='cover'
-        }
-        $('#video').css('object-fit',s)
+        // var s = $('#video').css('object-fit')
+        // if(s=='cover'){
+        //     s='contain'
+        // }else if(s=='contain' || !s){
+        //     s='cover'
+        // }
+        // $('#video').css('object-fit',s)
     })
 
 
@@ -4055,7 +4059,14 @@ $('#wordsframe_cancel').click(function(){
         }
         loadRelatedWords(page.currWordText,page.shortWordText);
     })
-   
+    $('#toLongRelatedWordsBtn').click(function(){
+        page.shortWordText=page.shortWordText?page.shortWordText:page.currWordText;
+        page.shortWordText=page.currWordText.substr(0,page.shortWordText.length+1)
+        if(!page.shortWordText){
+            page.shortWordText=page.currWordText;
+        }
+        loadRelatedWords(page.currWordText,page.shortWordText);
+    })
 
     $('#video').bind('contextmenu',function() { return false; });
 
@@ -4162,7 +4173,7 @@ $('#wordsframe_cancel').click(function(){
                     ele.removeClass('trow')
                     ele.addClass('row'+row.no)
                     ele.find('.cover').attr('src',row.cover)
-                    ele.find('.name').text(row.chname)
+                    ele.find('.name').text((row.orderNoInSeries?ttb(row.orderNoInSeries)+" | ":"")+ttb(row.chname))
                     ele[0].data=row
                     ele.show();
                     $('#seriesPad .trow').before(ele)
@@ -4185,5 +4196,9 @@ $('#wordsframe_cancel').click(function(){
         $('#subtitlePad').show()
     })
 
+    setTimeout(function(){
+        if(!pagePre.login.fullmember)
+            common.alert('抱歉, 体验用户只能浏览少量内容, 请联系管理员免费转正式.')
+    },30000)
 })()
 
