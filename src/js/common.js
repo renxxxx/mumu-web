@@ -443,3 +443,22 @@ comm.copy = function(param={text}){
   document.execCommand("copy");
   document.body.removeChild(textarea)
 }
+
+comm.changearr  = function(arr,i1,i2){
+  var o3=arr[i1];
+  arr[i1]=arr[i2]
+  arr[i2]=o3
+}
+
+comm.changedom = function(d1,d2){
+  var d11 = $('<hr/>')
+  var d22 = $('<hr/>')
+  $(d1).before(d11)
+  $(d2).before(d22)
+
+  $(d22).after(d1)
+  $(d11).after(d2)
+
+  $(d11).remove()
+  $(d22).remove()
+}

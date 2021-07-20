@@ -383,7 +383,7 @@ $('#video').click(function(){
         }
     }
 
-    setTimeout(historyrecord({local:1}),3000)
+    setTimeout(historyrecord({local:1}),1000)
 
     goNextVideo()
     function goNextVideo(){
@@ -537,16 +537,24 @@ $('#video').click(function(){
         }
     }
     function guide1(){
-        historyrecord()
         restored=0
         playRestored=0
         if(page.closeView){
-            $('#video').attr("poster",video.cover)
+            $('#video').attr("poster",null)
+            $('#video').css("background-image","url("+video.cover+")")
+            $('#video').css("background-repeat","no-repeat")
+            $('#video').css("background-size","contain")
+            $('#video').css("background-position","center")
+
             $('#video').attr("src",video.audio16k||video.audio||video.url)
         }else{
-            $('#video').attr("poster",null)
-            $('#video').attr("poster",video.cover)
             $('#video').attr("src",video.url)
+            $('#video').attr("poster",video.cover)
+
+            $('#video').css("background-image","unset")
+            $('#video').css("background-repeat","unset")
+            $('#video').css("background-size","unset")
+            $('#video').css("background-position","unset")
         }
         $('#videobox').css('top','0')
         $('#video').attr('autoplay',true)
@@ -578,7 +586,6 @@ $('#video').click(function(){
             $('#title').css('width','calc(100% - 134px)')
         }
         $('#title').text(sss)
-        //$('#video').attr("poster", video.cover)
         if(video.userNo){
             $('#headimg').attr('src',video.headimg)
             $('#headimg').css('display','inline-block')
@@ -1061,6 +1068,7 @@ $('#video').click(function(){
         page.dovideoshadow=1;
         pauseVideo();
         doshadow();
+        $('#wordsframe').hide()
         $('#summtrans').show()
         $('#summtrans-word').text(_data)
         $('#word-in').val(_data)
@@ -1117,6 +1125,11 @@ $('#video').click(function(){
                             hasTranslate=true
                             $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
+                    }else{
+                        if(res.data.translation){
+                            hasTranslate=true
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(res.data.translation)}</div>`)
+                        }
                     }
                     if(res.data.wfs){
                         $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans1(res.data.wfs)}</div>`)
@@ -1257,7 +1270,8 @@ $('#video').click(function(){
             //$('#videoshasow').css('height',$('#video').css('height'))
         }
     }
-    
+
+
     function enSubtitlesShow(){
         var thisEle = this;
         $("#zh_subtitles").css("opacity")
@@ -1585,8 +1599,8 @@ $('#video').click(function(){
     function lightkeytrans1(ss){
         if(!ss)
             return ss
-        var sss=ss.replace(/(\w+)/g,`<span class="lightkeytrans" style="text-decoration: underline;cursor:pointer;margin:0 3px 0 0;color: bisque;">$1</span>`)
-        sss= sss.replace(/<span.+?>(vi|adj|vt|pron|n|v|num|adv|art|conj|prep|abbr|int)<\/span>/,'$1')
+        var sss=ss.replace(/(\w+)/g,`<span class="lightkeytrans" style="cursor:pointer;margin:0 3px 0 0;color: bisque;">$1</span>`)
+        sss= sss.replace(/<span.+?>(vi|adj|vt|pron|n|v|num|adv|art|conj|prep|abbr|int|det)<\/span>/,'$1')
         // sss= sss.replace(/<span.+?>(vi)<\/span>/,'$1')
         // sss= sss.replace(/<span.+?>(adj)<\/span>/,'$1')
         // sss= sss.replace(/<span.+?>(vt)<\/span>/,'$1')
@@ -2654,6 +2668,11 @@ $('#wordsframe_cancel').click(function(){
                             hasTranslate=true
                             $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
                         })
+                    }else{
+                        if(page.currWord.translation){
+                            hasTranslate=true
+                            $('#summtrans-vv').append(`<div>${lightkeytrans1(page.currWord.translation)}</div>`)
+                        }
                     }
                     if(page.currWord.wfs){
                         $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans1(page.currWord.wfs)}</div>`)
@@ -2955,6 +2974,7 @@ $('#wordsframe_cancel').click(function(){
             $(`#wordbooksPad .words .pad .row0`).before(ele)
             ele.show()
             ele[0].data=element
+            element.dom=ele
         });
 
     }
@@ -2994,6 +3014,10 @@ $('#wordsframe_cancel').click(function(){
                             words.currRows=res.data.rows
                             words.rows.push(...res.data.rows)
                             renderWordbookWords(res.data.rows)
+
+                            page.wordbooks.selected.words={
+                                rows:res.data.rows,
+                            }
                         }
                         if(words.rows.length>0){
                             $('#startRollBtn').show()
@@ -3037,6 +3061,8 @@ $('#wordsframe_cancel').click(function(){
         loadRelatedWords(row.word)
         var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
         page.rollInx = words.rows.indexOf(row)+1
+        $('#wordbooksPad .words .pad .row').css('background-color','unset')
+        $(this).css('background-color','#444')
     })
 
     $('#wordbooksPad .words  .coverTargetTextBtn').click(function(){
@@ -3058,55 +3084,19 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad .words .translation').css('visibility','hidden')
     })
 
+    //////////
     $(`#wordbooksPad .words .pad .row0 .removeBtn`).click(function(e){
-        if(page.wordbooks.selected.templateNo && pagePre.login.userNo != '100000000000'){
-            common.alert('不可编辑系统单词本')
-        }else{
-            var ele = $(this).parents('.row');
-            var row =ele[0].data;
-            var s = page.removeWordsControl['wordbook'+page.wordbooks.selected.no]
-            if(!s || new Date().getTime()-parseInt(s) > 1 * 60 *1000){
-                common.promptLine({
-                    message:'将删除<span style=color:red;font-size:15px>'+row.word+'</span>, 请输入delete以确认移除, 1分钟内不会再次提示.',
-                    manualClose:1,
-                    cancel:function(v,promptEle){
-                        promptEle.remove()
-                    },
-                    confirm:function(v,promptEle){
-                        if(v && v.toLowerCase().trim() == 'delete'){
-                            ws.send(JSON.stringify({
-                                action:9,
-                                wordbookNo:page.wordbooks.selected.no,
-                                word:row.word,
-                                templateNo:page.wordbooks.selected.templateNo
-                            }))
-                            ele.remove()
-                            promptEle.remove()
-                            page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
-                        }else{
-                            common.alert('输入错误')
-                        }
-                    }
-                })
-            }else{
-                common.confirm({
-                    message:'将删除'+row.word+'.',
-                    manualClose:1,
-                    confirm:function(v,promptEle){
-                        ws.send(JSON.stringify({
-                            action:9,
-                            wordbookNo:page.wordbooks.selected.no,
-                            word:row.word,
-                            templateNo:page.wordbooks.selected.templateNo
-                        }))
-                        page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
-                        ele.remove()
-                    }
-                })
-            }
-            e.stopPropagation()
-        }
+        $('#wordDetailPad').show();
+        var row = $(this).parents('.row')[0].data
+        page.wordbooks.selected.words.selected=row
+        $('#wordDetailPad .namePad .value').text(row.word)
+        $('#wordDetailPad .explainPad .value').text(row.translation)
+        $('#wordbooksPad .words .pad .row').css('background-color','unset')
+        $(row.dom).css('background-color','#444')
+        e.stopPropagation()
     })
+
+
 
     function addWordbookWord(wordbook){
         if(wordbook.templateNo && pagePre.login.userNo != '100000000000'){
@@ -3175,10 +3165,10 @@ $('#wordsframe_cancel').click(function(){
     $('#wordbookDetailPad .deleteBtn').click(function(e){
         var row = page.wordbooks.selected;
         common.promptLine({
-            message:'请输入 '+row.name+' 以确认删除.',
+            message:'将删除<span style=color:red;font-size:15px>'+row.name+'</span>, 请输入delete以确认移除.',
             confirm:function(v){
                 if(v){
-                    if(v==row.name){
+                    if(v.toLowerCase().trim() == 'delete'){
                         $.ajax({
                             url: '/mumu/delete-wordbook?',
                             data: {
@@ -3288,6 +3278,7 @@ $('#wordsframe_cancel').click(function(){
                     ele.addClass('row'+row.no)
                     ele.text(row.name)
                     ele[0].data=row
+                    row.dom=ele
                     ele.show();
                     $('#wordbooksPad .wordbooks .row0').before(ele)
 
@@ -4037,7 +4028,29 @@ $('#wordsframe_cancel').click(function(){
             page.closeView=1
             $('#closeViewBtn').attr('src','./img/closeeye.png')
         }
-        guide1()
+
+        historyrecord()
+        restored=0
+        playRestored=0
+        if(page.closeView){
+            $('#video').attr("poster",null)
+            $('#video').css("background-image","url("+video.cover+")")
+            $('#video').css("background-repeat","no-repeat")
+            $('#video').css("background-size","contain")
+            $('#video').css("background-position","center")
+
+            $('#video').attr("src",video.audio16k||video.audio||video.url)
+        }else{
+            $('#video').attr("poster",video.cover)
+            $('#video').attr("src",video.url)
+            $('#video').css("background-image","unset")
+            $('#video').css("background-repeat","unset")
+            $('#video').css("background-size","unset")
+            $('#video').css("background-position","unset")
+        }
+        $('#videobox').css('top','0')
+        $('#video').attr('autoplay',true)
+        playVideo()
     })
     
     $('#changevideoshowtype').click(function(){
@@ -4201,5 +4214,207 @@ $('#wordsframe_cancel').click(function(){
         if(!pagePre.login.fullmember)
             common.alert('抱歉, 体验用户只能浏览少量内容, 请联系管理员免费转正式.')
     },30000)
+
+
+
+
+    $('#wordbookDetailPad .moveup').click(function(){
+        var curr = page.wordbooks.selected;
+        var inx = page.wordbooks.rows.indexOf(curr)
+        var prev1 = page.wordbooks.rows[inx-1]
+        var prev2 = page.wordbooks.rows[inx-2]
+        var orderNum=null
+        if(prev1 && prev2){
+            orderNum=(prev1.orderNum+prev2.orderNum)/2
+        }else if(prev1){
+            orderNum=prev1.orderNum-1
+        }else{
+            orderNum=curr.orderNo
+        }
+        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum},function(res){
+            if(res.code==0){
+                common.changearr(page.wordbooks.rows,inx,inx-1)
+                common.changedom(curr.dom,prev1.dom)
+            }else{
+                common.alert(res.msg)
+            }
+        })
+    })
+    $('#wordbookDetailPad .movereset').click(function(){
+        var curr = page.wordbooks.selected;
+        common.promptLine({
+            message:'将重置所有单词本排序, 请输入know以确认.',
+            manualClose:1,
+            cancel:function(v,promptEle){
+                promptEle.remove()
+            },
+            confirm:function(v,promptEle){
+                if(v && v.toLowerCase().trim() == 'know'){
+                    promptEle.remove()
+                    $.post('/mumu/reset-all-wordbooks-ordernum',{templateNo:curr.templateNo},function(res){
+                        if(res.code==0){
+                            page.wordbooks={
+                                rows:[],
+                                rstart:1,
+                                rcount:50,
+                                currRows:[],
+                                selected:null,
+                            }
+                            $('#wordbooksPad .wordbooks .row').not('.row0').remove()
+                            loadMoreWordbooks()
+                        }else{
+                            common.alert(res.msg)
+                        }
+                    })
+                }else{
+                    common.alert('输入错误')
+                }
+            }
+        })
+    })
+    $('#wordbookDetailPad .movedown').click(function(){
+        var curr = page.wordbooks.selected;
+        var inx = page.wordbooks.rows.indexOf(curr)
+        var next1 = page.wordbooks.rows[inx+1]
+        var next2 = page.wordbooks.rows[inx+2]
+        var orderNum=null
+        if(next1 && next2){
+            orderNum=(next1.orderNum+next2.orderNum)/2
+        }else if(next1){
+            orderNum=next1.orderNum+1
+        }else{
+            orderNum=curr.orderNo
+        }
+        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum},function(res){
+            if(res.code==0){
+                common.changearr(page.wordbooks.rows,inx,inx+1)
+                common.changedom(curr.dom,next1.dom)
+            }else{
+                common.alert(res.msg)
+            }
+        })
+    })
+
+
+
+    $('#wordDetailPad .moveup').click(function(){
+        var wordbook=page.wordbooks.selected
+        var curr = wordbook.words.selected;
+        var inx = wordbook.words.rows.indexOf(curr)
+        var prev1 = wordbook.words.rows[inx-1]
+        var prev2 = wordbook.words.rows[inx-2]
+        var orderNum=null
+        if(prev1 && prev2){
+            orderNum=(prev1.orderNum+prev2.orderNum)/2
+        }else if(prev1){
+            orderNum=prev1.orderNum-1
+        }else{
+            orderNum=curr.orderNo
+        }
+        curr.orderNum=orderNum;
+        ws.send(JSON.stringify({
+            action:8,
+            wordbookNo:wordbook.no,
+            word:curr.word,
+            translation:curr.translation,
+            templateNo:wordbook.templateNo,
+            orderNum:orderNum
+        }))
+        common.changearr(wordbook.words.rows,inx,inx-1)
+        common.changedom(curr.dom,prev1.dom)
+    })
+    $('#wordDetailPad .movereset').click(function(){
+        var wordbook=page.wordbooks.selected
+        var curr = wordbook.words.selected;
+        common.promptLine({
+            message:'将重置所有单词排序, 请输入know以确认.',
+            manualClose:1,
+            cancel:function(v,promptEle){
+                promptEle.remove()
+            },
+            confirm:function(v,promptEle){
+                if(v && v.toLowerCase().trim() == 'know'){
+                    promptEle.remove()
+                    $.post('/mumu/reset-all-wordbook-words-ordernum',{wordbookNo:wordbook.no,templateNo:wordbook.templateNo},function(res){
+                        if(res.code==0){
+                            wordbook.words={
+                                rows:[],
+                                selected:null,
+                            }
+                            page.wordBooksWordsMap['no'+wordbook.no].rows=[]
+                            $(`#wordbooksPad .words .pad .row`).not('.row0').remove()
+                            loadMoreWordbookWords(wordbook.no)
+                        }else{
+                            common.alert(res.msg)
+                        }
+                    })
+                }else{
+                    common.alert('输入错误')
+                }
+            }
+        })
+
+    })
+    $('#wordDetailPad .movedown').click(function(){
+        var wordbook=page.wordbooks.selected
+        var curr = wordbook.words.selected;
+        var inx = wordbook.words.rows.indexOf(curr)
+        var next1 = wordbook.words.rows[inx+1]
+        var next2 = wordbook.words.rows[inx+2]
+        var orderNum=null
+        if(next1 && next2){
+            orderNum=(next1.orderNum+next2.orderNum)/2
+        }else if(next1){
+            orderNum=next1.orderNum+1
+        }else{
+            orderNum=curr.orderNo
+        }
+        curr.orderNum=orderNum;
+        ws.send(JSON.stringify({
+            action:8,
+            wordbookNo:wordbook.no,
+            word:curr.word,
+            translation:curr.translation,
+            templateNo:wordbook.templateNo,
+            orderNum:orderNum
+        }))
+        common.changearr(wordbook.words.rows,inx,inx+1)
+        common.changedom(curr.dom,next1.dom)
+    })
+
+    $('#wordDetailPad .closeBtn').click(function(){
+        $('#wordDetailPad').hide()
+    })
+    $('#wordDetailPad .deleteBtn').click(function(){
+        var wordbook=page.wordbooks.selected
+        var curr = wordbook.words.selected;
+        if(wordbook.templateNo && pagePre.login.userNo != '100000000000'){
+            common.alert('不可编辑系统单词本')
+        }else{
+            common.promptLine({
+                message:'将删除<span style=color:red;font-size:15px>'+curr.word+'</span>, 请输入delete以确认移除.',
+                manualClose:1,
+                cancel:function(v,promptEle){
+                    promptEle.remove()
+                },
+                confirm:function(v,promptEle){
+                    if(v && v.toLowerCase().trim() == 'delete'){
+                        ws.send(JSON.stringify({
+                            action:9,
+                            wordbookNo:wordbook.no,
+                            word:curr.word,
+                            templateNo:wordbook.templateNo
+                        }))
+                        $(curr.dom).remove()
+                        promptEle.remove()
+                        page.removeWordsControl['wordbook'+wordbook.no]=new Date().getTime()
+                    }else{
+                        common.alert('输入错误')
+                    }
+                }
+            })
+        }
+        $('#wordDetailPad').hide()
+    })
 })()
 

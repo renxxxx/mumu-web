@@ -113,9 +113,13 @@
                         position:absolute;bottom:110px;left:50%;transform:translateX(-50%);color:#868686;"
                     onclick="
                         $.post('/mumu/get-logincode',function(res){
-                            var logincode = res.data.logincode;
-                            comm.copy({text:logincode})
-                            comm.alert({title:'登录码',message:logincode,messageclass:'selectable',button:'已复制'})
+                            if(res.code==0){
+                                var logincode = res.data.logincode;
+                                comm.copy({text:logincode})
+                                comm.alert({title:'登录码',message:logincode,messageclass:'selectable',button:'已复制'})
+                            }else{
+                                comm.alert(res.msg)
+                            }
                         })
                     ">
                     获取登录码

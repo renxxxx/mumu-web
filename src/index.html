@@ -40,7 +40,7 @@
                 #video,#video1,#video2,#videobox {
                     height:370px;
                 }
-                #summtrans,#wordsframe,#hints,#videoshasow {
+                #summtrans,#wordsframe,#hints,#videoshasow,#videoshasow1 {
                     height:370px;
                 }
             }
@@ -48,7 +48,7 @@
                 #video,#video1,#video2,#videobox {
                     height:270px;
                 }
-                #summtrans,#wordsframe,#hints,#videoshasow {
+                #summtrans,#wordsframe,#hints,#videoshasow,#videoshasow1 {
                     height:270px;
                 }
             }
@@ -761,6 +761,18 @@
                             修改
                         </span>
                     </div>
+
+                    <div style="width:100%;height:35px;position:absolute;bottom:108px;">
+                        <span class="moveup" style="display:inline-block;width:40%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            上移
+                        </span>
+                        <span class="movereset" style="display:inline-block;width:20%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            重置
+                        </span>
+                        <span class="movedown" style="display:inline-block;width:40%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            下移
+                        </span>
+                    </div>
                     <div class="shareBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:72px;
                         cursor: pointer;">
                         去分享
@@ -857,7 +869,52 @@
                 </div>
             </div>
 
-
+            <div id="wordDetailPad" style="width:100%;position:absolute;top:0;bottom:0;background-color: rgba(0, 0, 0, 0.5);display:none;">
+                <div style="width:80%;min-height:300px;max-height:500px;position:absolute;top:10%;left:50%;transform: translateX(-50%);background-color: #ffffff;">
+                    <div style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;line-height:35px;border-bottom:1px solid #e6e6e6;font-size:15px;text-align: center;">
+                        单词
+                    </div>
+                    <div class="namePad" style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;">
+                        <span class="ellipsis name" style="width:70px;height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                            单词
+                        </span>
+                        <span class="ellipsis value" style="width:calc(100% - 110px);height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                        </span>
+                        <span class="ellipsis editBtn" style="width:40px;height:35px;line-height:35px;font-size: 11px;display:inline-block;text-align: center;cursor: pointer;">
+                            修改
+                        </span>
+                    </div>
+                    <div class="explainPad" style="width:100%;box-sizing: border-box;padding:0 5px;height:35px;">
+                        <span class="ellipsis name" style="width:70px;height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                            释义
+                        </span>
+                        <span class="ellipsis value" style="width:calc(100% - 110px);height:35px;line-height:35px;font-size:15px;display:inline-block;">
+                        </span>
+                        <span class="ellipsis editBtn" style="width:40px;height:35px;line-height:35px;font-size: 11px;display:inline-block;text-align: center;cursor: pointer;">
+                            修改
+                        </span>
+                    </div>
+                    <div style="width:100%;height:35px;position:absolute;bottom:72px;">
+                        <span class="moveup" style="display:inline-block;width:40%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            上移
+                        </span>
+                        <span class="movereset" style="display:inline-block;width:20%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            重置
+                        </span>
+                        <span class="movedown" style="display:inline-block;width:40%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;cursor: pointer;">
+                            下移
+                        </span>
+                    </div>
+                    <div class="deleteBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:36px;
+                        cursor: pointer;">
+                        删 除
+                    </div>
+                    <div class="closeBtn" style="width:100%;text-align: center;height:35px;line-height:35px;font-size:15px;background-color: #adadad;position:absolute;bottom:0;
+                        cursor: pointer;">
+                        关 闭
+                    </div>
+                </div>
+            </div>
 
             <div id="seriesPad" style="position:absolute;bottom:0;height:300px;width:100%;font-size:0;background-color: #000000;display:none;">
                 <div class="seiresName ellipsis" style="width:100%;height:30px;line-height: 30px;font-size: 15px;text-align: center;color:#b3b3b3;
