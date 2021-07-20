@@ -2240,10 +2240,11 @@ $('#video').click(function(){
         $('#chooseLoopVideosCountPad').show()
         clearInterval(page.loopVideoChooseInterval)
         var second  = 2;
-        $('#chooseLoopVideosCountPad .restSecond').text(second)
+        $('#chooseLoopVideosCountPad .restSecond').text(second+'s')
         $('#chooseLoopVideosCountPad .count'+page.loopVideos.count).css('background-color','#9b9b9b')
         page.loopVideoChooseInterval = setInterval(function(){
-            $('#chooseLoopVideosCountPad .restSecond').text(--second)
+            --second;
+            $('#chooseLoopVideosCountPad .restSecond').text(second+'s')
             if(second== 0){
                 clearInterval(page.loopVideoChooseInterval)
                 $('#chooseLoopVideosCountPad').hide()
