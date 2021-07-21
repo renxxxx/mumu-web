@@ -2948,35 +2948,33 @@ $('#wordsframe_cancel').click(function(){
 
     function renderWordbookWords(rows,wordbookNo){
         var words = page.wordbooks.map['no'+wordbookNo].words
-        rows.forEach(element => {
-            var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
-            ele.removeClass('row0')
-            ele.addClass('row'+element.no)
-            ele.find('.word').text(element.word)
-            element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
-            element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
-            if(element.phonetic){
-                ele.find('.phonetic').text('/'+element.phonetic+'/');
-            }else{
-                ele.find('.word').css('width','66.666666%')
-                ele.find('.phonetic').hide();
-            }
-            ele.find('.translation').text(element.translation)
-            $(`#wordbooksPad .words .pad .row0`).before(ele)
-            ele.show()
-            ele[0].data=element
-            element.dom=ele
-        });
-
+        if(rows){
+            rows.forEach(element => {
+                var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
+                ele.removeClass('row0')
+                ele.addClass('row'+element.no)
+                ele.find('.word').text(element.word)
+                element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
+                element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
+                if(element.phonetic){
+                    ele.find('.phonetic').text('/'+element.phonetic+'/');
+                }else{
+                    ele.find('.word').css('width','66.666666%')
+                    ele.find('.phonetic').hide();
+                }
+                ele.find('.translation').text(element.translation)
+                $(`#wordbooksPad .words .pad .row0`).before(ele)
+                ele.show()
+                ele[0].data=element
+                element.dom=ele
+            });
+        }
         if(words.rows.length==0){
             $(`#wordbooksPad .words .pad .someload`).hide()
             $(`#wordbooksPad .words .pad .loadnodata`).show()
-        }else if(words.currRows.length < words.rcount){
-            $(`#wordbooksPad .words .pad .someload`).hide()
-            $(`#wordbooksPad .words .pad .loadend`).show()
         }else{
             $(`#wordbooksPad .words .pad .someload`).hide()
-            $(`#wordbooksPad .words .pad .loadmore`).show()
+            $(`#wordbooksPad .words .pad .loadend`).show()
         }
     }
 
@@ -3001,15 +2999,15 @@ $('#wordsframe_cancel').click(function(){
                 },
                 success:function(res){
                     if(res.code==0){
-                        if(res.data.rows.length>0){
-                            words.currRows=res.data.rows
-                            words.rows.push(...res.data.rows)
-                            renderWordbookWords(res.data.rows,wordbookNo)
-
-                            page.wordbooks.selected.words={
-                                rows:res.data.rows,
-                            }
+                        page.wordbooks.selected.words={
+                            rows:res.data.rows,
+                            currRows:res.data.rows,
+                            rcount:200,
+                            selected:null,
                         }
+                        words.currRows=res.data.rows
+                        words.rows.push(...res.data.rows)
+                        renderWordbookWords(res.data.rows,wordbookNo)
                         if(words.rows.length>0){
                             $('#startRollBtn').show()
                         }else{
@@ -3113,6 +3111,7 @@ $('#wordsframe_cancel').click(function(){
         ele.find('.translation').text(word.translation)
         ele.show()
         ele[0].data=word
+        word.dom=ele
         return ele
     }
 
@@ -3955,35 +3954,53 @@ $('#wordsframe_cancel').click(function(){
             $('#extendSearchPad').hide()
             $('#extendSearchFrame').attr('src',null).hide()
             $('#extendSearchFrame1').attr('src',null).hide()
+            $('#extendSearchFrame2').attr('src',null).hide()
 
             $('#extendSearchPad .bing').css('background-color','unset')
             $('#extendSearchPad .baidu').css('background-color','unset')
+            $('#extendSearchPad .ebay').css('background-color','unset')
         }
     })
     $('#goExtendSearchBtn').click(function(e){
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.currWordText).show()
         $('#extendSearchFrame1').attr('src',null).hide()
+        $('#extendSearchFrame2').attr('src',null).hide()
 
         $('#extendSearchPad .bing').css('background-color','#ffffff')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
-    })
-    $('#extendSearchPad .baidu').click(function(e){
-        $('#extendSearchFrame').hide()
-        $('#extendSearchFrame1').show()
-        $('#extendSearchPad .bing').css('background-color','#cacaca')
-        $('#extendSearchPad .baidu').css('background-color','#ffffff')
-        if(!$('#extendSearchFrame1').attr('src')){
-            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
-        }
+        $('#extendSearchPad .shopee').css('background-color','#cacaca')
     })
     $('#extendSearchPad .bing').click(function(e){
         $('#extendSearchFrame').show()
         $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
         $('#extendSearchPad .bing').css('background-color','#ffffff')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .shopee').css('background-color','#cacaca')
     })
-
+    $('#extendSearchPad .baidu').click(function(e){
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').show()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchPad .bing').css('background-color','#cacaca')
+        $('#extendSearchPad .baidu').css('background-color','#ffffff')
+        $('#extendSearchPad .shopee').css('background-color','#cacaca')
+        if(!$('#extendSearchFrame1').attr('src')){
+            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
+        }
+    })
+    $('#extendSearchPad .shopee').click(function(e){
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').show()
+        $('#extendSearchPad .bing').css('background-color','#cacaca')
+        $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .shopee').css('background-color','#ffffff')
+        if(!$('#extendSearchFrame2').attr('src')){
+            $('#extendSearchFrame2').attr('src','https://shopee.com.my/search?keyword='+page.currWordText)
+        }
+    })
     $('#closeViewBtn').click(function(){
         if(page.closeView){
             page.closeView=0

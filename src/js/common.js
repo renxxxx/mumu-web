@@ -13,6 +13,7 @@ function getUrlParam(name)
        }
        return null;
 }
+comm.urlParam = getUrlParam
 
 
 function trimToBlank(value)
@@ -463,34 +464,30 @@ comm.changedom = function(d1,d2){
   $(d22).remove()
 }
 
-
+//判断元素el是否在box可视区内
 comm.inview = function(box,el) {
-  // viewPortHeight 兼容所有浏览器写法
   if(el instanceof jQuery){
     el=el[0]
   }
   if(box instanceof jQuery){
     box=box[0]
   }
-  var inup = box.scrollTop > (el.offsetTop+el.clientHeight)
-  var indown = (box.scrollTop+box.clientHeight)<(el.offsetTop);
-  return !inup && !indown;
+  //是否超过顶部
+  var overtop = box.scrollTop > (el.offsetTop+el.clientHeight)
+  //是否低于底部
+  var overbottom = (box.scrollTop+box.clientHeight)<(el.offsetTop);
+  //不超过顶部也不低于底部说明在可视区
+  return !overtop && !overbottom;
 }
 
+//返回一组元素els中哪些在box可视区
 comm.whichinview = function(box,els) {
-  // viewPortHeight 兼容所有浏览器写法
-  if(box instanceof jQuery){
-    box=box[0]
-  }
-  var invieweles=[]
+  var inviewEles=[]
   for (var i=0;i<els.length;i++) {
-       el = els[i];
-      if(el instanceof jQuery){
-        el=el[0]
-      }
+      var el = els[i];
       if(comm.inview(box,el)){
-        invieweles.push(el)
+        inviewEles.push(el)
       }
   }
-  return invieweles
+  return inviewEles
 }
