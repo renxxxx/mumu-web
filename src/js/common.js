@@ -63,7 +63,7 @@ function isBlank(value)
           return false
 }
 
-if(moment){
+if(window.moment){
   moment.prototype.format1=function(pattern){
     if(this.isValid())
       return this.format(pattern)
@@ -461,4 +461,36 @@ comm.changedom = function(d1,d2){
 
   $(d11).remove()
   $(d22).remove()
+}
+
+
+comm.inview = function(box,el) {
+  // viewPortHeight 兼容所有浏览器写法
+  if(el instanceof jQuery){
+    el=el[0]
+  }
+  if(box instanceof jQuery){
+    box=box[0]
+  }
+  var inup = box.scrollTop > (el.offsetTop+el.clientHeight)
+  var indown = (box.scrollTop+box.clientHeight)<(el.offsetTop);
+  return !inup && !indown;
+}
+
+comm.whichinview = function(box,els) {
+  // viewPortHeight 兼容所有浏览器写法
+  if(box instanceof jQuery){
+    box=box[0]
+  }
+  var invieweles=[]
+  for (var i=0;i<els.length;i++) {
+       el = els[i];
+      if(el instanceof jQuery){
+        el=el[0]
+      }
+      if(comm.inview(box,el)){
+        invieweles.push(el)
+      }
+  }
+  return invieweles
 }

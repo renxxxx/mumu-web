@@ -25,6 +25,7 @@
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.js" type="application/javascript"></script>
         <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/imageviewer/1.1.0/viewer.css" type="text/css" rel="stylesheet" />
+        <script src="./js/common.js" type="application/javascript"></script>
         <script src="./config.js" type="application/javascript"></script>
         <script src="./js/log.js" type="application/javascript"></script>
         <script src="./js/page-pre.js" type="application/javascript"></script>
@@ -198,7 +199,7 @@
 
 
         function coverin1(item,ele){
-            if(nowvideoele == ele){
+            if($(nowvideoele)[0] == $(ele)[0]){
                 $(ele).find('.cover')[0].playbackRate=5
             }else{
                 $(nowvideoele).find('.cover')[0].pause()
@@ -233,7 +234,7 @@
         }
 
         function coverout1(item,ele){
-            if(nowvideoele == ele){
+            if($(nowvideoele)[0] == $(ele)[0]){
                 $(ele).find('.cover')[0].playbackRate=1
             }else{
                 $(nowvideoele).find('.cover')[0].play()
@@ -259,7 +260,6 @@
                 data: 'kw='+''+'&rstart='+1+'&rcount='+30,
                 async: true,
                 success: function(res) {
-                    var activeindex = Math.round(Math.random()*7);
                     $(res.data.videos).each((inx,item)=>{
                         _this.videoList.push(item)
                         var videoele = $('#videotemplate').clone(true)
@@ -292,14 +292,16 @@
                         videoele[0].data=item
                         $('.videoList').append(videoele)
 
-                        if(activeindex == inx){
-                            nowvideoele = videoele;
-                            videoele.find('.cover').attr('src',item.url)
-                            videoele.find('.cover')[0].playbackRate=1
-                            videoele.find('.cover')[0].play()
-                        }
                     })
-                    console.log(_this.videoList)
+
+                    if(!nowvideoele){
+                        var doms = comm.whichinview($('.videoList'),$('.videoList>a'))
+                        var activeindex = Math.round(Math.random()*(doms.length-1));
+                        nowvideoele = doms[activeindex]
+                        $(nowvideoele).find('.cover').attr('src',$(nowvideoele)[0].data.url)
+                        $(nowvideoele).find('.cover')[0].playbackRate=1
+                        $(nowvideoele).find('.cover')[0].play()
+                    }
                 }
             })
         }
@@ -426,6 +428,20 @@
             this.touchendX=null
             this.touchendY=null
         })
+
+        $('.videoList').scroll(function(){
+            if(!comm.inview($('.videoList'),nowvideoele)){
+                $(nowvideoele).find('.cover')[0].pause()
+                $(nowvideoele).find('.cover')[0].playbackRate=1
+                $(nowvideoele).find('.cover').attr('src',"")
+                var doms = comm.whichinview($('.videoList'),$('.videoList>a'))
+                var activeindex = Math.round(Math.random()*(doms.length-1));
+                nowvideoele = doms[activeindex]
+                $(nowvideoele).find('.cover').attr('src',$(nowvideoele)[0].data.url)
+                $(nowvideoele).find('.cover')[0].play()
+            }
+        })
+
     </script>
     <script src="./js/page-post.js" type="application/javascript"></script>
 
