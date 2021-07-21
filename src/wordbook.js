@@ -5,6 +5,8 @@
     page.wordbookNo=getUrlParam('wordbookNo')
     page.templateNo=getUrlParam('templateNo')
     page.wordbook=null
+    page.extendword=null
+    page.rollword=null
     page.words={
         rcount:200,
         rows:[],
@@ -67,14 +69,26 @@
         })
     }
 
+    $('#rollShowWordsPad .word').click(function(){
+        page.extendword=page.rollword.word
+        $('#extendSearchPad').show()
+        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
+        $('#extendSearchFrame1').attr('src',null).hide()
+        $('#extendSearchFrame2').attr('src',null).hide()
+
+        $('#extendSearchPad .bing').css('background-color','#ffffff')
+        $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+    })
     $(`.rowspad .row0`).click(function(){
         $('.rowspad .row').css('background-color','unset')
         $(this).css('background-color','#444')
 
         page.words.select=this.data;
         page.rollInx=page.words.rows.indexOf(page.words.select)+1
+        page.extendword=page.words.select.word
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.words.select.word).show()
+        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
 
@@ -112,7 +126,7 @@
         $('#extendSearchPad .baidu').css('background-color','#ffffff')
         $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
-            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.words.select.word)
+            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.extendword)
         }
     })
     $('#extendSearchPad .aliexpress').click(function(e){
@@ -123,7 +137,7 @@
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
         $('#extendSearchPad .aliexpress').css('background-color','#ffffff')
         if(!$('#extendSearchFrame2').attr('src')){
-            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.words.select.word+'.html?osf=direct')
+            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.extendword+'.html?osf=direct')
         }
     })
 
@@ -259,7 +273,7 @@
             wordsRoll(page.rollInx)
             return;
         }
-
+        page.rollword=word
         word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
         if(!word.speakUrl)
             $.ajax({
