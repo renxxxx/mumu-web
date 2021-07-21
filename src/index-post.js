@@ -37,6 +37,7 @@
         rcount:50,
         currRows:[],
         selected:null,
+        map:{},
     }
     page.wordbooksOnAdd={
         rows:[],
@@ -45,7 +46,6 @@
         selected:null,
     }
     page.currWord=null
-    page.wordBooksWordsMap={}
     page.removeWordsControl={
         favor:null,
         history:null,
@@ -688,17 +688,17 @@ $('#video').click(function(){
     function monitor(_time){
         $('#loading').hide()
         $('#progressbar .slider').css('width',(videoele.currentTime/videoele.duration*100)+'%')
-        // if($('#video')[0].duration-$('#video')[0].currentTime<3){
-        //     if($('#chooseDifficultyPad').is(':hidden')){
-        //         $('#chooseDifficultyPad .e').css('background-color','#ffffff');
-        //         $('#chooseDifficultyPad').fadeIn(300)
-        //     }
-        // }else{
-        //     if(!$('#chooseDifficultyPad').is(':hidden')){
-        //         $('#chooseDifficultyPad').hide()
-        //         $('#chooseDifficultyPad .e').css('background-color','#ffffff');
-        //     }
-        // }
+        if($('#video')[0].duration-$('#video')[0].currentTime<3){
+            if($('#chooseDifficultyPad').is(':hidden')){
+                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+                $('#chooseDifficultyPad').fadeIn(300)
+            }
+        }else{
+            if(!$('#chooseDifficultyPad').is(':hidden')){
+                $('#chooseDifficultyPad').hide()
+                $('#chooseDifficultyPad .e').css('background-color','#ffffff');
+            }
+        }
 
         if(jumpedcaption){
             if(jumpedcaption.startTime < _time){
@@ -2877,7 +2877,7 @@ $('#wordsframe_cancel').click(function(){
                                 var row={
                                     no:res.data.no,
                                     name:v,
-                                    templateNo:res.data.tno
+                                    templateNo:res.data.templateNo
                                 }
                                 var ele = $('#wordbooksPad .wordbooks .row0').clone(true)
                                 ele.removeClass('row0')
@@ -2923,7 +2923,7 @@ $('#wordsframe_cancel').click(function(){
             ajax.abort()
         }
 
-        var words = page.wordBooksWordsMap['no'+wordbookNo];
+        var words = page.wordbooks.map['no'+wordbookNo].words;
         if(!words){
             words={
                 rows:[],
@@ -2931,7 +2931,7 @@ $('#wordsframe_cancel').click(function(){
                 rcount:50,
                 selected:null,
             }
-            page.wordBooksWordsMap['no'+wordbookNo]=words
+            page.wordbooks.map['no'+wordbookNo].words=words
         }
         $(`#wordbooksPad .words .pad .someload`).hide()
         $(`#wordbooksPad .words .pad .loadmore`).show()
@@ -2940,23 +2940,14 @@ $('#wordsframe_cancel').click(function(){
         if(words.rows.length==0)
             loadMoreWordbookWords(wordbookNo);
         else{
-            if(words.rows.length==0){
-                $(`#wordbooksPad .words .pad .someload`).hide()
-                $(`#wordbooksPad .words .pad .loadnodata`).show()
-            }else if(words.currRows.length < words.rcount){
-                $(`#wordbooksPad .words .pad .someload`).hide()
-                $(`#wordbooksPad .words .pad .loadend`).show()
-            }else{
-                $(`#wordbooksPad .words .pad .someload`).hide()
-                $(`#wordbooksPad .words .pad .loadmore`).show()
-            }
-            renderWordbookWords(words.rows)
+            renderWordbookWords(words.rows,wordbookNo)
             $('#startRollBtn').show()
         }
         
     }
 
-    function renderWordbookWords(rows){
+    function renderWordbookWords(rows,wordbookNo){
+        var words = page.wordbooks.map['no'+wordbookNo].words
         rows.forEach(element => {
             var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
             ele.removeClass('row0')
@@ -2977,10 +2968,20 @@ $('#wordsframe_cancel').click(function(){
             element.dom=ele
         });
 
+        if(words.rows.length==0){
+            $(`#wordbooksPad .words .pad .someload`).hide()
+            $(`#wordbooksPad .words .pad .loadnodata`).show()
+        }else if(words.currRows.length < words.rcount){
+            $(`#wordbooksPad .words .pad .someload`).hide()
+            $(`#wordbooksPad .words .pad .loadend`).show()
+        }else{
+            $(`#wordbooksPad .words .pad .someload`).hide()
+            $(`#wordbooksPad .words .pad .loadmore`).show()
+        }
     }
 
     function loadMoreWordbookWords(wordbookNo){
-        var words = page.wordBooksWordsMap['no'+wordbookNo];
+        var words = page.wordbooks.map['no'+wordbookNo].words;
         var rstart = words.rows.length+1
         var rcount = words.rcount
         for (const ajax of page.wordbookWordsAjaxs) {
@@ -3000,20 +3001,10 @@ $('#wordsframe_cancel').click(function(){
                 },
                 success:function(res){
                     if(res.code==0){
-                        if(rstart==1 && res.data.rows.length==0){
-                            $(`#wordbooksPad .words .pad .someload`).hide()
-                            $(`#wordbooksPad .words .pad .loadnodata`).show()
-                        }else if(res.data.rows.length <rcount){
-                            $(`#wordbooksPad .words .pad .someload`).hide()
-                            $(`#wordbooksPad .words .pad .loadend`).show()
-                        }else{
-                            $(`#wordbooksPad .words .pad .someload`).hide()
-                            $(`#wordbooksPad .words .pad .loadmore`).show()
-                        }
                         if(res.data.rows.length>0){
                             words.currRows=res.data.rows
                             words.rows.push(...res.data.rows)
-                            renderWordbookWords(res.data.rows)
+                            renderWordbookWords(res.data.rows,wordbookNo)
 
                             page.wordbooks.selected.words={
                                 rows:res.data.rows,
@@ -3030,36 +3021,11 @@ $('#wordsframe_cancel').click(function(){
         )
     }
 
-    // function chooseWordbook(wordbookNo){
-    //     var wordsPad = $('#wordbooksPad .words .pad'+wordbookNo);
-    //     if(wordsPad.length==1){
-    //         $('#wordbooksPad .words .pad').hide()
-    //         wordsPad.show()
-    //     }else{
-    //         var ele = $('#wordbooksPad .words .pad0').clone(true)
-    //         ele.removeClass('pad0').addClass('pad'+wordbookNo);
-    //         $('#wordbooksPad .words .pad0').before(ele)
-    //         $('#wordbooksPad .words .pad').hide()
-    //         ele.show()
-
-    //         var words = page.wordBooksWordsMap['no'+wordbookNo];
-    //         if(!words){
-    //             words={
-    //                 rows:[],
-    //                 currRows:[],
-    //                 rcount:50,
-    //                 selected:null,
-    //             }
-    //             page.wordBooksWordsMap['no'+wordbookNo]=words
-    //         }
-    //         loadMoreWordbookWords(wordbookNo);
-    //     }
-    // }
     $(`#wordbooksPad .words .pad .row0`).click(function(){
         var row = this.data;
         translatee(row.word)
         loadRelatedWords(row.word)
-        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        var words = page.wordbooks.selected.words
         page.rollInx = words.rows.indexOf(row)+1
         $('#wordbooksPad .words .pad .row').css('background-color','unset')
         $(this).css('background-color','#444')
@@ -3131,7 +3097,8 @@ $('#wordsframe_cancel').click(function(){
             phonetic:page.currWord.phonetic,
             no:randomnum(12)
         }
-        var words = page.wordBooksWordsMap['no'+wordbookNo];
+
+        var words = page.wordbooks.map['no'+wordbookNo].words
         words.rows.splice(0,0,word)
         var ele = $(`#wordbooksPad .words .pad .row0`).clone(true);
         ele.removeClass('row0')
@@ -3282,15 +3249,12 @@ $('#wordsframe_cancel').click(function(){
                     ele.show();
                     $('#wordbooksPad .wordbooks .row0').before(ele)
 
-                    var words = page.wordBooksWordsMap['no'+row.no];
-                    if(!words){
-                        words={
-                            rows:[],
-                            currRows:[],
-                            rcount:200,
-                            selected:null,
-                        }
-                        page.wordBooksWordsMap['no'+row.no]=words
+                    page.wordbooks.map['no'+row.no]=row
+                    row.words={
+                        rows:[],
+                        currRows:[],
+                        rcount:200,
+                        selected:null,
                     }
                 })
 
@@ -3432,7 +3396,7 @@ $('#wordsframe_cancel').click(function(){
                     wrap.remove()
                     page.favoredWords.rows.splice(page.favoredWords.rows.indexOf(row),4)
                     page.favoredWords.currRows.splice(page.favoredWords.currRows.indexOf(row),4)
-                    page.removeWordsControl['wordbook'+page.wordbooks.selected.no]=new Date().getTime()
+                    page.removeWordsControl['favor']=new Date().getTime()
                 }
             })
         }
@@ -3616,7 +3580,7 @@ $('#wordsframe_cancel').click(function(){
             $('#wordbooksPad').show()
 
             if(page.wordbooks.selected){
-                var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+                var words = page.wordbooks.selected.words
                 if(words.rows.length>0){
                     $('#startRollBtn').show()
                 }
@@ -3828,7 +3792,7 @@ $('#wordsframe_cancel').click(function(){
     })
 
     $('#rollShowWordsPad .word').click(function(){
-        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        var words = page.wordbooks.selected.words
         var word = words.rows[page.rollInx-1]
         translatee(word.word)
         loadRelatedWords(word.word)
@@ -3855,7 +3819,7 @@ $('#wordsframe_cancel').click(function(){
         page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
         clearTimeout(page.readRollWordTimeout)
-        var words = page.wordBooksWordsMap['no'+page.wordbooks.selected.no]
+        var words = page.wordbooks.selected.words
         if(words.rows.length==0)
             return;
         var word = words.rows[rollInx-1]
@@ -4339,9 +4303,11 @@ $('#wordsframe_cancel').click(function(){
                         if(res.code==0){
                             wordbook.words={
                                 rows:[],
+                                currRows:[],
+                                rcount:200,
                                 selected:null,
                             }
-                            page.wordBooksWordsMap['no'+wordbook.no].rows=[]
+                            page.wordbooks.map['no'+wordbook.no].words.rows=[]
                             $(`#wordbooksPad .words .pad .row`).not('.row0').remove()
                             loadMoreWordbookWords(wordbook.no)
                         }else{
@@ -4405,9 +4371,9 @@ $('#wordsframe_cancel').click(function(){
                             word:curr.word,
                             templateNo:wordbook.templateNo
                         }))
+                        wordbook.words.rows.splice(wordbook.words.rows.indexOf(curr),1)
                         $(curr.dom).remove()
                         promptEle.remove()
-                        page.removeWordsControl['wordbook'+wordbook.no]=new Date().getTime()
                     }else{
                         common.alert('输入错误')
                     }
