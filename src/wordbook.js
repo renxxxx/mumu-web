@@ -68,14 +68,19 @@
     }
 
     $(`.rowspad .row0`).click(function(){
+        $('.rowspad .row').css('background-color','unset')
+        $(this).css('background-color','#444')
+
         page.words.select=this.data;
         page.rollInx=page.words.rows.indexOf(page.words.select)+1
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.words.select.word).show()
         $('#extendSearchFrame1').attr('src',null).hide()
+        $('#extendSearchFrame2').attr('src',null).hide()
 
         $('#extendSearchPad .bing').css('background-color','#ffffff')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
     })
 
     $('#extendSearchPad').click(function(e){
@@ -83,25 +88,43 @@
             $('#extendSearchPad').hide()
             $('#extendSearchFrame').attr('src',null).hide()
             $('#extendSearchFrame1').attr('src',null).hide()
+            $('#extendSearchFrame2').attr('src',null).hide()
 
             $('#extendSearchPad .bing').css('background-color','unset')
             $('#extendSearchPad .baidu').css('background-color','unset')
+            $('#extendSearchPad .ebay').css('background-color','unset')
         }
+    })
+
+    $('#extendSearchPad .bing').click(function(e){
+        $('#extendSearchFrame').show()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchPad .bing').css('background-color','#ffffff')
+        $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
     })
     $('#extendSearchPad .baidu').click(function(e){
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').show()
+        $('#extendSearchFrame2').hide()
         $('#extendSearchPad .bing').css('background-color','#cacaca')
         $('#extendSearchPad .baidu').css('background-color','#ffffff')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
             $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.words.select.word)
         }
     })
-    $('#extendSearchPad .bing').click(function(e){
-        $('#extendSearchFrame').show()
+    $('#extendSearchPad .aliexpress').click(function(e){
+        $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
+        $('#extendSearchFrame2').show()
+        $('#extendSearchPad .bing').css('background-color','#cacaca')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#ffffff')
+        if(!$('#extendSearchFrame2').attr('src')){
+            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.words.select.word+'.html?osf=direct')
+        }
     })
 
     $('.coverTargetTextBtn').click(function(){

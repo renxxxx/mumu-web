@@ -3969,7 +3969,7 @@ $('#wordsframe_cancel').click(function(){
 
         $('#extendSearchPad .bing').css('background-color','#ffffff')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .shopee').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
     })
     $('#extendSearchPad .bing').click(function(e){
         $('#extendSearchFrame').show()
@@ -3977,7 +3977,7 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchFrame2').hide()
         $('#extendSearchPad .bing').css('background-color','#ffffff')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .shopee').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
     })
     $('#extendSearchPad .baidu').click(function(e){
         $('#extendSearchFrame').hide()
@@ -3985,20 +3985,20 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchFrame2').hide()
         $('#extendSearchPad .bing').css('background-color','#cacaca')
         $('#extendSearchPad .baidu').css('background-color','#ffffff')
-        $('#extendSearchPad .shopee').css('background-color','#cacaca')
+        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
             $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
         }
     })
-    $('#extendSearchPad .shopee').click(function(e){
+    $('#extendSearchPad .aliexpress').click(function(e){
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').show()
         $('#extendSearchPad .bing').css('background-color','#cacaca')
         $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .shopee').css('background-color','#ffffff')
+        $('#extendSearchPad .aliexpress').css('background-color','#ffffff')
         if(!$('#extendSearchFrame2').attr('src')){
-            $('#extendSearchFrame2').attr('src','https://shopee.com.my/search?keyword='+page.currWordText)
+            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.currWordText+'.html?osf=direct')
         }
     })
     $('#closeViewBtn').click(function(){
