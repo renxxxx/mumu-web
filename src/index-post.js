@@ -2894,6 +2894,15 @@ $('#wordsframe_cancel').click(function(){
                                 $('#wordbooksPadOnAdd .row0').before(ele1)
                                 ele1.show()
                                 ele1[0].data=row
+
+                                page.wordbooks.rows.push(row)
+                                page.wordbooks.map['no'+row.no]=row
+                                row.words={
+                                    rows:[],
+                                    currRows:[],
+                                    rcount:200,
+                                    selected:null,
+                                }
                             }else{
                                 common.alert(res.msg)
                             }
@@ -3125,7 +3134,7 @@ $('#wordsframe_cancel').click(function(){
 
     $('#wordbookDetailPad .shareBtn').click(function(e){
         var row = page.wordbooks.selected;
-        location.href='./wordbook.html?wordbookNo='+row.no+'&templateNo='+row.templateNo
+        location.href='./wordbook.html?wordbookNo='+ttb(row.no)+'&templateNo='+ttb(row.templateNo)
     })
 
     $('#wordbookDetailPad .deleteBtn').click(function(e){
@@ -3955,10 +3964,14 @@ $('#wordsframe_cancel').click(function(){
             $('#extendSearchFrame').attr('src',null).hide()
             $('#extendSearchFrame1').attr('src',null).hide()
             $('#extendSearchFrame2').attr('src',null).hide()
+            $('#extendSearchFrame3').attr('src',null).hide()
+            $('#extendSearchFrame4').attr('src',null).hide()
 
-            $('#extendSearchPad .bing').css('background-color','unset')
-            $('#extendSearchPad .baidu').css('background-color','unset')
-            $('#extendSearchPad .ebay').css('background-color','unset')
+            $('#extendSearchPad .g').css('background-color','unset')
+            $('#extendSearchPad .g1').css('background-color','unset')
+            $('#extendSearchPad .g2').css('background-color','unset')
+            $('#extendSearchPad .g3').css('background-color','unset')
+            $('#extendSearchPad .g4').css('background-color','unset')
         }
     })
     $('#goExtendSearchBtn').click(function(e){
@@ -3966,39 +3979,85 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.currWordText).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
+        $('#extendSearchFrame3').attr('src',null).hide()
+        $('#extendSearchFrame4').attr('src',null).hide()
 
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchPad .g').css('background-color','#ffffff')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
-    $('#extendSearchPad .bing').click(function(e){
+    $('#extendSearchPad .g').click(function(e){
         $('#extendSearchFrame').show()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').hide()
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#ffffff')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
-    $('#extendSearchPad .baidu').click(function(e){
+    $('#extendSearchPad .g1').click(function(e){
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').show()
         $('#extendSearchFrame2').hide()
-        $('#extendSearchPad .bing').css('background-color','#cacaca')
-        $('#extendSearchPad .baidu').css('background-color','#ffffff')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#ffffff')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
             $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
         }
     })
-    $('#extendSearchPad .aliexpress').click(function(e){
+    $('#extendSearchPad .g2').click(function(e){
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').show()
-        $('#extendSearchPad .bing').css('background-color','#cacaca')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#ffffff')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#ffffff')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame2').attr('src')){
             $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.currWordText+'.html?osf=direct')
+        }
+    })
+    $('#extendSearchPad .g3').click(function(e){
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchFrame3').show()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#ffffff')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
+        if(!$('#extendSearchFrame3').attr('src')){
+            $('#extendSearchFrame3').attr('src','https://www.merriam-webster.com/dictionary/'+page.currWordText)
+        }
+    })
+    $('#extendSearchPad .g4').click(function(e){
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').show()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#ffffff')
+        if(!$('#extendSearchFrame4').attr('src')){
+            $('#extendSearchFrame4').attr('src','https://m.youdao.com/dict?q='+page.currWordText)
         }
     })
     $('#closeViewBtn').click(function(){

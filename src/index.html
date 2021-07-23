@@ -103,16 +103,16 @@
             <!-- 视频块 -->
             <div id="videobox" style="overflow:hidden;position:relative;top:-1000px;">
                 <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
-                    style="display: block;position: absolute;top:0;object-fit:contain;background-color: #000000;">
+                    style="display: block;position: absolute;top:0;object-fit:cover;background-color: #000000;">
                 </video>
                 <div id="progressbar" style="width:100%;height:1px;position:absolute;bottom:0;background-color: #000000;">
                     <div class="slider" style="height:1px;width:0;background-color: rgb(119, 119, 119);"></div>
                 </div>
                 <img id="video2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAASSURBVBhXYwCC/1gwlQUZ/gMA9qoY6CSlL48AAAAASUVORK5CYII="
-                    style="display: block;position: absolute;top:0;left:-100%;;object-fit:contain;background-color: #000000;width:100%;"
+                    style="display: block;position: absolute;top:0;left:-100%;;object-fit:cover;background-color: #000000;width:100%;"
                 />
                 <img id="video1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAASSURBVBhXYwCC/1gwlQUZ/gMA9qoY6CSlL48AAAAASUVORK5CYII="
-                    style="display: block;position: absolute;top:0;left:100%;;object-fit:contain;background-color: #000000;width:100%;"
+                    style="display: block;position: absolute;top:0;left:100%;;object-fit:cover;background-color: #000000;width:100%;"
                 />
                 <svg id="searchpadbtn" style="position:absolute;right:0;top:0;opacity: 0.8;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="30" height="30"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>
                 <img id="changevideoshowtype" style="width:25px;height:25px;position:absolute;right:0;bottom:35px;cursor: pointer;opacity: 0.7;padding:2.5px;"
@@ -831,19 +831,27 @@
 
             <div id="extendSearchPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">
                 <div style="height:40px;background-color:#ffffff;">
-                    <span class="bing" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:33.3333333%;text-align: center;cursor: pointer;">
+                    <span class="g ellipsis" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:20%;text-align: center;cursor: pointer;">
                         Bing
                     </span>
-                    <span class="baidu" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:33.3333333%;text-align: center;cursor: pointer;">
+                    <span class="g1 ellipsis" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:20%;text-align: center;cursor: pointer;">
                         百度
                     </span>
-                    <span class="aliexpress" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:33.3333333%;text-align: center;cursor: pointer;">
+                    <span class="g2 ellipsis" style="font-size:14px;display:inline-block;height:40px;line-height: 40px;width:20%;text-align: center;cursor: pointer;">
                         全球速卖通
                     </span>
+                    <span class="g3 ellipsis" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:20%;text-align: center;cursor: pointer;">
+                        韦氏
+                    </span>
+                    <span class="g4 ellipsis" style="font-size:16px;display:inline-block;height:40px;line-height: 40px;width:20%;text-align: center;cursor: pointer;">
+                        有道
+                    </span>
                 </div>
-                <iframe id="extendSearchFrame"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;"></iframe>
-                <iframe id="extendSearchFrame1"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;"></iframe>
-                <iframe id="extendSearchFrame2"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;"></iframe>
+                <iframe id="extendSearchFrame"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;background: #ffffff;"></iframe>
+                <iframe id="extendSearchFrame1"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;background: #ffffff;"></iframe>
+                <iframe id="extendSearchFrame2"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;background: #ffffff;"></iframe>
+                <iframe id="extendSearchFrame3"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;background: #ffffff;"></iframe>
+                <iframe id="extendSearchFrame4"  style="width:100%;height:80%;box-sizing: border-box;border: none;display:none;background: #ffffff;"></iframe>
             </div>
 
             <div id="rollShowWordsPad" style="width:100%;height:100%;position:absolute;top:0;background-color: rgba(0, 0, 0, 0.8);display:none;">

@@ -19,7 +19,7 @@
         console.log(content)
         log.logs.push(content)
         localStorage.setItem(config.project+'-logs',JSON.stringify(log.logs))
-        if(log.logs.length>=100)
+        if(log.logs.length>=10)
             log.flush()
     }
 

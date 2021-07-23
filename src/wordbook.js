@@ -2,8 +2,8 @@
 (function(){
     var page = {}
     window.page=page
-    page.wordbookNo=getUrlParam('wordbookNo')
-    page.templateNo=getUrlParam('templateNo')
+    page.wordbookNo=ttb(getUrlParam('wordbookNo'))
+    page.templateNo=ttb(getUrlParam('templateNo'))
     page.wordbook=null
     page.extendword=null
     page.rollword=null
@@ -14,7 +14,7 @@
         map:{},
         select:null,
     }
-    loadMoreWordbookWords(page.templateNo)
+    loadMoreWordbookWords()
 
     setTimeout(function(){
         $('#logo').hide()
@@ -26,14 +26,14 @@
 
 
 
-    function loadMoreWordbookWords(wordbookNo){
+    function loadMoreWordbookWords(){
         var rstart = page.words.rows.length+1
         var rcount = page.words.rcount
         $.ajax({
             url: '/mumu/template-wordbook-words?',
             data: {
-                wordbookNo:wordbookNo,
-                templateNo:wordbookNo,
+                wordbookNo:page.wordbookNo,
+                templateNo:page.templateNo,
                 rstart:rstart,
                 rcount:rcount,
                 getWordbook:1,
@@ -70,17 +70,23 @@
     }
 
     $('#rollShowWordsPad .word').click(function(){
+        log.info(`$('#rollShowWordsPad .word').click`)
         page.extendword=page.rollword.word
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
+        $('#extendSearchFrame3').attr('src',null).hide()
+        $('#extendSearchFrame4').attr('src',null).hide()
 
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchPad .g').css('background-color','#ffffff')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
     $(`.rowspad .row0`).click(function(){
+        log.info(`$('.rowspad .row0').click`)
         $('.rowspad .row').css('background-color','unset')
         $(this).css('background-color','#444')
 
@@ -91,69 +97,128 @@
         $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
+        $('#extendSearchFrame3').attr('src',null).hide()
+        $('#extendSearchFrame4').attr('src',null).hide()
 
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchPad .g').css('background-color','#ffffff')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
 
     $('#extendSearchPad').click(function(e){
+        log.info(`$('#extendSearchPad').click`)
         if(this==e.target){
             $('#extendSearchPad').hide()
             $('#extendSearchFrame').attr('src',null).hide()
             $('#extendSearchFrame1').attr('src',null).hide()
             $('#extendSearchFrame2').attr('src',null).hide()
+            $('#extendSearchFrame3').attr('src',null).hide()
+            $('#extendSearchFrame4').attr('src',null).hide()
 
-            $('#extendSearchPad .bing').css('background-color','unset')
-            $('#extendSearchPad .baidu').css('background-color','unset')
-            $('#extendSearchPad .ebay').css('background-color','unset')
+            $('#extendSearchPad .g').css('background-color','unset')
+            $('#extendSearchPad .g1').css('background-color','unset')
+            $('#extendSearchPad .g2').css('background-color','unset')
+            $('#extendSearchPad .g3').css('background-color','unset')
+            $('#extendSearchPad .g4').css('background-color','unset')
         }
     })
 
-    $('#extendSearchPad .bing').click(function(e){
+    $('#extendSearchPad .g').click(function(e){
+        log.info(`$('#extendSearchPad .g').click`)
         $('#extendSearchFrame').show()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').hide()
-        $('#extendSearchPad .bing').css('background-color','#ffffff')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#ffffff')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
-    $('#extendSearchPad .baidu').click(function(e){
+    $('#extendSearchPad .g1').click(function(e){
+        log.info(`$('#extendSearchPad .g1').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').show()
         $('#extendSearchFrame2').hide()
-        $('#extendSearchPad .bing').css('background-color','#cacaca')
-        $('#extendSearchPad .baidu').css('background-color','#ffffff')
-        $('#extendSearchPad .aliexpress').css('background-color','#cacaca')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#ffffff')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
             $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.extendword)
         }
     })
-    $('#extendSearchPad .aliexpress').click(function(e){
+    $('#extendSearchPad .g2').click(function(e){
+        log.info(`$('#extendSearchPad .g2').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').show()
-        $('#extendSearchPad .bing').css('background-color','#cacaca')
-        $('#extendSearchPad .baidu').css('background-color','#cacaca')
-        $('#extendSearchPad .aliexpress').css('background-color','#ffffff')
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#ffffff')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame2').attr('src')){
             $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.extendword+'.html?osf=direct')
         }
     })
+    $('#extendSearchPad .g3').click(function(e){
+        log.info(`$('#extendSearchPad .g3').click`)
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchFrame3').show()
+        $('#extendSearchFrame4').hide()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#ffffff')
+        $('#extendSearchPad .g4').css('background-color','#cacaca')
+        if(!$('#extendSearchFrame3').attr('src')){
+            $('#extendSearchFrame3').attr('src','https://www.merriam-webster.com/dictionary/'+page.extendword)
+        }
+    })
 
+    $('#extendSearchPad .g4').click(function(e){
+        log.info(`$('#extendSearchPad .g4').click`)
+        $('#extendSearchFrame').hide()
+        $('#extendSearchFrame1').hide()
+        $('#extendSearchFrame2').hide()
+        $('#extendSearchFrame3').hide()
+        $('#extendSearchFrame4').show()
+        $('#extendSearchPad .g').css('background-color','#cacaca')
+        $('#extendSearchPad .g1').css('background-color','#cacaca')
+        $('#extendSearchPad .g2').css('background-color','#cacaca')
+        $('#extendSearchPad .g3').css('background-color','#cacaca')
+        $('#extendSearchPad .g4').css('background-color','#ffffff')
+        if(!$('#extendSearchFrame4').attr('src')){
+            $('#extendSearchFrame4').attr('src','https://m.youdao.com/dict?q='+page.extendword)
+        }
+    })
     $('.coverTargetTextBtn').click(function(){
+        log.info(`$('.coverTargetTextBtn').click`)
         if($('.word').css('visibility')=='hidden')
             $('.word').css('visibility','visible')
         else
             $('.word').css('visibility','hidden')
     })
     $('.coverPhoneticTextBtn').click(function(){
+        log.info(`$('.coverPhoneticTextBtn').click`)
         if($('.phonetic').css('visibility')=='hidden')
             $('.phonetic').css('visibility','visible')
         else
             $('.phonetic').css('visibility','hidden')
     })
     $('.coverMainTextBtn').click(function(){
+        log.info(`$('.coverMainTextBtn').click`)
         if($('.translation').css('visibility')=='hidden')
             $('.translation').css('visibility','visible')
         else
@@ -161,12 +226,14 @@
     })
 
     $('#goindexbtn').click(function(){
+        log.info(`$('#goindexbtn').click`)
         location.replace('./')
     })
 
 
 
     $('#play').click(function(){
+        log.info(`$('#play').click`)
         page.rollOpen=1
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
@@ -190,22 +257,27 @@
     }
 
     $('#rollShowWordsPad').click(function(e){
+        log.info(`$('#rollShowWordsPad').click`)
         if(this==e.target){
             closeRollShowWordsPad()
         }
     })
 
     $('#rollShowWordsPad .prev').click(function(e){
+        log.info(`$('#rollShowWordsPad .prev').click`)
         wordsRoll(page.rollInx-1)
     })
     $('#rollShowWordsPad .next').click(function(e){
+        log.info(`$('#rollShowWordsPad .next').click`)
         wordsRoll(page.rollInx+1)
     })
     $('#rollShowWordsPad .restart').click(function(e){
+        log.info(`$('#rollShowWordsPad .restart').click`)
         wordsRoll(1)
     })
 
     $('#rollShowWordsPad .stop').click(function(e){
+        log.info(`$('#rollShowWordsPad .stop').click`)
         page._mp3.pause()
         page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
@@ -217,12 +289,14 @@
     })
 
     $('#rollShowWordsPad .start').click(function(e){
+        log.info(`$('#rollShowWordsPad .start').click`)
         page.rollIsSound=1
         page.auto=1
         startWordsRoll(page.rollInx)
     })
 
     $('#startRollBtn').click(function(){
+        log.info(`$('#startRollBtn').click`)
         page.rollOpen=1
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
@@ -234,6 +308,7 @@
     })
 
     $('#rollShowWordsPad .word').click(function(){
+        log.info(`$('#rollShowWordsPad .word').click`)
         var word = page.words.rows[page.rollInx-1]
         translatee(word.word)
         loadRelatedWords(word.word)
@@ -378,7 +453,7 @@
         page.shareLink = location.origin+'/mumu/wordbook.html?wordbookNo='+page.wordbookNo+'&templateNo='+page.templateNo;
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.updateAppMessageShareData({
-                title: page.wordbook.name, // 分享标题
+                title: page.wordbook.name+'的英文', // 分享标题
                 desc: '单词本', // 分享描述
                 link: page.shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
@@ -388,7 +463,7 @@
             })
 
             wx.updateTimelineShareData({
-                title: page.wordbook.name + '\n单词本', // 分享标题
+                title: page.wordbook.name+'的英文' + '\n单词本', // 分享标题
                 link: page.shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: location.origin+'/mumu/favicon.ico', // 分享图标
                 success: function () {
@@ -396,5 +471,10 @@
                 }
             })
         });
+    }
+
+
+    window.onbeforeunload=function(){
+        log.flush()
     }
 })()
