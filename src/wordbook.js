@@ -326,8 +326,8 @@
         rollInx=!rollInx?1:rollInx
         wordsRoll(rollInx);
     }
-    page._mp3 = document.createElement('video')
-    page.lettersound = document.createElement('video')
+    page._mp3 = $(`<video x5-playsinline playsinline controls360=no webkit-playsinline ></video>`)[0]
+    page.lettersound = $(`<video x5-playsinline playsinline controls360=no webkit-playsinline ></video>`)[0]
     function wordsRoll(rollInx){
         if(!page.rollOpen){
             closeRollShowWordsPad()
