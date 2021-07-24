@@ -7,6 +7,7 @@
     page.wordbook=null
     page.extendword=null
     page.rollword=null
+    page.rollstop=null
     page.words={
         rcount:200,
         rows:[],
@@ -49,8 +50,8 @@
                             ele.removeClass('row0')
                             ele.addClass('no'+element.no)
                             ele.find('.word').text(element.word)
-                            element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
-                            element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
+                            element.speakUrl=element.ukSpeech?element.ukSpeech:element.usSpeech?element.usSpeech:element.speakUrl;
+                            element.phonetic=element.ukPhonetic?element.ukPhonetic:element.usPhonetic?element.usPhonetic:element.phonetic;
                             if(element.phonetic){
                                 ele.find('.phonetic').text('/'+element.phonetic+'/');
                             }else{
@@ -71,9 +72,9 @@
 
     $('#rollShowWordsPad .word').click(function(){
         log.info(`$('#rollShowWordsPad .word').click`)
-        page.extendword=page.rollword.word
+        page.extendword=page.rollword
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
+        $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.extendword.word).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
         $('#extendSearchFrame3').attr('src',null).hide()
@@ -84,6 +85,7 @@
         $('#extendSearchPad .g2').css('background-color','#cacaca')
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
+
     })
     $(`.rowspad .row0`).click(function(){
         log.info(`$('.rowspad .row0').click`)
@@ -92,9 +94,9 @@
 
         page.words.select=this.data;
         page.rollInx=page.words.rows.indexOf(page.words.select)+1
-        page.extendword=page.words.select.word
+        page.extendword=page.words.select
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword).show()
+        $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.extendword.word).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
         $('#extendSearchFrame3').attr('src',null).hide()
@@ -105,6 +107,7 @@
         $('#extendSearchPad .g2').css('background-color','#cacaca')
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
+
     })
 
     $('#extendSearchPad').click(function(e){
@@ -151,7 +154,7 @@
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
-            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.extendword)
+            $('#extendSearchFrame1').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.extendword.word)
         }
     })
     $('#extendSearchPad .g2').click(function(e){
@@ -167,7 +170,7 @@
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame2').attr('src')){
-            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.extendword+'.html?osf=direct')
+            $('#extendSearchFrame2').attr('src','https://m.baidu.com/sf/vsearch?pd=video&atn=index&word=英文'+page.extendword.word)
         }
     })
     $('#extendSearchPad .g3').click(function(e){
@@ -183,7 +186,7 @@
         $('#extendSearchPad .g3').css('background-color','#ffffff')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame3').attr('src')){
-            $('#extendSearchFrame3').attr('src','https://www.merriam-webster.com/dictionary/'+page.extendword)
+            $('#extendSearchFrame3').attr('src','https://m.aliexpress.com/wholesale/'+page.extendword.word+'.html?osf=direct')
         }
     })
 
@@ -200,7 +203,7 @@
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#ffffff')
         if(!$('#extendSearchFrame4').attr('src')){
-            $('#extendSearchFrame4').attr('src','https://m.youdao.com/dict?q='+page.extendword)
+            $('#extendSearchFrame4').attr('src','https://m.sogou.com/web/searchList.jsp?keyword='+page.extendword.translation)
         }
     })
     $('.coverTargetTextBtn').click(function(){
@@ -340,7 +343,7 @@
         var word = page.words.rows[rollInx-1]
 
         if(!word){
-            loadMoreWordbookWords(page.wordbooks.selected.no)
+            loadMoreWordbookWords()
         }
         word = page.words.rows[rollInx-1]
         if(!word){
@@ -349,7 +352,7 @@
             return;
         }
         page.rollword=word
-        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
         if(!word.speakUrl)
             $.ajax({
                 url: '/mumu/translate?from='+1+'&to=2&q='+word.word,
@@ -365,8 +368,8 @@
                     }
                 }
             })
-        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
-        word.phonetic=word.usPhonetic?word.usPhonetic:word.ukPhonetic?word.ukPhonetic:word.phonetic;
+        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
+        word.phonetic=word.ukPhonetic?word.ukPhonetic:word.usPhonetic?word.usPhonetic:word.phonetic;
 
         page.rollInx=rollInx
         localStorage.setItem(config.project+'-rollInx',page.rollInx)
@@ -378,63 +381,62 @@
         if(page.auto){
             if(page.rollIsSound){
                 readWord(word)
-                function readWord(word){
-                    var count = 0;
-
-                    if(word.speakUrl){
-                        page._mp3.muted=false
-                        page._mp3.src=word.speakUrl;
-                    }else {
-                        page._mp3.muted=true
-                        page._mp3.src="/file/mumu/lettersounds/a.mp3"
-                    }
-                    page._mp3.onpause=function(){
-                        if(page._mp3.currentTime==page._mp3.duration){
-                            if(count > 0){
-                                page.readRollWordTimeout=setTimeout(function(){
-                                    page._mp3.play()
-                                },100)
-                                count--;
-                            }else{
-                                clearTimeout(page.readRollWordTimeout)
-                                clearTimeout(page.rollWordsInterval)
-                                if(!word.translationVoice){
-                                    $.ajax({
-                                        url:'/mumu/get-read',
-                                        data:{
-                                            text:word.translation,
-                                            lang:'zh'
-                                        },
-                                        success:function(res){
-                                            word.translationVoice=res.data.voice
-                                            fff()
-                                        }
-                                    })
-                                }else{
-                                    fff()
-                                }
-
-                                function fff(){
-                                    page.rollWordsInterval = setTimeout(function(){
-                                        page._mp3.onpause=function(){
-                                            page.rollWordsInterval = setTimeout(function(){
-                                                wordsRoll(page.rollInx+1)
-                                            },1000)
-                                        }
-                                        page._mp3.src=word.translationVoice
-                                        page._mp3.play()
-                                    },100)
-                                }
-                            }
-                        }
-                    }
-                    page._mp3.play()
-                }
-
             }
         }
     }
 
+    function readWord(word){
+        var count = 0;
+
+        if(word.speakUrl){
+            page._mp3.muted=false
+            page._mp3.src=word.speakUrl;
+        }else {
+            page._mp3.muted=true
+            page._mp3.src="/file/mumu/lettersounds/a.mp3"
+        }
+        page._mp3.onpause=function(){
+            if(page._mp3.currentTime==page._mp3.duration){
+                if(count > 0){
+                    page.readRollWordTimeout=setTimeout(function(){
+                        page._mp3.play()
+                    },100)
+                    count--;
+                }else{
+                    clearTimeout(page.readRollWordTimeout)
+                    clearTimeout(page.rollWordsInterval)
+                    if(!word.translationVoice){
+                        $.ajax({
+                            url:'/mumu/get-read',
+                            data:{
+                                text:word.translation,
+                                lang:'zh'
+                            },
+                            success:function(res){
+                                word.translationVoice=res.data.voice
+                                fff(word)
+                            }
+                        })
+                    }else{
+                        fff(word)
+                    }
+                }
+            }
+        }
+        page._mp3.play()
+    }
+
+    function fff(word){
+        page.rollWordsInterval = setTimeout(function(){
+            page._mp3.onpause=function(){
+                page.rollWordsInterval = setTimeout(function(){
+                    wordsRoll(page.rollInx+1)
+                },1000)
+            }
+            page._mp3.src=word.translationVoice
+            page._mp3.play()
+        },100)
+    }
 
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{

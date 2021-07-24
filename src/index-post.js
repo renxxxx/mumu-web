@@ -1104,8 +1104,8 @@ $('#video').click(function(){
                     var hasTranslate = false;
                     clearTimeout(window.aaa)
                     page.currWord=res.data
-                    res.data.speakUrl=res.data.usSpeech?res.data.usSpeech:res.data.ukSpeech?res.data.ukSpeech:res.data.speakUrl;
-                    res.data.phonetic=res.data.usPhonetic?res.data.usPhonetic:res.data.ukPhonetic?res.data.ukPhonetic:res.data.phonetic;
+                    res.data.speakUrl=res.data.ukSpeech?res.data.ukSpeech:res.data.usSpeech?res.data.usSpeech:res.data.speakUrl;
+                    res.data.phonetic=res.data.ukPhonetic?res.data.ukPhonetic:res.data.usPhonetic?res.data.usPhonetic:res.data.phonetic;
                     $('#favor').text('收 藏')
                     $('#addToWordbookBtn').text('加入单词本')
                     if(res.data.phonetic){
@@ -2963,8 +2963,8 @@ $('#wordsframe_cancel').click(function(){
                 ele.removeClass('row0')
                 ele.addClass('row'+element.no)
                 ele.find('.word').text(element.word)
-                element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
-                element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
+                element.speakUrl=element.ukSpeech?element.ukSpeech:element.usSpeech?element.usSpeech:element.speakUrl;
+                element.phonetic=element.ukPhonetic?element.ukPhonetic:element.usPhonetic?element.usPhonetic:element.phonetic;
                 if(element.phonetic){
                     ele.find('.phonetic').text('/'+element.phonetic+'/');
                 }else{
@@ -3845,7 +3845,7 @@ $('#wordsframe_cancel').click(function(){
       
 
 
-        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
         if(!word.speakUrl)
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+word.word,
@@ -3861,8 +3861,8 @@ $('#wordsframe_cancel').click(function(){
                     }
                 }
             })
-        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
-        word.phonetic=word.usPhonetic?word.usPhonetic:word.ukPhonetic?word.ukPhonetic:word.phonetic;
+        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
+        word.phonetic=word.ukPhonetic?word.ukPhonetic:word.usPhonetic?word.usPhonetic:word.phonetic;
 
         page.rollInx=rollInx
         localStorage.setItem(config.project+'-rollInx',page.rollInx)
@@ -3976,7 +3976,7 @@ $('#wordsframe_cancel').click(function(){
     })
     $('#goExtendSearchBtn').click(function(e){
         $('#extendSearchPad').show()
-        $('#extendSearchFrame').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.currWordText).show()
+        $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.currWordText).show()
         $('#extendSearchFrame1').attr('src',null).hide()
         $('#extendSearchFrame2').attr('src',null).hide()
         $('#extendSearchFrame3').attr('src',null).hide()
@@ -4012,7 +4012,7 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame1').attr('src')){
-            $('#extendSearchFrame1').attr('src','https://m.baidu.com/s?word=英文'+page.currWordText)
+            $('#extendSearchFrame1').attr('src','https://cn.bing.com/images/search?ensearch=1&q='+page.currWordText)
         }
     })
     $('#extendSearchPad .g2').click(function(e){
@@ -4027,7 +4027,7 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame2').attr('src')){
-            $('#extendSearchFrame2').attr('src','https://m.aliexpress.com/wholesale/'+page.currWordText+'.html?osf=direct')
+            $('#extendSearchFrame2').attr('src','https://m.baidu.com/sf/vsearch?pd=video&atn=index&word=英文'+page.currWordText)
         }
     })
     $('#extendSearchPad .g3').click(function(e){
@@ -4042,7 +4042,7 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchPad .g3').css('background-color','#ffffff')
         $('#extendSearchPad .g4').css('background-color','#cacaca')
         if(!$('#extendSearchFrame3').attr('src')){
-            $('#extendSearchFrame3').attr('src','https://www.merriam-webster.com/dictionary/'+page.currWordText)
+            $('#extendSearchFrame3').attr('src','https://m.aliexpress.com/wholesale/'+page.currWordText+'.html?osf=direct')
         }
     })
     $('#extendSearchPad .g4').click(function(e){
@@ -4057,7 +4057,7 @@ $('#wordsframe_cancel').click(function(){
         $('#extendSearchPad .g3').css('background-color','#cacaca')
         $('#extendSearchPad .g4').css('background-color','#ffffff')
         if(!$('#extendSearchFrame4').attr('src')){
-            $('#extendSearchFrame4').attr('src','https://m.youdao.com/dict?q='+page.currWordText)
+            $('#extendSearchFrame4').attr('src','https://www.learnersdictionary.com/definition/'+page.currWordText)
         }
     })
     $('#closeViewBtn').click(function(){

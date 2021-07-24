@@ -61,7 +61,7 @@ try{
 
 }
 
-if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 1 * 60 * 60* 1000){
+if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 5 * 60* 1000){
   $.ajax({
     url:'/mumu/login-refresh',
     async:false,
@@ -72,7 +72,7 @@ if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.login
         localStorage.setItem(config.project+'-loginTime',new Date().getTime())
         setTimeout(function(){
           $.post('/mumu/restore-template-wordbooks')
-        },2000)
+        },1000)
       }else{
         login()
       }
