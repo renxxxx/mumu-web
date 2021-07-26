@@ -305,3 +305,8 @@ function concats(){
   }
   return result
 }
+
+$(window).one('beforeunload',function(){
+  log.info('window.onbeforeunload')
+  navigator.sendBeacon("/mumu/page-out");
+})

@@ -1039,8 +1039,7 @@
 
     window.onbeforeunload=function(){
         log.debug('onbeforeunload')
-        navigator.sendBeacon("/mumu/page-out");
-        log.flush()
+        //navigator.sendBeacon("/mumu/page-out");
     }
     var lastTouchEnd;
     document.addEventListener('touchend', function(event) {

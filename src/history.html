@@ -324,8 +324,7 @@
 
         window.onbeforeunload=function(){
             console.log('onbeforeunload')
-            navigator.sendBeacon("/mumu/page-out");
-            log.flush()
+            //navigator.sendBeacon("/mumu/page-out");
         }
 
         var lastTouchEnd;

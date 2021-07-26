@@ -62,4 +62,5 @@
         return logss;
     }
 
+    $(window).one('beforeunload',function(){log.flush()})
 })()

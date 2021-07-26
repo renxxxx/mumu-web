@@ -95,6 +95,9 @@
         page.words.select=this.data;
         page.rollInx=page.words.rows.indexOf(page.words.select)+1
         page.extendword=page.words.select
+
+        var speakUrl=page.extendword.ukSpeech?page.extendword.ukSpeech:page.extendword.usSpeech?page.extendword.usSpeech:page.extendword.speakUrl;
+        new Audio(speakUrl).play();
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.extendword.word).show()
         $('#extendSearchFrame1').attr('src',null).hide()
@@ -477,6 +480,5 @@
 
 
     window.onbeforeunload=function(){
-        log.flush()
     }
 })()

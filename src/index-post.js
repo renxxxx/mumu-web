@@ -1465,8 +1465,7 @@ $('#video').click(function(){
     window.onbeforeunload=function(){
         //log.debug('onbeforeunload')
         historyrecord()
-        navigator.sendBeacon("/mumu/page-out");
-        log.flush()
+        //navigator.sendBeacon("/mumu/page-out");
     }
     var lastTouchEnd;
     document.addEventListener('touchend', function(event) {
