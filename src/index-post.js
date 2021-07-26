@@ -1104,8 +1104,8 @@ $('#video').click(function(){
                     var hasTranslate = false;
                     clearTimeout(window.aaa)
                     page.currWord=res.data
-                    res.data.speakUrl=res.data.ukSpeech?res.data.ukSpeech:res.data.usSpeech?res.data.usSpeech:res.data.speakUrl;
-                    res.data.phonetic=res.data.ukPhonetic?res.data.ukPhonetic:res.data.usPhonetic?res.data.usPhonetic:res.data.phonetic;
+                    res.data.speakUrl=res.data.usSpeech?res.data.usSpeech:res.data.ukSpeech?res.data.ukSpeech:res.data.speakUrl;
+                    res.data.phonetic=res.data.usPhonetic?res.data.usPhonetic:res.data.ukPhonetic?res.data.ukPhonetic:res.data.phonetic;
                     $('#favor').text('收 藏')
                     $('#addToWordbookBtn').text('加入单词本')
                     if(res.data.phonetic){
@@ -2883,6 +2883,7 @@ $('#wordsframe_cancel').click(function(){
                                 ele.addClass('row'+row.no)
                                 ele.text(row.name)
                                 ele[0].data=row
+                                row.dom=ele
                                 ele.show();
                                 $('#wordbooksPad .wordbooks .row0').before(ele)
 
@@ -2962,8 +2963,8 @@ $('#wordsframe_cancel').click(function(){
                 ele.removeClass('row0')
                 ele.addClass('row'+element.no)
                 ele.find('.word').text(element.word)
-                element.speakUrl=element.ukSpeech?element.ukSpeech:element.usSpeech?element.usSpeech:element.speakUrl;
-                element.phonetic=element.ukPhonetic?element.ukPhonetic:element.usPhonetic?element.usPhonetic:element.phonetic;
+                element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
+                element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
                 if(element.phonetic){
                     ele.find('.phonetic').text('/'+element.phonetic+'/');
                 }else{
@@ -3844,7 +3845,7 @@ $('#wordsframe_cancel').click(function(){
       
 
 
-        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
         if(!word.speakUrl)
             $.ajax({
                 url: '/mumu/translate?from='+video.language+'&to=2&q='+word.word,
@@ -3860,8 +3861,8 @@ $('#wordsframe_cancel').click(function(){
                     }
                 }
             })
-        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
-        word.phonetic=word.ukPhonetic?word.ukPhonetic:word.usPhonetic?word.usPhonetic:word.phonetic;
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        word.phonetic=word.usPhonetic?word.usPhonetic:word.ukPhonetic?word.ukPhonetic:word.phonetic;
 
         page.rollInx=rollInx
         localStorage.setItem(config.project+'-rollInx',page.rollInx)
@@ -4268,12 +4269,15 @@ $('#wordsframe_cancel').click(function(){
         }else if(prev1){
             orderNum=prev1.orderNum-1
         }else{
-            orderNum=curr.orderNo
+            orderNum=curr.orderNum
         }
-        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum},function(res){
+        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum,templateNo:curr.templateNo},function(res){
             if(res.code==0){
-                common.changearr(page.wordbooks.rows,inx,inx-1)
-                common.changedom(curr.dom,prev1.dom)
+                if(prev1){
+                    common.changearr(page.wordbooks.rows,inx,inx-1)
+                    common.changedom(curr.dom,prev1.dom)
+                }
+                curr.orderNum=orderNum
             }else{
                 common.alert(res.msg)
             }
@@ -4322,12 +4326,15 @@ $('#wordsframe_cancel').click(function(){
         }else if(next1){
             orderNum=next1.orderNum+1
         }else{
-            orderNum=curr.orderNo
+            orderNum=curr.orderNum
         }
-        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum},function(res){
+        $.post('/mumu/alter-wordbook',{no:curr.no,orderNum:orderNum,templateNo:curr.templateNo},function(res){
             if(res.code==0){
-                common.changearr(page.wordbooks.rows,inx,inx+1)
-                common.changedom(curr.dom,next1.dom)
+                if(next1){
+                    common.changearr(page.wordbooks.rows,inx,inx+1)
+                    common.changedom(curr.dom,next1.dom)
+                }
+                curr.orderNum=orderNum
             }else{
                 common.alert(res.msg)
             }
@@ -4348,7 +4355,7 @@ $('#wordsframe_cancel').click(function(){
         }else if(prev1){
             orderNum=prev1.orderNum-1
         }else{
-            orderNum=curr.orderNo
+            orderNum=curr.orderNum
         }
         curr.orderNum=orderNum;
         ws.send(JSON.stringify({
@@ -4359,8 +4366,10 @@ $('#wordsframe_cancel').click(function(){
             templateNo:wordbook.templateNo,
             orderNum:orderNum
         }))
-        common.changearr(wordbook.words.rows,inx,inx-1)
-        common.changedom(curr.dom,prev1.dom)
+        if(prev1){
+            common.changearr(wordbook.words.rows,inx,inx-1)
+            common.changedom(curr.dom,prev1.dom)
+        }
     })
     $('#wordDetailPad .movereset').click(function(){
         var wordbook=page.wordbooks.selected
@@ -4408,7 +4417,7 @@ $('#wordsframe_cancel').click(function(){
         }else if(next1){
             orderNum=next1.orderNum+1
         }else{
-            orderNum=curr.orderNo
+            orderNum=curr.orderNum
         }
         curr.orderNum=orderNum;
         ws.send(JSON.stringify({
@@ -4419,8 +4428,10 @@ $('#wordsframe_cancel').click(function(){
             templateNo:wordbook.templateNo,
             orderNum:orderNum
         }))
-        common.changearr(wordbook.words.rows,inx,inx+1)
-        common.changedom(curr.dom,next1.dom)
+        if(next1){
+            common.changearr(wordbook.words.rows,inx,inx+1)
+            common.changedom(curr.dom,next1.dom)
+        }
     })
 
     $('#wordDetailPad .closeBtn').click(function(){

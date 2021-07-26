@@ -50,8 +50,8 @@
                             ele.removeClass('row0')
                             ele.addClass('no'+element.no)
                             ele.find('.word').text(element.word)
-                            element.speakUrl=element.ukSpeech?element.ukSpeech:element.usSpeech?element.usSpeech:element.speakUrl;
-                            element.phonetic=element.ukPhonetic?element.ukPhonetic:element.usPhonetic?element.usPhonetic:element.phonetic;
+                            element.speakUrl=element.usSpeech?element.usSpeech:element.ukSpeech?element.ukSpeech:element.speakUrl;
+                            element.phonetic=element.usPhonetic?element.usPhonetic:element.ukPhonetic?element.ukPhonetic:element.phonetic;
                             if(element.phonetic){
                                 ele.find('.phonetic').text('/'+element.phonetic+'/');
                             }else{
@@ -96,7 +96,7 @@
         page.rollInx=page.words.rows.indexOf(page.words.select)+1
         page.extendword=page.words.select
 
-        var speakUrl=page.extendword.ukSpeech?page.extendword.ukSpeech:page.extendword.usSpeech?page.extendword.usSpeech:page.extendword.speakUrl;
+        var speakUrl=page.extendword.usSpeech?page.extendword.usSpeech:page.extendword.ukSpeech?page.extendword.ukSpeech:page.extendword.speakUrl;
         new Audio(speakUrl).play();
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.extendword.word).show()
@@ -355,7 +355,7 @@
             return;
         }
         page.rollword=word
-        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
         if(!word.speakUrl)
             $.ajax({
                 url: '/mumu/translate?from='+1+'&to=2&q='+word.word,
@@ -371,8 +371,8 @@
                     }
                 }
             })
-        word.speakUrl=word.ukSpeech?word.ukSpeech:word.usSpeech?word.usSpeech:word.speakUrl;
-        word.phonetic=word.ukPhonetic?word.ukPhonetic:word.usPhonetic?word.usPhonetic:word.phonetic;
+        word.speakUrl=word.usSpeech?word.usSpeech:word.ukSpeech?word.ukSpeech:word.speakUrl;
+        word.phonetic=word.usPhonetic?word.usPhonetic:word.ukPhonetic?word.ukPhonetic:word.phonetic;
 
         page.rollInx=rollInx
         localStorage.setItem(config.project+'-rollInx',page.rollInx)
