@@ -210,18 +210,16 @@
         obj.pageSize=10
         
         obj.userNo=page.onlyLookUserNo
-        obj.rstart=1
-        obj.sort='orderNoInUser,orderNoInSeries'
-        obj.order='desc,asc'
+        // obj.rstart=1
+        // obj.sort='orderNoInUser,orderNoInSeries'
+        // obj.order='desc,asc'
         if(page.onlyLookHimVideos.rows.length > 0){
-            obj.init=0
             var last = page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1];
             obj.lastNo=last.no
             obj.lastCreateTime=last.createTime
             obj.lastOrderNoInSeries=last.orderNoInSeries
             obj.lastOrderNoInUser=last.orderNoInUser
         }else{
-            obj.init=1
             obj.lastNo=null
             obj.lastCreateTime=null
             obj.lastOrderNoInSeries=null
@@ -239,11 +237,9 @@
                         page.trueVideos.rows.push(...res.data.videos)
                         page.trueVideos.currRows=res.data.videos
                     }else{
-                        if(obj.init==0){
-                            page.onlyLookHimVideos.rows=[]
-                            page.onlyLookHimVideos.currRows=[]
-                            getMoreOnlyLookHimVideos(async)
-                        }
+                        page.onlyLookHimVideos.rows=[]
+                        page.onlyLookHimVideos.currRows=[]
+                        getMoreOnlyLookHimVideos(async)
                     }
                     $('#video1').attr('src','./img/black.png');
                 }else if(res.code==20){
@@ -271,7 +267,7 @@ $('#video').click(function(){
         $.ajax({
             url: '/mumu/explore-videos?',
             data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
-                    +"&userNo="+(page.onlyLookUserNo||' ')+"&mo="+ttb(getUrlParam("mo")),
+                    +"&mo="+ttb(getUrlParam("mo")),
             async: async,
             success: function(res) {
                 if(res.code==0){
@@ -286,8 +282,7 @@ $('#video').click(function(){
                         $.ajax({
                             url: '/mumu/explore-videos?',
                             
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&userNo="+(page.onlyLookUserNo||' ')
-                                +(page.onlyLookUserNo||' ')+"&mo="+ttb(getUrlParam("mo")),
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&mo="+ttb(getUrlParam("mo")),
                             async: async,
                             success: function(res) {
                                 if(res.data.videos.length>0){
@@ -2407,6 +2402,7 @@ $('#video').click(function(){
                     pauseVideo()
                     loadRelatedWords(word)
                     translatee(word,1)
+                    comm.copy({text:word})
                     page.spansIs=0
                     page.spans =[]
                 }
@@ -4252,7 +4248,7 @@ $('#wordsframe_cancel').click(function(){
 
     setTimeout(function(){
         if(!pagePre.login.fullmember)
-            common.alert('抱歉, 体验用户只能浏览少量内容, 请联系管理员免费转正式.')
+            common.alert('您好, 幕幕需要您的体验与建议, 可入群并开启所有内容.\nwx: rxw2877')
     },30000)
 
 
