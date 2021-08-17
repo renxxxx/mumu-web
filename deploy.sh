@@ -30,6 +30,7 @@ packageName="renx-mumu-web-$version.zip"
 echo $packageName
 cd ./src
 ../zip -q -r ../dist/$packageName ./
+cd ..
 echo
 
 echo "-remote deploy"
