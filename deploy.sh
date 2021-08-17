@@ -1,5 +1,5 @@
 #!/bin/bash
-#admin / asdfj12#!@jweoiqr$@1482DF3ewrjOY
+#admin / Dd34ja9VJ768O4t5t3218sfGFTEKJk
 
 echo "-assign version"
 date=`date +%y%m%d`
@@ -25,8 +25,16 @@ git push
 echo
 
 echo "-package"
+env=/home/admin/renx
 packageName="renx-mumu-web-$version.zip"
 echo $packageName
 cd ./src
 ../zip -q -r ../dist/$packageName ./
+echo
+
+echo "-remote deploy"
+ssh -p 22 -t admin@39.99.246.175 "rm -rf $env/renx-mumu-web-*.zip"
+scp -P 22 dist/$packageName admin@39.99.246.175:$env
+#delpoy
+ssh -p 22 -t admin@39.99.246.175 "unzip $env/$packageName -d $env/webroot/mumu1"
 echo
