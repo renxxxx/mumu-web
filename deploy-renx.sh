@@ -8,11 +8,11 @@ echo version: $version
 sed -i "s/^  version: \".*\",$/  version: \"$version\",/g" ./app.js
 echo
 
-echo "-git add ."
+echo "-git add"
 git add .
 echo
 
-echo "-git commit -am 1"
+echo "-git commit"
 git commit -am 1
 echo
 
