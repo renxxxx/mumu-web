@@ -24,5 +24,9 @@ echo "-git push"
 git push
 echo
 
+echo "-package"
+packageName="renx-mumu-web-$version.zip"
+echo $packageName
 cd ./src
-../zip -q -r ../dist/renx-mumu-web-$version.zip ./
+../zip -q -r ../dist/$packageName ./
+echo
