@@ -33,11 +33,16 @@ cd ./src
 cd ..
 echo
 
-echo "-remote deploy"
+echo "-remote delete"
 ssh -p 22 -t admin@39.99.246.175 "rm -rf $env/renx-mumu-web-*.zip"
+echo
+
+echo "-remote push"
 scp -P 22 ./dist/$packageName admin@39.99.246.175:$env
-#delpoy
-ssh -p 22 -t admin@39.99.246.175 "unzip -q $env/$packageName -d $env/webroot/mumu1"
+echo
+
+echo "-remote deploy"
+ssh -p 22 -t admin@39.99.246.175 "unzip -q -o $env/$packageName -d $env/webroot/mumu1"
 echo
 
 echo success
