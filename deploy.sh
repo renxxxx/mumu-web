@@ -34,7 +34,7 @@ echo
 
 echo "-remote deploy"
 ssh -p 22 -t admin@39.99.246.175 "rm -rf $env/renx-mumu-web-*.zip"
-scp -P 22 dist/$packageName admin@39.99.246.175:$env
+scp -P 22 ./dist/$packageName admin@39.99.246.175:$env
 #delpoy
 ssh -p 22 -t admin@39.99.246.175 "unzip $env/$packageName -d $env/webroot/mumu1"
 echo
