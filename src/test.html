@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <head>
+        <meta charset="utf-8">
+        <!-- height=device-height, -->
+        <meta name="viewport" content="width=device-width,  initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>测试</title>
+        <meta name="x5-fullscreen" content="true">
+        <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js" type="application/javascript"></script>
+        <script src="https://s0.pstatp.com/cdn/expire-1-M/jquery-cookie/1.4.1/jquery.cookie.min.js" type="application/javascript"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js" type="application/javascript"></script>
+        <script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"></script>
+        <script>
+            
+        </script>
+        <style>
+            @media screen and (min-width: 700px) {
+                #video,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
+                    height:350px;
+                }
+            }
+            @media screen and (max-width: 700px) {
+                #video,#video1,#video2,#summtrans,#wordsframe,#hints,#videoshasow,#videobox {
+                    height:220px;
+                }
+            }
+
+            .scrollbar::-webkit-scrollbar{
+                width:3px;
+            }
+            .scrollbar::-webkit-scrollbar-track{
+                background-color:#e7e7e7;
+            }
+            .scrollbar::-webkit-scrollbar-thumb{
+                background-color:#9f9f9f;
+                cursor: pointer;
+            }
+            .scrollbar::-webkit-scrollbar-thumb:hover {
+                background-color:#a3a3a3;
+            }
+            .scrollbar::-webkit-scrollbar-thumb:active {
+                background-color:#d4d4d4;
+            }
+
+            #cnzz_stat_icon_1279792021 a:link,a:visited {
+                color:#4e4e4e
+            }
+
+            body {
+                -moz-user-select:none;/*火狐*/
+                -webkit-user-select:none;/*webkit浏览器*/
+                -ms-user-select:none;/*IE10*/
+                -khtml-user-select:none;/*早期浏览器*/
+                user-select:none;
+            }
+
+            .ellipsis {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .unselectable {
+                -moz-user-select:none;/*火狐*/
+                -webkit-user-select:none;/*webkit浏览器*/
+                -ms-user-select:none;/*IE10*/
+                -khtml-user-select:none;/*早期浏览器*/
+                user-select:none;
+            }
+
+            .selectable {
+                -moz-user-select:auto;/*火狐*/
+                -webkit-user-select:auto;/*webkit浏览器*/
+                -ms-user-select:auto;/*IE10*/
+                -khtml-user-select:auto;/*早期浏览器*/
+                user-select:auto;
+            }
+
+            .noscrollbar::-webkit-scrollbar{
+                width:0px;
+            }
+
+            .scrollbar1::-webkit-scrollbar{
+                width:2px;
+            }
+            .scrollbar1::-webkit-scrollbar-track{
+                background-color:#000000;
+            }
+            .scrollbar1::-webkit-scrollbar-thumb{
+                background-color:#8f8f8f;
+                cursor: pointer;
+            }
+            .scrollbar1::-webkit-scrollbar-thumb:hover {
+                background-color:#a3a3a3;
+            }
+            .scrollbar1::-webkit-scrollbar-thumb:active {
+                background-color:#d4d4d4;
+            }
+        </style>
+    </head>
+    <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #000000;" >
+        <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #ffffff;font-size:0;" >
+            <div id="videobox" style="overflow:hidden;position:relative;">
+                <video  x5-playsinline playsinline controls360=no webkit-playsinline width="100%" id="video" poster autoplay preload
+                    onplay="videoPlay()" onpause="videoPause()"
+                    style="background: #000000;display: block;position: relative;object-fit:cover;">
+                </video>
+            </div>
+            
+            <div style="width:100%;margin-top:5px;min-height:84px;margin-bottom: 5px;">
+                <div id="zh_subtitles" class="unselectable" 
+                    style="line-height: 30px;width: 100%;text-align: center;background-color: #ffffff;font-size: 18px;" >
+                </div>
+                <div id="chDialog" class="chDialog unselectable" style="width:100%;height:20px;font-size:12px;color:#9b9b9b;text-align: center;padding:0 5px;overflow: hidden;
+                            word-break: break-all;box-sizing: border-box;line-height: 20px;letter-spacing: 0.5px;">
+                </div>
+            </div>
+         
+            <div id="prevnextpad" style="box-sizing: border-box;width: 100%;display: flex;justify-content: space-between;margin: 0px auto;margin-bottom: 10px;">    
+                <span id="prevline" class="unselectable" onclick="prevline()" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 50%;background: white;border-width:1px 0 1px 0;border-color: #827e7e;font-size: 12px;border-style:solid;background-color: #ffffff;">
+                    上一句
+                </span>
+                <span id="nextline" class="unselectable" onclick="nextline()" style="text-align: center;line-height: 38px;cursor:pointer;height: 38px;width: 50%;background: white;border-width:1px 0 1px 1px;border-color:#827e7e;font-size: 12px;border-style:solid;background-color: #ffffff;margin-left:-1px;">
+                    下一句
+                </span>
+            </div>
+
+            <div id="controlpad" style="justify-content: space-around;display: flex;height: 35px;align-items: center;position:relative;">
+                <span id="startFn1"  class="startFn unselectable"
+                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;background: #d8d8d8;border: 1px solid #bfbbbb;
+                        font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
+                    <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
+                    <svg style="width: 15px;height: 15px;vertical-align: middle;" t="1621440177304" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2559" width="200" height="200"><path d="M847.462 598.016l-587.161 378.88A102.4 102.4 0 0 1 102.4 890.88V133.12a102.4 102.4 0 0 1 157.9-86.016l587.162 378.88a102.4 102.4 0 0 1 0 172.032z" fill="#ffffff" p-id="2560"></path></svg>
+                    <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
+                </span>
+                <span id="stopFn1" class="stopFn unselectable" 
+                    style="cursor:pointer;text-align: center;line-height: 33px;padding: 0px;display: none;background: white;border: 1px solid #bfbbbb;color:#bfbbbb;
+                        font-size: 0px;padding: 0px;width: 24%;height: 33px;border-radius: 3px;">
+                    <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);">点 </span>
+                    <svg style="width: 15px;height: 15px;vertical-align: middle;"  t="1621440294821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2770" width="200" height="200"><path d="M309.3 130.7h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z m476.3 0h-70.9c-24.3 0-44 19.7-44 44v674.5c0 24.3 19.7 44 44 44h70.9c24.3 0 44-19.7 44-44V174.7c0-24.3-19.7-44-44-44z" p-id="2771" fill="#bfbbbb"></path></svg>
+                    <span class="diandu" style="font-size:12px;display:none;vertical-align: middle;color:rgb(191, 187, 187);"> 读</span>
+                </span>
+            </div>
+
+            <input id="file" type='file' style="display:block;margin:auto;margin-top:50px;border: 1px solid #c7c7c7;cursor: pointer;" multiple/>
+        </div>
+    </body>
+   
+    <script>
+        var page={}
+        var en = {
+            subtitles : '',
+            monitor : '',
+            subtitlesList : [],
+            current:null,
+            currentIndex:null
+        }
+        page.en=en
+        
+        var no = getUrlParam('no')
+        $('#startFn1').click(function(){
+            $('#video')[0].play()
+        })
+        $('#stopFn1').click(function(){
+            $('#video')[0].pause()
+        })
+        $('#file').click(function(){
+            this.value=''
+        }).change(function(){
+            var file1 = this.files[0]
+            var file2 = this.files[1]
+            var mp4 = null
+            var srt = null
+            if(file1.name.indexOf('.srt')>=0){
+                srt = file1;
+            }
+            if(file1.name.indexOf('.mp4')>=0){
+                mp4 = file1;
+            }
+            if(file2.name.indexOf('.srt')>=0){
+                srt = file2;
+            }
+            if(file2.name.indexOf('.mp4')>=0){
+                mp4 = file2;
+            }
+            if(mp4 == null || srt==null)
+            {
+                alert('请选择mp4和srt文件')
+                return
+            }
+            var reader = new FileReader();
+            reader.readAsText(srt);
+
+            reader.onload = function(){
+                getEnSubtitles(this.result)
+            };
+
+            var URL = window.URL || window.webkitURL
+            $('#video')[0].src = URL.createObjectURL(mp4)
+        });
+        
+        function getUrlParam(name)
+        {
+            var query =decodeURIComponent(window.location.search.substring(1));
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == name){
+                        return pair[1]
+                        }
+            }
+            return null;
+        }
+
+
+        function monitor(_time){
+
+            if(en.current && en.current.startTime<=_time && _time<en.current.endTime){
+                return;
+            }
+        
+
+            var next = en.subtitlesList[en.currentIndex+1]
+            if(next && next.startTime<=_time && _time<next.endTime){
+                en.current = next
+                en.currentIndex++
+                setline(next)
+                return;
+            }
+
+            if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
+                return;
+            }
+
+        
+            $(en.subtitlesList).each(function(inx,item){
+                if(item.startTime<=_time && _time<item.endTime){
+                    en.current = item
+                    en.currentIndex = inx
+                    setline(item)
+                    return;
+                }
+            })
+        }
+
+        function timeCycle(_value){
+        let _time = _value.split(':')
+        let ms = 0;
+        _time.forEach((item,inx) =>{
+            switch(inx){
+            case 0:
+                ms += parseFloat(item) * 60*60*1000
+                break;
+            case 1:
+                ms += parseFloat(item) * 60*1000
+                break;
+            case 2:
+                ms += parseFloat(item) * 1000
+                break;
+            }
+        })
+        return ms
+    }
+
+    function getEnSubtitles(_result){
+        en.subtitlesList=[]
+        let _fileString = [];
+        _fileString = _result.split(/[(\r\n)\r\n]+/);
+        _fileString.forEach((item,inx) => {
+            let startValue = false
+            if(!item){
+                _fileString.splice(inx,1);
+            }
+            let reg = /^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d/;
+            let regExp = new RegExp(reg);
+            if(regExp.test(item)){
+                var ss = _fileString[inx+2]
+                var st = _fileString[inx+1]
+                if(ss.indexOf('{\\pos')>=0 || st.indexOf('{\\pos')>=0){
+                    return;
+                }
+                en.subtitlesList.push({
+                    startTime : timeCycle(item.split(' --> ')[0].replace(',','.')),
+                    endTime : timeCycle(item.split(' --> ')[1].replace(',','.')),
+                    chValue: st,
+                    enValue: ss,
+                })
+            }
+        });
+        var iii = null
+        for (let inx = 0; inx < en.subtitlesList.length; inx++) {
+            iii=inx
+            const curr = en.subtitlesList[inx];
+            const next = en.subtitlesList[inx+1];
+            if(inx<en.subtitlesList.length-2){
+                if((next.startTime - curr.endTime)>1000){
+                    en.subtitlesList.splice(inx+1,0,{
+                        startTime:parseInt(curr.endTime)+1000,
+                        endTime:next.startTime,
+                        chValue:'',
+                        enValue:''
+                    })
+                }
+            }
+        }
+    
+        var first = en.subtitlesList[0]
+        if(first && first.startTime>0){
+            en.subtitlesList.splice(0,0,{
+                        startTime:0,
+                        endTime:first.startTime,
+                        chValue:'',
+                        enValue:''
+                    })
+        }
+        var last = en.subtitlesList[en.subtitlesList.length-1]
+        if(last){
+            en.subtitlesList.push({
+                            startTime:parseInt(last.endTime)+1000,
+                            endTime:video.duration*1000,
+                            chValue:'',
+                            enValue:''
+                        })
+        }
+        if(en.currentIndex>=0){
+            en.current=en.subtitlesList[en.currentIndex]
+            setline(en.current)
+        }else{
+            setline(en.subtitlesList[0])
+        }
+    }
+
+    function setline(item){
+        if(!item)
+            return;
+        let _v= item.enValue.split(' ');
+        $("#zh_subtitles").html('')
+        en.currentwords=_v
+        for(let i=0; i < _v.length; i++){
+            if(_v[i]=='\\n'){
+                $("#zh_subtitles").append('<br/>')
+                continue;
+            }
+            var vv = _v[i].split('\\n');
+            if(vv[0]){
+                var sp = $('<span style="border-bottom:2px solid #ffffff;;user-select: none;display: inline-block;cursor: pointer;font-weight: 900;font-size: 18px;padding-left:3px;padding-right:3px;box-size:bo" index="'+i+'" class="font span'+i+'">'+vv[0]+'</span>')
+                
+                $("#zh_subtitles").append(sp)
+            }
+            if(vv[1]){
+                _v.splice(i+1,0,'\\n',vv[1])
+            }
+            if(vv[2]){
+                _v.splice(i+3,0,'\\n',vv[2])
+            }
+            if(vv[3]){
+                _v.splice(i+5,0,'\\n',vv[3])
+            }
+        }
+        $('#chDialog').html(item.chValue.replace(/\\n/g,'<br/>'))
+        $('.dialog').css({'display' : 'none'})
+        $('.dialogTitle #kw').html('');
+        currwordno=0
+        $('.dialog').css({'display' : 'none'})
+        $('.dialogTitle #kw').html('');
+        $('#summtrans').hide()
+        $('#wordsframe').hide()
+        $('#videoshasow').hide()
+        $('#word-in').val('')
+        $('#video').css('top','0px')
+    }
+    function prevline(){
+        ////let _this = this;
+        if(en.currentIndex>0){
+            var inx = en.currentIndex
+            var prev = en.subtitlesList[--inx]
+            if(prev){
+                if(!prev.enValue)
+                    prev = en.subtitlesList[--inx];
+                if(prev){
+                    en.currentIndex =inx   
+                    en.current= prev
+                    jumpedcaption = prev
+                    lastCurrentTime = prev.startTime/1000
+                    $('#video')[0].currentTime = prev.startTime/1000
+                    setline(prev)
+                    currwordno=0
+                    
+                    $('.dialog').css({'display' : 'none'})
+                    $('.dialogTitle #kw').html('');
+                }
+            }
+        }
+    }
+
+    function currline(){
+        var inx = en.currentIndex
+        var curr = en.current
+        if(curr){
+            if(!curr.enValue)
+                curr = en.subtitlesList[--inx];
+            if(curr){
+                en.currentIndex =inx   
+                en.current= curr
+                $('#video')[0].currentTime = curr.startTime/1000
+                jumpedcaption = curr
+                lastCurrentTime = curr.startTime/1000
+                setline(curr)
+                currwordno=0
+                
+                $('.dialog').css({'display' : 'none'})
+                $('.dialogTitle #kw').html('');
+            }
+        }
+    }
+    function nextline(){
+        var inx = en.currentIndex
+        var next = en.subtitlesList[++inx]
+        if(next){
+            if(!next.enValue)
+                next = en.subtitlesList[++inx];
+            if(next){
+                en.currentIndex =inx   
+                en.current= next
+                jumpedcaption = next
+                lastCurrentTime = next.startTime/1000
+                $('#video')[0].currentTime = next.startTime/1000
+                setline(next)
+                currwordno=0
+                
+                $('.dialog').css({'display' : 'none'})
+                $('.dialogTitle #kw').html('');
+            }
+        }
+    }
+
+    
+    function videoPlay(){
+      
+        $('#startFn1').hide()
+        $('#stopFn1').show()
+        
+        $('.historyword').css('background-color',"#ffffff")
+        $('.dialog').hide()
+        
+        clearInterval(en.monitor)
+        en.monitor = setInterval(function(){
+            monitor($('#video')[0].currentTime*1000)
+        },10)
+        currwordno=0
+        translationtext = '';
+        $('#zh_subtitles span').css({"background": "transparent","color": "black"})
+        $('.startFn').css({'display':'none'})
+        $('.stopFn').css({'display':'inline'})
+        $('.dialog').css({'display' : 'none'})
+        $('.dialogTitle #kw').html('');
+    }
+    function videoPause(){
+        $('#startFn1').show()
+        $('#stopFn1').hide()
+        clearInterval(en.monitor)
+        $('.stopFn').css({'display':'none'})
+        $('.startFn').css({'display':'inline'})
+    }
+    </script>
+</html>
