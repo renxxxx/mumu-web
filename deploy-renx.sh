@@ -1,6 +1,11 @@
 #!/bin/bash
 #admin / Dd34ja9VJ768O4t5t3218sfGFTEKJk
 
+gitCommitMsg=$1
+if [ -z "$gitCommitMsg" ]; then
+ gitCommitMsg='更新'
+fi
+
 echo "-assign version"
 date=`date +%y%m%d`
 version=$date
@@ -13,7 +18,7 @@ git add .
 echo
 
 echo "-git commit"
-git commit -am 1
+git commit -am "$gitCommitMsg"
 echo
 
 echo "-git pull"
