@@ -1,9 +1,9 @@
 #!/bin/bash
 #admin / Dd34ja9VJ768O4t5t3218sfGFTEKJk
 
-gitCommitMsg=$1
-if [ -z "$gitCommitMsg" ]; then
- gitCommitMsg='更新'
+versionMsg=$1
+if [ -z "$versionMsg" ]; then
+ versionMsg='更新'
 fi
 
 echo "-assign version"
@@ -18,7 +18,7 @@ git add .
 echo
 
 echo "-git commit"
-git commit -am "$gitCommitMsg"
+git commit -am "$versionMsg"
 echo
 
 echo "-git pull"
@@ -30,16 +30,13 @@ git push
 echo
 
 echo "-package"
+commitid=`git rev-parse --short HEAD`
 env=/home/admin/renx
-packageName="renx-mumu-web-$version.zip"
+packageName="renx-mumu-web-$version-$commitid.zip"
 echo $packageName
 cd ./src
 ../zip -q -r ../dist/$packageName ./
 cd ..
-echo
-
-echo "-remote delete"
-ssh -p 22 -t admin@39.99.246.175 "rm -rf $env/renx-mumu-web-*.zip"
 echo
 
 echo "-remote push"
@@ -47,7 +44,7 @@ scp -P 22 ./dist/$packageName admin@39.99.246.175:$env
 echo
 
 echo "-remote deploy"
-ssh -p 22 -t admin@39.99.246.175 "unzip -q -o $env/$packageName -d $env/webroot/mumu1"
+ssh -p 22 -t admin@39.99.246.175 "unzip -q -o $env/$packageName -d $env/webroot/mumu"
 echo
 
 echo success
