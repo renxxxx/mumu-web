@@ -6,7 +6,7 @@ echo --nginx -s stop
 echo
 
 echo --nginx
-nohup ./nginx
+./nginx
 cd ..
 echo
 

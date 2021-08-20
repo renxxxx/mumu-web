@@ -12,3 +12,4 @@ build/
 target/
 .svn/
 logs/
+*.log
