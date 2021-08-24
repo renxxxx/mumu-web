@@ -47,4 +47,6 @@ echo "-remote deploy"
 ssh -p 22 -t admin@39.99.246.175 "unzip -q -o $env/$packageName -d $env/webroot/mumu"
 echo
 
+start https://renx.cc/mumu/index.html
+
 echo success
