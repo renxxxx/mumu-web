@@ -1,5 +1,4 @@
 #!/bin/bash
-#admin / Dd34ja9VJ768O4t5t3218sfGFTEKJk
 
 versionMsg=$1
 if [ -z "$versionMsg" ]; then
@@ -10,7 +9,8 @@ echo "-assign version"
 date=`date +%y%m%d`
 version=$date
 echo version: $version
-sed -i "s/^  version: \".*\",$/  version: \"$version\",/g" ./app.js
+sed -i "s/config.version=\".*\"/config.version=\"$version\"/g" ./src/config.js
+sed -i "s/config.debug=.*/config.debug=0/g" ./src/config.js
 echo
 
 echo "-git add"
