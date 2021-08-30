@@ -80,7 +80,9 @@
     <body class="unselectable" style="width: 100%;height: 100%;margin:0;padding:0;background-color: #191919;" >
         <div id="logo" class="unselectable" style="max-width:800px;height:100%;position:relative;background-color: #ffffff;font-size:0;margin: auto;" >
             <div style="position:absolute;top:30%;width:100%;height:100px;">
-                <div style="font-size:50px;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
+                <div style="font-size:50px;width:100%;text-align: center;color:#e1e1e1;">
+                    Mumu
+                </div>
                 <div style="font-size:23px;width:100%;text-align: center;color:#e1e1e1;font-weight: 100;margin-top: -5px;">
                     这里只有英语
                 </div>
@@ -89,7 +91,7 @@
         
         <div id="index" style="max-width:800px;height:100%;margin: auto;position:relative;background-color: #272727;font-size:0;display: none;" >
             <div id="loading" style="width:100%;height:5px;position: absolute;top:0;z-index: 999999;overflow: hidden;display:none;">
-                <img draggable="false"   style="height:100%;width:100%;vertical-align: top;"/>
+                <img draggable="false" style="height:100%;width:100%;vertical-align: top;"/>
             </div>
             <div class="noscrollbar" style="width:100%;height:calc(100% - 134px);overflow: auto;">
             <!-- <div style="height:55px;width:100%;color:#cccccc;line-height:40px;font-size: 14px;padding:5px;box-sizing: border-box;position: relative;">
@@ -126,8 +128,11 @@
             
             <div id="chooseLoopVideosCountPad" style="width:100%;height:75px;position:absolute;top:195px;background-color: rgba(255,255,255,0.9);display:none;">
                 <div style="text-align: center;height:30px;line-height: 30px;">
-                    <span style="font-size:16px;">循环几个?</span>
-                    <span class="restSecond" style="font-size:16px;margin-left:5px;color:#9b9b9b;"></span>
+                    <span style="font-size:16px;">
+                        循环几个?
+                    </span>
+                    <span class="restSecond" style="font-size:16px;margin-left:5px;color:#9b9b9b;">
+                    </span>
                 </div>
                 <div style="height:30px;justify-content: space-around;align-items: center;display: flex;margin-top:5px;">
                     <span class="count1 count" data="1" style="display:inline-block;font-size:16px;width:25%;border:1px solid #9b9b9b;border-radius: 3px;text-align: center;height:30px;
@@ -479,7 +484,7 @@
             <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
                 <span class="unselectable" 
                     style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#ffffff;font-weight:900;"
-                    onclick="$('#video')[0].pause();location.replace('index.html');">
+                    onclick="$('#video')[0].pause();location.replace('discover.html');">
                     发现
                 </span>
                 <span class="unselectable" 
@@ -494,7 +499,7 @@
                 </span>
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
-                    onclick="$('#video')[0].pause();location.replace('my.html');">
+                    onclick="$('#video')[0].pause();location.replace('./#/my');">
                     我的
                 </span>
             </div>
@@ -958,9 +963,9 @@
    
     <script>
         if(config.debug)
-            document.write(`<script src="./index-post.js" type="application/javascript"><\/script>`);
+            document.write(`<script src="./discover-post.js" type="application/javascript"><\/script>`);
         else
-            document.write(`<script src="./index-post.min.js" type="application/javascript"><\/script>`);
+            document.write(`<script src="./discover-post.min.js" type="application/javascript"><\/script>`);
 
         document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
     </script>

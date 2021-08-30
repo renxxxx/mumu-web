@@ -1,4 +1,6 @@
-var comm=common={}
+var comm;
+var common;
+comm=common={}
 window.common=window.comm=common
 
 function getUrlParam(name)
@@ -156,7 +158,7 @@ function isPc() {
 
 
 function clearAllCookie() {  
-  var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+  var keys = document.cookie.match(/[^ =;]+(?==)/g);  
   if(keys) {  
       for(var i = keys.length; i--;)  
           document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
@@ -165,7 +167,6 @@ function clearAllCookie() {
 
 
 function getEleTop(element,offsetTop) {
-	debugger
   if(!element)
     return null;
   offsetTop=offsetTop?offsetTop:0

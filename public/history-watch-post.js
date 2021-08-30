@@ -312,7 +312,7 @@
         pauseVideo()
         closeLoopLine()
         if(!page.trueVideos.rows[page.trueVideos.inx-1]){
-            location.replace('./index.html')
+            location.replace('./discover.html')
             return;
         }
         page.trueVideos.inx--;

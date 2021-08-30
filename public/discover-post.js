@@ -461,7 +461,7 @@ $('#video').click(function(){
         pauseVideo()
         closeLoopLine()
         if(!page.trueVideos.rows[page.trueVideos.inx-1-1]){
-            location.replace('./index.html')
+            location.replace(location.pathname)
             return;
         }
         page.trueVideos.inx--;
