@@ -1,5 +1,5 @@
 let project='mumu'
-let version='0'
+let version='21110219'
 
 import * as vue from 'vue'
 import router from './router.js'

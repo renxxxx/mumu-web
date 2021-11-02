@@ -7,11 +7,23 @@ if [ -z "$versionMsg" ]; then
  versionMsg='更新'
 fi
 
+
 echo "-assign version"
 version=`date +%y%m%d%H`
 echo version: $version
-sed -i "s/config.version=\".*\"/config.version=\"$version\"/g" ./src/config.js
-sed -i "s/config.debug=.*/config.debug=0/g" ./src/config.js
+sed -i "s/version=\'.*\'/version=\'$version\'/g" ./src/main.js
+echo
+
+npm run build
+
+echo "-package"
+commitid=`git rev-parse --short HEAD`
+env=/home/admin/renx
+packageName="renx-mumu-web-$version-$commitid.zip"
+echo $packageName
+cd ./src
+../zip -q -r ../dist/$packageName ./
+cd ..
 echo
 
 echo "-git add"
@@ -28,16 +40,6 @@ echo
 
 echo "-git push"
 git push
-echo
-
-echo "-package"
-commitid=`git rev-parse --short HEAD`
-env=/home/admin/renx
-packageName="renx-mumu-web-$version-$commitid.zip"
-echo $packageName
-cd ./src
-../zip -q -r ../dist/$packageName ./
-cd ..
 echo
 
 echo "-remote push"
