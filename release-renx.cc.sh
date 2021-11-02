@@ -21,9 +21,7 @@ commitid=`git rev-parse --short HEAD`
 env=/home/admin/renx
 packageName="renx-mumu-web-$version-$commitid.zip"
 echo $packageName
-cd ./src
-../zip -q -r ../dist/$packageName ./
-cd ..
+./zip -q -r ./dist/$packageName ./dist
 echo
 
 echo "-git add"
