@@ -22,7 +22,7 @@ env=/home/admin/renx
 packageName="renx-mumu-web-$version-$commitid.zip"
 echo $packageName
 cd ./dist
-../zip -q -r ./dist/$packageName ./
+../zip -q -r ./$packageName ./
 cd ..
 echo
 
