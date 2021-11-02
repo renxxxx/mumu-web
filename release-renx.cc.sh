@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "admin : Dd34ja9VJ768O4t5t3218sfGFTEKJk"
+echo
 
 versionMsg=$1
 if [ -z "$versionMsg" ]; then
@@ -6,7 +8,7 @@ if [ -z "$versionMsg" ]; then
 fi
 
 echo "-assign version"
-version=`date +%y%m%d%h`
+version=`date +%y%m%d%H`
 echo version: $version
 sed -i "s/config.version=\".*\"/config.version=\"$version\"/g" ./src/config.js
 sed -i "s/config.debug=.*/config.debug=0/g" ./src/config.js
