@@ -146,7 +146,7 @@
                 </span>
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;color:#919191;"
-                    onclick="location.replace('my.html')">
+                    onclick="location.replace('./#/my')">
                     我的
                 </span>
             </div>
@@ -187,7 +187,7 @@
                 
                 async: true,
                 success: function(res) {
-                    msg=res.data.msg;
+                    msg=res.data.message;
                     if(msg){
                         if(msg.sys)
                             $('#msg').text("系统: "+msg.text)

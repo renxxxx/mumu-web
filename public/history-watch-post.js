@@ -2939,7 +2939,7 @@ $('#wordsframe_cancel').click(function(){
                                 ele1.show()
                                 ele1[0].data=element
                             }else{
-                                common.alert(res.msg)
+                                common.alert(res.message)
                             }
                         }
                     })
@@ -3199,7 +3199,7 @@ $('#wordsframe_cancel').click(function(){
                                     row = page.wordbooks.selected=null
                                     $('#wordbooksPad .wordbooks').click()
                                }else{
-                                   common.alert(res.msg)
+                                   common.alert(res.message)
                                }
                             }
                         })
@@ -3231,7 +3231,7 @@ $('#wordsframe_cancel').click(function(){
                                 $('#wordbooksPad .wordbooks .row'+row.no).text(v)
                                 $('#wordbookDetailPad .value').text(v)
                             }else{
-                                common.alert(res.msg)
+                                common.alert(res.message)
                             }
                         }
                     })

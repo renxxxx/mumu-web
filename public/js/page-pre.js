@@ -3,11 +3,14 @@ var pagePre={}
 window.pagePre=pagePre
 
 if(config.debug){
-  var vConsole = new VConsole({
-    onReady:function(){
-        $('#__vconsole .vc-switch').text('v').addClass('unselectable')
-    }
-  });
+  document.write(`<script src="https://s2.pstatp.com/cdn/expire-1-M/vConsole/3.4.0/vconsole.min.js" type="application/javascript"><\/script>`);
+  setTimeout(function(){
+    new VConsole({
+      onReady:function(){
+          $('#__vconsole .vc-switch').text('v').addClass('unselectable')
+      }
+    });
+  },2000)
 }
 
 if(config.debug==0)
@@ -89,7 +92,7 @@ function login(){
     location.replace(url)
   }else{
     $.ajax({
-      url:'/mumu/anonlogin',
+      url:'/mumu/anon-login',
       async:false,
       success:function(res){
         if(res.code==0){

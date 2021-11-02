@@ -1,5 +1,5 @@
 <template>
-    <div id="index" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;
+    <div id="manage-my-videos" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
         
         <div style="width:100%;height:40px;line-height:40px;border-bottom: 1px solid #e8e8e8;box-sizing: border-box;position: relative;">
@@ -27,7 +27,7 @@
         <div v-show="showwho==1" style="width:100%;position:absolute;top:80px;bottom:0;left:0;right:0;">
             <div style="position: absolute;top:0;bottom:40px;width:100%;display: flex;flex-wrap: wrap;overflow: auto;">
                 <div :key=item.no v-for="item in videoRows.rows" style="width:200px;height:140px;margin:10px 10px;cursor: pointer;margin:10px;">
-                    <img src="../../assets/logo.png" draggable="false" style="display:block;width:100%;height:100px;object-fit: cover;"/>
+                    <img src="../assets/logo.png" draggable="false" style="display:block;width:100%;height:100px;object-fit: cover;"/>
                     <div class="lin1ellipsis" style="font-size: 16px;width:100%;line-height:20px;">
                         啥发撒旦法士大夫阿达放多少
                     </div>
@@ -55,10 +55,9 @@
 
 <script>
 export default {
-    name: 'index',
+    name: 'manage-my-videos',
     data() {
         return {
-            window:window,
             showwho:1,
             videoRows:{
                 rows:[],
@@ -67,9 +66,6 @@ export default {
                 map:{}
             }
         }
-    },
-    props: {
-        msg: String
     },
     methods:{
         loadMoreVideos(){
@@ -82,12 +78,8 @@ export default {
             })
         }
     },
-    beforeCreate() {
-        let ts=this
-        window.com=this
-    },
     created() {
-        let ts=this
+        let ts = window.ts = this
         ts.loadMoreVideos()
     }
 }

@@ -1,26 +1,18 @@
 <template>
-  <div>
-    <router-view></router-view>
-    <login v-if="$store.dologin" />
-  </div>
+    <div>
+      <router-view></router-view>
+      <login v-if="$store.doLogin"></login>
+    </div>
 </template>
 
 <script>
-import login from './components/login.vue'
 export default {
   name: 'App',
-  components:{
-    login
+  beforeCreate(){
+    let ts = this;
+    ts.$loginRefresh()
   },
-  mounted(){
-    let ts=this
-    ts.$axios.post('/mumu/login-refresh')
-          .then(function (res) {
-            if(res.data.code==0){
-              ts.$router.reload()
-              ts.$store.login=res.data.data
-            }
-          })
+  methods:{
   }
 }
 </script>

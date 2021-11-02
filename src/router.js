@@ -1,9 +1,9 @@
 import * as VueRouter from 'vue-router'
 import qs from 'querystring'
-import index from './components/pages/index.vue'
-import my from './components/pages/my.vue'
-import manageMyVideos from './components/pages/manage-my-videos.vue'
-import redirect from './components/pages/redirect.vue'
+import index from './components/index.vue'
+import my from './components/my.vue'
+import manageMyVideos from './components/manage-my-videos.vue'
+import redirect from './components/redirect.vue'
 
 const routes = [
     { path: '/', component: index },

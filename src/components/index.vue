@@ -11,9 +11,6 @@ export default {
     return { 
     }
   },
-  props: {
-    msg: String
-  },
   mounted() {
       location.href="./discover.html"+location.search
   }

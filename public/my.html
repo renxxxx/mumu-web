@@ -99,7 +99,7 @@
                                             localStorage.removeItem(config.project+'-loginTime')
                                             location.reload()
                                         }else{
-                                            comm.alert(res.msg)
+                                            comm.alert(res.message)
                                         }
                                     }
                                 })
@@ -118,7 +118,7 @@
                                 comm.copy({text:logincode})
                                 comm.alert({title:'登录码',message:logincode,messageclass:'selectable',button:'已复制'})
                             }else{
-                                comm.alert(res.msg)
+                                comm.alert(res.message)
                             }
                         })
                     ">
@@ -147,7 +147,7 @@
                 </span>
                 <span class="unselectable" 
                     style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#000000;font-weight:900;"
-                    onclick="location.replace('my.html')">
+                    onclick="location.replace('./#/my')">
                     我的
                 </span>
             </div>

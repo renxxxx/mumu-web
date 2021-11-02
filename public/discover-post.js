@@ -281,7 +281,6 @@ $('#video').click(function(){
                         page.seed = Math.ceil(Math.random()*100);
                         $.ajax({
                             url: '/mumu/explore-videos?',
-                            
                             data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&mo="+ttb(getUrlParam("mo")),
                             async: async,
                             success: function(res) {
@@ -2900,7 +2899,7 @@ $('#wordsframe_cancel').click(function(){
                                     selected:null,
                                 }
                             }else{
-                                common.alert(res.msg)
+                                common.alert(res.message)
                             }
                         }
                     })
@@ -3155,7 +3154,7 @@ $('#wordsframe_cancel').click(function(){
                                     row = page.wordbooks.selected=null
                                     $('#wordbooksPad .wordbooks').click()
                                }else{
-                                   common.alert(res.msg)
+                                   common.alert(res.message)
                                }
                             }
                         })
@@ -3188,7 +3187,7 @@ $('#wordsframe_cancel').click(function(){
                                 $('#wordbooksPad .wordbooks .row'+row.no).text(v)
                                 $('#wordbookDetailPad .value').text(v)
                             }else{
-                                common.alert(res.msg)
+                                common.alert(res.message)
                             }
                         }
                     })
@@ -4246,13 +4245,6 @@ $('#wordsframe_cancel').click(function(){
         $('#subtitlePad').show()
     })
 
-    setTimeout(function(){
-        if(!pagePre.login.fullmember)
-            common.alert('您好, 幕幕需要您的体验与建议, 可入群并开启所有内容.\nwx: rxw2877')
-    },30000)
-
-
-
 
     $('#wordbookDetailPad .moveup').click(function(){
         var curr = page.wordbooks.selected;
@@ -4275,7 +4267,7 @@ $('#wordsframe_cancel').click(function(){
                 }
                 curr.orderNum=orderNum
             }else{
-                common.alert(res.msg)
+                common.alert(res.message)
             }
         })
     })
@@ -4302,7 +4294,7 @@ $('#wordsframe_cancel').click(function(){
                             $('#wordbooksPad .wordbooks .row').not('.row0').remove()
                             loadMoreWordbooks()
                         }else{
-                            common.alert(res.msg)
+                            common.alert(res.message)
                         }
                     })
                 }else{
@@ -4332,7 +4324,7 @@ $('#wordsframe_cancel').click(function(){
                 }
                 curr.orderNum=orderNum
             }else{
-                common.alert(res.msg)
+                common.alert(res.message)
             }
         })
     })
@@ -4391,7 +4383,7 @@ $('#wordsframe_cancel').click(function(){
                             $(`#wordbooksPad .words .pad .row`).not('.row0').remove()
                             loadMoreWordbookWords(wordbook.no)
                         }else{
-                            common.alert(res.msg)
+                            common.alert(res.message)
                         }
                     })
                 }else{

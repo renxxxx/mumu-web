@@ -1,31 +1,51 @@
 let uu={}
 
-function getUrlParam(name)
+uu.getCurrQueryobj = function()
 {
-       var query =decodeURIComponent(window.location.search.substring(1));
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == name){
-                 return pair[1]
-                }
-       }
-       return null;
+  var queryObj = uu.toQueryobj(window.location.search.substring(1))
+  return queryObj;
 }
-uu.getUrlParam=getUrlParam;
 
-function trimToBlank(value)
+uu.getQueryobj = function(url)
+{
+  let url2 = url
+  let index = url2.indexOf('?')
+  let index2 = url2.indexOf('#')
+  if(index == -1)
+    return null
+  if(index2 > index){
+    url2=url2.substring(index2)
+  }
+  let querystr=url2.substring(index);
+  var queryObj = uu.toQueryobj(querystr)
+  return queryObj;
+}
+
+uu.toQueryobj = function(querystr)
+{
+  var o = {}
+  var querystr2 =decodeURIComponent(querystr);
+  var vars = querystr2.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    o[pair[0]]=pair[1]
+  }
+  return o;
+}
+
+
+uu.trimToBlank=function(value)
 {
       var v = null
       if(value==null||value==undefined)
           return ''
-          v =value+''
-          return v.toString().trim();
+      v=value+''
+      return v.toString().trim();
         
 }
-uu.trimToBlank=trimToBlank;
+uu.ttb=uu.trimToBlank
 
-function trimToNull(value)
+uu.trimToNull=function (value)
 {
       var v = null
       if(value==null||value==undefined)
@@ -33,27 +53,25 @@ function trimToNull(value)
           v = value+''
           return v.toString().trim();
 }
-uu.trimToNull=trimToNull;
+uu.ttn=uu.trimToNull
 
-function isEmpty(value)
+uu.isEmpty=function (value)
 {
       if(value==null||value==undefined||value.toString().trim()=='')
           return true
       else
         return false
 }
-uu.isEmpty=isEmpty;
 
-function isNull(value)
+uu.isNull=function (value)
 {
       if(value==null||value==undefined)
           return true
       else
         return false
 }
-uu.isNull=isNull;
 
-function isBlank(value)
+uu.isBlank=function (value)
 {
       if(value==null||value==undefined)
           return false
@@ -62,13 +80,12 @@ function isBlank(value)
         else
           return false
 }
-uu.isBlank=isBlank;
 
 
-function O(target){
+uu.O = function(target){
   this.target=target;
   
-  O.prototype.attr = function(keyChain,newValue){
+  uu.O.prototype.attr = function(keyChain,newValue){
     var carrier=target;
     var parent=null;
     if(!this.target || !keyChain){
@@ -104,15 +121,13 @@ function O(target){
      return carrier;
   }
 }
-uu.O=O;
 
-function o(data){
-  return new O(data);
+uu.o=function(data){
+  return new uu.O(data);
 }
-uu.o=o;
 
 
-function is_weixn(){  
+uu.isWeixn=function (){  
   var ua = navigator.userAgent.toLowerCase();  
   if(ua.match(/MicroMessenger/i)=="micromessenger") {  
       return true;  
@@ -120,10 +135,9 @@ function is_weixn(){
       return false;  
   }  
 }
-uu.is_weixn=is_weixn;
 
 
-function randomnum(n){ 
+uu.randomnum=function (n){ 
   var t=''; 
   for(var i=0;i<n;i++){ 
       t+=Math.floor(Math.random()*10); 
@@ -131,9 +145,8 @@ function randomnum(n){
   t=t.replace(/^0/,'1')
   return t; 
 }
-uu.randomnum=randomnum;
 
-function isPc() {
+uu.isPc=function () {
   var userAgentInfo = navigator.userAgent;
   var Agents = ["Android", "iPhone",
         "SymbianOS", "Windows Phone",
@@ -147,18 +160,17 @@ function isPc() {
   }
   return flag;
 }
-uu.isPc=isPc;
 
-function clearAllCookie() {  
+uu.clearAllCookie=function () {  
   var keys = document.cookie.match(/[^ =;]+(?==)/g);  
   if(keys) {  
       for(var i = keys.length; i--;)  
           document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
   }  
 }
-uu.clearAllCookie=clearAllCookie;
 
-function copy(param){
+
+uu.copy=function(param){
   param.text;
   var textarea = document.createElement('textarea');
   textarea.style['position']='absolute'
@@ -168,14 +180,14 @@ function copy(param){
   textarea.select();
   document.execCommand("copy");
   document.body.removeChild(textarea)
+  if(param.success)
+    param.success(param.text)
 }
-uu.copy=copy;
 
-function changearr(arr,i1,i2){
+uu.changearr=function (arr,i1,i2){
   var o3=arr[i1];
   arr[i1]=arr[i2]
   arr[i2]=o3
 }
-uu.changearr=changearr;
 
 export default uu;
