@@ -3,5 +3,5 @@ module.exports={
         port: 80,
         proxy: 'https://renx.cc/'
     },
-    publicPath:'/muum'
+    publicPath:'/mumu'
 }
