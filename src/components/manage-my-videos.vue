@@ -28,10 +28,10 @@
             <div style="position: absolute;top:0;bottom:40px;width:100%;display: flex;flex-wrap: wrap;overflow: auto;">
                 <div :key=item.no v-for="item in videoRows.rows" style="width:200px;height:140px;margin:10px 10px;cursor: pointer;margin:10px;">
                     <img src="../assets/logo.png" draggable="false" style="display:block;width:100%;height:100px;object-fit: cover;"/>
-                    <div class="lin1ellipsis" style="font-size: 16px;width:100%;line-height:20px;">
+                    <div class="line1" style="font-size: 16px;width:100%;line-height:20px;">
                         啥发撒旦法士大夫阿达放多少
                     </div>
-                    <div class="lin1ellipsis" style="font-size: 15px;width:100%;line-height:20px;">
+                    <div class="line1" style="font-size: 15px;width:100%;line-height:20px;">
                         专辑1
                     </div>
                 </div>

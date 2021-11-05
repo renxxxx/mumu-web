@@ -1,42 +1,39 @@
 <template>
-    <div id="m_login" style="width:100%;background-color: rgba(0, 0, 0, 0.7);
+    <div id="m_login" style="width:100%;background-color: rgba(0, 0, 0, 0.5);
         position:absolute;top:0;bottom:0;font-size:0;">
         <div style="max-width: 700px;background-color: #ffffff;margin:auto;margin-top:50px;border-radius: 2px;position: relative;">
             <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
                 登录
             </div>
-            <div style="line-height:49px;height:49px;border-bottom: 1px solid #000000;text-align: center;">
+            <div style="line-height:50px;height:50px;border-bottom: 1px solid #000000;text-align: center;box-sizing: border-box;">
                 <span @click="way='account'" style="font-size: 16px;border-right:1px solid #000000;border-left:1px solid #000000;padding:0 20px;
-                    background-color: #ffffff;cursor: pointer;display: inline-block;" 
+                    background-color: #ffffff;cursor: pointer;display: inline-block;height:50px;box-sizing: border-box;" 
                     :style="{
                       'border-bottom':way=='account'?'none':'1px solid #000000',
-                      'height':way=='account'?'50px':'49px',
                       'background-color':way=='account'?'#ffffff':'#cccccc'
                     }">
                     账号
                 </span>
                 <span @click="way='sms'" style="font-size: 16px;border-right:1px solid #000000;padding:0 20px;background-color: #ffffff;
-                    cursor: pointer;display: inline-block;" 
+                    cursor: pointer;display: inline-block;height:50px;box-sizing: border-box;" 
                     :style="{
                       'border-bottom':way=='sms'?'none':'1px solid #000000',
-                      'height':way=='sms'?'50px':'49px',
                       'background-color':way=='sms'?'#ffffff':'#cccccc'
                     }">
                     短信
                 </span>
                 <span @click="way='loginCode'" style="font-size: 16px;border-right:1px solid #000000;padding:0 20px;background-color: #ffffff;
-                    cursor: pointer;display: inline-block;" 
+                    cursor: pointer;display: inline-block;height:50px;box-sizing: border-box;" 
                     :style="{
                       'border-bottom':way=='loginCode'?'none':'1px solid #000000',
-                      'height':way=='loginCode'?'50px':'49px',
                       'background-color':way=='loginCode'?'#ffffff':'#cccccc'
                     }">
                     登录码
-                </span>
+                  </span>
             </div>
             <div v-if="way=='account'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="lin1ellipsis" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         账号
                     </span>
@@ -44,19 +41,19 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;" placeholder="账号/手机"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:15px;">
-                    <span class="lin1ellipsis" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
+                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
                         密码
                     </span>
                     <input v-model="pwd" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;"/>
                 </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
-                    <span @click="loginByPwd" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                    <button @click="loginByPwd" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
                         登录
-                    </span>
-                    <span @click="$store.doLogin=0" style="display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
+                    </button>
+                    <button @click="$store.doLogin=0" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
                         取消
-                    </span>
+                    </button>
                 </div>
                 <div style="font-size: 14px;height:30px;line-height: 30px;text-align: center;color: #9e9e9e;">
                     登录即注册
@@ -65,7 +62,7 @@
             
             <div v-if="way=='sms'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="lin1ellipsis" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
+                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
                         box-sizing: border-box;text-align: center;">
                         手机号
                     </span>
@@ -73,12 +70,12 @@
                         border:1px solid #000000;border-right:none;padding: 0 3px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:15px;">
-                    <span class="lin1ellipsis" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
+                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
                         验证码
                     </span>
                     <input v-model="smsVcode" style="width:50%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding: 0 3px;"/>
-                    <span @click="sendSmsVcode" class="lin1ellipsis" style="display: inline-block;width:20%;font-size: 16px;text-align: center;vertical-align: middle;
+                    <span @click="sendSmsVcode" class="line1" style="display: inline-block;width:20%;font-size: 16px;text-align: center;vertical-align: middle;
                         border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;">
                         {{ smsLimit==0? '发送' : smsLimit}}
                     </span>
@@ -97,7 +94,7 @@
             </div>
             <div v-if="way=='loginCode'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="lin1ellipsis" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
+                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
                         box-sizing: border-box;text-align: center;">
                         登录码
                     </span>
@@ -118,119 +115,194 @@
                 <img src="../../assets/img/qq.png" style="width:40px;margin-left:20px;cursor: pointer;"/>
             </div>
         </div>
+
+        <div v-if='toNewAccountConfirm' style="width:100%;background-color: rgba(0, 0, 0, 0.7);position:absolute;top:0;bottom:0;font-size:0;">
+            <div style="max-width: 700px;background-color: #ffffff;margin:auto;margin-top:50px;border-radius: 2px;position: relative;">
+                <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
+                    新账号确认
+                </div>
+                <div style="font-size: 15px;text-align: center;height:30px;line-height: 30px;color: #868686;margin-top: 10px;">
+                    你输入的是一个新账号, 请再次输入以确认.
+                </div>
+                <div v-if="way=='account'" style="margin-top:30px;">
+                    <div style="line-height:35px;height:35px;">
+                        <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                            box-sizing: border-box;text-align: center;">
+                            账号确认
+                        </span>
+                        <input v-model="newAccountConfirm"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                            border:1px solid #000000;border-right:none;padding:0 3px;" />
+                    </div>
+                    <div style="line-height:35px;height:35px;margin-top:15px;">
+                        <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
+                            密码确认
+                        </span>
+                        <input v-model="newPwdConfirm" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                            border:1px solid #000000;border-right:none;padding:0 3px;"/>
+                    </div>
+                    <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
+                        <button @click="newAccountLoginByPwd" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                            确认
+                        </button>
+                        <button @click="toNewAccountConfirm=0" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    
 </template>
 
 <script>
 export default {
-  name: 'login',
-  data() {
-    return {
-        account:null,
-        pwd:null,
-        loginCode:null,
-        phone:null,
-        smsVcode:null,
-        way:'account',
-        smsLimit:0,
-        smsLimitInterval:null
-    }
-  },
-  props: {
-  },
-  methods:{
-    loginByPwd(){
-      if(!ts.account){
-        ts.$notify({ type: 'warning', message: '请输入账号', duration:1000});
-        return
-      }
-      if(!ts.pwd){
-        ts.$notify({ type: 'warning', message: '请输入密码', duration:1000});
-        return
-      }
+    name: 'login',
+    data() {
+        return {
+            account:null,
+            pwd:null,
+            newAccountConfirm:null,
+            newPwdConfirm:null,
+            loginCode:null,
+            phone:null,
+            smsVcode:null,
+            way:'account',
+            smsLimit:0,
+            smsLimitInterval:null,
+            toNewAccountConfirm:0,
+        }
+    },
+    props: {
+    },
+    methods:{
+        async loginByPwd(){
+            if(!ts.account){
+                ts.$notify({ message: '请输入账号', duration:1500});
+                return
+            }
+            if(!ts.pwd){
+                ts.$notify({ message: '请输入密码', duration:1500});
+                return
+            }
 
-      ts.$axios.post('/mumu/account-is-exist',ts.$qs.stringify({account:ts.account})).then(function (res) {
-        
-      })
-      
-      ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwdMd5:ts.$md5.hex_md5(ts.pwd)})).then(function (res) {
-        if(res.data.code==0){
-          ts.$axios.post('/mumu/login-refresh').then(function (res) {
-            if(res.data.code==0){
-              ts.$notify({ type: 'success', message: '登录成功', duration:1000, onClose(){
-                ts.$store.doLogin=0
-                ts.$store.login=res.data.data
-                ts.$router.reload()
-              }});
+            let exist = 0;
+            await ts.$axios.post('/mumu/account-is-exist',ts.$qs.stringify({account:ts.account})).then(function (res) {
+                if(res.data.code == 0){
+                    exist=res.data.data.exist
+                }
+            })
+            if(exist == 0){
+                ts.toNewAccountConfirm=1
             }else{
-              ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
+                ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwdMd5:ts.$md5.hex_md5(ts.pwd)})).then(function (res) {
+                    if(res.data.code==0){
+                        ts.$axios.post('/mumu/login-refresh').then(function (res) {
+                            if(res.data.code==0){
+                                ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
+                                    ts.$store.doLogin=0
+                                    ts.$store.my=res.data.data
+                                    ts.$router.reload()
+                                }});
+                            }else{
+                                ts.$notify({ message: res.data.message, duration:1500});
+                            }
+                        })
+                    }else{
+                        ts.$notify({ message: res.data.message, duration:1500});
+                    }
+                })
             }
-          })
-        }else{
-          ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
-        }
-      })
-    },
-    loginByLoginCode(){
-      ts.$axios.post("/mumu/login-by-login-code",ts.$qs.stringify({loginCode:ts.loginCode})).then(res=>{
-        if(res.data.code==0){
-          ts.$axios.post('/mumu/login-refresh').then(function (res) {
-            if(res.data.code==0){
-              ts.$notify({ type: 'success', message: '登录成功', duration:1000, onClose(){
-                ts.$store.doLogin=0
-                ts.$store.login=res.data.data
-                ts.$router.reload()
-              }});
-            }else{
-              ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
+        },
+        async newAccountLoginByPwd(){
+            if(ts.account != ts.newAccountConfirm){
+                ts.$notify({ message: '两次账号输入不一致', duration:1500});
+                return
             }
-          })
-        }else{
-          ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
-        }
-      })
-    },
-    sendSmsVcode(){
-      if(ts.smsLimit>0)
-        return;
-      ts.$axios.post("/mumu/send-sms-vcode",ts.$qs.stringify({phone:ts.phone})).then(res=>{
-        if(res.data.code==0){
-          ts.$notify({ type: 'success', message: '发送成功', duration:1000});
-          ts.smsLimit=60
-          ts.smsLimitInterval = setInterval(()=>{
-            ts.smsLimit--;
-            if(ts.smsLimit==0)
-              clearInterval(ts.smsLimitInterval)
-          },1000)
-        }else{
-          ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
-        }
-      })
-    },
-    loginBySms(){
-      ts.$axios.post("/mumu/login-by-sms",ts.$qs.stringify({phone:ts.phone,smsVcode:ts.smsVcode})).then(res=>{
-        if(res.data.code==0){
-          ts.$axios.post('/mumu/login-refresh').then(function (res) {
-            if(res.data.code==0){
-              ts.$notify({ type: 'success', message: '登录成功', duration:1000, onClose(){
-                ts.$store.doLogin=0
-                ts.$store.login=res.data.data
-                ts.$router.reload()
-              }});
-            }else{
-              ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
+            if(ts.pwd != ts.newPwdConfirm){
+                ts.$notify({ message: '两次密码输入不一致', duration:1500});
+                return
             }
-          })
-        }else{
-          ts.$notify({ type: 'warning', message: res.data.message, duration:1000});
-        }
-      })
+            ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwdMd5:ts.$md5.hex_md5(ts.pwd)})).then(function (res) {
+                if(res.data.code==0){
+                    ts.$axios.post('/mumu/login-refresh').then(function (res) {
+                        if(res.data.code==0){
+                            ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
+                                ts.$store.doLogin=0
+                                ts.$store.toNewAccountConfirm=0
+                                ts.$store.my=res.data.data
+                                ts.$router.reload()
+                            }});
+                        }else{
+                            ts.$notify({ message: res.data.message, duration:1500});
+                        }
+                    })
+                }else{
+                    ts.$notify({ message: res.data.message, duration:1500});
+                }
+            })
+        },
+        loginByLoginCode(){
+            ts.$axios.post("/mumu/login-by-login-code",ts.$qs.stringify({loginCode:ts.loginCode})).then(res=>{
+                if(res.data.code==0){
+                ts.$axios.post('/mumu/login-refresh').then(function (res) {
+                    if(res.data.code==0){
+                        ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
+                            ts.$store.doLogin=0
+                            ts.$store.my=res.data.data
+                            ts.$router.reload()
+                        }});
+                    }else{
+                        ts.$notify({ message: res.data.message, duration:1500});
+                    }
+                })
+                }else{
+                    ts.$notify({ message: res.data.message, duration:1500});
+                }
+            })
+        },
+        sendSmsVcode(){
+            if(ts.smsLimit>0)
+                return;
+            ts.$axios.post("/mumu/send-sms-vcode",ts.$qs.stringify({phone:ts.phone})).then(res=>{
+                if(res.data.code==0){
+                    ts.$notify({ type: 'success', message: '发送成功', duration:1500});
+                    ts.smsLimit=60
+                    ts.smsLimitInterval = setInterval(()=>{
+                        ts.smsLimit--;
+                        if(ts.smsLimit==0)
+                        clearInterval(ts.smsLimitInterval)
+                    },1000)
+                }else{
+                    ts.$notify({ message: res.data.message, duration:1500});
+                }
+            })
+        },
+        loginBySms(){
+            ts.$axios.post("/mumu/login-by-sms",ts.$qs.stringify({phone:ts.phone,smsVcode:ts.smsVcode})).then(res=>{
+                if(res.data.code==0){
+                ts.$axios.post('/mumu/login-refresh').then(function (res) {
+                    if(res.data.code==0){
+                        ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
+                            ts.$store.doLogin=0
+                            ts.$store.my=res.data.data
+                            ts.$router.reload()
+                        }});
+                    }else{
+                        ts.$notify({ message: res.data.message, duration:1500});
+                    }
+                })
+                }else{
+                ts.$notify({ message: res.data.message, duration:1500});
+                }
+            })
+        },
     },
-  },
-  beforeCreate() {
-    debugger
-    let ts = window.ts = this
-  }
+    beforeCreate() {
+        debugger
+        let ts = window.ts = this
+    }
 }
 </script>
 

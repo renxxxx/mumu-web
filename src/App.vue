@@ -1,16 +1,13 @@
 <template>
-    <div>
       <router-view></router-view>
       <login v-if="$store.doLogin"></login>
-    </div>
 </template>
 
 <script>
 export default {
   name: 'App',
-  beforeCreate(){
+  async beforeCreate(){
     let ts = this;
-    ts.$loginRefresh()
   },
   methods:{
   }
@@ -26,10 +23,11 @@ body {
   padding:0;
 }
 
-.lin1ellipsis {
+.line1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    vertical-align: top;
 }
 
 * {
