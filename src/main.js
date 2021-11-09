@@ -18,7 +18,7 @@ import Vconsole from 'vconsole'
 
 let store = vue.reactive({
     doLogin: null,
-    my: {},
+    login: {},
     vconsole:null,
 })
 

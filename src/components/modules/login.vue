@@ -44,11 +44,11 @@
                     <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
                         密码
                     </span>
-                    <input v-model="pwd" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                    <input v-model="password" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;"/>
                 </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
-                    <button @click="loginByPwd" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                    <button @click="loginByPassword" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
                         登录
                     </button>
                     <button @click="$store.doLogin=0" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
@@ -121,8 +121,9 @@
                 <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
                     新账号确认
                 </div>
-                <div style="font-size: 15px;text-align: center;height:30px;line-height: 30px;color: #868686;margin-top: 10px;">
-                    你输入的是一个新账号, 请再次输入以确认.
+                <div class="line1" style="font-size: 15px;text-align: center;height:30px;line-height: 30px;color: #868686;margin-top: 10px;box-sizing: border-box;
+                    padding:0 5px;">
+                    你输入的是一个新账号, 将会自动注册, 请再次输入以确认.
                 </div>
                 <div v-if="way=='account'" style="margin-top:30px;">
                     <div style="line-height:35px;height:35px;">
@@ -137,11 +138,11 @@
                         <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
                             密码确认
                         </span>
-                        <input v-model="newPwdConfirm" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                        <input v-model="newPasswordConfirm" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                             border:1px solid #000000;border-right:none;padding:0 3px;"/>
                     </div>
                     <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
-                        <button @click="newAccountLoginByPwd" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                        <button @click="newAccountLoginByPassword" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
                             确认
                         </button>
                         <button @click="toNewAccountConfirm=0" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
@@ -162,9 +163,9 @@ export default {
     data() {
         return {
             account:null,
-            pwd:null,
+            password:null,
             newAccountConfirm:null,
-            newPwdConfirm:null,
+            newPasswordConfirm:null,
             loginCode:null,
             phone:null,
             smsVcode:null,
@@ -177,12 +178,12 @@ export default {
     props: {
     },
     methods:{
-        async loginByPwd(){
+        async loginByPassword(){
             if(!ts.account){
                 ts.$notify({ message: '请输入账号', duration:1500});
                 return
             }
-            if(!ts.pwd){
+            if(!ts.password){
                 ts.$notify({ message: '请输入密码', duration:1500});
                 return
             }
@@ -196,13 +197,13 @@ export default {
             if(exist == 0){
                 ts.toNewAccountConfirm=1
             }else{
-                ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwdMd5:ts.$md5.hex_md5(ts.pwd)})).then(function (res) {
+                ts.$axios.post('/mumu/login-by-password',ts.$qs.stringify({account:ts.account,passwordMd5:ts.$md5.hex_md5(ts.password)})).then(function (res) {
                     if(res.data.code==0){
                         ts.$axios.post('/mumu/login-refresh').then(function (res) {
                             if(res.data.code==0){
                                 ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
                                     ts.$store.doLogin=0
-                                    ts.$store.my=res.data.data
+                                    ts.$store.login=res.data.data
                                     ts.$router.reload()
                                 }});
                             }else{
@@ -215,23 +216,23 @@ export default {
                 })
             }
         },
-        async newAccountLoginByPwd(){
+        async newAccountLoginByPassword(){
             if(ts.account != ts.newAccountConfirm){
                 ts.$notify({ message: '两次账号输入不一致', duration:1500});
                 return
             }
-            if(ts.pwd != ts.newPwdConfirm){
+            if(ts.password != ts.newPasswordConfirm){
                 ts.$notify({ message: '两次密码输入不一致', duration:1500});
                 return
             }
-            ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwdMd5:ts.$md5.hex_md5(ts.pwd)})).then(function (res) {
+            ts.$axios.post('/mumu/login-by-password',ts.$qs.stringify({account:ts.account,passwordMd5:ts.$md5.hex_md5(ts.password)})).then(function (res) {
                 if(res.data.code==0){
                     ts.$axios.post('/mumu/login-refresh').then(function (res) {
                         if(res.data.code==0){
                             ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
                                 ts.$store.doLogin=0
                                 ts.$store.toNewAccountConfirm=0
-                                ts.$store.my=res.data.data
+                                ts.$store.login=res.data.data
                                 ts.$router.reload()
                             }});
                         }else{
@@ -250,7 +251,7 @@ export default {
                     if(res.data.code==0){
                         ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
                             ts.$store.doLogin=0
-                            ts.$store.my=res.data.data
+                            ts.$store.login=res.data.data
                             ts.$router.reload()
                         }});
                     }else{
@@ -286,7 +287,7 @@ export default {
                     if(res.data.code==0){
                         ts.$notify({ type: 'success', message: '登录成功', duration:1500, onClose(){
                             ts.$store.doLogin=0
-                            ts.$store.my=res.data.data
+                            ts.$store.login=res.data.data
                             ts.$router.reload()
                         }});
                     }else{

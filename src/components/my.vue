@@ -1,13 +1,13 @@
 <template>
     <div id="my" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #272727;font-size:0;
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
-        <div @click="$store.my.anon==0 ? $router.push({path:'/account'}):null" style="width:100%;height:125px;border:1px solid #272727;
+        <div @click="$store.login.anon==0 ? $router.push({path:'/account'}):null" style="width:100%;height:125px;border:1px solid #272727;
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;">
-            <img :src="$store.my.headImg || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
+            <img :src="$store.login.headImg || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
                 margin-top:30px;display:block;cursor: pointer;" />
             <div class="line1" style="font-size: 20px;position:absolute;top:40px;left:70px;color: #dedede;width:150px;">
-                <template v-if="$store.my.anon==0">
-                    {{$store.my.nickname}}
+                <template v-if="$store.login.anon==0">
+                    {{$store.login.nickname}}
                 </template>
                 <template v-else>
                     <span @click="$store.doLogin=1" style="text-decoration: underline;cursor: pointer;">
@@ -15,15 +15,15 @@
                     </span>
                 </template>
             </div>
-            <span v-if="$store.my.anon==0" style="position: absolute;right:10px;top:50%;transform: translateX(-50%);font-size: 16px;color:#cccccc;font-weight: 500;">
+            <span v-if="$store.login.anon==0" style="position: absolute;right:10px;top:50%;transform: translateX(-50%);font-size: 16px;color:#cccccc;font-weight: 500;">
                 >
             </span>
         </div>
-        <div @click="$router.push('/manage-my-videos')" v-if="$store.my.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;
+        <div @click="$router.push('/manage-my-videos')" v-if="$store.login.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;">
             管理我的视频
         </div>
-        <div @click="showMyLoginCode()" v-if="$store.my.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;border-bottom: 1px solid #4a4a4a;
+        <div @click="showMyLoginCode()" v-if="$store.login.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;border-bottom: 1px solid #4a4a4a;
             box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;" >
             生成登录码
         </div>
@@ -31,7 +31,7 @@
             box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;" >
             {{$store.vconsole?'关闭调试':'打开调试'}}
         </div>
-        <div @click="logout()" v-if="$store.my.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;border-bottom: 1px solid #4a4a4a;
+        <div @click="logout()" v-if="$store.login.anon==0" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;border-bottom: 1px solid #4a4a4a;
             box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;">
             退出登录
         </div>
@@ -118,7 +118,7 @@ export default {
                 ts.$axios.post("/mumu/logout").then(res=>{
                     debugger
                     if(res.data.code==0){
-                        ts.$store.my={}
+                        ts.$store.login={}
                         ts.$uu.clearAllCookie()
                         localStorage.clear()
                         sessionStorage.clear()

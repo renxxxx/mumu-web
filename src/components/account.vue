@@ -15,7 +15,7 @@
                 昵称
             </span>
             <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
-                {{$store.my.nickname}}
+                {{$store.login.nickname}}
             </span>
             <span @click="toNickname=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
@@ -26,7 +26,7 @@
                 账号
             </span>
             <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
-                {{$store.my.account}}
+                {{$store.login.account}}
             </span>
             <span @click="toAccount=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
@@ -37,7 +37,7 @@
                 手机
             </span>
             <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
-                {{$store.my.phone}}
+                {{$store.login.phone}}
             </span>
             <span @click="toPhone=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
@@ -48,9 +48,9 @@
                 密码
             </span>
             <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
-                {{$store.my.pwd}}
+                {{$store.login.password}}
             </span>
-            <span @click="toPwd=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
+            <span @click="toPassword=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
             </span>
         </div>
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <div v-if="toPwd" style="position:absolute;width:100%;bottom:0;top:0;background-color: rgba(0, 0, 0, 0.5);">
+        <div v-if="toPassword" style="position:absolute;width:100%;bottom:0;top:0;background-color: rgba(0, 0, 0, 0.5);">
             <div style="margin-top:20%;background-color: #ffffff;">
                 <div style="font-size: 16px;text-align: center;height:40px;line-height:40px;">
                     修改密码
@@ -128,7 +128,7 @@
                         box-sizing: border-box;text-align: center;">
                         密码
                     </span>
-                    <input v-model="pwd"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                    <input v-model="password"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
@@ -136,7 +136,7 @@
                         box-sizing: border-box;text-align: center;">
                         密码确认
                     </span>
-                    <input v-model="pwdConfirm"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                    <input v-model="passwordConfirm"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
@@ -145,7 +145,7 @@
                         手机号
                     </span>
                     <span class="line1" style="width:70%;display: inline-block;font-size: 16px;box-sizing: border-box;padding: 0 3px;height:35px;">
-                        {{$store.my.phone}}
+                        {{$store.login.phone}}
                     </span>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
@@ -160,10 +160,10 @@
                     </span>
                 </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
-                    <span @click="alterPwd" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                    <span @click="alterPassword" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
                         确认
                     </span>
-                    <span @click="toPwd=0" style="display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
+                    <span @click="toPassword=0" style="display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
                         取消
                     </span>
                 </div>
@@ -180,7 +180,7 @@
                         box-sizing: border-box;text-align: center;">
                         密码
                     </span>
-                    <input v-model="pwd"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
+                    <input v-model="password"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
@@ -222,14 +222,14 @@ export default {
         return {
             toNickname:0,
             toAccount:0,
-            toPwd:0,
+            toPassword:0,
             toPhone:0,
-            nickname:this.$store.my.nickname,
-            account:this.$store.my.account,
+            nickname:this.$store.login.nickname,
+            account:this.$store.login.account,
             accountConfirm:null,
-            phone:this.$store.my.phone,
-            pwd:null,
-            pwdConfirm:null,
+            phone:this.$store.login.phone,
+            password:null,
+            passwordConfirm:null,
             smsLimit:0,
             smsVcode:null,
         }
@@ -240,7 +240,7 @@ export default {
         alterNickname(){
             ts.$axios.post('/mumu/my-account/alter-nickname',ts.$qs.stringify({nickname:ts.nickname})).then(function (res) {
                 if(res.data.code == 0){
-                    ts.$store.my.nickname = ts.nickname
+                    ts.$store.login.nickname = ts.nickname
                     ts.toNickname=0
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
@@ -250,42 +250,42 @@ export default {
         alterAccount(){
             ts.$axios.post('/mumu/my-account/alter-account',ts.$qs.stringify({account:ts.account,accountConfirm:ts.accountConfirm})).then(function (res) {
                 if(res.data.code == 0){
-                    ts.$store.my.account = ts.account
+                    ts.$store.login.account = ts.account
                     ts.toAccount=0
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
                 }
             })
         },
-        alterPwd(){
-            if(!ts.$store.my.phone){
+        alterPassword(){
+            if(!ts.$store.login.phone){
                 ts.$notify({type:'warning', message:'请先设置手机号'})
                 return
             }
-            let pwdMd5=ts.pwd ? ts.$md5.hex_md5(ts.pwd) : null
-            let pwdMd5Confirm=ts.pwdConfirm ? ts.$md5.hex_md5(ts.pwdConfirm) : null
-            ts.$axios.post('/mumu/my-account/alter-pwd',ts.$qs.stringify({
-                pwdMd5:pwdMd5,
-                pwdMd5Confirm:pwdMd5Confirm,
+            let passwordMd5=ts.password ? ts.$md5.hex_md5(ts.password) : null
+            let passwordMd5Confirm=ts.passwordConfirm ? ts.$md5.hex_md5(ts.passwordConfirm) : null
+            ts.$axios.post('/mumu/my-account/alter-password',ts.$qs.stringify({
+                passwordMd5:passwordMd5,
+                passwordMd5Confirm:passwordMd5Confirm,
                 smsVcode:ts.smsVcode}))
             .then(function (res) {
                 if(res.data.code == 0){
-                    ts.$store.my.pwd = pwdMd5 ? "********" : null
-                    ts.toPwd=0
+                    ts.$store.login.password = passwordMd5 ? "********" : null
+                    ts.toPassword=0
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
                 }
             })
         },
         alterPhone(){
-            let pwdMd5=ts.pwd ? ts.$md5.hex_md5(ts.pwd) : null
+            let passwordMd5=ts.password ? ts.$md5.hex_md5(ts.password) : null
             ts.$axios.post('/mumu/my-account/alter-phone',ts.$qs.stringify({
-                pwdMd5:pwdMd5,
+                passwordMd5:passwordMd5,
                 phone:ts.phone,
                 smsVcode:ts.smsVcode}))
             .then(function (res) {
                 if(res.data.code == 0){
-                    ts.$store.my.phone = ts.phone
+                    ts.$store.login.phone = ts.phone
                     ts.toPhone=0
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})

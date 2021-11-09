@@ -15,7 +15,7 @@
             <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;">
               密码
             </span>
-            <input v-model="pwd" type="password"  style="width:200px;display: inline-block;vertical-align: middle;"/>
+            <input v-model="password" type="password"  style="width:200px;display: inline-block;vertical-align: middle;"/>
           </div>
           <div style="width:100%;line-height:40px;text-align: center;margin-top:20px;">
             <span style="display:inline-block;font-size: 16px;width:200px;cursor: pointer;" @click="login">
@@ -36,21 +36,21 @@ export default {
     return {
         show:1,
         account:null,
-        pwd:null,
+        password:null,
     }
   },
   props: {
   },
   methods:{
     login(){
-      ts.$axios.post('/mumu/login-by-pwd',ts.$qs.stringify({account:ts.account,pwd:ts.pwd}))
+      ts.$axios.post('/mumu/login-by-password',ts.$qs.stringify({account:ts.account,password:ts.password}))
       .then(function (res) {
         if(res.data.code==0){
           ts.$axios.post('/mumu/login-refresh')
           .then(function (res) {
             if(res.data.code==0){
               ts.$store.doLogin=0
-              ts.$store.my=res.data.data
+              ts.$store.login=res.data.data
               ts.$router.reload()
             }else{
               alert(res.data.message)
