@@ -189,11 +189,11 @@
         
         obj.userNo=page.onlyLookUserNo
         obj.rstart=1
-        obj.sort='orderNoInUser'
+        obj.sort='numInUser'
         obj.order='asc'
         if(page.onlyLookHimVideos.rows.length > 0){
-            obj.split='orderNoInUser'
-            obj.splitv='>'+page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].orderNoInUser
+            obj.split='numInUser'
+            obj.splitv='>'+page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1].numInUser
         }
         $.ajax({
             url: '/mumu/explore-videos',

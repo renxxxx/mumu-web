@@ -1,5 +1,5 @@
 <template>
-    <div id="m_login" style="width:100%;background-color: rgba(0, 0, 0, 0.5);
+    <div id="m_Login" style="width:100%;background-color: rgba(0, 0, 0, 0.5);
         position:absolute;top:0;bottom:0;font-size:0;">
         <div style="max-width: 700px;background-color: #ffffff;margin:auto;margin-top:50px;border-radius: 2px;position: relative;">
             <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
@@ -179,6 +179,7 @@ export default {
     },
     methods:{
         async loginByPassword(){
+            let ts = this
             if(!ts.account){
                 ts.$notify({ message: '请输入账号', duration:1500});
                 return
@@ -217,6 +218,7 @@ export default {
             }
         },
         async newAccountLoginByPassword(){
+            let ts = this
             if(ts.account != ts.newAccountConfirm){
                 ts.$notify({ message: '两次账号输入不一致', duration:1500});
                 return
@@ -245,6 +247,7 @@ export default {
             })
         },
         loginByLoginCode(){
+            let ts = this
             ts.$axios.post("/mumu/login-by-login-code",ts.$qs.stringify({loginCode:ts.loginCode})).then(res=>{
                 if(res.data.code==0){
                 ts.$axios.post('/mumu/login-refresh').then(function (res) {
@@ -264,6 +267,7 @@ export default {
             })
         },
         sendSmsVcode(){
+            let ts = this
             if(ts.smsLimit>0)
                 return;
             ts.$axios.post("/mumu/send-sms-vcode",ts.$qs.stringify({phone:ts.phone})).then(res=>{
@@ -281,6 +285,7 @@ export default {
             })
         },
         loginBySms(){
+            let ts = this
             ts.$axios.post("/mumu/login-by-sms",ts.$qs.stringify({phone:ts.phone,smsVcode:ts.smsVcode})).then(res=>{
                 if(res.data.code==0){
                 ts.$axios.post('/mumu/login-refresh').then(function (res) {
@@ -301,8 +306,7 @@ export default {
         },
     },
     beforeCreate() {
-        debugger
-        let ts = window.ts = this
+        
     }
 }
 </script>

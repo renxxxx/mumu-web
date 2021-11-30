@@ -1,6 +1,12 @@
 <template>
-      <router-view></router-view>
-      <login v-if="$store.doLogin"></login>
+    <router-view v-slot="{ Component }">
+        <transition>
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
+    </router-view>
+    <login v-if="$store.doLogin"></login>
 </template>
 
 <script>
@@ -29,13 +35,26 @@ body {
     white-space: nowrap;
     vertical-align: top;
 }
-
+.line2 {
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    vertical-align: top;
+    word-break: break-word;
+}
 * {
     -moz-user-select:none;/*火狐*/
     -webkit-user-select:none;/*webkit浏览器*/
     -ms-user-select:none;/*IE10*/
     -khtml-user-select:none;/*早期浏览器*/
     user-select:none;
+    box-sizing: border-box;
+    overflow: hidden;
+    vertical-align: middle;
 }
 
 .unselectable {
@@ -52,5 +71,9 @@ body {
     -ms-user-select:text;/*IE10*/
     -khtml-user-select:text;/*早期浏览器*/
     user-select:text;
+}
+
+img {
+    object-fit: cover;
 }
 </style>

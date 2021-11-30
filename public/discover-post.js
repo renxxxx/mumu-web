@@ -211,19 +211,19 @@
         
         obj.userNo=page.onlyLookUserNo
         // obj.rstart=1
-        // obj.sort='orderNoInUser,orderNoInSeries'
+        // obj.sort='numInUser,numInSeries'
         // obj.order='desc,asc'
         if(page.onlyLookHimVideos.rows.length > 0){
             var last = page.onlyLookHimVideos.rows[page.onlyLookHimVideos.rows.length-1];
             obj.lastNo=last.no
             obj.lastCreateTime=last.createTime
-            obj.lastOrderNoInSeries=last.orderNoInSeries
-            obj.lastOrderNoInUser=last.orderNoInUser
+            obj.lastNumInSeries=last.numInSeries
+            obj.lastNumInUser=last.numInUser
         }else{
             obj.lastNo=null
             obj.lastCreateTime=null
-            obj.lastOrderNoInSeries=null
-            obj.lastOrderNoInUser=null
+            obj.lastNumInSeries=null
+            obj.lastNumInUser=null
         }
         $.ajax({
             url: '/mumu/explore-user-videos',
@@ -312,14 +312,14 @@ $('#video').click(function(){
             var last = page.exploreVideos.rows[page.exploreVideos.rows.length-1];
             obj.lastNo=last.no
             obj.lastHistoryCreateTime=last.historyCreateTime
-            obj.lastOrderNoInSeries=last.orderNoInSeries
-            obj.lastOrderNoInUser=last.orderNoInUser
+            obj.lastNumInSeries=last.numInSeries
+            obj.lastNumInUser=last.numInUser
         }else{
             obj.init=1
             obj.lastNo=null
             obj.lastHistoryCreateTime=null
-            obj.lastOrderNoInSeries=null
-            obj.lastOrderNoInUser=null
+            obj.lastNumInSeries=null
+            obj.lastNumInUser=null
         }
 
         $.ajax({
@@ -364,7 +364,7 @@ $('#video').click(function(){
                     height:$('#video')[0].videoHeight,
                     difficulty:page.difficulty,
                     seriesNo:video.seriesNo,
-                    orderNoInSeries:video.orderNoInSeries,
+                    numInSeries:video.numInSeries,
                 }
                 if(!paramm.local){
                     ws.send(JSON.stringify({
@@ -572,7 +572,7 @@ $('#video').click(function(){
         }
         if(video.seriesNo){
             $('#inSeriesPad').css('display','inline-block')
-            $('#inSeriesPad .no').text(video.orderNoInSeries)
+            $('#inSeriesPad .no').text(video.numInSeries)
             $('#title').css('width','calc(100% - 169px)')
         }else{
             $('#inSeriesPad').hide()
@@ -4222,7 +4222,7 @@ $('#wordsframe_cancel').click(function(){
                     ele.removeClass('trow')
                     ele.addClass('row'+row.no)
                     ele.find('.cover').attr('src',row.cover)
-                    ele.find('.name').text((row.orderNoInSeries?ttb(row.orderNoInSeries)+" | ":"")+ttb(row.chname))
+                    ele.find('.name').text((row.numInSeries?ttb(row.numInSeries)+" | ":"")+ttb(row.chname))
                     ele[0].data=row
                     ele.show();
                     $('#seriesPad .trow').before(ele)

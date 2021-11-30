@@ -1,9 +1,9 @@
 <template>
-    <div id="account" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;
+    <div id="_Account" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;
         left:50%;transform: translateX(-50%);box-sizing: border-box;">
         
         <div style="height:40px;line-height:40px;position: relative;border-bottom:1px solid #dddddd;">
-            <span @click="$router.back()" style="font-size: 16px;font-weight: 500;display: inline-block;width:40px;text-align: center;cursor: pointer;">
+            <span @click="$back()" style="font-size: 16px;font-weight: 500;display: inline-block;width:40px;text-align: center;cursor: pointer;">
                 &lt;
             </span>
             <span style="font-size: 16px;display: inline-block;">
@@ -311,8 +311,8 @@ export default {
         },
     },
     beforeCreate() {
-        debugger
-        let ts = window.ts = this
+        
+        let ts = this
         clearInterval(ts.smsLimitInterval)
     }
 }

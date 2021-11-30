@@ -1,27 +1,37 @@
 let uu={}
 
-uu.getCurrQueryobj = function()
+uu.getCurrentQuery = function()
 {
-  var queryObj = uu.toQueryobj(window.location.search.substring(1))
+    
+  var queryObj = uu.getQuery(window.location.href)
   return queryObj;
 }
 
-uu.getQueryobj = function(url)
+uu.getQuery = function(url)
 {
+    debugger
   let url2 = url
   let index = url2.indexOf('?')
   let index2 = url2.indexOf('#')
   if(index == -1)
     return null
+    var querystr;
   if(index2 > index){
-    url2=url2.substring(index2)
+    querystr=url2.substring(index+1,index2)
+  }else{
+    querystr=url2.substring(index+1)
   }
-  let querystr=url2.substring(index);
-  var queryObj = uu.toQueryobj(querystr)
+  var queryObj = uu.toQuery(querystr)
   return queryObj;
 }
 
-uu.toQueryobj = function(querystr)
+uu.getPureNameInUrl = function(url){
+    if(!url)
+        return null;
+    return url.substr(0, url.lastIndexOf('.'))
+}
+
+uu.toQuery = function(querystr)
 {
   var o = {}
   var querystr2 =decodeURIComponent(querystr);

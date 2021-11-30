@@ -5,6 +5,7 @@ import * as vue from 'vue'
 import router from './router.js'
 import App from './App.vue'
 import uu from './assets/js/uu.js'
+import v from './assets/js/v.js'
 import md5 from './assets/js/md5.js'
 import axios from 'axios'
 import qs from 'querystring'
@@ -20,6 +21,8 @@ let store = vue.reactive({
     doLogin: null,
     login: {},
     vconsole:null,
+    history:[],
+    components:{},
 })
 
 let ddd = localStorage.getItem("ddd")
@@ -33,21 +36,21 @@ if(!ddd && uu.isWeixn()){
 localStorage.removeItem('ddd')
 
 async function loginRefresh(){
-    debugger
+    
     await axios.post('/mumu/login-refresh').then(function (res) {
-        debugger
+        
         if(res.data.code==0){
-            store.my=res.data.data
+            store.login=res.data.data
         }
     })
-    if(!store.my){
+    if(!store.login){
         await axios.post('/mumu/anon-login').then(function (res) {
-            debugger
+            
             if(res.data.code==0){
                 axios.post('/mumu/login-refresh').then(function (res) {
-                    debugger
+                    
                     if(res.data.code==0){
-                        store.my=res.data.data
+                        store.login=res.data.data
                     }
                 })
             }
@@ -57,8 +60,6 @@ async function loginRefresh(){
 
 loginRefresh().then(res=>{
     var app = vue.createApp(App)
-    window.app=app;
-    window.root=root;
     app.use(router)
     app.use(Dialog)
     app.use(Notify)
@@ -72,15 +73,35 @@ loginRefresh().then(res=>{
     app.config.globalProperties.$version=version
     app.config.globalProperties.$store=store
     app.config.globalProperties.$uu=uu
+    app.config.globalProperties.$v=v
     app.config.globalProperties.$md5=md5
     app.config.globalProperties.o=uu.o
     app.config.globalProperties.$axios=axios
     app.config.globalProperties.$qs=qs
     app.config.globalProperties.$loginRefresh=loginRefresh
     app.config.globalProperties.$$=$$
-    app.config.globalProperties.$vconsole=new Vconsole()
-    app.config.globalProperties.$vconsole.hideSwitch();
+    // app.config.globalProperties.$vconsole=new Vconsole()
+    // app.config.globalProperties.$vconsole.hideSwitch();
+    app.config.globalProperties.$push=function(to){
+        router.push(to)
+        store.history.push(to.path?to.path:to)
+    };
+    app.config.globalProperties.$replace=function(to){
+        router.replace(to)
+        store.history.pop()
+        store.history.push(to.path?to.path:to)
+    };
+    app.config.globalProperties.$back=function(){
+        if(store.history.length==0){
+            router.replace('/')
+        }else{
+            router.back()
+        }
+        store.history.pop()
+    };
     var root = app.mount('#app')
+    window.app=app;
+    window.root=root;
 })
 
 

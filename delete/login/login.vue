@@ -43,6 +43,7 @@ export default {
   },
   methods:{
     login(){
+        let ts = this
       ts.$axios.post('/mumu/login-by-password',ts.$qs.stringify({account:ts.account,password:ts.password}))
       .then(function (res) {
         if(res.data.code==0){
@@ -64,7 +65,7 @@ export default {
   },
   beforeCreate() {
     debugger
-    let ts = window.ts = this
+    let ts = this
   }
 }
 </script>
