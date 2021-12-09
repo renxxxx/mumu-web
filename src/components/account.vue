@@ -11,10 +11,10 @@
             </span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
-            <span class="line1" style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
+            <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
                 昵称
             </span>
-            <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
+            <span style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
                 {{$store.login.nickname}}
             </span>
             <span @click="toNickname=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
@@ -22,10 +22,10 @@
             </span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
-            <span class="line1" style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
+            <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
                 账号
             </span>
-            <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
+            <span style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
                 {{$store.login.account}}
             </span>
             <span @click="toAccount=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
@@ -33,10 +33,10 @@
             </span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
-            <span class="line1" style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
+            <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
                 手机
             </span>
-            <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
+            <span style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
                 {{$store.login.phone}}
             </span>
             <span @click="toPhone=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
@@ -44,10 +44,10 @@
             </span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
-            <span class="line1" style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
+            <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
                 密码
             </span>
-            <span class="line1" style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
+            <span style="display:inline-block;width:calc(100% - 120px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
                 {{$store.login.password}}
             </span>
             <span @click="toPassword=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
@@ -68,7 +68,7 @@
                     修改昵称
                 </div>
                 <div style="line-height:40px;height:40px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         昵称
                     </span>
@@ -92,7 +92,7 @@
                     修改账号
                 </div>
                 <div style="line-height:40px;height:40px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         账号
                     </span>
@@ -100,7 +100,7 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;height:40px;"/>
                 </div>
                 <div style="line-height:40px;height:40px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         账号确认
                     </span>
@@ -124,7 +124,7 @@
                     修改密码
                 </div>
                 <div style="line-height:35px;height:35px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         密码
                     </span>
@@ -132,7 +132,7 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         密码确认
                     </span>
@@ -140,21 +140,21 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
                         box-sizing: border-box;text-align: center;">
                         手机号
                     </span>
-                    <span class="line1" style="width:70%;display: inline-block;font-size: 16px;box-sizing: border-box;padding: 0 3px;height:35px;">
+                    <span style="width:70%;display: inline-block;font-size: 16px;box-sizing: border-box;padding: 0 3px;height:35px;">
                         {{$store.login.phone}}
                     </span>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
+                    <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
                         验证码
                     </span>
                     <input v-model="smsVcode" style="width:50%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
-                    <span @click="sendSmsVcodeToMe" class="line1" style="display: inline-block;width:20%;font-size: 16px;text-align: center;height:35px;
+                    <span @click="sendSmsVcodeToMe" style="display: inline-block;width:20%;font-size: 16px;text-align: center;height:35px;
                         border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;vertical-align: middle;">
                         {{ smsLimit==0? '发送' : smsLimit}}
                     </span>
@@ -176,7 +176,7 @@
                     修改手机号
                 </div>
                 <div style="line-height:35px;height:35px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         密码
                     </span>
@@ -184,7 +184,7 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         手机号
                     </span>
@@ -192,12 +192,12 @@
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
+                    <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
                         验证码
                     </span>
                     <input v-model="smsVcode" style="width:50%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
-                    <span @click="sendSmsVcodeToMe" class="line1" style="display: inline-block;width:20%;font-size: 16px;text-align: center;height:35px;
+                    <span @click="sendSmsVcodeToMe" style="display: inline-block;width:20%;font-size: 16px;text-align: center;height:35px;
                         border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;vertical-align: middle;">
                         {{ smsLimit==0? '发送' : smsLimit}}
                     </span>

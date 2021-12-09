@@ -5,7 +5,7 @@
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;">
             <img :src="$store.login.headImg || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
                 margin-top:30px;display:block;cursor: pointer;" />
-            <div class="line1" style="font-size: 20px;position:absolute;top:40px;left:70px;color: #dedede;width:150px;">
+            <div style="font-size: 20px;position:absolute;top:40px;left:70px;color: #dedede;width:150px;">
                 <template v-if="$store.login.anon==0">
                     {{$store.login.nickname}}
                 </template>

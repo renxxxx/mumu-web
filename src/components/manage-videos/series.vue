@@ -11,32 +11,32 @@
                     <img src='../../assets/img/home.png' style="vertical-align: text-bottom;width: 50%;"/>
                 </template>
             </span>
-            <span class="line1" style="font-size:16px;display: inline-block;width:calc(100% - 40px)">
+            <span style="font-size:16px;display: inline-block;width:calc(100% - 40px)">
                 专辑详情
             </span>
         </div>
         
        <div style="height:40px;line-height: 40px;">
-            <span class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;width:20%;text-align: center;">
+            <span style="display:inline-block;font-size: 16px;padding:0 3px;width:20%;text-align: center;">
                名称
             </span>
-            <span class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;width:73%;">
+            <span style="display:inline-block;font-size: 16px;padding:0 3px;width:73%;">
                 {{series.name}}
             </span>
-            <span @click="newName=series.name;isModifyName=1" class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;
+            <span @click="newName=series.name;isModifyName=1" style="display:inline-block;font-size: 16px;padding:0 3px;
                 width:7%;text-align: center;">
                 &gt;
             </span>
        </div>
 
        <div style="height:40px;line-height: 40px;">
-            <span class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;width:20%;text-align: center;">
+            <span style="display:inline-block;font-size: 16px;padding:0 3px;width:20%;text-align: center;">
                 封面
             </span>
-            <span class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;width:73%;">
+            <span style="display:inline-block;font-size: 16px;padding:0 3px;width:73%;">
                 <img :src="series.cover" style="width:40px;"/>
             </span>
-            <span @click="newCover=series.cover;isModifyCover=1" class="line1" style="display:inline-block;font-size: 16px;padding:0 3px;width:7%;text-align: center;">
+            <span @click="newCover=series.cover;isModifyCover=1" style="display:inline-block;font-size: 16px;padding:0 3px;width:7%;text-align: center;">
                 &gt;
             </span>
         </div>
@@ -48,7 +48,7 @@
                     修改标题
                 </div>
                 <div style="height:40px;margin:10px 0;">
-                    <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
                         标题
                     </span>
                     <input v-model="newName" style="display: inline-block;border:1px solid #000000;padding:0 3px;box-sizing: border-box;width:80%;height:40px;font-size:16px;
@@ -74,7 +74,7 @@
                     修改封面
                 </div>
                 <div style="height:40px;margin:10px 0;">
-                    <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
                         封面
                     </span>
                     <span v-if="!newCover" @click="chooseNewCover" style="font-size:16px;display:inline-block;width:40px;vertical-align: middle;height:40px;line-height: 40px;

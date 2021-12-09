@@ -95,7 +95,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class="line1" style="font-size: 15px;width:100%;line-height:20px;margin-top: 3px;">
+                    <div style="font-size: 15px;width:100%;line-height:20px;margin-top: 3px;">
                         {{item.name}}
                     </div>
                     <div v-if="serieses.selected==item" style="position: absolute;top:0;bottom:43px;left:0;right:0;background-color: rgb(12 12 12 / 64%);">
@@ -131,7 +131,7 @@
                 </div>
                 <video :src="fileObjectUrl" controls style="height:300px;width:100%;background-color: #000000;"></video>
                 <div style="height:40px;line-height:40px;margin-top:15px;">
-                    <span class="line1" style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
+                    <span style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
                         标题
                     </span>
                     <input v-model="fileName" style="display:inline-block;width:80%;padding:0 3px;box-sizing: border-box;font-size: 16px;height:40px;
@@ -154,7 +154,7 @@
                     创建专辑
                 </div>
                 <div style="height:40px;margin:10px 0;">
-                    <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
                         名称
                     </span>
                     <input v-model="seriesName" style="display: inline-block;border:1px solid #000000;padding:0 3px;box-sizing: border-box;width:80%;height:40px;font-size:16px;

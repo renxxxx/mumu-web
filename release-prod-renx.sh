@@ -4,7 +4,7 @@ echo
 
 versionMsg=$1
 if [ -z "$versionMsg" ]; then
- versionMsg='更新'
+ versionMsg='pack 更新'
 fi
 
 
@@ -18,8 +18,8 @@ npm run build
 
 echo "-package"
 commitid=`git rev-parse --short HEAD`
-env=/home/admin/renx
-packageName="renx-mumu-web-$version-$commitid.zip"
+env=/home/admin/environments/prod-renx
+packageName="prod-renx-mumu-web-$version-$commitid.zip"
 echo $packageName
 cd ./dist
 ../zip -q -r ./$packageName ./

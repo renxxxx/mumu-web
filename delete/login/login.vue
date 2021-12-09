@@ -6,13 +6,13 @@
             登录
           </div>
           <div style="width:100%;line-height:40px;text-align: center;">
-            <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;">
+            <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;">
               账号
             </span>
             <input v-model="account"  style="width:200px;display: inline-block;vertical-align: middle;"/>
           </div>
           <div style="width:100%;line-height:40px;text-align: center;">
-            <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;">
+            <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;">
               密码
             </span>
             <input v-model="password" type="password"  style="width:200px;display: inline-block;vertical-align: middle;"/>

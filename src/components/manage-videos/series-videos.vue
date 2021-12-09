@@ -11,7 +11,7 @@
                     <img src='../../assets/img/home.png' style="vertical-align: text-bottom;width: 50%;"/>
                 </template>
             </span>
-            <span class="line1" style="font-size:16px;display: inline-block;width:calc(100% - 80px)">
+            <span style="font-size:16px;display: inline-block;width:calc(100% - 80px)">
                 专辑 : {{series.name}}
             </span>
             <span @click="$routerr.push('/manage-videos/series?no='+query.no)"  style="display:inline-block;width:40px;height:40px;text-align: center;cursor: pointer;">
@@ -72,7 +72,7 @@
                 </div>
                 <video :src="fileObjectUrl" controls style="height:300px;width:100%;background-color: #000000;"></video>
                 <div style="height:40px;line-height:40px;margin-top:15px;">
-                    <span class="line1" style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
+                    <span style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
                         标题
                     </span>
                     <input v-model="fileName" style="display:inline-block;width:80%;padding:0 3px;box-sizing: border-box;font-size: 16px;height:40px;

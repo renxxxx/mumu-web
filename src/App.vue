@@ -55,8 +55,13 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     vertical-align: middle;
+}
+
+span {
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    vertical-align: middle;
 }
 
 .unselectable {

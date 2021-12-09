@@ -118,10 +118,10 @@
 
             <div v-if="!toModifySubtitle">
                 <div style="height:40px;line-height: 40px;margin-top:5px;">
-                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         标题
                     </span>
-                    <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         {{video.name}}
                     </span>
                     <span @click="newName=video.name;toModifyName=1" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
@@ -130,10 +130,10 @@
                     </span>
                 </div>
                 <div style="height:40px;line-height: 40px;">
-                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         封面
                     </span>
-                    <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;">
+                    <span style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;">
                         <img v-if="video.cover" :src="video.cover" style="width:40px;height:40px;"/>
                     </span>
                     <span @click="newCover=video.cover;toModifyCover=1;" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
@@ -142,25 +142,25 @@
                     </span>
                 </div>
                 <div style="height:40px;line-height: 40px;">
-                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         大小
                     </span>
-                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         {{video.size}}
                     </span>
                 </div>
                 <div style="height:40px;line-height: 40px;">
-                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         审核
                     </span>
-                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         {{(video.audit=='pass'?'通过':video.audit=='ing'?'审核中':video.audit=='unpass'?'未通过':'未审核')}}
                     </span>
                 </div>
                 <div v-if='video.auditMessage' style="height:40px;line-height: 40px;">
-                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                     </span>
-                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    <span style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
                         {{video.auditMessage}}
                     </span>
                 </div>
@@ -192,7 +192,7 @@
                     修改标题
                 </div>
                 <div style="height:40px;margin:10px 0;">
-                    <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
                         标题
                     </span>
                     <input v-model="newName" style="display: inline-block;border:1px solid #000000;padding:0 3px;box-sizing: border-box;width:80%;height:40px;font-size:16px;
@@ -218,7 +218,7 @@
                     修改封面
                 </div>
                 <div style="height:40px;margin:10px 0;">
-                    <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
                         封面
                     </span>
                     <span v-if="!newCover" @click="chooseNewCover" style="font-size:16px;display:inline-block;width:40px;vertical-align: middle;height:40px;line-height: 40px;

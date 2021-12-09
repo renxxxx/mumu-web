@@ -33,19 +33,19 @@
             </div>
             <div v-if="way=='account'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
                         账号
                     </span>
                     <input v-model="account"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding:0 3px;" placeholder="账号/手机"/>
+                        border:1px solid #000000;border-right:none;padding:0 3px;height:35px;" placeholder="账号/手机"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:15px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
+                    <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
                         密码
                     </span>
                     <input v-model="password" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding:0 3px;"/>
+                        border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
                     <button @click="loginByPassword" style="border: none;padding: 0;display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
@@ -94,12 +94,12 @@
             </div>
             <div v-if="way=='loginCode'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
                         box-sizing: border-box;text-align: center;">
                         登录码
                     </span>
                     <input v-model="loginCode"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding: 0 3px;"/>
+                        border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
                     <span @click="loginByLoginCode" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
@@ -110,7 +110,7 @@
                     </span>
                 </div>
             </div>
-            <div style="height:40px;text-align: center;margin-top:20px;padding:10px 0;">
+            <div style="height:40px;text-align: center;margin-top:20px;margin-bottom: 10px;">
                 <img src="../../assets/img/wx.png" style="width:40px;cursor: pointer;"/>
                 <img src="../../assets/img/qq.png" style="width:40px;margin-left:20px;cursor: pointer;"/>
             </div>
@@ -121,13 +121,13 @@
                 <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
                     新账号确认
                 </div>
-                <div class="line1" style="font-size: 15px;text-align: center;height:30px;line-height: 30px;color: #868686;margin-top: 10px;box-sizing: border-box;
+                <div style="font-size: 15px;text-align: center;height:30px;line-height: 30px;color: #868686;margin-top: 10px;box-sizing: border-box;
                     padding:0 5px;">
                     你输入的是一个新账号, 将会自动注册, 请再次输入以确认.
                 </div>
                 <div v-if="way=='account'" style="margin-top:30px;">
                     <div style="line-height:35px;height:35px;">
-                        <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
+                        <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                             box-sizing: border-box;text-align: center;">
                             账号确认
                         </span>
@@ -135,7 +135,7 @@
                             border:1px solid #000000;border-right:none;padding:0 3px;" />
                     </div>
                     <div style="line-height:35px;height:35px;margin-top:15px;">
-                        <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
+                        <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;text-align: left;width:30%;text-align: center;">
                             密码确认
                         </span>
                         <input v-model="newPasswordConfirm" type="password" style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
