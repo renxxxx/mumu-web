@@ -3,192 +3,197 @@
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
         
         <div style="width:100%;height:40px;line-height:40px;border-bottom: 1px solid #e8e8e8;box-sizing: border-box;position: relative;">
-            <span style="font-size:16px;padding:0 15px;cursor: pointer;display: inline-block;" @click="$back()">
-                &lt;
+            <span style="font-size:16px;width:40px;height:40px;text-align: center;cursor: pointer;display: inline-block;" @click="$routerr.back()">
+                <template v-if="!$routerr.isFirst()" >
+                    &lt;
+                </template>
+                <template v-else >
+                    <img src='../../assets/img/home.png' style="vertical-align: text-bottom;width: 50%;"/>
+                </template>
             </span>
             <span style="font-size:16px;">视频详情</span>
         </div>
      
-        <video id="video" :src='video && video.url' @timeupdate="timeupdate" x5-playsinline playsinline controls360=no webkit-playsinline  controls 
-            autoplay style="width:100%;height:200px;background-color: #191919;"></video>
-        <div @click="toModifySubtitle=1" style="background-color: #f0f8ff;position: relative;height:110px">
-            <div style="font-size: 14px;text-align: center;width:100%;height: 15px;">
-                {{ dddd?currentSubtitleIndex+1:'' }}
-            </div>
-            <div @click="
-                    toModifySubtitleText=1;
-                    newSubtitleText=currentSubtitle.text;
-                    videoDom.pause();" 
-                class="line2" 
-                style="height:41px;font-size: 18px;width:100%;padding:0 3px;text-align: center;box-sizing: border-box;font-weight: 600;">
-                {{  dddd?currentSubtitle.text:''}}
-            </div>
-            <div @click="
-                    toModifySubtitleTextZh=1;
-                    newSubtitleTextZh=currentSubtitle.textZh;
-                    videoDom.pause();" 
-                class="line2" 
-                style="height:40px;font-size: 16px;width:100%;padding:0 3px;text-align: center;box-sizing: border-box;margin-top:5px;">
-                {{  dddd?currentSubtitle.textZh:''}}
-            </div>
-            <div v-if="toModifySubtitle==0" style="position: absolute;top:0;bottom:0;right:0;left:0;">
+        <div style="position: absolute;top:40px;bottom:0;left:0;right:0;overflow: auto;">
+            <video id="video" :src='video.url' @timeupdate="timeupdate" x5-playsinline playsinline controls360=no webkit-playsinline  controls 
+                autoplay style="width:100%;height:200px;background-color: #191919;"></video>
+            <div @click="toModifySubtitle=1" style="background-color: #f0f8ff;position: relative;height:110px">
+                <div style="font-size: 14px;text-align: center;width:100%;height: 15px;">
+                    {{ dddd?currentSubtitleIndex+1:'' }}
+                </div>
+                <div @click="toModifySubtitleText" class="line2" 
+                    style="height:41px;font-size: 18px;width:100%;padding:0 3px;text-align: center;box-sizing: border-box;font-weight: 600;">
+                    {{  dddd?currentSubtitle.text:''}}
+                </div>
+                <div @click="toModifySubtitleTextZh" class="line2" 
+                    style="height:40px;font-size: 16px;width:100%;padding:0 3px;text-align: center;box-sizing: border-box;margin-top:5px;">
+                    {{  dddd?currentSubtitle.textZh:''}}
+                </div>
+                <div v-if="toModifySubtitle==0" style="position: absolute;top:0;bottom:0;right:0;left:0;">
 
+                </div>
             </div>
-        </div>
 
-        <div v-if="toModifySubtitle" style="position: absolute;top:355px;bottom:0;left:0;right:0;background-color: #ffffff;">
-            <div style="position: absolute;top:0;bottom:40px;left:0;right:0;overflow: auto;">
-                <div style="height:35px;padding:0 3px;">
-                    <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;">
-                        <span @click="subStart" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &lt;
-                        </span>
-                        <span @click="setStart" style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
-                            border: 1px solid #cccccc;border-width:0 1px;">
-                            {{ currentSubtitle && currentSubtitle!=null ?(currentSubtitle.start/1000).toFixed(2):'' }}
-                        </span>
-                        <span @click="addStart" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &gt;
-                        </span>
+            <div v-if="toModifySubtitle" style="position: absolute;top:315px;bottom:0;left:0;right:0;background-color: #ffffff;">
+                <div style="position: absolute;top:0;bottom:40px;left:0;right:0;overflow: auto;">
+                    <div style="height:35px;padding:0 3px;">
+                        <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;">
+                            <span @click="subStart" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &lt;
+                            </span>
+                            <span @click="setStart" style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
+                                border: 1px solid #cccccc;border-width:0 1px;">
+                                {{ currentSubtitle && currentSubtitle!=null ?(currentSubtitle.start/1000).toFixed(2):'' }}
+                            </span>
+                            <span @click="addStart" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &gt;
+                            </span>
+                        </div>
+
+                        <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;margin:0 5%;">
+                            <span @click="leftMove" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &lt;
+                            </span>
+                            <span style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
+                                border: 1px solid #cccccc;border-width:0 1px;color:#ff6f09;">
+                                {{ videoDom_currentTime.toFixed(2) }}
+                            </span>
+                            <span @click="rightMove" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &gt;
+                            </span>
+                        </div>
+
+                        <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;">
+                            <span @click="subEnd" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &lt;
+                            </span>
+                            <span @click="setEnd" style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
+                                border: 1px solid #cccccc;border-width:0 1px;">
+                                {{ currentSubtitle && currentSubtitle.end!=null?(currentSubtitle.end/1000).toFixed(2):'' }}
+                            </span>
+                            <span @click="addEnd" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
+                                &gt;
+                            </span>
+                        </div>
                     </div>
 
-                    <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;margin:0 5%;">
-                        <span @click="leftMove" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &lt;
+                    
+                    <div style="height:40px;line-height:40px;text-align: center;margin-top:10px;">
+                        <span @click="prevSubtitle" style="display: inline-block;font-size:16px;width:33%;border:1px solid #cccccc;border-left: none;height:100%;">
+                            上一句
                         </span>
-                        <span style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
-                            border: 1px solid #cccccc;border-width:0 1px;color:#ff6f09;">
-                            {{ videoDom_currentTime.toFixed(2) }}
+                        <span @click="videoDom.play()" v-show="videoDom.paused" style="display: inline-block;font-size:16px;width:34%;border:1px solid #cccccc;border-left: none;height:100%;">
+                            播放
                         </span>
-                        <span @click="rightMove" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &gt;
+                        <span @click="videoDom.pause()" v-show="!videoDom.paused" style="display: inline-block;font-size:16px;width:34%;border:1px solid #cccccc;border-left: none;height:100%;">
+                            暂停
+                        </span>
+                        <span @click="nextSubtitle" style="display: inline-block;font-size:16px;width:33%;border:1px solid #cccccc;border-left: none;height:100%;">
+                            下一句
                         </span>
                     </div>
-
-                    <div style="height:35px;width:30%;border: 1px solid #cccccc;display:inline-block;">
-                        <span @click="subEnd" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &lt;
+                    <div style="height:35px;line-height:35px;text-align: center;border-bottom:1px solid #cccccc;">
+                        <span @click="toCreateSubtitle" style="display: inline-block;font-size:16px;width:50%;border-right:1px solid #cccccc;height:100%;">
+                            创建字幕
                         </span>
-                        <span @click="setEnd" style="font-size: 16px;width:60%;display: inline-block;line-height:35px;text-align: center;
-                            border: 1px solid #cccccc;border-width:0 1px;">
-                            {{ currentSubtitle && currentSubtitle.end!=null?(currentSubtitle.end/1000).toFixed(2):'' }}
+                        <span @click="toSplitSubtitle" style="display: inline-block;font-size:16px;width:50%;border:none;height:100%;">
+                            拆分字幕
                         </span>
-                        <span @click="addEnd" style="font-size: 16px;width:20%;display: inline-block;line-height:35px;text-align: center;">
-                            &gt;
+                    </div>
+                    <div style="height:35px;line-height:35px;text-align: center;border-bottom:1px solid #cccccc;">
+                        <span @click="deleteCurrentSubtitle" style="display: inline-block;font-size:16px;width:50%;border-right:1px solid #cccccc;height:100%;">
+                            删除本条
+                        </span>
+                        <span @click="deleteAllSubtitles" style="display: inline-block;font-size:16px;width:50%;border:none;height:100%;">
+                            删除所有字幕
                         </span>
                     </div>
                 </div>
 
+                <div @click="toModifySubtitle=0" style="position: absolute;bottom:0;width:100%;line-height:40px;height:40px;text-align: center;font-size: 16px;
+                    background-color: #cccccc;">
+                    返回详情
+                </div>
+            </div>
+
+            <div v-if="!toModifySubtitle">
+                <div style="height:40px;line-height: 40px;margin-top:5px;">
+                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        标题
+                    </span>
+                    <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        {{video.name}}
+                    </span>
+                    <span @click="newName=video.name;toModifyName=1" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
+                        font-size: 16px;cursor: pointer;">
+                        >
+                    </span>
+                </div>
+                <div style="height:40px;line-height: 40px;">
+                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        封面
+                    </span>
+                    <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;">
+                        <img v-if="video.cover" :src="video.cover" style="width:40px;height:40px;"/>
+                    </span>
+                    <span @click="newCover=video.cover;toModifyCover=1;" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
+                        font-size: 16px;cursor: pointer;">
+                        >
+                    </span>
+                </div>
+                <div style="height:40px;line-height: 40px;">
+                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        大小
+                    </span>
+                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        {{video.size}}
+                    </span>
+                </div>
+                <div style="height:40px;line-height: 40px;">
+                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        审核
+                    </span>
+                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        {{(video.audit=='pass'?'通过':video.audit=='ing'?'审核中':video.audit=='unpass'?'未通过':'未审核')}}
+                    </span>
+                </div>
+                <div v-if='video.auditMessage' style="height:40px;line-height: 40px;">
+                    <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                    </span>
+                    <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
+                        {{video.auditMessage}}
+                    </span>
+                </div>
                 
-                <div style="height:40px;line-height:40px;text-align: center;margin-top:10px;">
-                    <span @click="prevSubtitle" style="display: inline-block;font-size:16px;width:33%;border:1px solid #cccccc;border-left: none;height:100%;">
-                        上一句
-                    </span>
-                    <span @click="videoDom.play()" v-show="videoDom.paused" style="display: inline-block;font-size:16px;width:34%;border:1px solid #cccccc;border-left: none;height:100%;">
-                        播放
-                    </span>
-                    <span @click="videoDom.pause()" v-show="!videoDom.paused" style="display: inline-block;font-size:16px;width:34%;border:1px solid #cccccc;border-left: none;height:100%;">
-                        暂停
-                    </span>
-                    <span @click="nextSubtitle" style="display: inline-block;font-size:16px;width:33%;border:1px solid #cccccc;border-left: none;height:100%;">
-                        下一句
-                    </span>
-                </div>
-                <div @click="toCreateSubtitle" style="height:40px;line-height:40px;text-align: center;border-bottom:1px solid #cccccc;font-size: 16px;">
-                    创建字幕
-                </div>
-                <div @click="toSplitSubtitle" style="height:40px;line-height:40px;text-align: center;border-bottom:1px solid #cccccc;font-size: 16px;">
-                    拆分字幕
-                </div>
-                <div style="height:35px;line-height:35px;text-align: center;border-bottom:1px solid #cccccc;">
-                    <span @click="deleteCurrentSubtitle" style="display: inline-block;font-size:16px;width:50%;border-right:1px solid #cccccc;height:100%;">
-                        删除本条
-                    </span>
-                    <span @click="deleteAllSubtitles" style="display: inline-block;font-size:16px;width:50%;border:none;height:100%;">
-                        删除所有字幕
-                    </span>
+                <div style="margin-top:20px;justify-content:flex-start;display: flex;flex-wrap:wrap;">
+                    <button v-if="video.audit=='unpass' || !video.audit" @click="submitVideoAudit" style="font-size:16px;width:100px;height:35px;background-color: #838383;
+                        border: none;margin-right:10px">
+                        提交审核
+                    </button>
+                    <button v-if="video.audit=='pass'" @click="parseVideo" style="font-size:16px;width:100px;height:35px;background-color: #838383;
+                        border: none;margin-right:10px">
+                        解析视频
+                    </button>
+                    <button @click="deleteVideo" style="font-size:16px;width:100px;height:35px;background-color: #838383;
+                        border: none;margin-right:10px">
+                        删除
+                    </button>
                 </div>
             </div>
-
-            <div @click="toModifySubtitle=0" style="position: absolute;bottom:0;width:100%;line-height:40px;height:40px;text-align: center;font-size: 16px;
-                background-color: #cccccc;">
-                返 回
-            </div>
-        </div>
-
-        <div style="height:40px;line-height: 40px;margin-top:5px;">
-            <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                名称
-            </span>
-            <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                {{video && video.name}}
-            </span>
-            <span @click="newName=video.name;toModifyName=1" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
-                font-size: 16px;cursor: pointer;">
-                >
-            </span>
-        </div>
-        <div style="height:40px;line-height: 40px;">
-            <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                封面
-            </span>
-            <span class="line1" style="width:73%;display: inline-block;box-sizing: border-box;padding:0 3px;">
-                <img v-if="video && video.cover" :src="video && video.cover" style="width:40px;height:40px;"/>
-            </span>
-            <span @click="newCover=video.cover;toModifyCover=1;" style="width:7%;text-align: center;display: inline-block;box-sizing: border-box;
-                font-size: 16px;cursor: pointer;">
-                >
-            </span>
-        </div>
-        <div style="height:40px;line-height: 40px;">
-            <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                大小
-            </span>
-            <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                {{video && video.size}}
-            </span>
-        </div>
-        <div style="height:40px;line-height: 40px;">
-            <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                审核状态
-            </span>
-            <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                {{video && (video.audit=='pass'?'通过':video.audit=='ing'?'审核中':video.audit=='unpass'?'未通过':'未审核')}}
-            </span>
-        </div>
-        <div v-if='video && video.auditMessage' style="height:40px;line-height: 40px;">
-            <span class="line1" style="width:20%;text-align: center;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                审核备注
-            </span>
-            <span class="line1" style="width:80%;display: inline-block;box-sizing: border-box;padding:0 3px;font-size: 16px;">
-                {{video.auditMessage}}
-            </span>
         </div>
         
-        <div style="margin-top:20px;padding:0 3px;">
-            <button v-if="video && video.audit!='pass'" @click="submitVideoAudit" style="font-size:16px;width:100px;height:35px;margin-right:15px;
-                border: 1px solid #000000;">
-                提交审核
-            </button>
-            <button v-if="video && video.audit=='pass'" @click="parseVideo" style="font-size:16px;width:100px;height:35px;margin-right:15px;
-                border: 1px solid #000000;">
-                解析视频
-            </button>
-            <button @click="deleteVideo" style="font-size:16px;width:100px;height:35px;margin-right:15px;
-                border: 1px solid #000000;">
-                删除
-            </button>
-        </div>
+
+        
 
 
         <div v-if="toModifyName" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
             <div style="background-color: #ffffff;width:100%;max-height:80%;position: absolute;top:40%;transform: translateY(-50%);padding:0 0 40px 0;">
                 <div style="height:40px;line-height: 40px;text-align: center;font-size: 16px;border-bottom: 1px solid #cccccc;">
-                    修改名称
+                    修改标题
                 </div>
                 <div style="height:40px;margin:10px 0;">
                     <span class="line1" style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
-                        名称
+                        标题
                     </span>
                     <input v-model="newName" style="display: inline-block;border:1px solid #000000;padding:0 3px;box-sizing: border-box;width:80%;height:40px;font-size:16px;
                         border-right:0;" />
@@ -240,7 +245,7 @@
         </div>
 
 
-        <div v-if="toModifySubtitleText" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
+        <div v-if="isModifySubtitleText" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
             <div style="background-color: #ffffff;width:100%;max-height:80%;position: absolute;top:40%;transform: translateY(-50%);padding:0 0 40px 0;">
                 <div style="height:40px;line-height: 40px;text-align: center;font-size: 16px;border-bottom: 1px solid #cccccc;">
                     修改字幕
@@ -254,7 +259,7 @@
                         cursor: pointer;">
                         确定
                     </button>
-                    <button @click="toModifySubtitleText=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
+                    <button @click="isModifySubtitleText=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
                         cursor: pointer;">
                         取消
                     </button>
@@ -263,7 +268,7 @@
         </div>
 
 
-        <div v-if="toModifySubtitleTextZh" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
+        <div v-if="isModifySubtitleTextZh" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
             <div style="background-color: #ffffff;width:100%;max-height:80%;position: absolute;top:40%;transform: translateY(-50%);padding:0 0 40px 0;">
                 <div style="height:40px;line-height: 40px;text-align: center;font-size: 16px;border-bottom: 1px solid #cccccc;">
                     修改字幕
@@ -277,7 +282,7 @@
                         cursor: pointer;">
                         确定
                     </button>
-                    <button @click="toModifySubtitleTextZh=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
+                    <button @click="isModifySubtitleTextZh=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
                         cursor: pointer;">
                         取消
                     </button>
@@ -314,8 +319,9 @@ export default {
     name: '_ManageVideos_Video',
     data() {
         return {
-            query:null,
-            video:null,
+            fullPath:null,
+            query:{},
+            video:{},
             toModifyName:0,
             toModifyCover:0,
             newName:null,
@@ -327,8 +333,8 @@ export default {
             currentSubtitleIndex:-1,
             videoDom:null,
             videoDom_currentTime:0,
-            toModifySubtitleText:0,
-            toModifySubtitleTextZh:0,
+            isModifySubtitleText:0,
+            isModifySubtitleTextZh:0,
             newSubtitleText:null,
             newSubtitleTextZh:null,
             isCreateSubtitle:0,
@@ -341,7 +347,6 @@ export default {
     computed: {
         // 计算属性的 getter
         dddd: function(){
-            debugger
             let ts = this
             if(!ts.currentSubtitle)
                 return false;
@@ -353,6 +358,22 @@ export default {
         }
     },
     methods:{
+        toModifySubtitleText(){
+            let ts = this
+            if(!ts.currentSubtitle)
+                return;
+            ts.isModifySubtitleText=1;
+            ts.newSubtitleText=ts.currentSubtitle.text;
+            ts.videoDom.pause()
+        },
+        toModifySubtitleTextZh(){
+            let ts = this
+            if(!ts.currentSubtitle)
+                return;
+            ts.isModifySubtitleTextZh=1;
+            ts.newSubtitleTextZh=ts.currentSubtitle.textZh;
+            ts.videoDom.pause()
+        },
         toSplitSubtitle(){
             let ts = this
             if(!ts.currentSubtitle)
@@ -428,7 +449,7 @@ export default {
             let ts = this
             ts.isCreateSubtitle=1
             ts.videoDom.pause()
-            ts.newSubtitleText=ts.currentSubtitle.text
+            ts.newSubtitleText=ts.currentSubtitle ? ts.currentSubtitle.text : ''
         },
         createSubtitle(){
             let ts = this
@@ -441,11 +462,13 @@ export default {
                 num:null
             }
             var nextSubtitle = ts.subtitles[ts.currentSubtitleIndex+1]
-            if(ts.currentSubtitle){
-                newSubtitle.start=ts.currentSubtitle.end
+            var currentSubtitle = ts.subtitles[ts.currentSubtitleIndex]
+            if(currentSubtitle){
+                newSubtitle.start=currentSubtitle.end
             }else{
                 newSubtitle.start=0
             }
+
             if(nextSubtitle){
                 newSubtitle.end=nextSubtitle.start
             }else{
@@ -469,7 +492,7 @@ export default {
                     ts.subtitles.splice(ts.currentSubtitleIndex+1,0,newSubtitle)
                     ts.isCreateSubtitle=0
                     ts.videoDom_currentTime=ts.videoDom.currentTime=newSubtitle.start/1000
-
+                    ts.currentSubtitleIndex++;
 
                     ts.$axios.post('/mumu/translate',ts.$qs.stringify({
                         q:newSubtitle.text,
@@ -495,6 +518,8 @@ export default {
         },
         subStart(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             ts.videoDom.pause()
             let finalStart = ts.currentSubtitle.start-50
             let prev = ts.subtitles[ts.currentSubtitleIndex-1]
@@ -515,6 +540,8 @@ export default {
         },
         addStart(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             ts.videoDom.pause()
             let finalStart = ts.currentSubtitle.start+50
             if(finalStart > ts.currentSubtitle.end)
@@ -530,6 +557,8 @@ export default {
         },
         subEnd(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             ts.videoDom.pause()
             let finalEnd = ts.currentSubtitle.end-50
             if(finalEnd < ts.currentSubtitle.start)
@@ -545,6 +574,8 @@ export default {
         },
         addEnd(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             ts.videoDom.pause()
             let finalEnd = ts.currentSubtitle.end+50
             let next = ts.subtitles[ts.currentSubtitleIndex+1]
@@ -595,9 +626,11 @@ export default {
         },
         modifySubtitleText(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             if(ts.currentSubtitle.text==ts.newSubtitleText){
                 ts.$notify({type:'success',message:'无修改'})
-                ts.toModifySubtitleText=0
+                ts.isModifySubtitleText=0
                 return;
             }
             ts.$axios.post('/mumu/manage-my-videos/modify-subtitle',ts.$qs.stringify({
@@ -607,7 +640,7 @@ export default {
                 if(res.data.code == 0){
                     ts.$notify({type:'success',message:"已修改"})
                     ts.currentSubtitle.text=ts.newSubtitleText
-                    ts.toModifySubtitleText=0
+                    ts.isModifySubtitleText=0
                 }else{
                     ts.$notify({message:res.data.message})
                 }
@@ -615,9 +648,11 @@ export default {
         },
         modifySubtitleTextZh(){
             let ts = this
+            if(!ts.currentSubtitle)
+                return;
             if(ts.currentSubtitle.textZh==ts.newSubtitleTextZh){
                 ts.$notify({type:'success',message:'无修改'})
-                ts.toModifySubtitleTextZh=0
+                ts.isModifySubtitleTextZh=0
                 return;
             }
             ts.$axios.post('/mumu/manage-my-videos/modify-subtitle',ts.$qs.stringify({
@@ -627,7 +662,7 @@ export default {
                 if(res.data.code == 0){
                     ts.$notify({type:'success',message:"已修改"})
                     ts.currentSubtitle.textZh=ts.newSubtitleTextZh
-                    ts.toModifySubtitleTextZh=0
+                    ts.isModifySubtitleTextZh=0
                 }else{
                     ts.$notify({message:res.data.message})
                 }
@@ -776,7 +811,7 @@ export default {
                         let videos = _ManageVideos_Index.videos;
                         videos.rows.splice(videos.rows.findIndex(e => e.no === ts.video.no), 1)
                         videos.map[ts.video.no]=null
-                        ts.$back()
+                        ts.$routerr.back()
                     }else{
                         ts.$notify({message:res.data.message})
                     }
@@ -834,32 +869,30 @@ export default {
                 return true
             }
             return false
+        },
+        start(){
+            let ts = this
+            ts.$store.components[ts.$el.id]=ts
+            ts.query = ts.$uu.getCurrentQuery()
+            ts.videoDom = document.getElementById("video");
+            ts.$axios.post('/mumu/manage-my-videos/get-video',ts.$qs.stringify({no:ts.query.no})).then(res=>{
+                ts.newVideo=ts.video=res.data.data.row
+            })
+            ts.$axios.post('/mumu/manage-my-videos/get-subtitles', ts.$qs.stringify({
+                videoNo:ts.query.no
+            })).then(res=>{
+                if(res.data.code==0){
+                    ts.subtitles=res.data.data.rows
+                }
+            })
         }
     }, 
     activated(){
-        
+        debugger
         let ts = this
-        ts.query = ts.$uu.getCurrentQuery()
-        if(ts.video && ts.video.no!==ts.query.no)
-            ts.$router.reload()
-        ts.videoDom = document.getElementById("video");
-    },
-    mounted() {
-        let ts = this
-        
-        ts.$store.components[ts.$el.id]=ts
-        ts.query = ts.$uu.getCurrentQuery()
-        ts.$axios.post('/mumu/manage-my-videos/get-video',ts.$qs.stringify({no:ts.query.no})).then(res=>{
-            
-            ts.newVideo=ts.video=res.data.data.row
-        })
-        ts.$axios.post('/mumu/manage-my-videos/get-subtitles', ts.$qs.stringify({
-            videoNo:ts.query.no
-        })).then(res=>{
-            if(res.data.code==0){
-                ts.subtitles=res.data.data.rows
-            }
-        })
+        if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
+            ts.start()
+        ts.fullPath = ts.$route.fullPath;
     }
 }
 </script>

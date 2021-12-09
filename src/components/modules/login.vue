@@ -5,7 +5,7 @@
             <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;border-bottom: 1px solid #000000;">
                 登录
             </div>
-            <div style="line-height:50px;height:50px;border-bottom: 1px solid #000000;text-align: center;box-sizing: border-box;">
+            <div style="line-height:50px;height:50px;border-bottom: 1px solid #000000;text-align: center;box-sizing: border-box;overflow: unset;">
                 <span @click="way='account'" style="font-size: 16px;border-right:1px solid #000000;border-left:1px solid #000000;padding:0 20px;
                     background-color: #ffffff;cursor: pointer;display: inline-block;height:50px;box-sizing: border-box;" 
                     :style="{
@@ -62,21 +62,21 @@
             
             <div v-if="way=='sms'" style="margin-top:50px;">
                 <div style="line-height:35px;height:35px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
+                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
                         box-sizing: border-box;text-align: center;">
                         手机号
                     </span>
                     <input v-model="phone"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding: 0 3px;"/>
+                        border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
                 </div>
                 <div style="line-height:35px;height:35px;margin-top:15px;">
-                    <span class="line1" style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
+                    <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
                         验证码
                     </span>
                     <input v-model="smsVcode" style="width:50%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding: 0 3px;"/>
-                    <span @click="sendSmsVcode" class="line1" style="display: inline-block;width:20%;font-size: 16px;text-align: center;vertical-align: middle;
-                        border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;">
+                        border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
+                    <span @click="sendSmsVcode" style="display: inline-block;width:20%;font-size: 16px;text-align: center;vertical-align: middle;
+                        border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;height:35px;">
                         {{ smsLimit==0? '发送' : smsLimit}}
                     </span>
                 </div>

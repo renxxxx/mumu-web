@@ -3,9 +3,15 @@
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
         
         <div style="width:100%;height:40px;line-height:40px;border-bottom: 1px solid #e8e8e8;box-sizing: border-box;position: relative;">
-            <span style="font-size:16px;padding:0 15px;cursor: pointer;display: inline-block;" @click="$back()">
-                &lt;
+            <span style="font-size:16px;width:40px;height:40px;text-align: center;cursor: pointer;display: inline-block;" @click="$routerr.back()">
+                <template v-if="!$routerr.isFirst()" >
+                    &lt;
+                </template>
+                <template v-else >
+                    <img src='../../assets/img/home.png' style="vertical-align: text-bottom;width: 50%;"/>
+                </template>
             </span>
+            
             <span style="font-size:16px;">管理我的视频</span>
         </div>
         
@@ -26,8 +32,9 @@
 
         <div v-show="showTab=='videos'" style="width:100%;position:absolute;top:80px;bottom:0;left:0;right:0;">
             <div style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
-                <div @click="videos.selected=item; $push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item in videos.rows" 
-                    style="width:31.3%;height:203px;cursor: pointer;margin:1%;box-sizing: border-box;position: relative;display:inline-block;vertical-align: middle;"
+                <div @click="videos.selected=item; $routerr.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
+                    style="width:32.3%;height:160px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;
+                        vertical-align: middle;"
                     :style="{backgroundColor:videos.selected==item?'rgb(214 214 214 / 0.5)':'unset'}">
                     <img :src="item.cover" draggable="false" style="display:block;width:100%;height:160px;object-fit: cover;"/>
                     <div style="height:15px;width:100%;background-color: rgba(255, 255, 255, 0.5);position: absolute;top:145px;">
@@ -44,11 +51,19 @@
                             </span>
                         </span>
                     </div>
-                    <div class="line1" style="font-size: 15px;width:100%;line-height:20px;margin-top: 3px;">
-                        {{item.name}}
+                    <div v-if="videos.selected==item" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(12 12 12 / 64%);">
                     </div>
-                    <div class="line1" style="font-size: 15px;width:100%;line-height:20px;">
-                        {{item.seriesName}}
+                    <div @click.stop="videos.coverSelected=item" v-if="videos.coverSelected!=item" style="position: absolute;top:0;right:0;width:25px;
+                        height:25px;background-color: #ffffff;">
+                    </div>
+                    <div v-if="videos.coverSelected==item" @click.stop="" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: #ffffffdc;">
+                        <div @click="videos.coverSelected=null" style="height:30px;line-height: 30px;border-bottom: 1px solid #838383;text-align: center;font-size: 16px;">
+                            关闭
+                        </div>
+                        <div style="height:30px;line-height: 30px;border-bottom: 1px solid #838383;text-align: center;font-size: 16px;">
+                            <span @click="videoMoveLeft(index)" style="display: inline-block;width:50%;border-right: 1px solid #838383;">&lt;</span>
+                            <span @click="videoMoveRight(index)" style="display: inline-block;width:50%;">&gt;</span>
+                        </div>
                     </div>
                 </div>
                 <div style="width:100%;line-height:40px;font-size: 16px;text-align: center;color:#cccccc;">
@@ -62,8 +77,8 @@
         </div>
         <div v-show="showTab=='serieses'" style="width:100%;position:absolute;top:80px;bottom:0;left:0;right:0;">
             <div style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
-                <div @click="serieses.selected=item; $push({path:'./series', query:{no:item.no}})" :key=item.no v-for="item in serieses.rows" 
-                    style="width:31.3%;height:203px;cursor: pointer;margin:1%;box-sizing: border-box;position: relative;display:inline-block;"
+                <div @click="serieses.selected=item; $routerr.push({path:'./series-videos', query:{no:item.no}})" :key=item.no v-for="item,index in serieses.rows" 
+                    style="width:32.3%;height:203px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;"
                     :style="{backgroundColor:videos.selected==item?'rgb(214 214 214 / 0.5)':'unset'}">
                     <img :src="item.cover" draggable="false" style="display:block;width:100%;height:160px;object-fit: cover;"/>
                     <div style="height:15px;width:100%;background-color: rgba(255, 255, 255, 0.5);position: absolute;top:145px;">
@@ -83,17 +98,33 @@
                     <div class="line1" style="font-size: 15px;width:100%;line-height:20px;margin-top: 3px;">
                         {{item.name}}
                     </div>
+                    <div v-if="serieses.selected==item" style="position: absolute;top:0;bottom:43px;left:0;right:0;background-color: rgb(12 12 12 / 64%);">
+                    </div>
+                    <div @click.stop="serieses.coverSelected=item" v-if="serieses.coverSelected!=item" style="position: absolute;top:0;right:0;width:25px;
+                        height:25px;background-color: #ffffff;">
+                    </div>
+                    <div v-if="serieses.coverSelected==item" @click.stop="" style="position: absolute;top:0;bottom:43px;left:0;right:0;
+                        background-color: #ffffffdc;">
+                        <div @click="serieses.coverSelected=null" style="height:30px;line-height: 30px;border-bottom: 1px solid #838383;
+                            text-align: center;font-size: 16px;">
+                            关闭
+                        </div>
+                        <div style="height:30px;line-height: 30px;border-bottom: 1px solid #838383;text-align: center;font-size: 16px;">
+                            <span @click="seriesMoveLeft(index)" style="display: inline-block;width:50%;border-right: 1px solid #838383;">&lt;</span>
+                            <span @click="seriesMoveRight(index)" style="display: inline-block;width:50%;">&gt;</span>
+                        </div>
+                    </div>
                 </div>
                 <div style="width:100%;line-height:40px;font-size: 16px;text-align: center;color:#cccccc;">
                     暂无数据
                 </div>
             </div>
-            <div @click="toCreateSeries=1" style="width:100%;text-align: center;height:40px;line-height: 40px;font-size: 16px;position: absolute;bottom:0;cursor: pointer;
+            <div @click="isCreateSeries=1" style="width:100%;text-align: center;height:40px;line-height: 40px;font-size: 16px;position: absolute;bottom:0;cursor: pointer;
                 background-color: rgb(179, 179, 179);">
                 创建专辑
             </div>
         </div>
-        <div v-if="toCreateVideo" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(25, 25, 25, 0.9);">
+        <div v-if="isCreateVideo" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(25, 25, 25, 0.9);">
             <div style="width:100%;height:500px;box-sizing: border-box;background-color: #ffffff;margin-top: 10%;position: relative;">
                 <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;">
                     创建视频
@@ -101,7 +132,7 @@
                 <video :src="fileObjectUrl" controls style="height:300px;width:100%;background-color: #000000;"></video>
                 <div style="height:40px;line-height:40px;margin-top:15px;">
                     <span class="line1" style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
-                        名称
+                        标题
                     </span>
                     <input v-model="fileName" style="display:inline-block;width:80%;padding:0 3px;box-sizing: border-box;font-size: 16px;height:40px;
                         border:1px solid #000000;border-right:0;"/>
@@ -110,14 +141,14 @@
                     <button @click="confirmCreateVideo" style="font-size:16px;width:50%;border:none;box-sizing: border-box;background-color: #838383;height:40px;color:#e8e8e8;">
                         确定
                     </button>
-                    <button @click="toCreateVideo=0" style="font-size:16px;width:50%;border:none;box-sizing: border-box;background-color: #d4d4d4;height:40px;">
+                    <button @click="isCreateVideo=0" style="font-size:16px;width:50%;border:none;box-sizing: border-box;background-color: #d4d4d4;height:40px;">
                         取消
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="toCreateSeries" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
+        <div v-if="isCreateSeries" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
             <div style="background-color: #ffffff;width:100%;max-height:80%;position: absolute;top:40%;transform: translateY(-50%);padding:0 0 40px 0;">
                 <div style="height:40px;line-height: 40px;text-align: center;font-size: 16px;border-bottom: 1px solid #cccccc;">
                     创建专辑
@@ -134,7 +165,7 @@
                         cursor: pointer;">
                         确定
                     </button>
-                    <button @click="toCreateSeries=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
+                    <button @click="isCreateSeries=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
                         cursor: pointer;">
                         取消
                     </button>
@@ -149,35 +180,128 @@ export default {
     name: '_ManageVideos_Index',
     data() {
         return {
-            toCreateSeries:0,
             file:null,
             fileObjectUrl:null,
             fileName:null,
             seriesName:null,
-            toCreateVideo:0,
-            showTab:'videos',
+            isCreateVideo:0,
+            isCreateSeries:0,
+            showTab:'videos',//videos serieses
             videos:{
                 rows:[],
                 rcount:20,
                 selected:null,
+                coverSelected:null,
                 map:{}
             },
             serieses:{
                 rows:[],
                 rcount:20,
                 selected:null,
+                coverSelected:null,
                 map:{}
             }
         }
     },
     methods:{
+        seriesMoveLeft(index){
+            debugger
+            let ts = this
+            let left = ts.serieses.rows[index-1]
+            let left2 = ts.serieses.rows[index-2]
+            let current = ts.serieses.rows[index]
+            if(!left)
+                return;
+            let num = null;
+            if(left2){
+                num = (left2.num + left.num) / 2
+            }else
+                num = left.num - 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-series',ts.$qs.stringify({
+                no: current.no,
+                num: num
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.serieses.rows[index];
+                    ts.serieses.rows[index]=ts.serieses.rows[index-1];
+                    ts.serieses.rows[index-1] = temp
+                }
+            })
+        },
+        seriesMoveRight(index){
+            let ts = this
+            let right = ts.serieses.rows[index+1]
+            let right2 = ts.serieses.rows[index+2]
+            let current = ts.serieses.rows[index]
+            if(!right)
+                return;
+            let num = null;
+            if(right2){
+                num = (right2.num + right.num) / 2
+            }else
+                num = right.num - 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-series',ts.$qs.stringify({
+                no: current.no,
+                num: num
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.serieses.rows[index];
+                    ts.serieses.rows[index]=ts.serieses.rows[index+1];
+                    ts.serieses.rows[index+1] = temp
+                }
+            })
+        },
+        videoMoveLeft(index){
+            let ts = this
+            let left = ts.videos.rows[index-1]
+            let left2 = ts.videos.rows[index-2]
+            let current = ts.videos.rows[index]
+            if(!left)
+                return;
+            let numInUser = null;
+            if(left2){
+                numInUser = (left2.numInUser + left.numInUser) / 2
+            }else
+                numInUser = left.numInUser - 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-video',ts.$qs.stringify({
+                no: current.no,
+                numInUser: numInUser
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.videos.rows[index];
+                    ts.videos.rows[index]=ts.videos.rows[index-1];
+                    ts.videos.rows[index-1] = temp
+                }
+            })
+        },
+        videoMoveRight(index){
+            let ts = this
+            let right = ts.videos.rows[index+1]
+            let right2 = ts.videos.rows[index+2]
+            let current = ts.videos.rows[index]
+            if(!right)
+                return;
+            let numInUser = null;
+            if(right2){
+                numInUser = (right2.numInUser + right.numInUser) / 2
+            }else
+                numInUser = right.numInUser - 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-video',ts.$qs.stringify({
+                no: current.no,
+                numInUser: numInUser
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.videos.rows[index];
+                    ts.videos.rows[index]=ts.videos.rows[index+1];
+                    ts.videos.rows[index+1] = temp
+                }
+            })
+        },
         loadMoreVideos(){
             let ts = this
             ts.$axios.post('/mumu/manage-my-videos/get-videos',ts.$qs.stringify({
                 rstart: ts.videos.rows.length+1,
-                rcount: ts.videos.rcount,
-                sort:'addTime',
-                order:'desc',
+                rcount: ts.videos.rcount
             })).then(function (res) {
                 let rows = res.data.data.rows;
                 ts.videos.rows.push(...rows)
@@ -192,8 +316,6 @@ export default {
             ts.$axios.post('/mumu/manage-my-videos/get-serieses',ts.$qs.stringify({
                 rstart: ts.serieses.rows.length+1,
                 rcount: ts.serieses.rcount,
-                sort:'addTime',
-                order:'desc',
             })).then(function (res) {
                 let rows = res.data.data.rows;
                 ts.serieses.rows.push(...rows)
@@ -208,7 +330,7 @@ export default {
             
             ts.$$('<input type="file"/>').change(function(){
                 
-                ts.toCreateVideo=1
+                ts.isCreateVideo=1
                 ts.file=this.files[0]
                 ts.fileName=ts.$uu.getPureNameInUrl(ts.file.name)
                 ts.fileObjectUrl=URL.createObjectURL(ts.file)
@@ -222,16 +344,11 @@ export default {
             })).then(res=>{
                 if(res.data.code==0){
                     let no = res.data.data.no
-                    ts.$axios.post('/mumu/manage-my-videos/get-series',ts.$qs.stringify({no:no})).then(res=>{
-                        ts.serieses.rows.unshift(res.data.data.row)
-                    })
-                    ts.$dialog.confirm({
-                        message: '创建成功, 现在去编辑吗?'
-                    }).then(() => {
-                        ts.toCreateSeries=0
-                        ts.$push({path:'./series',query:{no:no}})
-                    }).catch(() => {
-                        ts.toCreateSeries=0
+                    ts.isCreateSeries=0
+                    ts.$routerr.push({path:'./series-videos',query:{no:no}})
+                    ts.serieses.rows.unshift({
+                        no:no,
+                        name:ts.seriesName
                     })
                 }else{
                     ts.$notify({message:res.data.message})
@@ -252,12 +369,15 @@ export default {
                     })).then(res=>{
                         if(res.data.code==0){
                             let no = res.data.data.no
-                            ts.$axios.post('/mumu/manage-my-videos/get-video',ts.$qs.stringify({no:no})).then(res=>{
-                                ts.videos.rows.unshift(res.data.data.row)
-                                ts.videos.rows.selected = res.data.data.row
-                            })
-                            ts.toCreateVideo=0
-                            ts.$push({path:'./video',query:{no:no}})
+                            let newRow = {
+                                no:no,
+                                name:ts.fileName,
+                                url:res.data.data.url
+                            }
+                            ts.videos.rows.unshift(newRow)
+                            ts.videos.rows.selected = newRow
+                            ts.isCreateVideo=0
+                            ts.$routerr.push({path:'./video',query:{no:no}})
                         }else{
                             ts.$notify({message:res.data.message})
                         }

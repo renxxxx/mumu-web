@@ -18,10 +18,10 @@ import $$ from 'jquery'
 import Vconsole from 'vconsole'
 
 let store = vue.reactive({
-    doLogin: null,
-    login: {},
+    doLogin: 0,
+    login : {},
     vconsole:null,
-    history:[],
+    historys:[],
     components:{},
 })
 
@@ -82,22 +82,33 @@ loginRefresh().then(res=>{
     app.config.globalProperties.$$=$$
     // app.config.globalProperties.$vconsole=new Vconsole()
     // app.config.globalProperties.$vconsole.hideSwitch();
-    app.config.globalProperties.$push=function(to){
+
+    
+    app.config.globalProperties.$routerr={}
+    app.config.globalProperties.$routerr.push=function(to){
+        store.historys.push(to)
         router.push(to)
-        store.history.push(to.path?to.path:to)
     };
-    app.config.globalProperties.$replace=function(to){
+    app.config.globalProperties.$routerr.replace=function(to){
+        store.historys.pop()
+        store.historys.push(to)
         router.replace(to)
-        store.history.pop()
-        store.history.push(to.path?to.path:to)
     };
-    app.config.globalProperties.$back=function(){
-        if(store.history.length==0){
+    app.config.globalProperties.$routerr.back=function(){
+        debugger
+        if(store.historys.length==0){
             router.replace('/')
         }else{
             router.back()
         }
-        store.history.pop()
+        store.historys.pop()
+    };
+    app.config.globalProperties.$routerr.isFirst=function(){
+        if(store.historys.length==0){
+            return true
+        }else{
+            return false
+        }
     };
     var root = app.mount('#app')
     window.app=app;

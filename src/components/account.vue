@@ -3,7 +3,7 @@
         left:50%;transform: translateX(-50%);box-sizing: border-box;">
         
         <div style="height:40px;line-height:40px;position: relative;border-bottom:1px solid #dddddd;">
-            <span @click="$back()" style="font-size: 16px;font-weight: 500;display: inline-block;width:40px;text-align: center;cursor: pointer;">
+            <span @click="$routerr.back()" style="font-size: 16px;font-weight: 500;display: inline-block;width:40px;text-align: center;cursor: pointer;">
                 &lt;
             </span>
             <span style="font-size: 16px;display: inline-block;">
