@@ -52,69 +52,67 @@ function is_weixn(){
   }  
 }
 
-$.ajaxSetup({
-  type:'post',
-})
 
 
-try{
-  pagePre.login = JSON.parse(localStorage.getItem(config.project+'-login'))
-  pagePre.loginTime = parseInt(localStorage.getItem(config.project+'-loginTime'))
-}catch(e){
 
-}
+// try{
+//   pagePre.login = JSON.parse(localStorage.getItem(config.project+'-login'))
+//   pagePre.loginTime = parseInt(localStorage.getItem(config.project+'-loginTime'))
+// }catch(e){
 
-if(!pagePre.login || !pagePre.loginTime || (new Date().getTime() - pagePre.loginTime) > 5 * 60* 1000){
-  $.ajax({
-    url:'/mumu/login-refresh',
-    async:false,
-    success:function(res){
-      if(res.code==0){
-        pagePre.login=res.data
-        localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
-        localStorage.setItem(config.project+'-loginTime',new Date().getTime())
-        setTimeout(function(){
-          $.post('/mumu/restore-template-wordbooks')
-        },1000)
-      }else{
-        login()
-      }
-    }
-  })
-}
+// }
 
-function login(){
-  if(is_weixn()){
-    var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-    var appId="wx5a33a2ccb2d91764"
-    var state=encodeURIComponent(location.href)
-    var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
-    location.replace(url)
-  }else{
-    $.ajax({
-      url:'/mumu/anon-login',
-      async:false,
-      success:function(res){
-        if(res.code==0){
-          $.ajax({
-            url:'/mumu/login-refresh',
-            async:false,
-            success:function(res){
-              if(res.code==0){
-                localStorage.setItem(config.project+'-login',JSON.stringify(res.data))
-                localStorage.setItem(config.project+'-loginTime',new Date().getTime())
-                pagePre.login=res.data
-                setTimeout(function(){
-                  $.post('/mumu/restore-template-wordbooks')
-                },2000)
-              }
-            }
-          })
-        }
-      }
-    })
-  }
-}
+
+//   $.ajax({
+//     url:'/mumu/login-refresh',
+//     async:false,
+//     success:function(res){
+//       if(res.code==0){
+//         pagePre.login=res.data
+//         localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
+//         localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+//         setTimeout(function(){
+//           $.post('/mumu/restore-template-wordbooks')
+//         },1000)
+//       }else{
+//         login()
+//       }
+//     }
+//   })
+// }
+
+// function login(){
+//   if(is_weixn()){
+//     var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+//     var appId="wx5a33a2ccb2d91764"
+//     var state=encodeURIComponent(location.href)
+//     var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+//     location.replace(url)
+//   }else{
+//     $.ajax({
+//       url:'/mumu/anon-login',
+//       async:false,
+//       success:function(res){
+//         if(res.code==0){
+//           $.ajax({
+//             url:'/mumu/login-refresh',
+//             async:false,
+//             success:function(res){
+//               if(res.code==0){
+//                 localStorage.setItem(config.project+'-login',JSON.stringify(res.data))
+//                 localStorage.setItem(config.project+'-loginTime',new Date().getTime())
+//                 pagePre.login=res.data
+//                 setTimeout(function(){
+//                   $.post('/mumu/restore-template-wordbooks')
+//                 },2000)
+//               }
+//             }
+//           })
+//         }
+//       }
+//     })
+//   }
+// }
 
 
 function randomnum(n){ 

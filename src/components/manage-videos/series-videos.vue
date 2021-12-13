@@ -20,7 +20,7 @@
         </div>
         
         <div style="width:100%;position:absolute;top:40px;bottom:0;left:0;right:0;">
-            <div style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
+            <div ref='videosScroll' @scroll="videosScroll" style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
                 <div @click="videos.selected=item; $routerr.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
                     style="width:32.3%;height:160px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;
                         vertical-align: middle;"
@@ -43,7 +43,8 @@
                     <div v-if="videos.selected==item" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: rgb(12 12 12 / 64%);">
                     </div>
                     <div @click.stop="videos.coverSelected=item" v-if="videos.coverSelected!=item" style="position: absolute;top:0;right:0;width:25px;
-                        height:25px;background-color: #ffffff;">
+                        height:25px;line-height: 25px;background-color: #ffffff;text-align: center;">
+                        <img src="../../assets/img/more.png" style="width:20px;"/>
                     </div>
                     <div v-if="videos.coverSelected==item" @click.stop="" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: #ffffffdc;">
                         <div @click="videos.coverSelected=null" style="height:30px;line-height: 30px;border-bottom: 1px solid #838383;text-align: center;font-size: 16px;">
@@ -55,8 +56,8 @@
                         </div>
                     </div>
                 </div>
-                <div style="width:100%;line-height:40px;font-size: 16px;text-align: center;color:#cccccc;">
-                    暂无数据
+                <div @click="(!videos.isNoData && !videos.isFullData) ? loadMoreVideos() : ''" style="width:100%;line-height:40px;font-size: 16px;text-align: center;color:#cccccc;">
+                    {{videos.isNoData?'暂无数据':videos.isFullData?'已全部加载':'点击加载更多'}}
                 </div>
             </div>
             <div @click="createVideo" style="width:100%;text-align: center;height:40px;line-height: 40px;font-size: 16px;position: absolute;bottom:0;cursor: pointer;
@@ -104,6 +105,8 @@ export default {
            videos:{
                 rows:[],
                 rcount:20,
+                isNoData:0,
+                isFullData:0,
                 selected:null,
                 coverSelected:null,
                 map:{}
@@ -111,6 +114,12 @@ export default {
         }
     },
     methods:{
+        videosScroll(){
+            let ts = this
+            if(ts.$uu.isScrollBottom(ts.$refs.videosScroll)){
+                ts.loadMoreVideos()
+            }
+        },
         confirmCreateVideo(){
             let ts = this
             var formData = new FormData()
@@ -155,23 +164,20 @@ export default {
                 ts.fileObjectUrl=URL.createObjectURL(ts.file)
             }).click()
         },
-        start(){
-            let ts = this
-            ts.$store.components[ts.$el.id]=ts
-            ts.query = ts.$uu.getCurrentQuery()
-            ts.$axios.post('/mumu/manage-my-videos/get-series',ts.$qs.stringify({no:ts.query.no})).then(res=>{
-                ts.series=res.data.data.row
-            })
-            ts.loadMoreVideos()
-        },
         loadMoreVideos(){
             let ts = this
+            if(ts.videos.isNoData || ts.videos.isFullData)
+                return;
             ts.$axios.post('/mumu/manage-my-videos/get-series-videos',ts.$qs.stringify({
                 seriesNo: ts.query.no,
                 rstart: ts.videos.rows.length+1,
                 rcount: ts.videos.rcount
             })).then(function (res) {
                 let rows = res.data.data.rows;
+                if(rows.length==0 && ts.videos.rows.length==0)
+                    ts.videos.isNoData=1
+                if(rows.length==0 && ts.videos.rows.length>0)
+                    ts.videos.isFullData=1
                 ts.videos.rows.push(...rows)
                 for (let i = 0; i < rows.length; i++) {
                     const row = rows[i];
@@ -179,13 +185,81 @@ export default {
                 }
             })
         },
+        start(){
+            let ts = this
+            ts.fullPath = ts.$route.fullPath;
+            ts.$store.components[ts.$el.id]=ts
+            ts.query = ts.$uu.getCurrentQuery()
+            ts.$axios.post('/mumu/manage-my-videos/get-series',ts.$qs.stringify({no:ts.query.no})).then(res=>{
+                ts.series=res.data.data.row
+            })
+            ts.videos= {
+                rows:[],
+                rcount:20,
+                selected:null,
+                coverSelected:null,
+                map:{}
+            }
+            ts.loadMoreVideos()
+        },
+        videoMoveLeft(index){
+            let ts = this
+            let left = ts.videos.rows[index-1]
+            let left2 = ts.videos.rows[index-2]
+            let current = ts.videos.rows[index]
+            if(!left)
+                return;
+            let numInSeries = null;
+            if(left2){
+                numInSeries = (left2.numInSeries + left.numInSeries) / 2
+            }else
+                numInSeries = left.numInSeries - 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-video',ts.$qs.stringify({
+                no: current.no,
+                numInSeries: numInSeries
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.videos.rows[index];
+                    ts.videos.rows[index]=ts.videos.rows[index-1];
+                    ts.videos.rows[index-1] = temp
+                }
+            })
+        },
+        videoMoveRight(index){
+            let ts = this
+            let right = ts.videos.rows[index+1]
+            let right2 = ts.videos.rows[index+2]
+            let current = ts.videos.rows[index]
+            if(!right)
+                return;
+            let numInSeries = null;
+            if(right2){
+                numInSeries = (right2.numInSeries + right.numInSeries) / 2
+            }else
+                numInSeries = right.numInSeries + 1
+            ts.$axios.post('/mumu/manage-my-videos/modify-video',ts.$qs.stringify({
+                no: current.no,
+                numInSeries: numInSeries
+            })).then(function (res) {
+                if(res.data.code == 0){
+                    let temp = ts.videos.rows[index];
+                    ts.videos.rows[index]=ts.videos.rows[index+1];
+                    ts.videos.rows[index+1] = temp
+                }
+            })
+        }
     },
     activated(){
         debugger
         let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
         if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
             ts.start()
-        ts.fullPath = ts.$route.fullPath;
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>

@@ -200,4 +200,16 @@ uu.changearr=function (arr,i1,i2){
   arr[i2]=o3
 }
 
+uu.isScrollBottom=function (dom){  
+    const scrollTop = dom.scrollTop;
+    // 获取可视区的高度
+    const windowHeight = dom.clientHeight;
+    // 获取滚动条的总高度
+    const scrollHeight = dom.scrollHeight;
+    if (scrollTop + windowHeight >= scrollHeight) {
+        // 把距离顶部的距离加上可视区域的高度 等于或者大于滚动条的总高度就是到达底部
+        return true;
+    }else
+        return false;
+}
 export default uu;

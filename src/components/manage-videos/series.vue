@@ -120,6 +120,7 @@ export default {
         start(){
             let ts = this
             ts.$store.components[ts.$el.id]=ts
+            ts.fullPath = ts.$route.fullPath;
             ts.query = ts.$uu.getCurrentQuery()
             ts.$axios.post('/mumu/manage-my-videos/get-series',ts.$qs.stringify({no:ts.query.no})).then(res=>{
                 ts.series=res.data.data.row
@@ -219,9 +220,14 @@ export default {
     activated(){
         debugger
         let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
         if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
             ts.start()
-        ts.fullPath = ts.$route.fullPath;
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>

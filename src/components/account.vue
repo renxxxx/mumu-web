@@ -2,13 +2,16 @@
     <div id="_Account" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;
         left:50%;transform: translateX(-50%);box-sizing: border-box;">
         
-        <div style="height:40px;line-height:40px;position: relative;border-bottom:1px solid #dddddd;">
-            <span @click="$routerr.back()" style="font-size: 16px;font-weight: 500;display: inline-block;width:40px;text-align: center;cursor: pointer;">
-                &lt;
+        <div style="width:100%;height:40px;line-height:40px;border-bottom: 1px solid #e8e8e8;box-sizing: border-box;position: relative;">
+            <span style="font-size:16px;width:40px;height:40px;text-align: center;cursor: pointer;display: inline-block;" @click="$routerr.back()">
+                <template v-if="!$routerr.isFirst()" >
+                    &lt;
+                </template>
+                <template v-else >
+                    <img src='../assets/img/home.png' style="vertical-align: text-bottom;width: 50%;"/>
+                </template>
             </span>
-            <span style="font-size: 16px;display: inline-block;">
-                账号
-            </span>
+            <span style="font-size:16px;">账号</span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
             <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
@@ -19,6 +22,18 @@
             </span>
             <span @click="toNickname=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
+            </span>
+        </div>
+        <div style="height:40px;line-height: 40px;border-bottom: 1px solid #dddddd;">
+            <span style="width:80px;text-align: left;display: inline-block;box-sizing: border-box;padding:0 5px;font-size: 16px;">
+                头像
+            </span>
+            <span style="width:calc(100% - 120px);display: inline-block;box-sizing: border-box;padding:0 5px;">
+                <img v-if="$store.login.headImg" :src="$store.login.headImg" style="width:35px;height:35px;"/>
+            </span>
+            <span @click="toHeadImg=1;" style="width:40px;text-align: center;display: inline-block;box-sizing: border-box;
+                font-size: 16px;cursor: pointer;">
+                >
             </span>
         </div>
         <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
@@ -54,11 +69,11 @@
                 &gt;
             </span>
         </div>
-        <div style="margin-top:30px;padding:0 5px;">
-            <div style="width:100px;height:35px;line-height:35px;text-align: center;font-size: 16px;border: 1px solid #b4b4b4;
-                background-color: #c5c5c5;">
+        <div style="margin-top:20px;justify-content:flex-start;display: flex;flex-wrap:wrap;">
+            <button style="font-size:16px;width:100px;height:35px;background-color: #838383;
+                border: none;margin-right:10px">
                 注销
-            </div>
+            </button>
         </div>
 
         
@@ -82,6 +97,38 @@
                     <span @click="toNickname=0" style="display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
                         取消
                     </span>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="toHeadImg" style="background-color: rgba(0, 0, 0, 0.7);position: absolute;top:0;bottom:0;left:0;right:0;">
+            <div style="background-color: #ffffff;width:100%;max-height:80%;position: absolute;top:40%;transform: translateY(-50%);padding:0 0 40px 0;">
+                <div style="height:40px;line-height: 40px;text-align: center;font-size: 16px;border-bottom: 1px solid #cccccc;">
+                    修改头像
+                </div>
+                <div style="height:40px;margin:10px 0;">
+                    <span style="display: inline-block;height:40px;line-height: 40px;width:20%;font-size:16px;text-align: center;">
+                        头像
+                    </span>
+                    <span v-if="!headImg" @click="chooseNewHeadImg" style="font-size:16px;display:inline-block;width:40px;vertical-align: middle;height:40px;line-height: 40px;
+                        cursor: pointer;border: 1px dashed #838383;text-align: center;box-sizing: border-box;">
+                        +
+                    </span>
+                    <img v-if="headImg"  :src="headImg" style="width:40px;height:40px;display:inline-block;vertical-align: middle;cursor: pointer;"/>
+                    <span v-if="headImg" @click="deleteHeadImg" style="font-size:16px;display:inline-block;padding:0 5px;vertical-align: middle;height:40px;line-height: 40px;
+                        cursor: pointer;">
+                        X
+                    </span>
+                </div>
+                <div style="height:40px;position:absolute;bottom:0;width:100%;">
+                    <button @click="modifyHeadImg" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-left:0;
+                        cursor: pointer;">
+                        确定
+                    </button>
+                    <button @click="toHeadImg=0" style="display: inline-block;height:40px;line-height: 40px;width:50%;font-size:16px;border:1px solid #838383;border-right:0;
+                        cursor: pointer;">
+                        取消
+                    </button>
                 </div>
             </div>
         </div>
@@ -126,7 +173,7 @@
                 <div style="line-height:35px;height:35px;">
                     <span style="display:inline-block;font-size: 16px;vertical-align: middle;text-align: left;width:30%;
                         box-sizing: border-box;text-align: center;">
-                        密码
+                        新密码
                     </span>
                     <input v-model="password"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
@@ -224,10 +271,13 @@ export default {
             toAccount:0,
             toPassword:0,
             toPhone:0,
+            toHeadImg:0,
             nickname:this.$store.login.nickname,
             account:this.$store.login.account,
             accountConfirm:null,
             phone:this.$store.login.phone,
+            headImg:this.$store.login.headImg,
+            headImgFile:null,
             password:null,
             passwordConfirm:null,
             smsLimit:0,
@@ -237,6 +287,52 @@ export default {
     props: {
     },
     methods: {
+        deleteHeadImg(){
+            let ts = this
+            ts.headImg=null;
+            ts.headImgFile=null;
+        },
+        async modifyHeadImg(){
+            let ts = this
+            if(ts.$store.login.headImg==ts.headImg){
+                ts.$notify({type:'success',message:'无修改'})
+                ts.toHeadImg=0
+                return;
+            }
+                
+            if(ts.headImgFile){
+                var formData = new FormData()
+                formData.append('file',ts.headImgFile)
+                await ts.$axios.post('/mumu/upload-file', formData, {
+                    headers:{'Content-Type':'multipart/form-data'}
+                }).then(res=>{
+                    if(res.data.code==0){
+                        ts.headImg = res.data.data.url
+                    } else {
+                        ts.$notify({message:res.data.message})
+                    }
+                })
+            }
+            await ts.$axios.post('/mumu/my-account/alter', ts.$qs.stringify({
+                headImg: ts.headImg
+            })).then(res=>{
+                if(res.data.code==0){
+                    ts.$notify({type:'success',message:'已修改'})
+                    ts.$store.login.headImg=ts.headImg
+                    ts.toHeadImg=0
+                }else{
+                    ts.$notify({message:res.data.message})
+                }
+            })
+        },
+        chooseNewHeadImg(){
+            let ts = this
+            ts.$$('<input type="file"/>').change(function(){
+                let file=this.files[0]
+                ts.headImgFile=file
+                ts.headImg=URL.createObjectURL(file)
+            }).click()
+        },
         alterNickname(){
             ts.$axios.post('/mumu/my-account/alter-nickname',ts.$qs.stringify({nickname:ts.nickname})).then(function (res) {
                 if(res.data.code == 0){
@@ -311,9 +407,17 @@ export default {
         },
     },
     beforeCreate() {
-        
         let ts = this
         clearInterval(ts.smsLimitInterval)
+    },
+    activated(){
+        let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>

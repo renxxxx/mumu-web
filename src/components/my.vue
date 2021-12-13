@@ -53,7 +53,7 @@
             </span>
             <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#ffffff;font-weight:900;"
-                @click="$replace('/my');">
+                @click="$routerr.replace('/my');">
                 我的
             </span>
         </div>
@@ -64,7 +64,7 @@
 
 <script>
 export default {
-    name: 'my',
+    name: '_My',
     data() {
         return {
             show:true
@@ -129,9 +129,24 @@ export default {
                     }
                 })
             })
+        },
+        start(){
+            let ts = this
+            ts.$store.components[ts.$el.id]=ts
+            ts.fullPath = ts.$route.fullPath;
         }
     },
-    created() {
+    activated(){
+        debugger
+        let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
+        if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
+            ts.start()
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>

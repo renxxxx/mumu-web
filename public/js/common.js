@@ -130,7 +130,14 @@ function is_weixn(){
       return false;  
   }  
 }
-
+function isWechat(){
+    var ua = navigator.userAgent.toLowerCase();  
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+        return true;  
+    } else {  
+        return false;  
+    } 
+}
 
 function randomnum(n){ 
   var t=''; 

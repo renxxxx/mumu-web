@@ -305,8 +305,14 @@ export default {
             })
         },
     },
-    beforeCreate() {
-        
+    activated() {
+        let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>

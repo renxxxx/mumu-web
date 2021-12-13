@@ -766,8 +766,6 @@ export default {
         chooseNewCover(){
             let ts = this
             ts.$$('<input type="file"/>').change(function(){
-                
-                ts.toCreateVideo=1
                 let file=this.files[0]
                 ts.newCoverFile=file
                 ts.newCover=URL.createObjectURL(file)
@@ -873,6 +871,7 @@ export default {
         start(){
             let ts = this
             ts.$store.components[ts.$el.id]=ts
+            ts.fullPath = ts.$route.fullPath;
             ts.query = ts.$uu.getCurrentQuery()
             ts.videoDom = document.getElementById("video");
             ts.$axios.post('/mumu/manage-my-videos/get-video',ts.$qs.stringify({no:ts.query.no})).then(res=>{
@@ -890,9 +889,14 @@ export default {
     activated(){
         debugger
         let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
         if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
             ts.start()
-        ts.fullPath = ts.$route.fullPath;
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
     }
 }
 </script>
