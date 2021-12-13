@@ -47,4 +47,10 @@ if(!isStarted){
     
     isStarted = 1;
     sessionStorage.setItem(app.project+'-isStarted',isStarted)
+}else{
+    app.login = JSON.parse(localStorage.getItem(app.project+'-login'))
+    if(!app.login){
+        sessionStorage.removeItem(app.project+'-isStarted')
+        location.reload()
+    }
 }
