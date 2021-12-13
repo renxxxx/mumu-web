@@ -25,37 +25,50 @@ let store = vue.reactive({
     components:{},
 })
 
-let ddd = localStorage.getItem("ddd")
-if(!ddd && uu.isWeixn()){
-    var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-    var appId="wx5a33a2ccb2d91764"
-    var state=encodeURIComponent(location.href)
-    var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
-    location.replace(url)
-}
-localStorage.removeItem('ddd')
+$$.ajaxSetup({
+    type:'post',
+})
 
 async function loginRefresh(){
-    
-    await axios.post('/mumu/login-refresh').then(function (res) {
-        
-        if(res.data.code==0){
-            store.login=res.data.data
-        }
-    })
-    if(!store.login){
-        await axios.post('/mumu/anon-login').then(function (res) {
-            
-            if(res.data.code==0){
-                axios.post('/mumu/login-refresh').then(function (res) {
-                    
-                    if(res.data.code==0){
-                        store.login=res.data.data
+    $$.ajax({
+        url:'/mumu/is-logined',
+        async:false,
+        success:function(res){
+            if(res.code==0){
+            let isLogined =res.data.isLogined
+            if(!isLogined){
+                $$.ajax({
+                    url:'/mumu/anon-login',
+                    async:false,
+                    success:function(res){
+                        if(res.code==0){
+                            if(uu.isWeixn()){
+                                var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                                var appId="wx5a33a2ccb2d91764"
+                                var state=encodeURIComponent(location.href)
+                                var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+                                location.replace(url)
+                            }
+                        }
                     }
                 })
             }
-        })
-    }
+            }
+        }
+    })
+    
+    $$.ajax({
+        url:'/mumu/login-refresh',
+        async:false,
+        success:function(res){
+        if(res.code==0){
+            store.login=res.data
+            setTimeout(function(){
+                $.post('/mumu/restore-template-wordbooks')
+            },2000)
+        }
+        }
+    })
 }
 
 loginRefresh().then(res=>{
