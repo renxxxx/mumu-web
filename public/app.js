@@ -15,22 +15,29 @@ app.loginRefresh = function(){
             if(res.code==0){
                 let isLogined =res.data.isLogined
                 if(!isLogined){
-                    if(isWechat()){
-                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-                        var appId="wx5a33a2ccb2d91764"
-                        var state=encodeURIComponent(location.href)
-                        var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
-                        location.replace(url)
-                    }else{
-                        $.ajax({
-                            url:'/mumu/anon-login',
-                            async:false,
-                        })
-                    }
+                    $.ajax({
+                        url:'/mumu/anon-login',
+                        async:false,
+                        success:function(res){
+                            if(res.code==0){
+                                if(isWechat()){
+                                    var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                                    var appId="wx5a33a2ccb2d91764"
+                                    var state=encodeURIComponent(location.href)
+                                    var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+                                    location.replace(url)
+                                }
+                            }
+                        }
+                    })
                 }
             }
         }
     })
+
+
+ 
+
 
     $.ajax({
         url:'/mumu/login-refresh',
