@@ -53,7 +53,7 @@
     }
 
     $('#historyword_template').bind('click',function(event){
-        log.info('$(#historyword_template).click '+$(this).attr('data'))
+        log.log('$(#historyword_template).click '+$(this).attr('data'))
         pauseVideo();
         translatee(this.innerText);
     })
@@ -140,7 +140,7 @@
             }
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                log.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime){
                     restored=1;
                 }
@@ -152,7 +152,7 @@
         if(!playRestored){
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                log.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime)
                     playRestored=1;
             }
@@ -161,41 +161,41 @@
 
 
     function onCanPlay(){
-        log.debug("onCanPlay: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onCanPlay: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         playRestore()
     }
     function onDurationChange(){
-        log.debug("ondurationchange: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("ondurationchange: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedMetadata(){
-        log.debug("onloadedmetadata: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onloadedmetadata: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadedData(){
-        log.debug("onloadeddata: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onloadeddata: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onLoadStart(){
-        log.debug("onloadstart: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onloadstart: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onPlaying(){
-        log.debug("onplaying: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onplaying: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onProgress(){
-        log.debug("onprogress: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onprogress: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onReadyStateChange(){
-        log.debug("onreadystatechange: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onreadystatechange: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onSuspend(){
-        log.debug("onsuspend: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onsuspend: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
 
     function onTimeUpdate(){
@@ -223,7 +223,7 @@
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            log.debug("next ")
+            log.log("next ")
             en.current = next
             en.currentIndex++
             setline(next)
@@ -231,8 +231,8 @@
         }
 
         if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
-            log.debug("before next")
-            log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
+            log.log("before next")
+            log.log("next: st: "+next.startTime+" currinx: "+en.currentIndex)
             return;
         }
 
@@ -240,7 +240,7 @@
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
                 debugger
-                log.debug("search all ")
+                log.log("search all ")
                 en.current = item
                 en.currentIndex = inx
                 setline(item)
@@ -250,12 +250,12 @@
     }
 
     function onWaiting(){
-        log.debug("onwaiting: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onwaiting: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
     }
     function onClick(){
-        log.debug("onclick: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onclick: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         $('#video').attr('controls', true);
     }
 
@@ -292,12 +292,12 @@
     }
 
     $('.yibiao').on('click','span svg',function(){
-        log.info('$(.yibiao).click')
+        log.log('$(.yibiao).click')
         let _mp3 = new Audio($(this).attr('playsrc'));
         _mp3.play();
     })
     function getEnSubtitles(_result){
-        log.debug("getEnSubtitles: "+ ++runstep)
+        log.log("getEnSubtitles: "+ ++runstep)
         en.subtitlesList=[]
         ////let _this = this;
         let _fileString = [];
@@ -369,7 +369,7 @@
     function setline(item){
         if(!item)
             return;
-        log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
+        log.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
         localStorage.setItem(config.project+"-currentCaption-"+videoNo,JSON.stringify(item))
         localStorage.setItem(config.project+"-currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
@@ -429,7 +429,7 @@
                 jumpedcaption = prev
                 lastCurrentTime = prev.startTime/1000
                 $('#video')[0].currentTime = prev.startTime/1000
-                log.debug("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.log("set ct: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(prev)
                 currwordno=0
                 $('.chDialog').hide()
@@ -450,7 +450,7 @@
                 $('#video')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
-                log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
                 $('.chDialog').hide()
@@ -471,7 +471,7 @@
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
-                log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                log.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
                 $('.chDialog').hide()
@@ -481,7 +481,7 @@
         }
     }
     $('#favor').click(function(){
-        log.info('#favor.click')
+        log.log('#favor.click')
         var word = $(this).attr('word')
         if(/.*[\u4e00-\u9fa5]+.*$/.test(word))
             return;
@@ -531,7 +531,7 @@
     }
 
     function translatee(_data){
-        log.debug(_data+3)
+        log.log(_data+3)
         $('#summrest').hide()
         var translateed = localStorage.getItem(config.project+'-translateed')
         translateed =parseInt(translateed?++translateed:1)
@@ -613,17 +613,17 @@
         
     }   
     function pauseVideo(){
-        log.debug("pauseVideo()")
+        log.log("pauseVideo()")
         $('#video')[0].pause();
     }
     function playVideo(){
-        log.debug("playVideo()")
+        log.log("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
     }
     function videoPlay(){
-        log.debug("onplay: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onplay: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         clearTimeout(window.timeoutdo1)
         $('.dialog').hide()
         $('#summtrans').hide()
@@ -653,8 +653,8 @@
         
     }
     function videoPause(){
-        log.debug("onpause: "+ ++runstep)
-        log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        log.log("onpause: "+ ++runstep)
+        log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         clearInterval(en.monitor)
         $('.stopFn').css({'display':'none'})
         $('.startFn').css({'display':'inline'})
@@ -713,7 +713,7 @@
         return ms
     }
     $('#zh_subtitles').mousedown(_ev => {
-        log.info('#zh_subtitles.mousedown')
+        log.log('#zh_subtitles.mousedown')
         if(!$(_ev.target).hasClass('font'))
             return;
         //let _this = this
@@ -738,7 +738,7 @@
                 choooseMove(_coordinates); 
             }
         }).mouseup(function(_up){
-            log.info('#zh_subtitles.mouseup')
+            log.log('#zh_subtitles.mouseup')
             if(!$(_up.target).hasClass('font'))
                 return;
             moveStata = false;
@@ -785,7 +785,7 @@
     }
     function choooseStart(_value){
         pauseVideo()
-        log.debug(_value)
+        log.log(_value)
         console.dir($("#zh_subtitles").height())
         let width = $("#zh_subtitles").width() + $("#zh_subtitles").offset().left - 5,
         height = $("#zh_subtitles").height() + $("#zh_subtitles").offset().top - 5;
@@ -837,7 +837,7 @@
                     if(chooseDomList.length){
                         let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
                         let _now = parseInt(ele.className.replace('font span',''));
-                        log.debug(_now-_last)
+                        log.log(_now-_last)
                         if( _now == (_last+1)){
                             chooseDomList.push({
                                 class:ele.className,
@@ -931,7 +931,7 @@
             keyCodes.push(last)
         if(keyCode!=last)
             keyCodes.push(keyCode)
-        log.debug(keyCodes+" down")
+        log.log(keyCodes+" down")
         var keyy = keyCodes.join()
         switch(keyy){
     　　　　 case '27'://esc
@@ -1029,16 +1029,16 @@
     }
 
     document.onkeyup = function(event){      
-        log.debug(keyCodes+" up")
+        log.log(keyCodes+" up")
         keyCodes.pop()　
     }
     document.onfocus = function(){
-        log.debug('document.blur()')
+        log.log('document.blur()')
         keyCodes=[]
     }
 
     window.onbeforeunload=function(){
-        log.debug('onbeforeunload')
+        log.log('onbeforeunload')
         //navigator.sendBeacon("/mumu/page-out");
     }
     var lastTouchEnd;
@@ -1089,7 +1089,7 @@
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{
             $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-                log.debug(JSON.stringify(res));
+                log.log(JSON.stringify(res));
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: res.data.appid, // 必填，公众号的唯一标识
@@ -1178,7 +1178,7 @@
 
 
     $('#summtrans-word').bind('click',function(){
-        log.info('#summtrans-word.click')
+        log.log('#summtrans-word.click')
         $('#summtrans').hide()
         $('#wordsframe').show()
         $('#word-in').val(this.innerText).focus()
@@ -1186,7 +1186,7 @@
     })
 
     $('#summtrans-speak').bind('click',function(){
-        log.info('#summtrans-speak.click')
+        log.log('#summtrans-speak.click')
         if(!this.audio){
             this.audio=new Audio();
         }
@@ -1195,7 +1195,7 @@
     })
 
     $('#wordtempl').bind('click',function(){
-        log.info('#wordtempl.click')
+        log.log('#wordtempl.click')
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
@@ -1203,7 +1203,7 @@
     })
 
     $('#word-in').bind('input',function(){
-        log.info('#word-in.input')
+        log.log('#word-in.input')
         var tag = this
         var value  =this.value
         if(value){
@@ -1243,7 +1243,7 @@
 
 
     $('#zh_subtitles').bind('touchstart',function(event){
-        log.info('#zh_subtitles.touchstart')
+        log.log('#zh_subtitles.touchstart')
         if(!$(event.target).hasClass('font'))
             return;
         touchstartFn(event);
@@ -1254,7 +1254,7 @@
         touchmoveFn(event);
         event.preventDefault()
     }).bind('touchend',function(event){
-        log.info('#zh_subtitles.touchend')
+        log.log('#zh_subtitles.touchend')
         if(!$(event.target).hasClass('font'))
             return;
         touchendFn(event);
@@ -1262,32 +1262,32 @@
     })
 
     $('#startFn1').bind('click',function(){
-        log.info('#startFn.click')
+        log.log('#startFn.click')
         playVideo();
         $('#video').attr('controls', false);
     })
 
     $('#stopFn1').bind('click',function(){
-        log.info('#stopFn.click')
+        log.log('#stopFn.click')
         pauseVideo()
         $('#video').attr('controls', false);
     })
 
     $('#prevline').bind('click',function(){
-        log.info('#prevline.click')
+        log.log('#prevline.click')
         prevline()
     })
     $('#currline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         currline()
     })
     $('#nextline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         nextline()
     })
 
     $('#gear').bind('touchstart',function(event){
-        log.info('#gear.touchstart')
+        log.log('#gear.touchstart')
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
@@ -1299,7 +1299,7 @@
         this.endY = touch.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        log.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1331,7 +1331,7 @@
         }
         event.preventDefault()
     }).bind('touchend',function(event){
-        log.info('#gear.touchend')
+        log.log('#gear.touchend')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1341,7 +1341,7 @@
     })
 
     $('#gear').bind('mousedown',function(event){
-        log.info('#gear.mousedown')
+        log.log('#gear.mousedown')
         this.startX = event.pageX;
         this.startY = event.pageY;
     }).bind('mousemove',function(event){
@@ -1351,7 +1351,7 @@
         this.endY = event.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        log.log('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1383,7 +1383,7 @@
         }
         //event.preventDefault()
     }).bind('mouseup',function(event){
-        log.info('#gear.mouseup')
+        log.log('#gear.mouseup')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1393,29 +1393,29 @@
     })
 
     $('#replay').bind('click',function(event){
-        log.info('#replay.click')
+        log.log('#replay.click')
         $('#video')[0].load()
         //setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
-        log.info('#hideBtn.click')
+        log.log('#hideBtn.click')
         enSubtitlesShow()
     })
     $('#wholebtn').bind('click',function(event){
-        log.info('#wholebtn.click')
+        log.log('#wholebtn.click')
         chShowDialog()
     })
     $('#searchbtn').bind('click',function(event){
-        log.info('#searchbtn.click')
+        log.log('#searchbtn.click')
         search()
     })
 
     $('#chDialog').bind('click',function(event){
-        log.info('#chDialog.click')
+        log.log('#chDialog.click')
         chHideDialog()
     })
     document.body.addEventListener('click',function(){
-        log.debug(event.target)
+        log.log(event.target)
     })
 
     $('#word-in').bind('blur',function(){
@@ -1433,7 +1433,7 @@
     // $('#index').bind('touchstart',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchstart = touch.pageY;
-    //     log.debug("touchstart "+this.touchstart)
+    //     log.log("touchstart "+this.touchstart)
     // }).bind('touchmove',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchend = touch.pageY;
@@ -1441,7 +1441,7 @@
     //         e.preventDefault()
     //     }
     // }).bind('touchend',function(e){
-    //     log.debug("touchend "+this.touchend)
+    //     log.log("touchend "+this.touchend)
     //     this.touchstart=null
     //     this.touchend=null
     // })

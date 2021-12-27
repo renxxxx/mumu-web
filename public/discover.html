@@ -29,11 +29,11 @@
         </script>
         <!-- <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script>  -->
         <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js" type="application/javascript"></script>
-        <script src="./config.js" type="application/javascript"></script>
+        <script src="./app.js" type="application/javascript"></script>
         <script src="./js/common.js" type="application/javascript"></script>
         <script src="./js/log.js" type="application/javascript"></script>    
         <script src="./js/onStart.js" type="application/javascript"></script>    
-        <script src="./js/page-pre.js" type="application/javascript"></script>
+        <script src="./js/onShow.js" type="application/javascript"></script>
         <style>
             @media screen and (min-width: 700px) {
                 #video,#video1,#video2,#videobox {
@@ -116,7 +116,7 @@
                     style="display: block;position: absolute;top:0;left:100%;;object-fit:cover;background-color: #000000;width:100%;"
                 />
                 <svg id="searchpadbtn" style="position:absolute;right:0;top:0;opacity: 0.8;" t="1621525927027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3665" width="30" height="30"><path d="M826.624 779.008l-130.56-130.56a292.352 292.352 0 1 0-37.376 35.072l131.584 131.584a25.6 25.6 0 0 0 36.352-36.096zM236.8 453.12a241.664 241.664 0 1 1 241.664 241.664 241.92 241.92 0 0 1-241.664-241.664z" fill="#848484" p-id="3666"></path><path d="M484.864 242.688a217.6 217.6 0 0 0-187.648 108.288 25.6 25.6 0 0 0 9.984 35.072 25.6 25.6 0 0 0 12.8 3.328 25.6 25.6 0 0 0 22.272-12.544 165.888 165.888 0 0 1 143.36-82.944 25.6 25.6 0 0 0 0-51.2z" fill="#848484" p-id="3667"></path></svg>
-                <img id="changevideoshowtype" style="width:25px;height:25px;position:absolute;right:0;bottom:35px;cursor: pointer;opacity: 0.7;padding:2.5px;"
+                <img id="changevideoshowtype" style="width:25px;height:25px;position:absolute;right:0;bottom:40px;cursor: pointer;opacity: 0.7;padding:2.5px;"
                     draggable="false"
                     src="data:image/png;base64,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"/>
 
@@ -210,12 +210,6 @@
             <div id="videoshasow" style="position:absolute;top:0;width:100%;display:none;background-color: #000000;">
                 <img id="videoshasowimg" style="position:absolute;top:0;" />
                 <div id="videoshadoww" style="position:absolute;top:0;width:100%;height:100%;opacity: 0.8;background-color: #000000;"></div>
-            </div>
-            <div id="hints" style="font-size:0;width:100%;background-color: #ffffff;text-align: center;display:none;border-top: 1px solid rgba(255, 255, 255, 0.048);
-                                position:absolute;top:0;">
-                <div style="font-size:22px;font-weight: 900;margin-top:54px;color:#00aeff;">划触字幕</div>
-                <div style="font-size:22px;font-weight: 900;margin-top:10px;color:#00aeff;">查词和词组</div>
-                <div id="hintssec" style="font-size:18px;font-weight: 900;margin-top:10px;color:#00aeff;">3</div>
             </div>
 
             <div id="summtrans" 
@@ -489,12 +483,12 @@
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="$('#video')[0].pause();location.replace('list.html');">
-                    资源
+                    收藏
                 </span>
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
                     onclick="$('#video')[0].pause();location.replace('history.html');">
-                    看过
+                    聊天
                 </span>
                 <span class="unselectable" 
                     style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
@@ -506,29 +500,21 @@
             
             <div id="chatpad" style="position:absolute;bottom:0;width:100%;background-color: #d8d8d8;display:none;">
                 <div style="height:30px;width:100%;font-size:0;">
-                    <span id="chatroombtn" 
+                    <span id="chatprivatebtn" 
                         style="display:inline-block;height:30px;background-color: #d7d7d7;width:50%;cursor: pointer;
                             font-size:14px;text-align: center;line-height:30px;">
-                        聊天室
+                        评论
                     </span>
-                    <span id="chatprivatebtn" 
+                    <span id="chatroombtn" 
                         style="display:inline-block;height:30px;background-color: #737373;width:50%;cursor: pointer;
                             font-size:14px;text-align: center;line-height:30px;">
-                        评论
+                        聊天室
                     </span>
                 </div>
                 
                 <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;">
-                    <div style="height:30px;width:100%;">
-                        <form onsubmit="return false" action="javascript:return true">
-                            <input id="chatinput" placeholder="在这输入" autocomplete="off" type="text"
-                                style="width:100%;box-sizing: border-box;height:30px;display:inline-block;border: none;
-                                    background-color: #eaeaea;padding:0 3px;" />
-                        </form>
-                    </div>
                     <div id="chatmsgspad" class="scrollable noscrollbar" 
-                        style="width:100%;overflow: auto;box-sizing: border-box;padding:0px 3px 3px 3px;
-                            position:absolute;bottom:0;top:30px;font-size:0;padding-top: 5px;">
+                        style="display:none;overflow: auto;box-sizing: border-box;margin:3px;position:absolute;left:0;right:0;top:0;bottom:30px;font-size:0;">
                         <div id="chatmsgtemple" 
                             style="font-size:0;width:100%;height:35px;display:none;margin-bottom:5px;position: relative;">
                             <span class="name" 
@@ -548,8 +534,22 @@
                             </span>
                         </div>
                     </div>
+                    <div style="height:30px;width:100%;position:absolute;bottom:0;">
+                        <form onsubmit="return false" action="javascript:return true">
+                            <input id="chatinput" placeholder="请输入" autocomplete="off" type="text"
+                                style="width:80%;box-sizing: border-box;height:30px;display:inline-block;border: none;
+                                    background-color: #eaeaea;padding:0 3px;font-size: 15px;" />
+                            <span id="sendChatMsgBtn" style="width:20%;display: inline-block;height:30px;line-height: 30px;background-color: #3c3c3c;text-align: center;
+                                color: #ffffff;font-size: 15px;">
+                                发送
+                            </span>
+                        </form>
+                    </div>
                 </div>
-                <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;display:none;font-size:0;">
+
+
+
+                <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;font-size:0;">
                     <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
                 </div>
             </div>
@@ -959,7 +959,7 @@
             </div>
         </div>
     </body>
-    <script src="./discover-post.js" type="application/javascript"></script>
+    <script src="./discover-post-2.js" type="application/javascript"></script>
     <script>
         document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1279792021'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1279792021%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
     </script>

@@ -1,5 +1,5 @@
 let project='mumu'
-let version='21110219'
+let version='123123'
 
 import * as vue from 'vue'
 import router from './router.js'
@@ -19,7 +19,7 @@ import Vconsole from 'vconsole'
 
 let store = vue.reactive({
     doLogin: 0,
-    login : {},
+    login : null,
     vconsole:null,
     historys:[],
     components:{},
@@ -35,24 +35,21 @@ async function loginRefresh(){
         async:false,
         success:function(res){
             if(res.code==0){
-            let isLogined =res.data.isLogined
-            if(!isLogined){
-                $$.ajax({
-                    url:'/mumu/anon-login',
-                    async:false,
-                    success:function(res){
-                        if(res.code==0){
-                            if(uu.isWeixn()){
-                                var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-                                var appId="wx5a33a2ccb2d91764"
-                                var state=encodeURIComponent(location.href)
-                                var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
-                                location.replace(url)
-                            }
-                        }
+                let isLogined =res.data.isLogined
+                if(!isLogined){
+                    if(uu.isWeixn()){
+                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                        var appId="wx5a33a2ccb2d91764"
+                        var state=encodeURIComponent(location.href)
+                        var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+                        location.replace(url)
+                    }else{
+                        $$.ajax({
+                            url:'/mumu/anon-login',
+                            async:false
+                        })
                     }
-                })
-            }
+                }
             }
         }
     })
@@ -64,7 +61,7 @@ async function loginRefresh(){
         if(res.code==0){
             store.login=res.data
             setTimeout(function(){
-                $.post('/mumu/restore-template-wordbooks')
+                $$.post('/mumu/restore-template-wordbooks')
             },2000)
         }
         }

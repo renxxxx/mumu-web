@@ -2,19 +2,7 @@
     window.log={};
     var logsstr = localStorage.getItem(config.project+'-logs')
     log.logs=logsstr?JSON.parse(logsstr):[];
-    log.debugon=0
-
-    log.info=function(content){
-        content="IN: " + content
-        log.log(content)
-    }
-
-    log.debug=function(content){
-        content="DE: " + content
-        if(log.debugon)
-            log.log(content)
-    }
-
+    
     log.log=function(content){
         console.log(content)
         log.logs.push(content)

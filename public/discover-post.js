@@ -7,14 +7,18 @@
     page.translateajaxs=[]
     page.wordbookWordsAjaxs=[]
     
-    var onlyLookHimParam = getUrlParam('olh')
-    var userNoParam = getUrlParam('userNo')
-    var historyParam = getUrlParam('history')
+    let query = {
+        videoNo:null,
+        userNo:null,
+        history:null
+    }
+    query = getQuery()
+    
     page.rawsubtitles=null;
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
     page.currVideos=[]
-    //log.debugon=0
+    //log.logon=0
     var searchKw='' 
     var searchtag=''
     page.shortWordText=null;
@@ -84,7 +88,7 @@
     var loopLine=0
     var pausebeforech = null;
     var historywords=[]
-    var videoNoC = getUrlParam("videoNo");
+    var videoNoC = query.videoNo;
     var videoC = null
     var video;
     var videoNo;
@@ -99,14 +103,14 @@
         rstart:0,
     }
 
-    // if(pagePre.loginTime && (new Date().getTime() - pagePre.loginTime) > 1 * 24 * 60 * 60* 1000){
+    // if(app.loginTime && (new Date().getTime() - app.loginTime) > 1 * 24 * 60 * 60* 1000){
     //     $.ajax({
     //       url:'/mumu/login-refresh',
     //       async:false,
     //       success:function(res){
     //         if(res.code==0){
-    //           pagePre.login=res.data
-    //           localStorage.setItem(config.project+'-login',JSON.stringify(pagePre.login))
+    //           app.login=res.data
+    //           localStorage.setItem(config.project+'-login',JSON.stringify(app.login))
     //           localStorage.setItem(config.project+'-loginTime',new Date().getTime())
     //           $.post('/mumu/restore-template-wordbooks')
     //         }else if(res.code==20){
@@ -192,7 +196,7 @@
 
     
     $('#historyword_template').bind('click',function(event){
-        log.info('$(#historyword_template).click '+$(this).attr('data'))
+        log.log('$(#historyword_template).click '+$(this).attr('data'))
         page.dovideoshadow=1
         pauseVideo();
         loadRelatedWords(this.innerText)
@@ -209,7 +213,7 @@
         obj.kw=searchKw
         obj.pageSize=10
         
-        obj.userNo=page.onlyLookUserNo
+        obj.userNo=page.onlyLookUserNo||query.userNo
         // obj.rstart=1
         // obj.sort='numInUser,numInSeries'
         // obj.order='desc,asc'
@@ -259,15 +263,14 @@ $('#video').click(function(){
 })
 
     function getMoreVideos(async){
-        if(historyParam){
+        if(query.history){
             getMoreHistoryVideos(async)
             return;
         }
         var rcount = 10
         $.ajax({
             url: '/mumu/explore-videos?',
-            data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1)
-                    +"&mo="+ttb(getUrlParam("mo")),
+            data: 'shortvideo=1&kw='+searchtag+'&pageSize='+rcount+"&seed="+page.seed+"&rstart="+(page.exploreVideos.rows.length+1),
             async: async,
             success: function(res) {
                 if(res.code==0){
@@ -281,7 +284,7 @@ $('#video').click(function(){
                         page.seed = Math.ceil(Math.random()*100);
                         $.ajax({
                             url: '/mumu/explore-videos?',
-                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1"+"&mo="+ttb(getUrlParam("mo")),
+                            data: 'shortvideo=1&kw='+searchKw+'&pageSize='+rcount+"&seed="+page.seed+"&rstart=1",
                             async: async,
                             success: function(res) {
                                 if(res.data.videos.length>0){
@@ -369,7 +372,7 @@ $('#video').click(function(){
                 if(!paramm.local){
                     ws.send(JSON.stringify({
                         action:12,
-                        notrecord:ttb(historyParam),
+                        notrecord:ttb(query.history),
                         ...video.history
                     }))
                 }
@@ -397,10 +400,10 @@ $('#video').click(function(){
         }
 
         
-        log.info(page.trueVideos.rows.length+" "+page.trueVideos.inx)
+        log.log(page.trueVideos.rows.length+" "+page.trueVideos.inx)
         if(page.trueVideos.rows.length==0 || page.trueVideos.rows.length == page.trueVideos.inx){
-            log.info("sync")
-            if(page.onlyLookUserNo){
+            log.log("sync")
+            if(page.onlyLookUserNo||query.userNo){
                 getMoreOnlyLookHimVideos(false)
             }else{
                 getMoreVideos(false)
@@ -413,8 +416,8 @@ $('#video').click(function(){
         }
         
         if(!page.trueVideos.rows[page.trueVideos.inx+4-1] ){
-            log.info("async")
-            if(page.onlyLookUserNo){
+            log.log("async")
+            if(page.onlyLookUserNo||query.userNo){
                 getMoreOnlyLookHimVideos(true)
             }else{
                 getMoreVideos(true)
@@ -447,7 +450,7 @@ $('#video').click(function(){
 
         videoNo = page.trueVideos.rows[page.trueVideos.inx-1].no
         video = page.trueVideos.rows[page.trueVideos.inx-1]
-        log.info(videoNo)
+        log.log(videoNo)
        
         getvideodone(video)
 
@@ -607,6 +610,13 @@ $('#video').click(function(){
         }
         $('#chatCount').text(video.chatCount)
         guide1()
+
+
+        if(videop.userNo==query.userNo || videop.userNo==page.onlyLookUserNo){
+            $('#onlyLookHim').css('background-color','rgb(90, 90, 90)');
+        }else{
+            $('#onlyLookHim').css('background-color','unset');
+        }
     }
     function restore(){
         if(!restored && video.history){
@@ -709,7 +719,7 @@ $('#video').click(function(){
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            //log.debug("next ")
+            //log.log("next ")
             if(page.diandu)
                 pauseVideo()
             if(loopLine){
@@ -723,15 +733,15 @@ $('#video').click(function(){
         }
 
         if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
-            //log.debug("before next")
-            //log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
+            //log.log("before next")
+            //log.log("next: st: "+next.startTime+" currinx: "+en.currentIndex)
             return;
         }
 
         
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
-                //log.debug("search all ")
+                //log.log("search all ")
                 en.current = item
                 en.currentIndex = inx
                 setline(item)
@@ -779,7 +789,7 @@ $('#video').click(function(){
     // }
 
     $('.yibiao').on('click','span svg',function(){
-        log.info('$(.yibiao).click')
+        log.log('$(.yibiao).click')
         let _mp3 = new Audio($(this).attr('playsrc'));
         _mp3.play();
     })
@@ -806,7 +816,7 @@ $('#video').click(function(){
     }
     function getEnSubtitles(_result){
         page.rawsubtitles=_result
-        //log.debug("getEnSubtitles: "+ ++runstep)
+        //log.log("getEnSubtitles: "+ ++runstep)
         en.subtitlesList=[]
         ////let _this = this;
         let _fileString = [];
@@ -878,7 +888,7 @@ $('#video').click(function(){
     function setline(item){
         if(!item)
             return;
-        //log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
+        //log.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
         localStorage.setItem(config.project+"-currentCaption-"+videoNo,JSON.stringify(item))
         localStorage.setItem(config.project+"-currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
@@ -940,7 +950,7 @@ $('#video').click(function(){
                     jumpedcaption = prev
                     lastCurrentTime = prev.startTime/1000
                     $('#video')[0].currentTime = prev.startTime/1000
-                    log.debug("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
+                    log.log("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
                     setline(prev)
                     currwordno=0
                     
@@ -982,7 +992,7 @@ $('#video').click(function(){
                 $('#video')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
-                //log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
                 
@@ -1003,7 +1013,7 @@ $('#video').click(function(){
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
-                //log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
                 
@@ -1014,7 +1024,7 @@ $('#video').click(function(){
     }
 
     $('#favor').click(function(){
-        log.info('#favor.click')
+        log.log('#favor.click')
         addFavoredWord()
     })
     
@@ -1050,7 +1060,7 @@ $('#video').click(function(){
         },200)
     }
     function translatee(_data,addHistory,only){
-        //log.debug(_data+3)
+        //log.log(_data+3)
         //$('#summrest').hide()
         _data=pureWord(_data)
         if(!only){
@@ -1178,19 +1188,19 @@ $('#video').click(function(){
         
     }   
     function pauseVideo(){
-        //log.debug("pauseVideo()")
+        //log.log("pauseVideo()")
         $('#video')[0].pause();
     }
     function playVideo(){
-        //log.debug("playVideo()")
+        //log.log("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
     }
 
 
     function videoPlay(){
-        //log.debug("onplay: "+ ++runstep)
-        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.log("onplay: "+ ++runstep)
+        //log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         if(page.ajaxtranslate)
             page.ajaxtranslate.abort()
         for (const ajax of page.translateajaxs) {
@@ -1237,8 +1247,8 @@ $('#video').click(function(){
     }
     page.dovideoshadow=0
     function videoPause(){
-        //log.debug("onpause: "+ ++runstep)
-        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.log("onpause: "+ ++runstep)
+        //log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         
         
         clearInterval(en.monitor)
@@ -1259,7 +1269,7 @@ $('#video').click(function(){
             if(!img.src)
                 $('#videoshasowimg').css('background-color',"#000000")
             $('#videoshasow').show()
-            //log.debug(`$('#videoshasow').show()`)
+            //log.log(`$('#videoshasow').show()`)
             $('#videobox').css('top','-1000px')
             //$('#videoshasow').css('height',$('#video').css('height'))
         }
@@ -1325,8 +1335,8 @@ $('#video').click(function(){
     var currwordno=0;
     var keyCodes=[];
     document.onkeydown = function(event){
-　　　　 var e  = event  ||  window.e;
-　　　　 var keyCode = e.keyCode || e.which;
+     var e  = event  ||  window.e;
+     var keyCode = e.keyCode || e.which;
 
         keyCodes=[]
         var last = keyCodes.pop()
@@ -1334,10 +1344,10 @@ $('#video').click(function(){
             keyCodes.push(last)
         if(keyCode!=last)
             keyCodes.push(keyCode)
-        //log.debug(keyCodes+" down")
+        //log.log(keyCodes+" down")
         var keyy = keyCodes.join()
         switch(keyy){
-    　　　　 case '27'://esc
+         case '27'://esc
                 $('#summtrans').hide()
                 $('#summtrans-word').text('')
                 $('#summtrans-phonetic').text('').hide()
@@ -1350,7 +1360,7 @@ $('#video').click(function(){
                 $('#words .word').remove()
                 $('#videobox').css('top',0)
                 break;
-    　　　　 case '32'://space
+         case '32'://space
                 if(document.activeElement == $('#word-in')[0])
                     return;
                 if(document.activeElement.tagName=="INPUT")
@@ -1363,11 +1373,11 @@ $('#video').click(function(){
                     page.manual=2
                     pauseVideo();
                 }
-        　　　　 break;
+             break;
             case '13'://enter
                 if(document.activeElement.tagName!="INPUT")
                     search();
-        　　　　 break;
+             break;
             case '97'://A
             case '65'://a
                 if(document.activeElement == $('#word-in')[0])
@@ -1375,7 +1385,7 @@ $('#video').click(function(){
                 if(document.activeElement.tagName=="INPUT")
                     return;
                 prevline()
-        　　　　 break;
+             break;
             case '115'://S
             case '83'://s
                 if(document.activeElement == $('#word-in')[0])
@@ -1383,7 +1393,7 @@ $('#video').click(function(){
                 if(document.activeElement.tagName=="INPUT")
                     return;
                 troggleLoopLine()
-        　　　　 break; 
+             break; 
             case '119'://W
             case '87'://w
                 if(document.activeElement == $('#word-in')[0])
@@ -1391,7 +1401,7 @@ $('#video').click(function(){
                 if(document.activeElement.tagName=="INPUT")
                     return;
                 chdialog()
-        　　　　 break;
+             break;
             case '100'://D
             case '68'://d
                 if(document.activeElement == $('#word-in')[0])
@@ -1399,7 +1409,7 @@ $('#video').click(function(){
                 if(document.activeElement.tagName=="INPUT")
                     return;
                 nextline()
-        　　　　 break;
+             break;
             case '113'://Q
             case '81'://q
                 if(document.activeElement == $('#word-in')[0])
@@ -1411,7 +1421,7 @@ $('#video').click(function(){
                 else
                     currwordno--;
                 locateWord(currwordno)
-        　　　　 break;
+             break;
             case '101'://E
             case '69'://e
                 if(document.activeElement == $('#word-in')[0])
@@ -1422,7 +1432,7 @@ $('#video').click(function(){
                 if(currwordno>en.currentwords.length)
                     currwordno=1
                 locateWord(currwordno)
-        　　　　 break;
+             break;
         }
         
     }
@@ -1448,16 +1458,16 @@ $('#video').click(function(){
     }
 
     document.onkeyup = function(event){      
-        //log.debug(keyCodes+" up")
+        //log.log(keyCodes+" up")
         keyCodes.pop()　
     }
     document.onfocus = function(){
-        //log.debug('document.blur()')
+        //log.log('document.blur()')
         keyCodes=[]
     }
 
     window.onbeforeunload=function(){
-        //log.debug('onbeforeunload')
+        //log.log('onbeforeunload')
         historyrecord()
         //navigator.sendBeacon("/mumu/page-out");
     }
@@ -1522,7 +1532,7 @@ $('#video').click(function(){
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{
             $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-                //log.debug(JSON.stringify(res));
+                //log.log(JSON.stringify(res));
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: res.data.appid, // 必填，公众号的唯一标识
@@ -1652,7 +1662,7 @@ $('#video').click(function(){
 
 
     $('#summtrans-word').bind('click',function(){
-        log.info('#summtrans-word.click')
+        log.log('#summtrans-word.click')
         $('#summtrans').hide()
         $('#wordsframe').show()
         $('#word-in').val(this.innerText).focus()
@@ -1661,7 +1671,7 @@ $('#video').click(function(){
     })
 
     $('#summtrans-speak').bind('click',function(){
-        log.info('#summtrans-speak.click')
+        log.log('#summtrans-speak.click')
         if(!this.audio){
             this.audio=new Audio();
         }
@@ -1670,7 +1680,7 @@ $('#video').click(function(){
     })
 
     $('#wordtempl').bind('click',function(){
-        log.info('#wordtempl.click')
+        log.log('#wordtempl.click')
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
@@ -1679,7 +1689,7 @@ $('#video').click(function(){
     })
 
     $('#word-in').bind('input',function(){
-        log.info('#word-in.input')
+        log.log('#word-in.input')
         var tag = $('#word-in')[0]
         var value  =$('#word-in')[0].value
 
@@ -1734,7 +1744,7 @@ $('#video').click(function(){
     $('#startFn,#startFn1').bind('mousedown',function() {
         if(isMobile())
             return;
-        log.info(`#startFn.mousedown`)
+        log.log(`#startFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1749,7 +1759,7 @@ $('#video').click(function(){
     }).bind('mouseup',function() { 
         if(isMobile())
             return;
-        log.info(`#startFn.mouseup`)
+        log.log(`#startFn.mouseup`)
         page.manual=1
         clearTimeout(page.dddd)
         if(page.startt){
@@ -1761,7 +1771,7 @@ $('#video').click(function(){
             }
         }
     }).bind('touchstart',function() { 
-        log.info(`#startFn.touchstart`)
+        log.log(`#startFn.touchstart`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1774,7 +1784,7 @@ $('#video').click(function(){
             }
         },1000)
     }).bind('touchend',function() { 
-        log.info(`#startFn.touchend`)
+        log.log(`#startFn.touchend`)
         clearTimeout(page.dddd)
         page.manual=1
         if(page.startt){
@@ -1791,7 +1801,7 @@ $('#video').click(function(){
     $('#stopFn,#stopFn1').bind('mousedown',function() { 
         if(isMobile())
             return;
-        log.info(`#stopFn.mousedown`)
+        log.log(`#stopFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1806,7 +1816,7 @@ $('#video').click(function(){
     }).bind('mouseup',function() { 
         if(isMobile())
             return; 
-        log.info(`#stopFn.mouseup`)
+        log.log(`#stopFn.mouseup`)
         page.manual=2
         clearTimeout(page.dddd)
         if(page.startt){
@@ -1818,7 +1828,7 @@ $('#video').click(function(){
             }
         }
     }).bind('touchstart',function() { 
-        log.info(`#stopFn.touchstart`)
+        log.log(`#stopFn.touchstart`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1831,7 +1841,7 @@ $('#video').click(function(){
             }
         },1000)
     }).bind('touchend',function() { 
-        log.info(`#stopFn.touchend`)
+        log.log(`#stopFn.touchend`)
         clearTimeout(page.dddd)
         page.manual=2
         if(page.startt){
@@ -1846,24 +1856,24 @@ $('#video').click(function(){
 
 
     $('#prevline').bind('click',function(){
-        log.info('#prevline.click')
+        log.log('#prevline.click')
         // if(!loopLine)
         //     pauseVideo()
         prevline()
     })
     $('#currline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         currline()
     })
     $('#nextline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         // if(!loopLine)
         //     pauseVideo()
         nextline()
     })
 
     $('#gear').bind('touchstart',function(event){
-        log.info('#gear.touchstart')
+        log.log('#gear.touchstart')
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
@@ -1875,7 +1885,7 @@ $('#video').click(function(){
         this.endY = touch.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        //log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1908,7 +1918,7 @@ $('#video').click(function(){
         }
         event.preventDefault()
     }).bind('touchend',function(event){
-        log.info('#gear.touchend')
+        log.log('#gear.touchend')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1918,7 +1928,7 @@ $('#video').click(function(){
     })
 
     $('#gear').bind('mousedown',function(event){
-        log.info('#gear.mousedown')
+        log.log('#gear.mousedown')
         this.startX = event.pageX;
         this.startY = event.pageY;
     }).bind('mousemove',function(event){
@@ -1928,7 +1938,7 @@ $('#video').click(function(){
         this.endY = event.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        //log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.log('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1960,7 +1970,7 @@ $('#video').click(function(){
         }
         //event.preventDefault()
     }).bind('mouseup',function(event){
-        log.info('#gear.mouseup')
+        log.log('#gear.mouseup')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1970,20 +1980,20 @@ $('#video').click(function(){
     })
 
     $('#replay').bind('click',function(event){
-        log.info('#replay.click')
+        log.log('#replay.click')
         $('#video')[0].load()
         //setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
-        log.info('#hideBtn.click')
+        log.log('#hideBtn.click')
         enSubtitlesShow()
     })
     $('#wholebtn').bind('click',function(event){
-        log.info('#wholebtn.click')
+        log.log('#wholebtn.click')
         chdialog()
     })
     $('#searchbtn').bind('click',function(event){
-        log.info('#searchbtn.click')
+        log.log('#searchbtn.click')
         toSearch()
     })
 
@@ -2023,16 +2033,16 @@ $('#video').click(function(){
 
 
     document.body.addEventListener('click',function(){
-        //log.debug(event.target)
+        //log.log(event.target)
     })
 
 
     $('#goPrevVideo').click(function(){
-        log.info('#goPrevVideo.click')
+        log.log('#goPrevVideo.click')
         goPrevVideo()
     })
     $('#goNextVideo').click(function(){
-        log.info('#goNextVideo.click')
+        log.log('#goNextVideo.click')
         goNextVideo()
     })
 
@@ -2331,7 +2341,7 @@ $('#video').click(function(){
     page.firstRangeWordInx=0
     page.lastRangeWordInx=0
     $('#zh_subtitles').bind('mousedown touchstart',function(e){
-        log.info(`#zh_subtitles.`+e.type)
+        log.log(`#zh_subtitles.`+e.type)
             var currTarget = null;
             if(e.type=='touchmove'){
                 currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
@@ -2381,7 +2391,7 @@ $('#video').click(function(){
             }
         }
     }).bind('mouseup touchend',function(e){
-        log.info(`#zh_subtitles.`+e.type)
+        log.log(`#zh_subtitles.`+e.type)
             var currTarget = null;
             if(e.type=='touchmove'){
                 currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
@@ -2607,16 +2617,16 @@ $('#wordsframe_cancel').click(function(){
     var ws = null;
     initws()
     function initws(){
-        ws = new WebSocket(`wss://${location.host}/mumu/websocket/${pagePre.login.userNo}`); 
+        ws = new WebSocket(`wss://${location.host}/mumu/websocket/${app.login.userNo}`); 
         //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
         ws.onopen = function(){
-        　　//当WebSocket创建成功时，触发onopen事件
-            //log.debug("ws onopen");            
+          //当WebSocket创建成功时，触发onopen事件
+            //log.log("ws onopen");            
             page.ws=ws
         }
         ws.onmessage = function(e){
-        　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
-        　　//log.debug("ws onmessage: "+e.data);
+          //当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+          //log.log("ws onmessage: "+e.data);
             var data = JSON.parse(e.data)
             if(data.action == 1){
                 if(data.nickname!=null){
@@ -2712,16 +2722,16 @@ $('#wordsframe_cancel').click(function(){
             }
         }
         ws.onclose = function(e){
-        　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+          //当客户端收到服务端发送的关闭连接请求时，触发onclose事件
         }
         ws.onerror = function(e){
-        　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+          //如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
         }   
     }
 
     setInterval(() => {
         if(ws && ws.readyState==3){
-            //log.debug("to ws init after 3")
+            //log.log("to ws init after 3")
             initws()
         }
 
@@ -2743,7 +2753,7 @@ $('#wordsframe_cancel').click(function(){
     
     setInterval(function(){
         if(ws && ws.readyState==1){
-            //log.debug("to ws heart check")
+            //log.log("to ws heart check")
             ws.send("1")
         }
     },30000)
@@ -3067,7 +3077,7 @@ $('#wordsframe_cancel').click(function(){
 
 
     function addWordbookWord(wordbook){
-        if(wordbook.templateNo && pagePre.login.userNo != '100000000000'){
+        if(wordbook.templateNo && app.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             common.promptLine({
@@ -3675,9 +3685,7 @@ $('#wordsframe_cancel').click(function(){
         })
     }
     
-    if(onlyLookHimParam){
-        openOnlyLookHim()
-    }
+
 
     $('#onlyLookHim').click(function(){
         if(page.onlyLookUserNo){
@@ -4428,7 +4436,7 @@ $('#wordsframe_cancel').click(function(){
     $('#wordDetailPad .deleteBtn').click(function(){
         var wordbook=page.wordbooks.selected
         var curr = wordbook.words.selected;
-        if(wordbook.templateNo && pagePre.login.userNo != '100000000000'){
+        if(wordbook.templateNo && app.login.userNo != '100000000000'){
             common.alert('不可编辑系统单词本')
         }else{
             common.promptLine({

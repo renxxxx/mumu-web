@@ -16,7 +16,7 @@
      
         <div style="position: absolute;top:40px;bottom:0;left:0;right:0;overflow: auto;">
             <video id="video" :src='video.url' @timeupdate="timeupdate" x5-playsinline playsinline controls360=no webkit-playsinline  controls 
-                autoplay style="width:100%;height:200px;background-color: #191919;"></video>
+                autoplay style="width:100%;height:200px;background-color: #191919;" ></video>
             <div @click="toModifySubtitle=1" style="background-color: #f0f8ff;position: relative;height:110px">
                 <div style="font-size: 14px;text-align: center;width:100%;height: 15px;">
                     {{ dddd?currentSubtitleIndex+1:'' }}
@@ -670,6 +670,7 @@ export default {
 
         },
         prevSubtitle(){
+            debugger
             let ts = this
             ts.videoDom.pause()
             let prev = null;
@@ -687,7 +688,10 @@ export default {
                     ts.videoDom.currentTime=ts.currentSubtitle.start/1000
                 }
             }
-            
+            if(!prev){
+                ts.currentSubtitleIndex=-1
+                ts.videoDom.currentTime=0;
+            }
         },
         nextSubtitle(){
             let ts = this
@@ -697,7 +701,10 @@ export default {
                 ts.currentSubtitle=next
                 ts.currentSubtitleIndex++;
                 ts.videoDom.currentTime=ts.currentSubtitle.start/1000
+            }else{
+                ts.videoDom.currentTime=ts.videoDom.duration;
             }
+
         },
         deleteCover(){
             let ts = this

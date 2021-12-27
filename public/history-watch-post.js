@@ -9,7 +9,7 @@
     page.seed = Math.ceil(Math.random()*100);
     page.rstart=1
     page.currVideos=[]
-    //log.debugon=0
+    //log.logon=0
     var searchKw='' 
     var searchtag=''
     page.favoredWords={
@@ -171,7 +171,7 @@
 
     
     $('#historyword_template').bind('click',function(event){
-        log.info('$(#historyword_template).click '+$(this).attr('data'))
+        log.log('$(#historyword_template).click '+$(this).attr('data'))
         page.dovideoshadow=1
         pauseVideo();
         loadRelatedWords(this.innerText)
@@ -465,7 +465,7 @@
             }
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                //log.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime){
                     restored=1;
                 }
@@ -477,7 +477,7 @@
         if(!playRestored){
             if(lastCurrentTime){
                 $('#video')[0].currentTime = lastCurrentTime;
-                //log.debug("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
+                //log.log("set lct: "+lastCurrentTime+" ct: "+$('#video')[0].currentTime);
                 if($('#video')[0].currentTime >= lastCurrentTime)
                     playRestored=1;
             }
@@ -532,7 +532,7 @@
 
         var next = en.subtitlesList[en.currentIndex+1]
         if(next && next.startTime<=_time && _time<next.endTime){
-            //log.debug("next ")
+            //log.log("next ")
             if(page.diandu)
                 pauseVideo()
             if(loopLine){
@@ -546,15 +546,15 @@
         }
 
         if(next && _time < next.startTime &&  (!en.current || _time > en.current.endTime)){
-            //log.debug("before next")
-            //log.debug("next: st: "+next.startTime+" currinx: "+en.currentIndex)
+            //log.log("before next")
+            //log.log("next: st: "+next.startTime+" currinx: "+en.currentIndex)
             return;
         }
 
         
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
-                //log.debug("search all ")
+                //log.log("search all ")
                 en.current = item
                 en.currentIndex = inx
                 setline(item)
@@ -602,12 +602,12 @@
     // }
 
     $('.yibiao').on('click','span svg',function(){
-        log.info('$(.yibiao).click')
+        log.log('$(.yibiao).click')
         let _mp3 = new Audio($(this).attr('playsrc'));
         _mp3.play();
     })
     function getEnSubtitles(_result){
-        //log.debug("getEnSubtitles: "+ ++runstep)
+        //log.log("getEnSubtitles: "+ ++runstep)
         en.subtitlesList=[]
         ////let _this = this;
         let _fileString = [];
@@ -679,7 +679,7 @@
     function setline(item){
         if(!item)
             return;
-        //log.debug('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
+        //log.log('setline: ct: '+$('#video')[0].currentTime+" st: "+item.startTime +" et: "+item.endTime +" "+item.enValue.substr(0,5))
         localStorage.setItem(config.project+"-currentCaption-"+videoNo,JSON.stringify(item))
         localStorage.setItem(config.project+"-currentIndex-"+videoNo,en.currentIndex)
         ////let _this = this;
@@ -741,7 +741,7 @@
                     jumpedcaption = prev
                     lastCurrentTime = prev.startTime/1000
                     $('#video')[0].currentTime = prev.startTime/1000
-                    log.debug("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
+                    log.log("set st: "+prev.startTime/1000+" ct: "+$('#video')[0].currentTime + " - " + en.current.enValue.substr(0,10))
                     setline(prev)
                     currwordno=0
                     
@@ -783,7 +783,7 @@
                 $('#video')[0].currentTime = curr.startTime/1000
                 jumpedcaption = curr
                 lastCurrentTime = curr.startTime/1000
-                //log.debug("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.log("set ct: "+curr.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(curr)
                 currwordno=0
                 
@@ -804,7 +804,7 @@
                 jumpedcaption = next
                 lastCurrentTime = next.startTime/1000
                 $('#video')[0].currentTime = next.startTime/1000
-                //log.debug("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
+                //log.log("set ct: "+next.startTime/1000+" ct: "+$('#video')[0].currentTime)
                 setline(next)
                 currwordno=0
                 
@@ -815,7 +815,7 @@
     }
 
     $('#favor').click(function(){
-        log.info('#favor.click')
+        log.log('#favor.click')
         addFavoredWord()
     })
     
@@ -851,7 +851,7 @@
         },200)
     }
     function translatee(_data,addHistory){
-        //log.debug(_data+3)
+        //log.log(_data+3)
         //$('#summrest').hide()
         page.dovideoshadow=1
         pauseVideo()
@@ -960,11 +960,11 @@
         
     }   
     function pauseVideo(){
-        //log.debug("pauseVideo()")
+        //log.log("pauseVideo()")
         $('#video')[0].pause();
     }
     function playVideo(){
-        //log.debug("playVideo()")
+        //log.log("playVideo()")
         $('#video')[0].play();
         clearTimeout(window.timeoutdo1)
     }
@@ -974,8 +974,8 @@
     }
 
     function videoPlay(){
-        //log.debug("onplay: "+ ++runstep)
-        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.log("onplay: "+ ++runstep)
+        //log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         if(page.ajaxtranslate)
             page.ajaxtranslate.abort()
         for (const ajax of page.translateajaxs) {
@@ -1014,8 +1014,8 @@
     }
     page.dovideoshadow=0
     function videoPause(){
-        //log.debug("onpause: "+ ++runstep)
-        //log.debug(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
+        //log.log("onpause: "+ ++runstep)
+        //log.log(" ct: "+ $('#video')[0].currentTime +" st: " +(en.current && en.current.startTime)+" et: " +(en.current && en.current.endTime)+" "+(en.current&&en.current.enValue.substr(0,5)))
         
         
         clearInterval(en.monitor)
@@ -1036,7 +1036,7 @@
             if(!img.src)
                 $('#videoshasowimg').css('background-color',"#000000")
             $('#videoshasow').show()
-            //log.debug(`$('#videoshasow').show()`)
+            //log.log(`$('#videoshasow').show()`)
             $('#video').css('top','-1000px')
             //$('#videoshasow').css('height',$('#video').css('height'))
         }
@@ -1130,7 +1130,7 @@
     //     choooseEnd(_coordinates);
     // }
     // function choooseStart(_value){
-    //     //log.debug(_value)
+    //     //log.log(_value)
     //     page.dovideoshadow=1
     //     pauseVideo()
     //     console.dir($("#zh_subtitles").height())
@@ -1184,7 +1184,7 @@
     //                 if(chooseDomList.length){
     //                     let _last = parseInt(chooseDomList[chooseDomList.length-1].class.replace('font span',''));
     //                     let _now = parseInt(ele.className.replace('font span',''));
-    //                     //log.debug(_now-_last)
+    //                     //log.log(_now-_last)
     //                     if( _now == (_last+1)){
     //                         chooseDomList.push({
     //                             class:ele.className,
@@ -1278,7 +1278,7 @@
             keyCodes.push(last)
         if(keyCode!=last)
             keyCodes.push(keyCode)
-        //log.debug(keyCodes+" down")
+        //log.log(keyCodes+" down")
         var keyy = keyCodes.join()
         switch(keyy){
     　　　　 case '27'://esc
@@ -1392,16 +1392,16 @@
     }
 
     document.onkeyup = function(event){      
-        //log.debug(keyCodes+" up")
+        //log.log(keyCodes+" up")
         keyCodes.pop()　
     }
     document.onfocus = function(){
-        //log.debug('document.blur()')
+        //log.log('document.blur()')
         keyCodes=[]
     }
 
     window.onbeforeunload=function(){
-        //log.debug('onbeforeunload')
+        //log.log('onbeforeunload')
         //navigator.sendBeacon("/mumu/page-out");
     }
     var lastTouchEnd;
@@ -1465,7 +1465,7 @@
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{
             $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-                //log.debug(JSON.stringify(res));
+                //log.log(JSON.stringify(res));
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: res.data.appid, // 必填，公众号的唯一标识
@@ -1595,7 +1595,7 @@
 
 
     $('#summtrans-word').bind('click',function(){
-        log.info('#summtrans-word.click')
+        log.log('#summtrans-word.click')
         $('#summtrans').hide()
         $('#wordsframe').show()
         $('#word-in').val(this.innerText).focus()
@@ -1603,7 +1603,7 @@
     })
 
     $('#summtrans-speak').bind('click',function(){
-        log.info('#summtrans-speak.click')
+        log.log('#summtrans-speak.click')
         if(!this.audio){
             this.audio=new Audio();
         }
@@ -1612,7 +1612,7 @@
     })
 
     $('#wordtempl').bind('click',function(){
-        log.info('#wordtempl.click')
+        log.log('#wordtempl.click')
         $('#wordsframe').hide()
         $('#word-in').val('')
         $('#words .word').remove()
@@ -1621,7 +1621,7 @@
     })
 
     $('#word-in').bind('input',function(){
-        log.info('#word-in.input')
+        log.log('#word-in.input')
         var tag = $('#word-in')[0]
         var value  =$('#word-in')[0].value
 
@@ -1678,7 +1678,7 @@
     $('#startFn,#startFn1').bind('mousedown',function() {
         if(isMobile())
             return;
-        log.info(`#startFn.mousedown`)
+        log.log(`#startFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1693,7 +1693,7 @@
     }).bind('mouseup',function() { 
         if(isMobile())
             return;
-        log.info(`#startFn.mouseup`)
+        log.log(`#startFn.mouseup`)
         page.manual=1
         clearTimeout(page.dddd)
         if(page.startt){
@@ -1705,7 +1705,7 @@
             }
         }
     }).bind('touchstart',function() { 
-        log.info(`#startFn.touchstart`)
+        log.log(`#startFn.touchstart`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1718,7 +1718,7 @@
             }
         },1000)
     }).bind('touchend',function() { 
-        log.info(`#startFn.touchend`)
+        log.log(`#startFn.touchend`)
         clearTimeout(page.dddd)
         page.manual=1
         if(page.startt){
@@ -1735,7 +1735,7 @@
     $('#stopFn,#stopFn1').bind('mousedown',function() { 
         if(isMobile())
             return;
-        log.info(`#stopFn.mousedown`)
+        log.log(`#stopFn.mousedown`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1750,7 +1750,7 @@
     }).bind('mouseup',function() { 
         if(isMobile())
             return; 
-        log.info(`#stopFn.mouseup`)
+        log.log(`#stopFn.mouseup`)
         page.manual=2
         clearTimeout(page.dddd)
         if(page.startt){
@@ -1762,7 +1762,7 @@
             }
         }
     }).bind('touchstart',function() { 
-        log.info(`#stopFn.touchstart`)
+        log.log(`#stopFn.touchstart`)
         page.startt=new Date()
         clearTimeout(page.dddd)
         page.dddd = setTimeout(function(){
@@ -1775,7 +1775,7 @@
             }
         },1000)
     }).bind('touchend',function() { 
-        log.info(`#stopFn.touchend`)
+        log.log(`#stopFn.touchend`)
         clearTimeout(page.dddd)
         page.manual=2
         if(page.startt){
@@ -1790,24 +1790,24 @@
 
 
     $('#prevline').bind('click',function(){
-        log.info('#prevline.click')
+        log.log('#prevline.click')
         // if(!loopLine)
         //     pauseVideo()
         prevline()
     })
     $('#currline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         currline()
     })
     $('#nextline').bind('click',function(){
-        log.info('#nextline.click')
+        log.log('#nextline.click')
         // if(!loopLine)
         //     pauseVideo()
         nextline()
     })
 
     $('#gear').bind('touchstart',function(event){
-        log.info('#gear.touchstart')
+        log.log('#gear.touchstart')
         var touch = event.targetTouches[0];
         this.startX = touch.pageX;
         this.startY = touch.pageY;
@@ -1819,7 +1819,7 @@
         this.endY = touch.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        //log.debug('distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.log('distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1852,7 +1852,7 @@
         }
         event.preventDefault()
     }).bind('touchend',function(event){
-        log.info('#gear.touchend')
+        log.log('#gear.touchend')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1862,7 +1862,7 @@
     })
 
     $('#gear').bind('mousedown',function(event){
-        log.info('#gear.mousedown')
+        log.log('#gear.mousedown')
         this.startX = event.pageX;
         this.startY = event.pageY;
     }).bind('mousemove',function(event){
@@ -1872,7 +1872,7 @@
         this.endY = event.pageY;
         var distanceX=this.endX-this.startX;
         var distanceY=this.endY-this.startY;
-        //log.debug('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
+        //log.log('-distanceX: '+distanceX+' lastDist: '+this.lastDist)
 
         if(this.lastDist==null||this.lastDist==undefined)
             this.lastDist=distanceX;
@@ -1904,7 +1904,7 @@
         }
         //event.preventDefault()
     }).bind('mouseup',function(event){
-        log.info('#gear.mouseup')
+        log.log('#gear.mouseup')
         this.startX=null
         this.startY=null
         this.endX = null;
@@ -1914,20 +1914,20 @@
     })
 
     $('#replay').bind('click',function(event){
-        log.info('#replay.click')
+        log.log('#replay.click')
         $('#video')[0].load()
         //setTimeout(function(){$('#video')[0].muted=false},500)
     })
     $('#hideBtn').bind('click',function(event){
-        log.info('#hideBtn.click')
+        log.log('#hideBtn.click')
         enSubtitlesShow()
     })
     $('#wholebtn').bind('click',function(event){
-        log.info('#wholebtn.click')
+        log.log('#wholebtn.click')
         chdialog()
     })
     $('#searchbtn').bind('click',function(event){
-        log.info('#searchbtn.click')
+        log.log('#searchbtn.click')
         toSearch()
     })
 
@@ -1967,16 +1967,16 @@
 
 
     document.body.addEventListener('click',function(){
-        //log.debug(event.target)
+        //log.log(event.target)
     })
 
 
     $('#goPrevVideo').click(function(){
-        log.info('#goPrevVideo.click')
+        log.log('#goPrevVideo.click')
         goPrevVideo()
     })
     $('#goNextVideo').click(function(){
-        log.info('#goNextVideo.click')
+        log.log('#goNextVideo.click')
         goNextVideo()
     })
 
@@ -2251,7 +2251,7 @@
     page.firstRangeWordInx=0
     page.lastRangeWordInx=0
     $('#zh_subtitles').bind('mousedown touchstart',function(e){
-        log.info(`#zh_subtitles.`+e.type)
+        log.log(`#zh_subtitles.`+e.type)
             var currTarget = null;
             if(e.type=='touchmove'){
                 currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
@@ -2301,7 +2301,7 @@
             }
         }
     }).bind('mouseup touchend',function(e){
-        log.info(`#zh_subtitles.`+e.type)
+        log.log(`#zh_subtitles.`+e.type)
             var currTarget = null;
             if(e.type=='touchmove'){
                 currTarget=document.elementFromPoint(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
@@ -2357,8 +2357,8 @@
     //         return;
     //     if($(e.target).parents('#gearframe1,#zh_subtitles,#prevnextpad,#chatpad').length>0)
     //         return;
-    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
-    //     log.debug(this.endTime-this.startTime)
+    //     //log.log(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+    //     log.log(this.endTime-this.startTime)
     //     $('#video1').css('left','100%')
     //     $('#video2').css('left','-100%')
     //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
@@ -2413,7 +2413,7 @@
 
     //     $('#video1').css('left','100%')
     //     $('#video2').css('left','-100%')
-    //     //log.debug(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
+    //     //log.log(`startX=${this.indextouchstartX} endX=${this.indextouchendX} startY=${this.indextouchstartY} endY=${this.indextouchendY}`)
     //     if(this.endTime-this.startTime < 500 && this.indextouchstartX && this.indextouchstartY && this.indextouchendX && this.indextouchendY){
             
     //         if(this.indextouchstartX-this.indextouchendX>100){
@@ -2561,7 +2561,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('touchstart',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchstart = touch.pageY;
-    //     //log.debug("touchstart "+this.touchstart)
+    //     //log.log("touchstart "+this.touchstart)
     // }).bind('touchmove',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchend = touch.pageY;
@@ -2569,7 +2569,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     //         e.preventDefault()
     //     }
     // }).bind('touchend',function(e){
-    //     //log.debug("touchend "+this.touchend)
+    //     //log.log("touchend "+this.touchend)
     //     if(this.touchend-this.touchstart>50){
     //        // $('#gearframe1').show()
     //         $('#prevnextpad').show()
@@ -2581,7 +2581,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     // })
 
     // $('#chatprivatebtn,#chatroombtn,#chatprivatepad,#chatinput').bind('mousedown',function(e){
-    //     //log.debug("mousedown "+ e.pageY)
+    //     //log.log("mousedown "+ e.pageY)
     //     this.mousedown = e.pageY;
     // }).bind('mousemove',function(e){
     //     this.mouseup = e.pageY;
@@ -2589,7 +2589,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     //         e.preventDefault()
     //     }
     // }).bind('mouseup',function(e){
-    //     //log.debug("mouseup "+e.pageY)
+    //     //log.log("mouseup "+e.pageY)
     //     this.mouseup = e.pageY;
     //     if(this.mouseup-this.mousedown>50){
     //         //$('#gearframe1').show()
@@ -2604,7 +2604,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     // $('#chatmsgspad').bind('touchstart',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchstart = touch.pageY;
-    //     //log.debug("touchstart "+this.touchstart)
+    //     //log.log("touchstart "+this.touchstart)
     // }).bind('touchmove',function(e){
     //     var touch = e.targetTouches[0];
     //     this.touchend = touch.pageY;
@@ -2612,7 +2612,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     //         e.preventDefault()
     //     }
     // }).bind('touchend',function(e){
-    //     //log.debug("touchend "+this.touchend)
+    //     //log.log("touchend "+this.touchend)
     //     if(this.touchend-this.touchstart>50 && $('#chatmsgspad').scrollTop()==0){
     //         //$('#gearframe1').show()
     //         $('#prevnextpad').show()
@@ -2624,7 +2624,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     // })
 
     // $('#chatmsgspad').bind('mousedown',function(e){
-    //     //log.debug("mousedown "+ e.pageY)
+    //     //log.log("mousedown "+ e.pageY)
     //     this.mousedown = e.pageY;
     // }).bind('mousemove',function(e){
     //     this.mouseup = e.pageY;
@@ -2632,7 +2632,7 @@ $('#index').unbind('touchstart mousedown').bind('touchstart mousedown',function(
     //         e.preventDefault()
     //     }
     // }).bind('mouseup',function(e){
-    //     //log.debug("mouseup "+e.pageY)
+    //     //log.log("mouseup "+e.pageY)
     //     this.mouseup = e.pageY;
     //     if(this.mouseup-this.mousedown>50 && $('#chatmsgspad').scrollTop()==0){
     //         //$('#gearframe1').show()
@@ -2692,12 +2692,12 @@ $('#wordsframe_cancel').click(function(){
         //申请一个WebSocket对象，参数是服务端地址，同http协议使用http://开头一样，WebSocket协议的url使用ws://开头，另外安全的WebSocket协议使用wss://开头
         ws.onopen = function(){
         　　//当WebSocket创建成功时，触发onopen事件
-            //log.debug("ws onopen");            
+            //log.log("ws onopen");            
             page.ws=ws
         }
         ws.onmessage = function(e){
         　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
-        　　//log.debug("ws onmessage: "+e.data);
+        　　//log.log("ws onmessage: "+e.data);
             var data = JSON.parse(e.data)
             if(data.action == 1){
                 if(data.nickname!=null){
@@ -2797,7 +2797,7 @@ $('#wordsframe_cancel').click(function(){
 
     setInterval(() => {
         if(ws && ws.readyState==3){
-            //log.debug("to ws init after 3")
+            //log.log("to ws init after 3")
             initws()
         }
 
@@ -2819,7 +2819,7 @@ $('#wordsframe_cancel').click(function(){
     
     setInterval(function(){
         if(ws && ws.readyState==1){
-            //log.debug("to ws heart check")
+            //log.log("to ws heart check")
             ws.send("0")
         }
     },30000)

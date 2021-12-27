@@ -127,18 +127,11 @@
             </div>
         </div>
         <div v-if="isCreateVideo" style="position: absolute;top:0;bottom:0;left:0;right:0;background-color: rgba(25, 25, 25, 0.9);">
-            <div style="width:100%;height:500px;box-sizing: border-box;background-color: #ffffff;margin-top: 10%;position: relative;">
+            <div style="width:100%;height:380px;box-sizing: border-box;background-color: #ffffff;margin-top: 10%;position: relative;">
                 <div style="height:40px;line-height:40px;text-align: center;font-size: 16px;">
                     创建视频
                 </div>
                 <video :src="fileObjectUrl" controls style="height:300px;width:100%;background-color: #000000;"></video>
-                <div style="height:40px;line-height:40px;margin-top:15px;">
-                    <span style="width:20%;font-size: 16px;text-align: center;display:inline-block;padding:0 3px;box-sizing: border-box;">
-                        标题
-                    </span>
-                    <input v-model="fileName" style="display:inline-block;width:80%;padding:0 3px;box-sizing: border-box;font-size: 16px;height:40px;
-                        border:1px solid #000000;border-right:0;"/>
-                </div>
                 <div style="margin-top:25px;position: absolute;bottom:0;width:100%;">
                     <button @click="confirmCreateVideo" style="font-size:16px;width:50%;border:none;box-sizing: border-box;background-color: #838383;height:40px;color:#e8e8e8;">
                         确定
@@ -184,7 +177,6 @@ export default {
         return {
             file:null,
             fileObjectUrl:null,
-            fileName:null,
             seriesName:null,
             isCreateVideo:0,
             isCreateSeries:0,
@@ -362,7 +354,6 @@ export default {
                 
                 ts.isCreateVideo=1
                 ts.file=this.files[0]
-                ts.fileName=ts.$uu.getPureNameInUrl(ts.file.name)
                 ts.fileObjectUrl=URL.createObjectURL(ts.file)
             }).click()
         },
@@ -394,14 +385,12 @@ export default {
             }).then(res=>{
                 if(res.data.code==0){
                     ts.$axios.post('/mumu/manage-my-videos/create-video', ts.$qs.stringify({
-                        name:ts.fileName,
                         url:res.data.data.url
                     })).then(res=>{
                         if(res.data.code==0){
                             let no = res.data.data.no
                             let newRow = {
                                 no:no,
-                                name:ts.fileName,
                                 url:res.data.data.url
                             }
                             ts.videos.rows.unshift(newRow)

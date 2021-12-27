@@ -1,4 +1,4 @@
-log.debugon=config.debug
+log.logon=config.debug
 var pagePre={}
 window.pagePre=pagePre
 
@@ -184,7 +184,7 @@ function o(data){
 }
 
 window.onerror=function(message, source, lineno, colno, error){
-  log.info(message+"-"+source+"-"+lineno+"-"+colno+"-"+error)
+  log.log(message+"-"+source+"-"+lineno+"-"+colno+"-"+error)
 }
 
 
@@ -308,6 +308,6 @@ function concats(){
 }
 
 $(window).one('beforeunload',function(){
-  log.info('window.onbeforeunload')
+  log.log('window.onbeforeunload')
   navigator.sendBeacon("/mumu/page-out");
 })

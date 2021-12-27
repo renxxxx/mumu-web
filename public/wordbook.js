@@ -71,7 +71,7 @@
     }
 
     $('#rollShowWordsPad .word').click(function(){
-        log.info(`$('#rollShowWordsPad .word').click`)
+        log.log(`$('#rollShowWordsPad .word').click`)
         page.extendword=page.rollword
         $('#extendSearchPad').show()
         $('#extendSearchFrame').attr('src','https://m.youdao.com/dict?q='+page.extendword.word).show()
@@ -88,7 +88,7 @@
 
     })
     $(`.rowspad .row0`).click(function(){
-        log.info(`$('.rowspad .row0').click`)
+        log.log(`$('.rowspad .row0').click`)
         $('.rowspad .row').css('background-color','unset')
         $(this).css('background-color','#444')
 
@@ -114,7 +114,7 @@
     })
 
     $('#extendSearchPad').click(function(e){
-        log.info(`$('#extendSearchPad').click`)
+        log.log(`$('#extendSearchPad').click`)
         if(this==e.target){
             $('#extendSearchPad').hide()
             $('#extendSearchFrame').attr('src',null).hide()
@@ -132,7 +132,7 @@
     })
 
     $('#extendSearchPad .g').click(function(e){
-        log.info(`$('#extendSearchPad .g').click`)
+        log.log(`$('#extendSearchPad .g').click`)
         $('#extendSearchFrame').show()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').hide()
@@ -145,7 +145,7 @@
         $('#extendSearchPad .g4').css('background-color','#cacaca')
     })
     $('#extendSearchPad .g1').click(function(e){
-        log.info(`$('#extendSearchPad .g1').click`)
+        log.log(`$('#extendSearchPad .g1').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').show()
         $('#extendSearchFrame2').hide()
@@ -161,7 +161,7 @@
         }
     })
     $('#extendSearchPad .g2').click(function(e){
-        log.info(`$('#extendSearchPad .g2').click`)
+        log.log(`$('#extendSearchPad .g2').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').show()
@@ -177,7 +177,7 @@
         }
     })
     $('#extendSearchPad .g3').click(function(e){
-        log.info(`$('#extendSearchPad .g3').click`)
+        log.log(`$('#extendSearchPad .g3').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').hide()
@@ -194,7 +194,7 @@
     })
 
     $('#extendSearchPad .g4').click(function(e){
-        log.info(`$('#extendSearchPad .g4').click`)
+        log.log(`$('#extendSearchPad .g4').click`)
         $('#extendSearchFrame').hide()
         $('#extendSearchFrame1').hide()
         $('#extendSearchFrame2').hide()
@@ -210,21 +210,21 @@
         }
     })
     $('.coverTargetTextBtn').click(function(){
-        log.info(`$('.coverTargetTextBtn').click`)
+        log.log(`$('.coverTargetTextBtn').click`)
         if($('.word').css('visibility')=='hidden')
             $('.word').css('visibility','visible')
         else
             $('.word').css('visibility','hidden')
     })
     $('.coverPhoneticTextBtn').click(function(){
-        log.info(`$('.coverPhoneticTextBtn').click`)
+        log.log(`$('.coverPhoneticTextBtn').click`)
         if($('.phonetic').css('visibility')=='hidden')
             $('.phonetic').css('visibility','visible')
         else
             $('.phonetic').css('visibility','hidden')
     })
     $('.coverMainTextBtn').click(function(){
-        log.info(`$('.coverMainTextBtn').click`)
+        log.log(`$('.coverMainTextBtn').click`)
         if($('.translation').css('visibility')=='hidden')
             $('.translation').css('visibility','visible')
         else
@@ -232,14 +232,14 @@
     })
 
     $('#goindexbtn').click(function(){
-        log.info(`$('#goindexbtn').click`)
+        log.log(`$('#goindexbtn').click`)
         location.replace('./')
     })
 
 
 
     $('#play').click(function(){
-        log.info(`$('#play').click`)
+        log.log(`$('#play').click`)
         page.rollOpen=1
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
@@ -263,27 +263,27 @@
     }
 
     $('#rollShowWordsPad').click(function(e){
-        log.info(`$('#rollShowWordsPad').click`)
+        log.log(`$('#rollShowWordsPad').click`)
         if(this==e.target){
             closeRollShowWordsPad()
         }
     })
 
     $('#rollShowWordsPad .prev').click(function(e){
-        log.info(`$('#rollShowWordsPad .prev').click`)
+        log.log(`$('#rollShowWordsPad .prev').click`)
         wordsRoll(page.rollInx-1)
     })
     $('#rollShowWordsPad .next').click(function(e){
-        log.info(`$('#rollShowWordsPad .next').click`)
+        log.log(`$('#rollShowWordsPad .next').click`)
         wordsRoll(page.rollInx+1)
     })
     $('#rollShowWordsPad .restart').click(function(e){
-        log.info(`$('#rollShowWordsPad .restart').click`)
+        log.log(`$('#rollShowWordsPad .restart').click`)
         wordsRoll(1)
     })
 
     $('#rollShowWordsPad .stop').click(function(e){
-        log.info(`$('#rollShowWordsPad .stop').click`)
+        log.log(`$('#rollShowWordsPad .stop').click`)
         page._mp3.pause()
         page.lettersound.pause()
         clearTimeout(page.rollWordsInterval)
@@ -295,14 +295,14 @@
     })
 
     $('#rollShowWordsPad .start').click(function(e){
-        log.info(`$('#rollShowWordsPad .start').click`)
+        log.log(`$('#rollShowWordsPad .start').click`)
         page.rollIsSound=1
         page.auto=1
         startWordsRoll(page.rollInx)
     })
 
     $('#startRollBtn').click(function(){
-        log.info(`$('#startRollBtn').click`)
+        log.log(`$('#startRollBtn').click`)
         page.rollOpen=1
         $('#rollShowWordsPad').show()
         $('#rollShowWordsPad .stop').hide()
@@ -314,7 +314,7 @@
     })
 
     $('#rollShowWordsPad .word').click(function(){
-        log.info(`$('#rollShowWordsPad .word').click`)
+        log.log(`$('#rollShowWordsPad .word').click`)
         var word = page.words.rows[page.rollInx-1]
         translatee(word.word)
         loadRelatedWords(word.word)
@@ -444,7 +444,7 @@
     if(is_weixn()){
         $.post('/mumu/wxjsapiticket',(res)=>{
             $.post('/mumu/wxsign',{ticket:res.data.ticket,url:location.href},(res)=>{
-                //log.debug(JSON.stringify(res));
+                //log.log(JSON.stringify(res));
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: res.data.appid, // 必填，公众号的唯一标识

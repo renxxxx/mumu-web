@@ -17,6 +17,16 @@ function getUrlParam(name)
 }
 comm.urlParam = getUrlParam
 
+function getQuery() {
+    var querystring =decodeURIComponent(window.location.search.substring(1));
+    var query = {}
+    var vars = querystring.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        query[pair[0]] = pair[1]
+    }
+    return query;
+}
 
 function trimToBlank(value)
 {
