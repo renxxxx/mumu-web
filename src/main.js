@@ -1,5 +1,5 @@
 let project='mumu'
-let version='123123'
+let version='21122718'
 
 import * as vue from 'vue'
 import router from './router.js'
@@ -30,6 +30,25 @@ $$.ajaxSetup({
 })
 
 async function loginRefresh(){
+    if(uu.isWeixn()){
+        $$.ajax({
+            url:'/mumu/is-wx-authed',
+            async:false,
+            success:function(res){
+                if(res.code==0){
+                    let isWxAuthed =res.data.isWxAuthed
+                    if(!isWxAuthed){
+                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                        var appId="wx5a33a2ccb2d91764"
+                        var state=encodeURIComponent(location.href)
+                        var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+                        location.replace(url)
+                    }
+                }
+            }
+        })
+    }
+
     $$.ajax({
         url:'/mumu/is-logined',
         async:false,
@@ -37,18 +56,10 @@ async function loginRefresh(){
             if(res.code==0){
                 let isLogined =res.data.isLogined
                 if(!isLogined){
-                    if(uu.isWeixn()){
-                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
-                        var appId="wx5a33a2ccb2d91764"
-                        var state=encodeURIComponent(location.href)
-                        var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
-                        location.replace(url)
-                    }else{
-                        $$.ajax({
-                            url:'/mumu/anon-login',
-                            async:false
-                        })
-                    }
+                    $$.ajax({
+                        url:'/mumu/anon-login',
+                        async:false,
+                    })
                 }
             }
         }
