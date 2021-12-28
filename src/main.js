@@ -1,5 +1,5 @@
 let project='mumu'
-let version='21122718'
+let version='21122820'
 
 import * as vue from 'vue'
 import router from './router.js'
@@ -14,11 +14,13 @@ import 'vant/lib/dialog/style';
 import 'vant/lib/notify/style';
 import 'vant/lib/loading/style';
 import m_login from './components/modules/login.vue'
+import m_authentication from './components/modules/authentication.vue'
 import $$ from 'jquery'
 import Vconsole from 'vconsole'
 
 let store = vue.reactive({
     doLogin: 0,
+    doAuthentication: 0,
     login : null,
     vconsole:null,
     historys:[],
@@ -89,6 +91,8 @@ loginRefresh().then(res=>{
     app.use(Overlay)
      
     app.component("login", m_login)
+    app.component("authentication", m_authentication)
+    
     app.config.globalProperties.window=window
     app.config.globalProperties.$project=project
     app.config.globalProperties.$version=version

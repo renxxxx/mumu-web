@@ -23,6 +23,10 @@
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;">
             管理我的视频
         </div>
+        <div @click="window.location.href='./history.html'" v-if="$store.login" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;
+            border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;">
+            历史观看
+        </div>
         <div @click="showMyLoginCode()" v-if="$store.login" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;border-bottom: 1px solid #4a4a4a;
             box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;" >
             生成登录码

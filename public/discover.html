@@ -512,9 +512,9 @@
                     </span>
                 </div>
                 
-                <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;">
+                <div  id="chatroompad" style="position:absolute;bottom:0;width:100%;top:30px;display:none;">
                     <div id="chatmsgspad" class="scrollable noscrollbar" 
-                        style="display:none;overflow: auto;box-sizing: border-box;margin:3px;position:absolute;left:0;right:0;top:0;bottom:30px;font-size:0;">
+                        style="overflow: auto;box-sizing: border-box;margin:3px;position:absolute;left:0;right:0;top:0;bottom:30px;font-size:0;">
                         <div id="chatmsgtemple" 
                             style="font-size:0;width:100%;height:35px;display:none;margin-bottom:5px;position: relative;">
                             <span class="name" 
@@ -534,13 +534,13 @@
                             </span>
                         </div>
                     </div>
-                    <div style="height:30px;width:100%;position:absolute;bottom:0;">
+                    <div style="height:40px;width:100%;position:absolute;bottom:0;">
                         <form onsubmit="return false" action="javascript:return true">
                             <input id="chatinput" placeholder="请输入" autocomplete="off" type="text"
-                                style="width:80%;box-sizing: border-box;height:30px;display:inline-block;border: none;
-                                    background-color: #eaeaea;padding:0 3px;font-size: 15px;" />
-                            <span id="sendChatMsgBtn" style="width:20%;display: inline-block;height:30px;line-height: 30px;background-color: #3c3c3c;text-align: center;
-                                color: #ffffff;font-size: 15px;">
+                                style="vertical-align: middle;width:80%;box-sizing: border-box;height:40px;display:inline-block;border: none;
+                                    background-color: #efefef;padding:0 3px;font-size: 16px;" />
+                            <span id="sendChatMsgBtn" style="vertical-align: middle;width:20%;display: inline-block;height:40px;line-height: 40px;background-color: #3c3c3c;text-align: center;
+                                color: #ffffff;font-size: 16px;">
                                 发送
                             </span>
                         </form>
@@ -549,8 +549,13 @@
 
 
 
-                <div  id="chatprivatepad"  style="position:absolute;bottom:0;width:100%;top:30px;font-size:0;">
-                    <span style="font-size:16px;margin-top:30px;" class="translatable">coming soon</span>
+                <div  id="chatprivatepad" style="position:absolute;bottom:0;width:100%;top:30px;font-size:0;">
+                    <div style="position: absolute;height:40px;bottom:0;left:0;right:0;">
+                        <input placeholder="请输入" style="background-color: #efefef;vertical-align: middle;display: inline-block;height:40px;padding:0 3px;border:none;font-size: 16px;width:80%;box-sizing: border-box;"/>
+                        <span  style="vertical-align: middle;display: inline-block;height:40px;line-height:40px;font-size: 16px;width:20%;text-align: center;color: #ffffff;background-color: #3c3c3c;">
+                            发送
+                        </span>
+                    </div>
                 </div>
             </div>
             

@@ -6,6 +6,26 @@ app.version="123"
 app.debug=1
 
 
+app.routeBack=function(){
+    var history = sessionStorage.getItem(app.project+'-history')
+    if(!history){
+        location.href="/"+app.project+"/"
+    }else {
+        history--;
+        sessionStorage.getItem(app.project+'-history', history)
+        location.back()
+    }
+}
+app.routePush=function(url){
+    var history = sessionStorage.getItem(app.project+'-history')
+    history = history ? history : 0;
+    history++
+    sessionStorage.getItem(app.project+'-history', history)
+    location.href=url
+}
+app.routeReplace=function(url){
+    location.replace(url)
+}
 
 app.loginRefresh = function(){
     if(isWechat()){

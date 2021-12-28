@@ -69,6 +69,19 @@
                 &gt;
             </span>
         </div>
+        <div style="height:40px;line-height:40px;border-bottom: 1px solid #dddddd;">
+            <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
+                微信
+            </span>
+            <img v-if="wxAuth" :src="wxAuth.headImgUrl" 
+                style="display:inline-block;width:30px;height: 30px;" />
+            <span style="display:inline-block;width:calc(100% - 150px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
+                {{wxAuth ? wxAuth.nickname : ''}}
+            </span>
+            <span @click="toWxAuth=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
+                &gt;
+            </span>
+        </div>
         <div style="margin-top:20px;justify-content:flex-start;display: flex;flex-wrap:wrap;">
             <button style="font-size:16px;width:100px;height:35px;background-color: #838383;
                 border: none;margin-right:10px">
@@ -188,28 +201,8 @@
                     <input v-model="passwordConfirm"  style="width:70%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
                         border:1px solid #000000;border-right:none;padding:0 3px;height:35px;"/>
                 </div>
-                <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span style="display:inline-block;font-size: 16px;vertical-align: middle;width:30%;
-                        box-sizing: border-box;text-align: center;">
-                        短信验证
-                    </span>
-                    <span style="width:70%;display: inline-block;font-size: 16px;box-sizing: border-box;padding: 0 3px;height:35px;">
-                        {{$store.login.phone}}
-                    </span>
-                </div>
-                <div style="line-height:35px;height:35px;margin-top:10px;">
-                    <span style="display:inline-block;font-size: 16px;width:70px;vertical-align: middle;width:30%;text-align: center;">
-                        验证码
-                    </span>
-                    <input v-model="smsVcode" style="width:50%;display: inline-block;vertical-align: middle;font-size: 16px;box-sizing: border-box;
-                        border:1px solid #000000;border-right:none;padding: 0 3px;height:35px;"/>
-                    <span @click="sendSmsVcodeToMe" style="display: inline-block;width:20%;font-size: 16px;text-align: center;height:35px;
-                        border-style: solid;border-color: #000000;border-width: 1px 0 1px 1px;box-sizing: border-box;cursor: pointer;vertical-align: middle;">
-                        {{ smsLimit==0? '发送' : smsLimit}}
-                    </span>
-                </div>
                 <div style="line-height:45px;height:45px;text-align: center;margin-top:40px;border-style: solid;border-color: #c7c7c7;border-width: 1px 0;">
-                    <span @click="alterPasswordBySms" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
+                    <span @click="alterPassword" style="display:inline-block;font-size: 16px;cursor: pointer;width:70%;background-color: rgb(0,204,126);color:rgb(250,250,250);">
                         确认
                     </span>
                     <span @click="toPassword=0" style="display:inline-block;font-size: 16px;cursor: pointer;width:30%;background-color: rgb(214,214,214);">
@@ -282,10 +275,11 @@ export default {
             phone:null,
             headImg:this.$store.login.headImg,
             headImgFile:null,
-            password:null,
-            passwordConfirm:null,
+            passwordMd5:null,
+            passwordMd5Confirm:null,
             smsLimit:0,
             smsVcode:null,
+            wxAuth:null,
         }
     },
     props: {
@@ -354,32 +348,34 @@ export default {
             }
             ts.$axios.post('/mumu/my-account/alter-account',ts.$qs.stringify({account:ts.account})).then(function (res) {
                 if(res.data.code == 0){
+                    ts.$notify({ type: 'success', message: '修改成功', duration:1500});
                     ts.$store.login.account = ts.account
                     ts.toAccount=0
+                }else if(res.data.code == 21){
+                    ts.$store.doAuthentication=1
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
                 }
             })
         },
-        alterPasswordBySms(){
-            if(!ts.$store.login.phone){
-                ts.$notify({type:'warning', message:'请先设置手机号'})
-                return
-            }
+        alterPassword(){
             if(ts.password != ts.passwordConfirm){
                 ts.$notify({type:'error', message:'两次密码不一致'})
                 return
             }
             let passwordMd5=ts.password ? ts.$md5.hex_md5(ts.password) : null
             let passwordMd5Confirm=ts.passwordConfirm ? ts.$md5.hex_md5(ts.passwordConfirm) : null
-            ts.$axios.post('/mumu/my-account/alter-password-by-sms',ts.$qs.stringify({
+            ts.$axios.post('/mumu/my-account/alter-password',ts.$qs.stringify({
                 passwordMd5:passwordMd5,
-                passwordMd5Confirm:passwordMd5Confirm,
-                smsVcode:ts.smsVcode}))
+                passwordMd5Confirm:passwordMd5Confirm
+            }))
             .then(function (res) {
                 if(res.data.code == 0){
+                    ts.$notify({ type: 'success', message: '修改成功', duration:1500});
                     ts.$store.login.password = passwordMd5 ? "********" : null
                     ts.toPassword=0
+                }else if(res.data.code == 21){
+                    ts.$store.doAuthentication=1
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
                 }
@@ -393,27 +389,13 @@ export default {
                 smsVcode:ts.smsVcode}))
             .then(function (res) {
                 if(res.data.code == 0){
+                    ts.$notify({ type: 'success', message: '修改成功', duration:1500});
                     ts.$store.login.phone = ts.phone
                     ts.toPhone=0
+                }else if(res.data.code == 21){
+                    ts.$store.doAuthentication=1
                 }else{
                     ts.$notify({type:'warning', message:res.data.message})
-                }
-            })
-        },
-        sendSmsVcodeToMe(){
-            if(ts.smsLimit>0)
-                return;
-            ts.$axios.post("/mumu/send-sms-vcode-to-me").then(res=>{
-                if(res.data.code==0){
-                    ts.$notify({ type: 'success', message: '发送成功', duration:1500});
-                    ts.smsLimit=60
-                    ts.smsLimitInterval = setInterval(()=>{
-                        ts.smsLimit--;
-                        if(ts.smsLimit==0)
-                        clearInterval(ts.smsLimitInterval)
-                    },1000)
-                }else{
-                    ts.$notify({ message: res.data.message, duration:1500});
                 }
             })
         },
@@ -435,9 +417,15 @@ export default {
             })
         },
     },
-    beforeCreate() {
+    created() {
         let ts = this
         clearInterval(ts.smsLimitInterval)
+
+        ts.$axios.post('/mumu/get-wx-auth').then(function (res) {
+            if(res.data.code == 0){
+                ts.wxAuth = res.data.data.wxAuth
+            }
+        })
     },
     activated(){
         let ts = this

@@ -7,6 +7,7 @@
         </transition>
     </router-view>
     <login v-if="$store.doLogin"></login>
+    <authentication v-if="$store.doAuthentication"></authentication>
 </template>
 
 <script>

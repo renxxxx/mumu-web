@@ -100,10 +100,18 @@
     </head>
     <body style="background-color: #000000;">
         <div id="index" style="max-width: 800px;background-color: #ffffff;position: relative;top:0;height:100%;margin:auto;">
-            <div id="logo" class="unselectable" style="width:100%;position:absolute;top:0;bottom:51px;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
+            <div id="logo" class="unselectable" style="width:100%;position:absolute;top:0;bottom:0;background-color: #ffffff;font-size:0;z-index: 9999999;margin: auto;" >
                 <div style="font-size:50px;position:absolute;top:30%;width:100%;text-align: center;color:#e1e1e1;">Mumu</div>
             </div>
-            <ul class="videoList" style="position: absolute;top:0;bottom:50px;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
+            <div style="height:40px;font-size: 0;">
+                <span onclick="history.back()" style="display: inline-block;font-size: 16px;height: 40px;line-height: 40px;text-align: center;width:40px;">
+                    &lt;
+                </span>
+                <span style="display: inline-block;font-size: 16px;height: 40px;line-height: 40px;width:calc(100% - 40px);">
+                    历史观看
+                </span>
+            </div>
+            <ul class="videoList" style="position: absolute;top:40px;bottom:0;overflow: auto;margin: 0px;padding: 0px;width:100%;margin-bottom:5px;">
                 <a id="videotemplate" draggable="false" style="display:block;float:left;width:45%;height:155px;padding:0;margin-left:3.33%;margin-top:10px;
                         font-size:0;position:relative;cursor: pointer;display:none;text-decoration: blink;color:#000000;">
                     <div style="width:100%;height:109px;background-color: #dddddd;">
@@ -118,29 +126,6 @@
                     </div>
                 </a>
             </ul>
-            
-            <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #dedede;background: #ffffff;">
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
-                    onclick="location.replace('index.html')">
-                    发现
-                </span>
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
-                    onclick="location.replace('list.html')">
-                    资源
-                </span>
-                <span class="unselectable" 
-                    style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#000000;font-weight:900;"
-                    onclick="location.replace('history.html')">
-                    看过
-                </span>
-                <span class="unselectable" 
-                    style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
-                    onclick="location.replace('./#/my')">
-                    我的
-                </span>
-            </div>
 
             
         </div>
