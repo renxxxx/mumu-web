@@ -1,7 +1,7 @@
 <template>
     <div id="_My" style="width:100%;max-width:800px;position:absolute;top:0;bottom:0;background-color: #272727;font-size:0;
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
-        <div @click="$store.login ? $routerr.push('/account'):null" style="width:100%;height:125px;border:1px solid #272727;
+        <div @click="$store.login ? $router.push('/account'):null" style="width:100%;height:125px;border:1px solid #272727;
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;">
             <img :src="($store.login && $store.login.headImg) || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
                 margin-top:30px;display:block;cursor: pointer;" />
@@ -19,7 +19,7 @@
                 >
             </span>
         </div>
-        <div @click="$routerr.push('/manage-videos/index')" v-if="$store.login" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;
+        <div @click="$router.push('/manage-videos/index')" v-if="$store.login" style="font-size: 20px;width:100%;height:45px;padding:8px 8px;border:1px solid #272727;
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;color:#dedede;cursor: pointer;">
             管理我的视频
         </div>
@@ -57,7 +57,7 @@
             </span>
             <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#ffffff;font-weight:900;"
-                @click="$routerr.replace('/my');">
+                @click="$router.replace('/my');">
                 我的
             </span>
         </div>

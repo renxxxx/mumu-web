@@ -4,39 +4,56 @@ window.app=window.config=app;
 app.project="mumu";
 app.version="123"
 app.debug=1
+debugger
+$.ajaxSetup({
+    type:'post',
+})
 
+
+$(window).one('beforeunload',function(){
+    log.log('window.onbeforeunload')
+    navigator.sendBeacon("/mumu/page-out");
+    var prevRoute = sessionStorage.getItem(app.project+'-prevRoute')
+    if(!prevRoute)
+        sessionStorage.setItem(app.project+'-fromNullRoute',"1")
+    else
+        sessionStorage.removeItem(app.project+'-fromNullRoute')
+    sessionStorage.setItem(app.project+'-prevRoute',location.href)
+})
+
+var prevRoute = sessionStorage.getItem(app.project+'-prevRoute')
+var fromNullRoute = sessionStorage.getItem(app.project+'-fromNullRoute')
+if(prevRoute && prevRoute==location.href && fromNullRoute){
+    sessionStorage.removeItem(app.project+'-prevRoute')
+}
 
 app.routeBack=function(){
-    var history = sessionStorage.getItem(app.project+'-history')
-    if(!history){
-        location.href="/"+app.project+"/"
-    }else {
-        history--;
-        sessionStorage.getItem(app.project+'-history', history)
-        location.back()
+    debugger
+    if(app.isFirstRoute()){
+        location.replace("/"+app.project+"/")
+    }else{
+        history.back()
     }
-}
-app.routePush=function(url){
-    var history = sessionStorage.getItem(app.project+'-history')
-    history = history ? history : 0;
-    history++
-    sessionStorage.getItem(app.project+'-history', history)
-    location.href=url
-}
-app.routeReplace=function(url){
-    location.replace(url)
-}
+};
+app.isFirstRoute=function(){
+    var prevRoute = sessionStorage.getItem(app.project+'-prevRoute')
+    if(prevRoute && (prevRoute.indexOf("/"+app.project) >= 0 || prevRoute.indexOf("#") == 0)){
+        return false
+    }else{
+        return true
+    }
+};
 
 app.loginRefresh = function(){
     if(isWechat()){
         $.ajax({
-            url:'/mumu/is-wx-authed',
+            url:'/mumu/is-wx-authorized',
             async:false,
             success:function(res){
                 if(res.code==0){
-                    var isWxAuthed =res.data.isWxAuthed
-                    if(!isWxAuthed){
-                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                    var isWxAuthorized =res.data.isWxAuthorized
+                    if(!isWxAuthorized){
+                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-authorize")
                         var appId="wx5a33a2ccb2d91764"
                         var state=encodeURIComponent(location.href)
                         var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
@@ -65,15 +82,16 @@ app.loginRefresh = function(){
 
     $.ajax({
         url:'/mumu/login-refresh',
-        async:false,
+        async: false,
         success:function(res){
-        if(res.code==0){
-            app.login=res.data
-            sessionStorage.setItem(app.project+'-login',JSON.stringify(res.data))
-            setTimeout(function(){
-                $.post('/mumu/restore-template-wordbooks')
-            },2000)
-        }
+            if(res.code==0){
+                app.login=res.data
+                sessionStorage.setItem(app.project+'-login',JSON.stringify(res.data))
+                setTimeout(function(){
+                    $.post('/mumu/restore-template-wordbooks')
+                },2000)
+            }
         }
     })
 }
+app.loginRefresh();

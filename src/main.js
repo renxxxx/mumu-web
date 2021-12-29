@@ -1,5 +1,5 @@
 let project='mumu'
-let version='21122820'
+let version='21122918'
 
 import * as vue from 'vue'
 import router from './router.js'
@@ -23,7 +23,6 @@ let store = vue.reactive({
     doAuthentication: 0,
     login : null,
     vconsole:null,
-    historys:[],
     components:{},
 })
 
@@ -34,13 +33,13 @@ $$.ajaxSetup({
 async function loginRefresh(){
     if(uu.isWeixn()){
         $$.ajax({
-            url:'/mumu/is-wx-authed',
+            url:'/mumu/is-wx-authorized',
             async:false,
             success:function(res){
                 if(res.code==0){
-                    let isWxAuthed =res.data.isWxAuthed
-                    if(!isWxAuthed){
-                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-auth")
+                    let isWxAuthorized =res.data.isWxAuthorized
+                    if(!isWxAuthorized){
+                        var redirectUri=encodeURIComponent(location.origin + "/mumu/wx-web-authorize")
                         var appId="wx5a33a2ccb2d91764"
                         var state=encodeURIComponent(location.href)
                         var url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
@@ -110,29 +109,20 @@ loginRefresh().then(res=>{
 
     
     app.config.globalProperties.$routerr={}
-    app.config.globalProperties.$routerr.push=function(to){
-        store.historys.push(to)
-        router.push(to)
-    };
-    app.config.globalProperties.$routerr.replace=function(to){
-        store.historys.pop()
-        store.historys.push(to)
-        router.replace(to)
-    };
     app.config.globalProperties.$routerr.back=function(){
         debugger
-        if(store.historys.length==0){
+        if(app.config.globalProperties.$routerr.isFirst()){
             router.replace('/')
         }else{
             router.back()
         }
-        store.historys.pop()
     };
     app.config.globalProperties.$routerr.isFirst=function(){
-        if(store.historys.length==0){
-            return true
-        }else{
+        var prevRoute = sessionStorage.getItem(project+'-prevRoute')
+        if(prevRoute && (prevRoute.indexOf("/"+project) >= 0 || prevRoute.indexOf("#") == 0)){
             return false
+        }else{
+            return true
         }
     };
     var root = app.mount('#app')

@@ -73,10 +73,12 @@
             <span style="display: inline-block;width:80px;font-size: 15px;padding:0 5px;box-sizing: border-box;">
                 微信
             </span>
-            <img v-if="wxAuth" :src="wxAuth.headImgUrl" 
-                style="display:inline-block;width:30px;height: 30px;" />
-            <span style="display:inline-block;width:calc(100% - 150px);font-size: 16px;padding:0 5px;box-sizing: border-box;">
-                {{wxAuth ? wxAuth.nickname : ''}}
+            <span style="display:inline-block;width:calc(100% - 120px);padding:0 5px;box-sizing: border-box;">
+                <img v-if="wxAuthorization" :src="wxAuthorization.headImgUrl" 
+                    style="display:inline-block;width:30px;height: 30px;" />
+                <span style="display:inline-block;width:calc(100% - 35px);font-size: 16px;margin-left:5px;">
+                    {{wxAuthorization ? wxAuthorization.nickname : ''}}
+                </span>
             </span>
             <span @click="toWxAuth=1" style="display:inline-block;width:40px;font-size: 16px;text-align: center;cursor: pointer;">
                 &gt;
@@ -279,7 +281,7 @@ export default {
             passwordMd5Confirm:null,
             smsLimit:0,
             smsVcode:null,
-            wxAuth:null,
+            wxAuthorization:null,
         }
     },
     props: {
@@ -421,9 +423,9 @@ export default {
         let ts = this
         clearInterval(ts.smsLimitInterval)
 
-        ts.$axios.post('/mumu/get-wx-auth').then(function (res) {
+        ts.$axios.post('/mumu/get-wx-authorization').then(function (res) {
             if(res.data.code == 0){
-                ts.wxAuth = res.data.data.wxAuth
+                ts.wxAuthorization = res.data.data.wxAuthorization
             }
         })
     },

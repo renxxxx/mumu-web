@@ -14,14 +14,14 @@
             <span style="font-size:16px;display: inline-block;width:calc(100% - 80px)">
                 专辑 : {{series.name}}
             </span>
-            <span @click="$routerr.push('/manage-videos/series?no='+query.no)"  style="display:inline-block;width:40px;height:40px;text-align: center;cursor: pointer;">
+            <span @click="$router.push('/manage-videos/series?no='+query.no)"  style="display:inline-block;width:40px;height:40px;text-align: center;cursor: pointer;">
                 <img src="../../assets/img/detail.png"  style="width:25px;height:25px;"/>
             </span>
         </div>
         
         <div style="width:100%;position:absolute;top:40px;bottom:0;left:0;right:0;">
             <div ref='videosScroll' @scroll="videosScroll" style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
-                <div @click="videos.selected=item; $routerr.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
+                <div @click="videos.selected=item; $router.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
                     style="width:32.3%;height:160px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;
                         vertical-align: middle;"
                     :style="{backgroundColor:videos.selected==item?'rgb(214 214 214 / 0.5)':'unset'}">
@@ -133,7 +133,7 @@ export default {
                             ts.videos.rows.unshift(newRow)
                             ts.videos.rows.selected = newRow
                             ts.isCreateVideo=0
-                            ts.$routerr.push({path:'./video',query:{no:no}})
+                            ts.$router.push({path:'./video',query:{no:no}})
                         }else{
                             ts.$notify({message:res.data.message})
                         }

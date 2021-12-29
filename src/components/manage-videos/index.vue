@@ -32,7 +32,7 @@
 
         <div v-show="showTab=='videos'" style="width:100%;position:absolute;top:80px;bottom:0;left:0;right:0;">
             <div ref='videosScroll' @scroll="videosScroll" style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
-                <div @click="videos.selected=item; $routerr.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
+                <div @click="videos.selected=item; $router.push({path:'./video', query:{no:item.no}})" :key=item.no v-for="item,index in videos.rows" 
                     style="width:32.3%;height:160px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;
                         vertical-align: middle;"
                     :style="{backgroundColor:videos.selected==item?'rgb(214 214 214 / 0.5)':'unset'}">
@@ -78,7 +78,7 @@
         </div>
         <div v-show="showTab=='serieses'" style="width:100%;position:absolute;top:80px;bottom:0;left:0;right:0;">
             <div  ref='seriesesScroll' @scroll="seriesesScroll" style="position: absolute;top:0;bottom:40px;width:100%;overflow: auto;">
-                <div @click="serieses.selected=item; $routerr.push({path:'./series-videos', query:{no:item.no}})" :key=item.no v-for="item,index in serieses.rows" 
+                <div @click="serieses.selected=item; $router.push({path:'./series-videos', query:{no:item.no}})" :key=item.no v-for="item,index in serieses.rows" 
                     style="width:32.3%;height:203px;cursor: pointer;margin:0.5%;box-sizing: border-box;position: relative;display:inline-block;"
                     :style="{backgroundColor:videos.selected==item?'rgb(214 214 214 / 0.5)':'unset'}">
                     <img :src="item.cover" draggable="false" style="display:block;width:100%;height:160px;object-fit: cover;"/>
@@ -366,7 +366,7 @@ export default {
                 if(res.data.code==0){
                     let no = res.data.data.no
                     ts.isCreateSeries=0
-                    ts.$routerr.push({path:'./series-videos',query:{no:no}})
+                    ts.$router.push({path:'./series-videos',query:{no:no}})
                     ts.serieses.rows.unshift({
                         no:no,
                         name:ts.seriesName
@@ -396,7 +396,7 @@ export default {
                             ts.videos.rows.unshift(newRow)
                             ts.videos.rows.selected = newRow
                             ts.isCreateVideo=0
-                            ts.$routerr.push({path:'./video',query:{no:no}})
+                            ts.$router.push({path:'./video',query:{no:no}})
                         }else{
                             ts.$notify({message:res.data.message})
                         }

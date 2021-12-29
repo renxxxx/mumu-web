@@ -9,7 +9,7 @@ export default {
 	name: 'redirect',
 	activated(){
 		debugger
-		this.$routerr.replace(decodeURIComponent(this.$route.query.path))
+		this.$router.replace(decodeURIComponent(this.$route.query.path))
 	},
 	methods: {
 		

@@ -35,7 +35,10 @@ router.afterEach((to,from) =>{
     }
 })
 router.beforeEach((to,from, next) =>{
+    debugger
     console.log('to '+to.fullPath)
+    if(from.href)
+        sessionStorage.setItem(app.config.globalProperties.$project+'-prevRoute',from.href)
     next()
 })
 

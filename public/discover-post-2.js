@@ -832,31 +832,6 @@ function pureWord(word){
     return word.replace(/^(\s|:|-|,|\.|\?|!|\[|\]\(|\))+/,'').replace(/(\s|:|-|,|\.|\?|!|\[|\]\(|\))+$/,'').toLowerCase()
 }
 
-function translatee1(word,addHistory){
-    word=pureWord(word)
-    currWordText=word
-    clearTimeout(window.timeoutdo11)
-    window.timeoutdo11=setTimeout(function(){
-        window.aaa=setTimeout(function(){
-            $('#summtrans-phonetic').hide();
-            $('#summtrans-speak').hide();
-            $('#summtrans-value').hide();
-        },500)
-        // if(word==null || word==undefined || !word.toString().trim()){
-        //     $('#summtrans-phonetic').hide();
-        //     $('#summtrans-speak').hide();
-        //     $('#summtrans-value').hide();
-        //     return;
-        // }
-        ws.send(JSON.stringify({
-            action:10,
-            addHistory:addHistory,
-            word:word,
-            from:1,
-            to:2
-        }))
-    },200)
-}
 function translatee(_data,addHistory,only){
     //log.log(_data+3)
     //$('#summrest').hide()
@@ -2446,83 +2421,6 @@ function initws(){
             ele.show();
             $('#chatmsgspad').prepend(ele)
             $('#lastmsg').text((data.nickname||"网友").substr(0,6) +" : "+data.text)
-        }else if(data.action == 10){
-            if(currWordText==data.word){
-                currWord=data
-                //$('#summrest').hide()
-                pauseVideo()
-                doshadow()
-
-                $('#summtrans').show()
-                $('#summtrans-word').text(currWord.word)
-                $('#word-in').val(currWord.word)
-
-                var hasTranslate = false;
-                clearTimeout(window.aaa)
-                if(currWord.phonetic){
-                    $('#summtrans-phonetic').text('/'+currWord.phonetic+'/').show()
-                }else{
-                    $('#summtrans-phonetic').hide()
-                }
-                if(currWord.speakUrl){
-                    $('#summtrans-speak').attr('play-url',currWord.speakUrl).show()
-                }else{
-                    $('#summtrans-speak').hide()
-                }
-                $('#summtrans-vv').scrollTop(0)
-                $('#summtrans-vv').html('')
-                if(currWord.explains){
-                    $(currWord.explains).each(function(index,item){
-                        hasTranslate=true
-                        $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
-                    })
-                }else{
-                    if(currWord.translation){
-                        hasTranslate=true
-                        $('#summtrans-vv').append(`<div>${lightkeytrans1(currWord.translation)}</div>`)
-                    }
-                }
-                if(currWord.wfs){
-                    $('#summtrans-vv').append(`<div style="margin-top:10px">${lightkeytrans1(currWord.wfs)}</div>`)
-                }
-                if(currWord.webs){
-                    $('#summtrans-vv').append(`<div style="margin-top:10px;">网络释义: </div>`)
-                    $(currWord.webs).each(function(index,item){
-                        hasTranslate=true
-                        $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
-                    })
-                }
-                    if(!hasTranslate && currWord.translations){
-                        $(currWord.translations).each(function(index,item){
-                            $('#summtrans-vv').append(`<div>${lightkeytrans1(item)}</div>`)
-                        })
-                    }
-                
-                
-                $(`.lightkeytrans`).bind('click',function(){
-                    translatee(this.innerText,1)
-                })
-                $('#wordsframe').hide()
-                $('#summrest').show()
-                $('#summtrans-vv').show()
-                $('#summtrans-value').show()
-                $('#summtrans').show()
-                $('#videobox').css('top','-1000px')
-                $('#summtrans-speak').click()
-
-                if(data.addHistory){
-                    var word = {
-                        word:currWord.word,
-                        translation:currWord.translation,
-                        phonetic:currWord.phonetic,
-                        historyWordNo:randomnum(12)
-                    }
-                    var ele = createHistoryWord(word)
-                    historyWords.rows.splice(0,0,word)
-                    $('#historyWordsPad .words').prepend(ele)
-                }
-            }
-            
         }
     }
     ws.onclose = function(e){
@@ -2893,13 +2791,12 @@ function addWordbookWord(wordbook){
                         var ele = createWordbookWord(wordbook.no,v)
                         $(`#wordbooksPad .words .pad `).prepend(ele)
                     }
-                    ws.send(JSON.stringify({
-                        action:8,
+                    $.post('/mumu/add-word-to-book',{
                         wordbookNo:wordbook.no,
                         word:currWord.word,
                         translation:v,
                         templateNo:wordbook.templateNo
-                    }))
+                    })
                 }
             }
         })
@@ -3139,12 +3036,7 @@ function addFavoredWord(){
     var ele = createFavoredWord(word)
     favoredWords.rows.splice(0,0,word)
     $('#favorsPad .words').prepend(ele)
-    ws.send(JSON.stringify(
-        {
-            action:4,
-            word:currWord.word
-        }
-    ))
+    $.post('/mumu/favor-word',{word:currWord.word})
 }
 
 function createFavoredWord(item){
@@ -3183,12 +3075,7 @@ $('#favorsPad .word0 .removeBtn').click(function(e){
             },
             confirm:function(v,promptEle){
                 if(v && v.toLowerCase().trim() == 'delete'){
-                    ws.send(JSON.stringify(
-                        {
-                            action:5,
-                            word:row.word
-                        }
-                    ))
+                    $.post('/mumu/unfavor-word',{word:row.word})
                     wrap.remove()
                     favoredWords.rows.splice(favoredWords.rows.indexOf(row),4)
                     favoredWords.currRows.splice(favoredWords.currRows.indexOf(row),4)
@@ -3204,12 +3091,7 @@ $('#favorsPad .word0 .removeBtn').click(function(e){
             message:'将删除'+row.word+'.',
             manualClose:1,
             confirm:function(v,promptEle){
-                ws.send(JSON.stringify(
-                    {
-                        action:5,
-                        word:row.word
-                    }
-                ))
+                $.post('/mumu/unfavor-word',{word:row.word})
                 wrap.remove()
                 favoredWords.rows.splice(favoredWords.rows.indexOf(row),4)
                 favoredWords.currRows.splice(favoredWords.currRows.indexOf(row),4)
@@ -3292,12 +3174,7 @@ function addHistoryWord(){
     var ele = createHistoryWord(word)
     historyWords.rows.splice(0,0,word)
     $('#historyWordsPad .words').prepend(ele)
-    ws.send(JSON.stringify(
-        {
-            action:6,
-            word:currWord.word
-        }
-    ))
+    $.post('/mumu/add-history-word',{word:currWord.word})
 }
 function createHistoryWord(item){
     var ele = $('#historyWordsPad .word0').clone(true)
@@ -3321,12 +3198,7 @@ function createHistoryWord(item){
 $('#historyWordsPad .word0 .removeBtn').click(function(e){
     var wrap = $(this).parents('.wrap')
     var row = wrap[0].data
-    ws.send(JSON.stringify(
-        {
-            action:7,
-            word:row.word
-        }
-    ))
+    $.post('/mumu/delete-history-word',{word:row.word})
     wrap.remove()
     historyWords.rows.splice(historyWords.rows.indexOf(row),4)
     historyWords.currRows.splice(historyWords.currRows.indexOf(row),4)
@@ -4158,14 +4030,13 @@ $('#wordDetailPad .moveup').click(function(){
         orderNum=curr.orderNum
     }
     curr.orderNum=orderNum;
-    ws.send(JSON.stringify({
-        action:8,
+    $.post('/mumu/add-word-to-book',{
         wordbookNo:wordbook.no,
         word:curr.word,
         translation:curr.translation,
         templateNo:wordbook.templateNo,
         orderNum:orderNum
-    }))
+    })
     if(prev1){
         common.changearr(wordbook.words.rows,inx,inx-1)
         common.changedom(curr.dom,prev1.dom)
@@ -4220,14 +4091,13 @@ $('#wordDetailPad .movedown').click(function(){
         orderNum=curr.orderNum
     }
     curr.orderNum=orderNum;
-    ws.send(JSON.stringify({
-        action:8,
+    $.post('/mumu/add-word-to-book',{
         wordbookNo:wordbook.no,
         word:curr.word,
         translation:curr.translation,
         templateNo:wordbook.templateNo,
         orderNum:orderNum
-    }))
+    })
     if(next1){
         common.changearr(wordbook.words.rows,inx,inx+1)
         common.changedom(curr.dom,next1.dom)
@@ -4251,12 +4121,11 @@ $('#wordDetailPad .deleteBtn').click(function(){
             },
             confirm:function(v,promptEle){
                 if(v && v.toLowerCase().trim() == 'delete'){
-                    ws.send(JSON.stringify({
-                        action:9,
+                    $.post('/mumu/sub-word-to-book',{
                         wordbookNo:wordbook.no,
                         word:curr.word,
                         templateNo:wordbook.templateNo
-                    }))
+                    })
                     wordbook.words.rows.splice(wordbook.words.rows.indexOf(curr),1)
                     $(curr.dom).remove()
                     promptEle.remove()
