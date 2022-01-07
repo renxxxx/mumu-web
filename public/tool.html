@@ -180,7 +180,7 @@
         }
         page.en=en
         
-        var no = getUrlParam('no')
+        var no = getQueryParam('no')
         $('#startFn1').click(function(){
             $('#video')[0].play()
             $('#videosrc')[0].play()
@@ -305,7 +305,7 @@
             
         });
         
-        function getUrlParam(name)
+        function getQueryParam(name)
         {
             var query =decodeURIComponent(window.location.search.substring(1));
             var vars = query.split("&");

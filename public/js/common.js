@@ -3,7 +3,7 @@ var common;
 comm=common={}
 window.common=window.comm=common
 
-function getUrlParam(name)
+function getQueryParam(name)
 {
        var query =decodeURIComponent(window.location.search.substring(1));
        var vars = query.split("&");
@@ -15,7 +15,6 @@ function getUrlParam(name)
        }
        return null;
 }
-comm.urlParam = getUrlParam
 
 function getQuery() {
     var querystring =decodeURIComponent(window.location.search.substring(1));
@@ -30,11 +29,11 @@ function getQuery() {
 
 function trimToBlank(value)
 {
-      var v = null
-      if(value==null||value==undefined)
-          return ''
-          v =value+''
-          return v.toString().trim();
+    var v = null
+    if(value==null||value==undefined)
+        return ''
+    v =value+''
+    return v.toString().trim();
         
 }
 var ttb=trimToBlank
@@ -42,18 +41,18 @@ var ttb=trimToBlank
 
 function trimToNull(value)
 {
-      var v = null
-      if(value==null||value==undefined)
-          return null
-          v = value+''
-          return v.toString().trim();
+    var v = null
+    if(value==null||value==undefined)
+        return null
+    v = value+''
+    return v.toString().trim();
 }
 var ttn=trimToNull
 
 
 function isEmpty(value)
 {
-      if(value==null||value==undefined||value.toString().trim()=='')
+      if(value==null||value==undefined||isNaN(value)||value.toString().trim()=='')
           return true
       else
         return false
@@ -61,31 +60,20 @@ function isEmpty(value)
 
 function isNull(value)
 {
-      if(value==null||value==undefined)
+      if(value==null||value==undefined||isNaN(value))
           return true
       else
         return false
 }
 function isBlank(value)
 {
-      if(value==null||value==undefined)
+      if(value==null||value==undefined||isNaN(value))
           return false
         if(value.toString().trim()=='')
           return true
         else
           return false
 }
-
-if(window.moment){
-  moment.prototype.format1=function(pattern){
-    if(this.isValid())
-      return this.format(pattern)
-    else
-      return null
-  }
-}
-
-
 
 function O(target){
   this.target=target;
@@ -127,8 +115,8 @@ function O(target){
   }
 }
 
-function o(data){
-  return new O(data);
+function o(target){
+  return new O(target);
 }
 
 
@@ -508,4 +496,38 @@ comm.whichinview = function(box,els) {
       }
   }
   return inviewEles
+}
+
+
+
+function longPress(dom,callback,millisecond){
+    debugger
+    dom = $(dom)
+    millisecond = (millisecond==null||millisecond==undefined||millisecond=='')? 2000 : millisecond;
+    var handle = 'func'+randomnum(4)
+    dom.bind('mousedown touchstart', function() { 
+        window[handle] = setTimeout(function() { 
+            callback(); 
+        }, millisecond); 
+    }); 
+      
+    dom.bind('mouseup touchend',function() { 
+        clearTimeout(window[handle]); 
+    }); 
+     
+}
+
+function loadHtml(place,url){
+    $.ajax({
+        url:url,
+        method:'get',
+        async:false,
+        success(res){
+            var a = $('<hr/>')
+            $(place).before(a)
+            $(place).remove()
+            a.after($(res))
+            a.remove()
+        }
+    })
 }

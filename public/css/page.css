@@ -1,15 +1,34 @@
 body {
+    padding:0;
+    margin:0;
+    font-size:0;
+}
+
+* {
     -moz-user-select:none;/*火狐*/
     -webkit-user-select:none;/*webkit浏览器*/
     -ms-user-select:none;/*IE10*/
     -khtml-user-select:none;/*早期浏览器*/
     user-select:none;
+    box-sizing: border-box;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-
+*::-webkit-scrollbar{
+    width:0px;
+}
 .ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+span,img,a {
+    display:inline-block;
+}
+button {
+    cursor: pointer;
 }
 .lines2 {
     text-overflow: -o-ellipsis-lastline;
@@ -18,12 +37,21 @@ body {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     word-break: break-word;
+    white-space:initial;
 }
 .lines3 {
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+}
+.lines5 {
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     word-break: break-word;
 }

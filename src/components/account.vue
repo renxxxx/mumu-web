@@ -29,7 +29,7 @@
                 头像
             </span>
             <span style="width:calc(100% - 120px);display: inline-block;box-sizing: border-box;padding:0 5px;">
-                <img v-if="$store.login && $store.login.headImg" :src="$store.login.headImg" style="width:35px;height:35px;"/>
+                <img v-if="$store.login && $store.login.headImage" :src="$store.login.headImage" style="width:35px;height:35px;"/>
             </span>
             <span @click="toHeadImg=1;" style="width:40px;text-align: center;display: inline-block;box-sizing: border-box;
                 font-size: 16px;cursor: pointer;">
@@ -118,12 +118,12 @@
                     修改头像
                 </div>
                 <div style="height:40px;margin:10px 0;text-align: center;">
-                    <span v-if="!headImg" @click="chooseNewHeadImg" style="font-size:16px;display:inline-block;width:40px;vertical-align: middle;height:40px;line-height: 40px;
+                    <span v-if="!headImage" @click="chooseNewHeadImg" style="font-size:16px;display:inline-block;width:40px;vertical-align: middle;height:40px;line-height: 40px;
                         cursor: pointer;border: 1px dashed #838383;text-align: center;box-sizing: border-box;">
                         +
                     </span>
-                    <img v-if="headImg"  :src="headImg" style="width:40px;height:40px;display:inline-block;vertical-align: middle;cursor: pointer;"/>
-                    <span v-if="headImg" @click="deleteHeadImg" style="font-size:16px;display:inline-block;padding:0 5px;vertical-align: middle;height:40px;line-height: 40px;
+                    <img v-if="headImage"  :src="headImage" style="width:40px;height:40px;display:inline-block;vertical-align: middle;cursor: pointer;"/>
+                    <span v-if="headImage" @click="deleteHeadImg" style="font-size:16px;display:inline-block;padding:0 5px;vertical-align: middle;height:40px;line-height: 40px;
                         cursor: pointer;">
                         X
                     </span>
@@ -275,8 +275,8 @@ export default {
             account:null,
             accountConfirm:null,
             phone:null,
-            headImg:this.$store.login.headImg,
-            headImgFile:null,
+            headImage:this.$store.login.headImage,
+            headImageFile:null,
             passwordMd5:null,
             passwordMd5Confirm:null,
             smsLimit:0,
@@ -289,36 +289,36 @@ export default {
     methods: {
         deleteHeadImg(){
             let ts = this
-            ts.headImg=null;
-            ts.headImgFile=null;
+            ts.headImage=null;
+            ts.headImageFile=null;
         },
         async modifyHeadImg(){
             let ts = this
-            if(ts.$store.login.headImg==ts.headImg){
+            if(ts.$store.login.headImage==ts.headImage){
                 ts.$notify({type:'success',message:'无修改'})
                 ts.toHeadImg=0
                 return;
             }
                 
-            if(ts.headImgFile){
+            if(ts.headImageFile){
                 var formData = new FormData()
-                formData.append('file',ts.headImgFile)
+                formData.append('file',ts.headImageFile)
                 await ts.$axios.post('/mumu/upload-file', formData, {
                     headers:{'Content-Type':'multipart/form-data'}
                 }).then(res=>{
                     if(res.data.code==0){
-                        ts.headImg = res.data.data.url
+                        ts.headImage = res.data.data.url
                     } else {
                         ts.$notify({message:res.data.message})
                     }
                 })
             }
             await ts.$axios.post('/mumu/my-account/alter', ts.$qs.stringify({
-                headImg: ts.headImg
+                headImage: ts.headImage
             })).then(res=>{
                 if(res.data.code==0){
                     ts.$notify({type:'success',message:'已修改'})
-                    ts.$store.login.headImg=ts.headImg
+                    ts.$store.login.headImage=ts.headImage
                     ts.toHeadImg=0
                 }else{
                     ts.$notify({message:res.data.message})
@@ -329,8 +329,8 @@ export default {
             let ts = this
             ts.$$('<input type="file"/>').change(function(){
                 let file=this.files[0]
-                ts.headImgFile=file
-                ts.headImg=URL.createObjectURL(file)
+                ts.headImageFile=file
+                ts.headImage=URL.createObjectURL(file)
             }).click()
         },
         alterNickname(){

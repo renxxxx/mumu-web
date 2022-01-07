@@ -239,7 +239,7 @@
         function getVideoList(){
             let _this = this;
             $.ajax({
-                url: '/mumu/watch-history-videos?',
+                url: '/mumu/viewed-videos?',
                 ajaxCache:{ timeout:5 },
                 data: 'kw='+''+'&rstart='+1+'&rcount='+30,
                 async: true,
@@ -264,16 +264,16 @@
                             coverout1(item,videoele)
                         })
 
-                        videoele.find('.name').text(item.seriesChname || item.chname)
+                        videoele.find('.name').text(item.seriesName || item.name)
                         videoele.find('.author').text(item.nickname)
 
-                        if(item.history && item.history.watchEndTime && item.history.duration){
-                            videoele.find('.progress').attr('value',item.history.watchEndTime).attr('max',item.history.duration)
+                        if(item.view && item.view.videoCurrentTime && item.duration){
+                            videoele.find('.progress').attr('value',item.view.videoCurrentTime).attr('max',item.duration)
                         }else
                             videoele.find('.progress').hide()
 
                         videoele.css('display','block')
-                        videoele.attr('href',`./index.html?history=1&videoNo=${ttb(item.history?item.history.videoNo:item.no)}`)
+                        videoele.attr('href',`./index.html?history=1&videoNo=${ttb(item.videoNo)}`)
                         videoele[0].data=item
                         $('.videoList').append(videoele)
 

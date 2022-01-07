@@ -241,36 +241,6 @@ function geteletop(element,offsetTop) {
 }
 
 
-
-
-function statisticsexps(){
-      var nowdate = moment().format('L')
-      var lastAddDate = localStorage.getItem(config.project+'-lastAddDate')
-      if(!lastAddDate)
-        localStorage.setItem(config.project+'-lastAddDate',nowdate)
-      if(lastAddDate != nowdate){
-        var totalTranslates = localStorage.getItem(config.project+'-totaltranslates')
-        var totalSeconds = localStorage.getItem(config.project+'-totalseconds')
-        totalTranslates=parseInt(totalTranslates?totalTranslates:0)
-        totalSeconds=parseInt(totalSeconds?totalSeconds:0)
-
-        var totalTranslatesNo = localStorage.getItem(config.project+'-totaltranslatesno')
-        var totalSecondsNo = localStorage.getItem(config.project+'-totalsecondsno')
-        totalTranslatesNo=parseInt(totalTranslatesNo?totalTranslatesNo:0)
-        totalSecondsNo=parseInt(totalSecondsNo?totalSecondsNo:0)
-        totalTranslates+=totalTranslatesNo
-        totalSeconds+=totalSecondsNo
-
-        localStorage.setItem(config.project+'-totaltranslates',totalTranslates)
-        localStorage.setItem(config.project+'-totalseconds',totalSeconds)
-
-        localStorage.setItem(config.project+'-totaltranslatesno',0)
-        localStorage.setItem(config.project+'-totalsecondsno',0)
-
-        localStorage.setItem(config.project+'-lastAddDate',nowdate)
-      }
-}
-
 if(!config.debug)
   $ajaxCache.config({ 
     timeout: 1 * 24 * 60 * 60,

@@ -3,7 +3,7 @@
         left:50%;transform: translateX(-50%);box-sizing: border-box;" >
         <div @click="$store.login ? $router.push('/account'):null" style="width:100%;height:125px;border:1px solid #272727;
             border-bottom: 1px solid #4a4a4a;box-sizing: border-box;position: relative;">
-            <img :src="($store.login && $store.login.headImg) || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
+            <img :src="($store.login && $store.login.headImage) || require('../assets/img/head.png')" draggable="false" style="width:50px;height:50px;margin-left:8px;
                 margin-top:30px;display:block;cursor: pointer;" />
             <div style="font-size: 20px;position:absolute;top:40px;left:70px;color: #dedede;width:150px;">
                 <template v-if="$store.login">
@@ -40,22 +40,22 @@
             退出登录
         </div>
         <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
-            <span class="unselectable" style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
+            <span class="unselectable" style="font-size:18px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#919191;"
                 @click="window.location.replace('./discover.html');">
                 发现
             </span>
-            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
+            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#919191;"
-                @click="window.location.replace('./list.html');">
+                @click="$router.replace('/favorited-videos');">
                 收藏
             </span>
-            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
+            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#919191;"
                 @click="window.location.replace('./history.html');">
                 聊天
             </span>
-            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;
+            <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#ffffff;font-weight:900;"
                 @click="$router.replace('/my');">
                 我的
@@ -76,7 +76,6 @@ export default {
     },
     methods:{
         showMyLoginCode(){
-            let ts = this
             ts.$axios.post("/mumu/get-login-code")
             .then(res=>{
                 if(res.data.code==0){
@@ -104,10 +103,7 @@ export default {
                 }
             })
         },
-        debug(){
-            
-            let ts = this
-            if(ts.$store.vconsole){
+        debug(){            if(ts.$store.vconsole){
                 ts.$vconsole.hideSwitch()
                 ts.$store.vconsole=0
             }else{
@@ -116,7 +112,6 @@ export default {
             }
         },
         logout(){
-            let ts = this
             ts.$dialog.confirm({
                 message: '确认退出吗?',
             })
@@ -134,7 +129,6 @@ export default {
             })
         },
         start(){
-            let ts = this
             ts.$store.components[ts.$el.id]=ts
             ts.fullPath = ts.$route.fullPath;
         }

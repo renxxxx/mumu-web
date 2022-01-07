@@ -421,12 +421,12 @@
         $('#videoName').text(ss+video.chname)
         $('#video').attr("poster", video.cover)
         if(video.userNo){
-            $('#headImg').attr('src',video.headImg)
-            $('#headImg').css('display','inline-block')
+            $('#headImage').attr('src',video.headImage)
+            $('#headImage').css('display','inline-block')
             $('#onlyLookHim').css('display','inline-block')
             $('#chatminpad').css('width','calc(100% - 105px)')
         }else{
-            $('#headImg').hide()
+            $('#headImage').hide()
             $('#onlyLookHim').hide()
             $('#chatminpad').css('width','100%')
         }

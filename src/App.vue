@@ -23,13 +23,20 @@ export default {
 
 <style>
 #app {
-
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
 }
 body {
   margin:0;
   padding:0;
+  position: initial;
 }
-
+html {
+    position: initial;
+}
 .line1 {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -46,6 +53,7 @@ body {
     -webkit-box-orient: vertical;
     vertical-align: top;
     word-break: break-word;
+    white-space:initial;
 }
 * {
     -moz-user-select:none;/*火狐*/
@@ -54,15 +62,19 @@ body {
     -khtml-user-select:none;/*早期浏览器*/
     user-select:none;
     box-sizing: border-box;
-    overflow: hidden;
+    position: relative;
+}
+
+span,img,a,input {
+    display:inline-block;
     vertical-align: middle;
 }
 
-span {
+span,a {
+    vertical-align: middle;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    vertical-align: middle;
 }
 
 .unselectable {

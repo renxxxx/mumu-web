@@ -11,9 +11,25 @@ export default {
     return { 
     }
   },
-  mounted() {
-      location.href="./discover.html"+location.search
-  }
+  methods:{
+      start(){
+            ts.$store.components[ts.$el.id]=ts
+            ts.fullPath = ts.$route.fullPath;
+            location.href='/'+ts.$project+"/discover.html"+location.search
+      }
+  },
+  activated(){
+        debugger
+        let ts = this
+        ts.prevTs = window.ts
+        window.ts = ts
+        if(!ts.fullPath || (ts.fullPath && ts.fullPath != ts.$route.fullPath))
+            ts.start()
+    },
+    deactivated(){
+        let ts = this
+        window.ts = ts.prevTs
+    }
 }
 </script>
 

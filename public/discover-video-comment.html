@@ -1,0 +1,42 @@
+<div id="videoCommentsPad" style="position:absolute;bottom:0;width:100%;top:30px;">
+    <div class="comments" style="position: absolute;top:0;left:0;bottom:40px;right:0;overflow: auto;">
+        <div class="comment template" style="max-height:171px;margin:10px 0;display:none;">
+            <div style="height:30px;line-height:30px;padding:0 5px;">
+                <img class="headImage" draggable="false" src="./img/head.png" style="width:30px;height: 30px;"/>
+                <span style="width:calc(100% - 100px);padding:0 5px 0 5px;">
+                    <span class="nickname" style="font-size: 15px;max-width:calc(100% - 35px);">
+                    </span>
+                    <span class="isVideoOwner" style="display: inline-block;font-size: 12px;width:33px;text-align: center;height: 20px;
+                        line-height: 20px;margin-left: 3px;background-color: #c7c7c7;">
+                        作者
+                    </span>
+                    <span class="isSelf" style="display: inline-block;font-size: 12px;width:33px;text-align: center;height: 20px;
+                        line-height: 20px;margin-left: 3px;background-color: #c7c7c7;">
+                        自己
+                    </span>
+                </span>
+                <span class="likeCount" style="font-size: 15px;width:50px;text-align: right;
+                    padding-right:5px;">
+                </span>
+                <img class="unliked" src="./img/unliked.png" draggable="false" style="width:20px;display: none;"/>
+                <img class="liked" src="./img/liked.png" draggable="false" style="width:20px;display: none;"/>
+            </div>
+            <div class="content" style="padding:0 5px 0 40px;font-size: 15px;word-break: break-word;max-height:121px;white-space: initial;">
+            </div>
+            <div class="unfold" style="font-size:12px;text-align: center;padding:0 5px 0 40px;height:20px;display:none;">
+                展开
+            </div>
+            <div class="fold" style="font-size:12px;text-align: center;padding:0 5px 0 40px;height:20px;display:none;">
+                收起
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute;height:40px;bottom:0;left:0;right:0;">
+        <textarea id="videoCommentInput" placeholder="请输入" style="
+            white-space:initial;background-color: #efefef;vertical-align: middle;display: inline-block;height:40px;padding:3px;
+            border:none;font-size: 16px;width:80%;box-sizing: border-box;overflow: auto;resize: none;"></textarea>
+        <span id="sendVideoComment" style="vertical-align: middle;display: inline-block;height:40px;line-height:40px;font-size: 16px;width:20%;text-align: center;color: #ffffff;background-color: #3c3c3c;">
+            发送
+        </span>
+    </div>
+</div>

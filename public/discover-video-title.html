@@ -1,0 +1,35 @@
+<div id="videoTitlePad" style="position:absolute;bottom:51px;width:100%;height:83px;font-size:0px;box-sizing: border-box;background-color: #272727;padding:10px 0;">
+    <img id="headImage" draggable="false" style="width:40px;height:40px;cursor: pointer;border:1px solid #9c9c9c;
+        border-radius: 2px 0 0 2px;display:inline-block;vertical-align: middle;margin-left:5px;"/>
+    <div id="onlyLookHim" style="width:50px;height:40px;font-size: 13px;color: #ffffff;text-align: center;display:inline-block;vertical-align: middle;
+        box-sizing: border-box;cursor: pointer;border:1px solid #9c9c9c;border-radius:0 2px 2px 0;color: rgb(191, 187, 187);
+        margin-left: -1px;line-height: 40px;margin-right:5px;">
+        只看Ta
+    </div>
+    <!-- <div id="chatminpad" style="display:inline-block;height:40px;width:calc(100% - 105px);vertical-align: middle;box-sizing: border-box;">
+        <svg style="vertical-align: middle;margin-left:5px;" t="1621325469329" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2465" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><style type="text/css"></style></defs><path d="M513.792 197.504a312.704 312.704 0 0 0-266.666667 476.16l9.429334 15.36-58.837334 137.258667 137.258667-58.837334 15.36 9.386667a312.704 312.704 0 0 0 476.16-266.666667 312.704 312.704 0 0 0-312.746667-312.661333z m-382.208 312.746667a382.208 382.208 0 1 1 198.186667 335.061333l-104.661334 44.842667c-57.685333 24.746667-115.968-33.578667-91.306666-91.264l44.885333-104.661334a381.013333 381.013333 0 0 1-47.104-184.021333z m208.469333-69.546667c0-19.2 15.573333-34.730667 34.730667-34.730667h104.234667a34.773333 34.773333 0 0 1 0 69.504H374.784a34.773333 34.773333 0 0 1-34.730667-34.773333z m0 139.008c0-19.2 15.573333-34.730667 34.730667-34.730667H652.8a34.773333 34.773333 0 0 1 0 69.461334H374.784a34.773333 34.773333 0 0 1-34.730667-34.730667z" fill="#6f6f6f" p-id="2466"></path></svg>
+        <span id="lastmsg" style="font-size: 13px;color:#b5b5b5;overflow:hidden;display:inline-block;word-break: break-word;margin-left:5px;
+            width:calc(100% - 28px);max-height:40px;line-height:20px;box-sizing: border-box;padding-right:5px;vertical-align: middle;">
+        </span>
+    </div> -->
+    <span id="inSeriesPad" style="display:none;width:35px;height:40px;text-align: center;cursor: pointer;">
+        <img src="./img/series.png" style="width:25px;height:25px;display:block;margin:0 5px;" />
+        <div class="no" class="ellipsis" style="width:35px;height:15px;line-height:15px;display:block;font-size:12px;color:#b5b5b5;"></div>
+    </span>
+    <div id="title" class="lines2" style="display:-webkit-inline-box;;height:40px;width:calc(100% - 169px);
+        font-size: 12px;color:#b5b5b5;overflow:hidden;word-break: break-word;line-height:20px;padding: 0 5px;">
+    </div>
+    <span id="goChatBtn" style="width:35px;height:40px;text-align: center;cursor: pointer;">
+        <img src="./img/comment.png"style="width:25px;height:25px;display:block;margin:0 5px;"  />
+        <div id="commentCount" class="ellipsis" style="width:35px;height:15px;line-height:15px;display:block;font-size:12px;color:#b5b5b5;"></div>
+    </span>
+    <span id="favorited" onclick="unfavoriteVideo()" style="width:35px;height:40px;text-align: center;cursor: pointer;display:none;">
+        <img src="./img/favorited.png" style="width:25px;height:25px;margin:0 5px;" />
+        <div class="favoriteCount" style="width:35px;height:15px;line-height:15px;display:block;font-size:12px;color:#b5b5b5;"></div>
+    </span>
+    <span  id="unfavorited" onclick="favoriteVideo()" style="width:35px;height:40px;text-align: center;cursor: pointer;">
+        <img src="./img/unfavorited.png" style="width:25px;height:25px;margin:0 5px;" />
+        <div class="favoriteCount" style="width:35px;height:15px;line-height:15px;display:block;font-size:12px;color:#b5b5b5;"></div>
+    </span>
+    <div id="videoNickname" class="ellipsis" style="font-size:12px;color: #9c9c9c;padding:0 5px;height: 20px;line-height: 20px;margin-top:3px;"></div>
+</div>

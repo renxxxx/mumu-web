@@ -3,6 +3,7 @@ import qs from 'querystring'
 import _Index from './components/index.vue'
 import _My from './components/my.vue'
 import _Account from './components/account.vue'
+import _FavoritedVideos from './components/favorited-videos.vue'
 import _ManageVideos_Index from './components/manage-videos/index.vue'
 import _ManageVideos_Video from './components/manage-videos/video.vue'
 import _ManageVideos_Series from './components/manage-videos/series.vue'
@@ -15,6 +16,7 @@ const routes = [
     { path: '/index', component: _Index },
     { path: '/my', component: _My },
     { path: '/account', component: _Account },
+    { path: '/favorited-videos', component: _FavoritedVideos },
     { path: '/manage-videos/index', component: _ManageVideos_Index },
     { path: '/manage-videos/video', component: _ManageVideos_Video },
     { path: '/manage-videos/series', component: _ManageVideos_Series },

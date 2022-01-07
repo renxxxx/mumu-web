@@ -2,8 +2,8 @@
 (function(){
     var page = {}
     window.page=page
-    page.wordbookNo=ttb(getUrlParam('wordbookNo'))
-    page.templateNo=ttb(getUrlParam('templateNo'))
+    page.wordbookNo=ttb(getQueryParam('wordbookNo'))
+    page.templateNo=ttb(getQueryParam('templateNo'))
     page.wordbook=null
     page.extendword=null
     page.rollword=null
