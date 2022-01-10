@@ -1,7 +1,7 @@
 $('#sendVideoComment').click(sendVideoComment)
 
 function canUnfold(outer,inner){
-    debugger
+    
     outer = $(outer)
     inner = $(inner)
 

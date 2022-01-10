@@ -7,21 +7,24 @@ uu.getCurrentQuery = function()
   return queryObj;
 }
 
+uu.getQueryString=function(url){
+    var q = url.indexOf('?')
+    var h = url.indexOf('#')
+    var queryString = null;
+    if(h<q){
+        queryString = url.substr(q+1)
+    }
+    if(h>q){
+        queryString = url.substring(h+1,q)
+    }
+    return decodeURIComponent(queryString)
+}
+
 uu.getQuery = function(url)
 {
-    debugger
-  let url2 = url
-  let index = url2.indexOf('?')
-  let index2 = url2.indexOf('#')
-  if(index == -1)
-    return null
-    var querystr;
-  if(index2 > index){
-    querystr=url2.substring(index+1,index2)
-  }else{
-    querystr=url2.substring(index+1)
-  }
-  var queryObj = uu.toQuery(querystr)
+    
+  var queryString = uu.getQueryString(url)
+  var queryObj = uu.toQuery(queryString)
   return queryObj;
 }
 

@@ -83,7 +83,7 @@
                     })
             }
             function translationVlaue(_data,_value){
-                debugger
+                
                 
                 $.ajax({
                     url: '/zmy/translate?q='+_data,
@@ -255,7 +255,7 @@
                 $('#video').attr('controls', true);
             }
             function startFn(){    
-                debugger           
+                           
                 let _this = this;
                 if(_this.en.subtitlesInterval){
                     clearInterval(_this.en.subtitlesInterval)
@@ -303,7 +303,7 @@
                 return ms
             }
             function touchstartFn(_value){
-                debugger
+                
                 // _value.preventDefault();
                 // console.log("touchstartFn")
                 let _this = this;
@@ -315,7 +315,7 @@
                 ele = document.elementFromPoint(touch.pageX, touch.pageY);
                 
                 if(ele.className.lastIndexOf('span ')<0){
-                    debugger
+                    
                     if(ele.innerHTML!=" " && ele.innerHTML!= translationValue && !_this.chooseDomList.length && translationValue.lastIndexOf(ele.innerHTML)<0){
                         _this.chooseDomList.push({
                             class:ele.className,
@@ -332,7 +332,7 @@
                 // console.dir(_value)
             }
             function touchmoveFn(_value){
-                debugger
+                
                 let _this = this,
                 touch = _value.changedTouches[0],
                 ele = document.elementFromPoint(touch.pageX, touch.pageY);
@@ -362,7 +362,7 @@
                 }
             }
             function touchendFn(_value){
-                debugger
+                
                 // console.dir(_value)
                 let _this = this;
                 console.log(_this.chooseDomList);

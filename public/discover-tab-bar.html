@@ -1,0 +1,22 @@
+<div id="tabBar" style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
+    <span class="unselectable" 
+        style="font-size:18px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#ffffff;font-weight:900;"
+        onclick="$('#video')[0].pause();app.router.reload();">
+        发现
+    </span>
+    <span class="unselectable" 
+        style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+        onclick="$('#video')[0].pause();app.router.replace('/mumu/#/favorited-videos');">
+        收藏
+    </span>
+    <span class="unselectable" 
+        style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+        onclick="$('#video')[0].pause();app.router.replace('/mumu/history.html');">
+        聊天
+    </span>
+    <span class="unselectable" 
+        style="font-size:16px;display: inline-block;width:25%;height:50px;line-height:50px;cursor: pointer;text-align: center;vertical-align: middle;color:#919191;"
+        onclick="$('#video')[0].pause();app.router.replace('/mumu/#/my');">
+        我的
+    </span>
+</div>

@@ -215,7 +215,7 @@ export default {
             }
         },
         seriesMoveLeft(index){
-            debugger
+            
             let ts = this
             let left = ts.serieses.rows[index-1]
             let left2 = ts.serieses.rows[index-2]
@@ -415,7 +415,7 @@ export default {
         },
     },
     activated(){
-        debugger
+        
         let ts = this
         ts.prevTs = window.ts
         window.ts = ts

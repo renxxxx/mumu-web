@@ -18,9 +18,9 @@ if(config.debug==0)
 function noDebuger() {
     function testDebuger() {
         var d = new Date();
-        debugger;
+        ;
         if (new Date() - d > 10) {
-            debugger;
+            ;
             //document.body.innerHTML = '<div style="width: 100%;height: 50px;font-size: 30px;text-align: center;font-weight: bold;color:#ffffff;"></div>';
             return true;
         }
@@ -225,7 +225,7 @@ function videocapture(videoele){
 }
 
 function geteletop(element,offsetTop) {
-	debugger
+	
   if(!element)
     return null;
   offsetTop=offsetTop?offsetTop:0

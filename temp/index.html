@@ -313,7 +313,7 @@
                 }
             }
             function chShowDialog(){
-                debugger
+                
                 let _this = this
                 let _time = $('#video')[0].currentTime*1000
                 $(_this.en.subtitlesList).each(function(inx,item){
@@ -467,7 +467,7 @@
                     
                 })
                 console.log(_data)
-                debugger
+                
                 if(_data && _this.translationValue != _data && translationValue.indexOf(_data)<0){
                     _this.translationValue = _data;
                     translationVlaue(_data,_value)

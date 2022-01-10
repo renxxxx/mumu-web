@@ -1,5 +1,15 @@
 videoDom=$('#video')[0]
 
+if(query.isFavorite){
+    $('#titleBar').show()
+    $('#tabBar').hide()
+}else{
+    $('#titleBar').hide()
+    $('#tabBar').show()
+}
+
+$('#titleBar .title').text(query.title||'')
+
 setTimeout(function(){
     $('#logo').hide()
     $('#index').show()

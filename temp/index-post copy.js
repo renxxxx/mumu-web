@@ -339,7 +339,7 @@
         
         $(en.subtitlesList).each(function(inx,item){
             if(item.startTime<=_time && _time<item.endTime){
-                debugger
+                
                 //log.debug("search all ")
                 en.current = item
                 en.currentIndex = inx

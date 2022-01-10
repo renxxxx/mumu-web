@@ -670,7 +670,7 @@ export default {
 
         },
         prevSubtitle(){
-            debugger
+            
             let ts = this
             ts.videoDom.pause()
             let prev = null;
@@ -894,7 +894,7 @@ export default {
         }
     }, 
     activated(){
-        debugger
+        
         let ts = this
         ts.prevTs = window.ts
         window.ts = ts

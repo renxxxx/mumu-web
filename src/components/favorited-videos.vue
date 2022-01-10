@@ -8,12 +8,12 @@
                 搜索
             </span>
         </div>
-        <div ref='videosScroll' @scroll="videosScroll" style="position: absolute;top:40px;bottom:50px;left:0;right:0;overflow: auto;margin-top:5px;">
-            <span :key=item.videoNo v-for="item in videosExplorer.rows"
-                style="width:46.25%;height:240px;background-color: #919191;margin:5px 0 0 2.5%;">
+        <div ref='videosScroll' @scroll="videosScroll" style="position: absolute;top:45px;bottom:50px;left:0;right:0;overflow: auto;">
+            <span :key=item.videoNo v-for="item in videosExplorer.rows" @click="$router.push('/?title=收藏夹&isFavorite=1&kw='+$uu.ttb(videosExplorer.kw)+'&rstart='+(item.sn))"
+                style="width:46.25%;height:240px;background-color: #919191;margin:0 0 5px 2.5%;">
                 <img :src="item.cover" style="width:100%;height:190px;display: block;background-color: #919191;" />
-                <img v-if="item.isFavorited" @click="unfavorite(item.videoNo)" src="../../public/img/favorited.png" style="position: absolute;top:155px;right:12px;width:30px;"/>
-                <img v-if="!item.isFavorited" @click="favorite(item.videoNo)" src="../../public/img/unfavorited.png" style="position: absolute;top:155px;right:12px;width:30px;"/>
+                <img v-if="item.isFavorited" @click="unfavorite(item.videoNo)" src="../../public/img/favorited.png" style="position: absolute;top:155px;right:5px;width:30px;"/>
+                <img v-if="!item.isFavorited" @click="favorite(item.videoNo)" src="../../public/img/unfavorited.png" style="position: absolute;top:155px;right:5px;width:30px;"/>
                 <div v-if="item.seriesName" style="font-size: 15px;height:25px;color: rgb(28 28 28);line-height: 30px;padding:0 5px;">
                     {{item.seriesName}}
                 </div>
@@ -36,12 +36,12 @@
         <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
             <span class="unselectable" style="font-size:18px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#919191;"
-                @click="window.location.replace('./discover.html');">
+                @click="$router.replace('/');">
                 发现
             </span>
             <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#ffffff;font-weight:900;"
-                @click="window.location.replace('/favorited-videos');">
+                @click="$router.replace('/favorited-videos')">
                 收藏
             </span>
             <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
@@ -112,10 +112,11 @@ export default {
             })).then((res)=>{
                 if(res.data.code==0){
                     var videos = res.data.data.videos;
-                    ts.videosExplorer.rows.push(...videos)
                     ts.videosExplorer.lastRows=videos
                     for (var i in videos) {
                         var video = videos[i]
+                        video.sn=ts.videosExplorer.rows.length+1
+                        ts.videosExplorer.rows.push(video)
                         ts.videosExplorer.map[video.videoNo]=video
                     }
                 }

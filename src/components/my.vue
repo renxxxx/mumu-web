@@ -42,7 +42,7 @@
         <div style="font-size:0;height:50px;position: absolute;bottom:0;width:100%;border-top: 1px solid #525252;background-color: #272727;">
             <span class="unselectable" style="font-size:18px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
                 vertical-align: middle;color:#919191;"
-                @click="window.location.replace('./discover.html');">
+                @click="$router.replace('/');">
                 发现
             </span>
             <span class="unselectable" style="font-size:16px;display: inline-block;width:25%;height:49px;line-height:49px;cursor: pointer;text-align: center;
@@ -134,7 +134,7 @@ export default {
         }
     },
     activated(){
-        debugger
+        
         let ts = this
         ts.prevTs = window.ts
         window.ts = ts

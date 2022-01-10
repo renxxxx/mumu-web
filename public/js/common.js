@@ -5,19 +5,32 @@ window.common=window.comm=common
 
 function getQueryParam(name)
 {
-       var query =decodeURIComponent(window.location.search.substring(1));
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == name){
-                 return pair[1]
-                }
-       }
-       return null;
+    
+    var querystring = getQueryString(window.location.href);
+    var vars = querystring.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == name){
+                return pair[1]
+            }
+    }
+    return null;
 }
-
+function getQueryString(url){
+    var q = url.indexOf('?')
+    var h = url.indexOf('#')
+    var queryString = null;
+    if(h<q){
+        queryString = url.substr(q+1)
+    }
+    if(h>q){
+        queryString = url.substring(h+1,q)
+    }
+    return decodeURIComponent(queryString)
+}
 function getQuery() {
-    var querystring =decodeURIComponent(window.location.search.substring(1));
+    
+    var querystring = getQueryString(window.location.href);
     var query = {}
     var vars = querystring.split("&");
     for (var i=0;i<vars.length;i++) {
@@ -501,7 +514,7 @@ comm.whichinview = function(box,els) {
 
 
 function longPress(dom,callback,millisecond){
-    debugger
+    
     dom = $(dom)
     millisecond = (millisecond==null||millisecond==undefined||millisecond=='')? 2000 : millisecond;
     var handle = 'func'+randomnum(4)
@@ -517,7 +530,19 @@ function longPress(dom,callback,millisecond){
      
 }
 
-function loadHtml(place,url){
+function loadInnerHtml(place,url){
+    $.ajax({
+        url:url,
+        method:'get',
+        async:false,
+        success(res){
+            
+            $(place).html($(res).html())
+        }
+    })
+}
+
+function loadOuterHtml(place,url){
     $.ajax({
         url:url,
         method:'get',

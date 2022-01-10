@@ -30,14 +30,18 @@ const router = VueRouter.createRouter({
     routes, // short for `routes: routes`
 })
 router.afterEach((to,from) =>{
-    debugger
-    if(to.fullPath==from.fullPath){
+    if(to.path==from.path){
+        debugger
         //router.push({path:'/redirect',query:{query:qs.stringify(to.query),path:to.path}})
-        router.replace('/redirect?path='+encodeURIComponent(to.fullPath))
+        var path = null;
+        if(to.fullPath.indexOf('?')>-1)
+            path = to.fullPath.replace('?','?rand='+uu.randomnum(4)+'&')
+        else
+            path = to.fullPath = to.fullPath + '?rand='+uu.randomnum(4)
+        router.replace('/redirect?path='+encodeURIComponent(path))
     }
 })
 router.beforeEach((to,from, next) =>{
-    debugger
     console.log('to '+to.fullPath)
     if(from.href)
         sessionStorage.setItem(app.config.globalProperties.$project+'-prevRoute',from.href)

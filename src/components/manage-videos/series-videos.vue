@@ -237,7 +237,7 @@ export default {
         }
     },
     activated(){
-        debugger
+        
         let ts = this
         ts.prevTs = window.ts
         window.ts = ts

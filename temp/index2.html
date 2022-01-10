@@ -149,7 +149,7 @@
                 })
 
                 console.log(findInx)
-                debugger
+                
                 $('#video')[0].currentTime = _this.en.subtitlesList[findInx+1].startTime/1000
                 // console.log(_this.en.subtitlesList[findInx+1])
                 // console.log(_this.en.current)
@@ -241,7 +241,7 @@
                 let _this = this,
                 touch = _value.changedTouches[0],
                 ele = document.elementFromPoint(touch.pageX, touch.pageY);
-                debugger
+                
                 
                 if(ele.className){
                     console.log(ele.className)   

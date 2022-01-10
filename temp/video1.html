@@ -212,7 +212,7 @@
                 })
             }   
             $('.yibiao').on('click','span svg',function(){
-                debugger
+                
                 let _mp3 = new Audio($(this).attr('playsrc'));
                 _mp3.play();
             })
@@ -334,7 +334,7 @@
                 }
             }
             function chShowDialog(){
-                debugger
+                
                 let _this = this
                 let _time = $('#video')[0].currentTime*1000
                 $(_this.en.subtitlesList).each(function(inx,item){
@@ -483,7 +483,7 @@
                                         'color' : 'black'
                                     })
                                 }else if(_now > (_last+1)){
-                                    debugger
+                                    
                                     for(let i = _last; i < _now; i++){
                                         $('.span'+i)
                                         _this.chooseDomList.push({
@@ -496,7 +496,7 @@
                                         })
                                     }
                                 }else{
-                                    debugger
+                                    
                                     for(let i = _now; i < _last; i++){
                                         $('.span'+i)
                                         _this.chooseDomList.push({

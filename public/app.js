@@ -4,7 +4,7 @@ window.app=window.config=app;
 app.project="mumu";
 app.version="123"
 app.debug=1
-debugger
+
 $.ajaxSetup({
     type:'post',
 })
@@ -27,15 +27,16 @@ if(prevRoute && prevRoute==location.href && fromNullRoute){
     sessionStorage.removeItem(app.project+'-prevRoute')
 }
 
-app.routeBack=function(){
-    debugger
-    if(app.isFirstRoute()){
+var router = {}
+app.router=router
+router.back=function(){
+    if(app.isFirst()){
         location.replace("/"+app.project+"/")
     }else{
         history.back()
     }
 };
-app.isFirstRoute=function(){
+router.isFirst=function(){
     var prevRoute = sessionStorage.getItem(app.project+'-prevRoute')
     if(prevRoute && (prevRoute.indexOf("/"+app.project) >= 0 || prevRoute.indexOf("#") == 0)){
         return false
@@ -43,7 +44,15 @@ app.isFirstRoute=function(){
         return true
     }
 };
-
+router.reload=function(forceGet){
+    location.reload(forceGet)
+};
+router.push=function(url){
+    location.href=url
+};
+router.replace=function(url){
+    location.replace(url)
+};
 app.loginRefresh = function(){
     if(isWechat()){
         $.ajax({

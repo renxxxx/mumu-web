@@ -59,7 +59,7 @@ document.onfocus = function(){
 
 window.onbeforeunload=function(){
     //log.log('onbeforeunload')
-    historyrecord()
+    //historyrecord()
     //navigator.sendBeacon("/mumu/page-out");
 }
 
@@ -957,7 +957,7 @@ $('#chatpad').bind('mousedown touchstart',function(e){
     }
     this.scrollEle = parentEle;
 }).bind('mouseup touchend',function(e){
-    debugger
+    
     if(this.scrollEle && this.scrollEle.length==0 && this.touchendY-this.touchstartY>100){
         $('#chatpad').slideUp(100)
         //$('#gearframe1').show()
@@ -2210,6 +2210,49 @@ function getMoreOnlyLookHimVideos(async){
         }
     })
 }
+
+
+
+
+function getMoreFavoritedVideos(async){
+    var queryData = {
+        kw:query.kw,
+        rstart:null,
+        sort:query.sort,
+        order:query.order
+    }
+    if(trueVideos.rows.length==0 && query.rstart)
+        queryData.rstart=query.rstart
+    else 
+        queryData.rstart=trueVideos.rows.length+1
+    $.ajax({
+        url: '/mumu/favorited-videos?',
+        data: queryData,
+        async: async,
+        success: function(res) {
+            if(res.code==0){
+                if(res.data.videos.length>0){
+                    trueVideos.rows.push(...res.data.videos)
+                    trueVideos.currRows=res.data.videos
+                }else{
+                    queryData.rstart=1
+                    $.ajax({
+                        url: '/mumu/favorited-videos?',
+                        data: queryData,
+                        async: async,
+                        success: function(res) {
+                            if(res.data.videos.length>0){
+                                trueVideos.rows.push(...res.data.videos)
+                                trueVideos.currRows=res.data.videos
+                            }
+                        }
+                    })
+                }
+                $('#video1').attr('src','./img/black.png');
+            }
+        }
+    })
+}
 function getMoreVideos(async){
     if(query.history){
         getMoreHistoryVideos(async)
@@ -2330,6 +2373,8 @@ function goNextVideo(){
         log.log("sync")
         if(onlyLookUserNo||query.userNo){
             getMoreOnlyLookHimVideos(false)
+        }else if(query.isFavorite){
+            getMoreFavoritedVideos(false)
         }else{
             getMoreVideos(false)
         }
@@ -2344,6 +2389,8 @@ function goNextVideo(){
         log.log("async")
         if(onlyLookUserNo||query.userNo){
             getMoreOnlyLookHimVideos(true)
+        }else if(query.isFavorite){
+            getMoreFavoritedVideos(false)
         }else{
             getMoreVideos(true)
         }
@@ -2420,21 +2467,21 @@ function playend(){
 
 function getvideodone(videop){
     video=videop;
-    videoNo=videop.no
+    videoNo=videop.videoNo
     clearTimeout(timeout999)
     genShareData()
     $('#zh_subtitles').html('')
     $('#chDialog').text('')
     var ss =ttb(video.reference)||ttb(video.seriesName);
-    var sss = ss?('#'+ss+' '):ss
-    if(ss != ttb(video.name)){
-        sss=sss+ttb(video.name)
-    }
+    sss=
+        ttb(video.name)+(video.name?' ':'') + 
+        (ss?'#':'') + ss
+
     $('#title').text(sss)
     if(video.seriesNo){
         $('#inSeriesPad').css('display','inline-block')
         $('#inSeriesPad .no').text(video.numInSeries)
-        $('#title').css('width','calc(100% - 204px)')
+        $('#title').css('width','calc(100% - 209px)')
     }else{
         $('#inSeriesPad').hide()
         $('#inSeriesPad .no').text('')
@@ -2607,14 +2654,15 @@ function monitor(currentTime){
     if(currentSubtitle && currentTime > currentSubtitle.start && currentTime < currentSubtitle.end){
         return;
     }
-
+    if(!subtitles)
+        return
     var next = subtitles[currentSubtitleIndex+1]
     if((next && currentSubtitle && currentTime > currentSubtitle.end && currentTime<next.start) || 
         (!next && currentSubtitle && currentTime >= currentSubtitle.end)){
         if(diandu)
             pauseVideo()
         if(loopLine){
-            debugger
+            
             currline()
             return;
         }
@@ -2713,7 +2761,7 @@ function setline(item){
     $('#videobox').css('top','0px')
 }
 function prevline(){
-    debugger
+    
     log.log('function prevline')
     var prev = subtitles[currentSubtitleIndex-1]
     if(prev){

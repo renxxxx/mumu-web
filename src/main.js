@@ -1,5 +1,5 @@
 let project='mumu'
-let version='22010718'
+let version='22011018'
 
 import * as vue from 'vue'
 import router from './router.js'
@@ -110,7 +110,6 @@ loginRefresh().then(res=>{
     
     app.config.globalProperties.$routerr={}
     app.config.globalProperties.$routerr.back=function(){
-        debugger
         if(app.config.globalProperties.$routerr.isFirst()){
             router.replace('/')
         }else{
